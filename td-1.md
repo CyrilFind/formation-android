@@ -2,7 +2,7 @@
 
 ## Kotlin Koans
 
-Faire au moins la première série d'exercices des [Kotlin Koans](https://try.kotlinlang.org): [try.kotl.in](https://try.kotl.in) ou dans Android Studio (en ajoutant le plugin "Edutools" puis `File > Learn and Teach > Browse Courses > Kotlin Koans`)
+Suivre les exercices des [Kotlin Koans](https://try.kotlinlang.org): [try.kotl.in](https://try.kotl.in) ou dans Android Studio (en ajoutant le plugin "Edutools" puis `File > Learn and Teach > Browse Courses > Kotlin Koans`)
 
 ## Google Codelabs
 Faire les tutos de la collection (en particulier de 02.1 à 02.4):
