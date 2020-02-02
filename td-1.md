@@ -2,11 +2,11 @@
 
 ## Kotlin Koans
 
-Suivre les exercices des [Kotlin Koans](https://try.kotlinlang.org): [try.kotl.in](https://try.kotl.in) ou dans Android Studio (en ajoutant le plugin "Edutools" puis `File > Learn and Teach > Browse Courses > Kotlin Koans`)
+Suivre les exercices des [Kotlin Koans](https://try.kotlinlang.org) sur le site [try.kotl.in](https://try.kotl.in) ou dans Android Studio pour avoir la complétion (en ajoutant le plugin "Edutools" puis `File > Learn and Teach > Browse Courses > Kotlin Koans`)
 
 ## Google Codelabs
-Faire les tutos de la collection (en particulier de 02.1 à 02.4):
-[Android Kotlin Fundamentals](https://codelabs.developers.google.com/android-kotlin-fundamentals/) 
+Faire les tutos de la collection
+[Android Kotlin Fundamentals](https://codelabs.developers.google.com/android-kotlin-fundamentals/) (à partir de 02.1)
 
 ## En cas de problèmes de réseau
 Ajouter les dépendances suivantes dans le `app/build.gradle` d'un projet (n'importe lequel) et compiler (pour les télécharger en avance)
