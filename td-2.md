@@ -2,6 +2,15 @@
 
 L'objectif de ce TD est d'implémenter un écran affichant une liste de tâches, de permettre de créer des nouvelles tâches, de les supprimer et de les partager dans une autre application.
 
+## Créer un projet
+
+- Utilisez l'IDE pour créer un projet "Empty Activity"
+- Donnez lui un nom personalisé (ex: ToDoNicolasAlexandre)
+- Choisissez un package name (ex: `com.nicoalex.todo`)
+- Language "Kotlin"
+- Minimum API Level: 6.0
+- Cochez "use androidx ..."
+
 ## Dependances RecyclerView
 Dans le fichier `app/build.gradle`, ajouter:
 
@@ -23,8 +32,8 @@ class TaskListFragment : Fragment() {}
 ```kotlin
 inflater.inflate(R.layout.fragment_task_list, container, false)
 ```
-- Ajouter une balise `<fragment...>` à votre activité principale
-- Utilisez `android:name` pour specifier la classe de votre Fragment (ex: `"com.cyrilfind.todo.TaskListFragment"`)
+- Remplacez la balise `<TextView.../>` par une balise `<fragment...>` dans votre activité principale
+- Utilisez `android:name` pour specifier la classe de votre Fragment (ex: `"com.nicoalex.todo.TaskListFragment"`)
 
 ## La liste des tâches
 
