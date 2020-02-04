@@ -10,8 +10,9 @@ L'objectif de ce TD est d'implémenter un écran affichant une liste de tâches,
 - Language "Kotlin"
 - Minimum API Level: 6.0
 - Cochez "use androidx ..."
+- Initialisez un projet git et commitez à chaque fois que vous avez quelquechose qui compile et qui fonctionne
 
-## Dependances RecyclerView
+## Dépendances RecyclerView
 Dans le fichier `app/build.gradle`, ajouter:
 
 ```groovy
