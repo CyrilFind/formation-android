@@ -6,7 +6,7 @@ Suivre les exercices des [Kotlin Koans](https://try.kotlinlang.org) sur le site 
 
 ## Google Codelabs
 Faire les tutos de la collection
-[Android Kotlin Fundamentals](https://codelabs.developers.google.com/android-kotlin-fundamentals/) (à partir de 02.1)
+[Android Kotlin Fundamentals](https://codelabs.developers.google.com/android-kotlin-fundamentals/) (au moins de 02.1 à 02.4)
 
 ## En cas de problèmes de réseau
 Ajouter les dépendances suivantes dans le `app/build.gradle` d'un projet (n'importe lequel) et compiler (pour les télécharger en avance)
