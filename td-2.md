@@ -4,7 +4,7 @@ L'objectif de ce TD est d'implémenter un écran affichant une liste de tâches,
 
 ⚠️ Lisez toutes les questions: souvent vous bloquez parce que vous n'avez pas fait l'étape suivante
 
-🚀 Aidez vous de l'IDE: Android Studio fait beaucoup de travail pour vous donc utilisez l'autocompletion et les raccourcis: `Alt` + `Enter` pour des "quickfix" et `Shift, Shift + "recherche"` pour tout le reste 
+🚀 Aidez vous de l'IDE: Android Studio fait beaucoup de travail pour vous donc utilisez l'autocompletion et les raccourcis: `Alt` + `Enter` pour des "💡QuickFix" et `Shift, Shift + "recherche"` pour tout le reste 
 
 ## Créer un projet
 
@@ -52,7 +52,8 @@ class TaskListFragment : Fragment() {}
 val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 ```
 - Remplacez la balise `<TextView.../>` par une balise `<fragment.../>` dans votre activité principale
-- Utilisez `android:name` pour specifier la classe de votre Fragment (ex: `"com.nicoalex.todo.TaskListFragment"`)
+- Utilisez l'autocomplétion pour spécifier le Fragment à qui sera "inflaté" avec l'attribut `android:name` (ex: `"com.nicoalex.todo.tasklist.TaskListFragment"`)
+- Ajoutez un id avec l'attribut `android:id` pour...ne pas crasher l'app 🤷‍♂️
 
 ## La liste des tâches
 
@@ -108,16 +109,23 @@ inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 Dans le `TaskListAdapter`, implémenter toutes les méthodes requises:
 
-**Astuce**: Utilisez l'IDE pour faciliter l'implémentation des méthodes en cliquant sur le nom de votre classe (qui doit être soulignée en rouge) et cliquez sur l'ampoule jaune ou tapez `Alt` + `ENTER` (sinon, `CTRL` + `O` n'importe où dans la classe)
+**Astuce**: Facilitez l'implémentation des méthodes en cliquant sur le nom de votre classe (qui doit être soulignée en rouge) et cliquez sur l'ampoule jaune ou tapez `Alt` + `ENTER` (sinon, `CTRL` + `O` n'importe où dans la classe)
 
 - `getItemCount` qui renvoie la taille de la liste de tâche à afficher
-- `onCreateViewHolder` qui returne un nouveau `TaskViewHolder`: vous aurez besoin d'un `itemView`, généré à partir du layout `item_task.xml`: 
+- `onCreateViewHolder`:
+    - Retourne un nouveau `TaskViewHolder`
+    - Vous aurez besoin d'un `itemView`, 
+    - Générez le à partir du layout `item_task.xml`: 
 
 ```kotlin
 val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
 ```
 
-- `onBindViewHolder` qui insère la donnée dans la cellule (`TaskViewHolder`) en fonction de la position dans la liste.
+- `onBindViewHolder`:
+    - Insère la donnée dans la cellule (`TaskViewHolder`) 
+    - Utiliser pour cela sa `position` dans la liste
+    - Utiliser la méthode `bind()` que vous avez créée dans `TaskViewHolder` 
+    - Ce n'est pas obligatoire, mais c'est une bonne pratique
 
 - Lancez l'app: vous devez voir 3 tâches s'afficher 👏
 
@@ -142,12 +150,12 @@ private val taskList = listOf(
 
 ## Ajout de tâche simple
 
-- Changez la root view de `fragment_task_list.xml` en ConstraintLayout en faisant un clic droit dessus en mode design (si ce n'est pas déjà le cas)
-- Ouvrez le volet "Resource Manager" à gauche, cliquez sur le "+" en haut à gauche puis "Vector Asset" puis double cliquez sur le clipart du logo android et selectionnez une icone + (en cherchant "add" dans la barre de recherche) puis "finish" pour ajouter une icone à vos resource
-- Par défaut l'icône est noire mais vous pouvez utiliser l'attribut `android:tint` du bouton pour la rendre blanche (tapez "white" et laissez l'IDE compléter)
+- Changez la root view de `fragment_task_list.xml` en ConstraintLayout (si ce n'est pas fait) en faisant un clic droit dessus en mode design
+- Ouvrez le volet "Resource Manager" à gauche, cliquez sur le "+" en haut à gauche puis "Vector Asset" puis double cliquez sur le clipart du logo android et trouvez une icone "+" (en tapant "add") puis "finish" pour ajouter une icone à vos resource
 - Ajouter un Floating Action Button (FAB) en bas à droite de ce layout et utilisez l'icone créée 
-- Donnez des contraintes en bas et à droite de ce bouton
-- Transformer votre liste de taches `taskList` en `mutableListOf(...)` afin de pouvoir la modifier 
+- Par défaut l'icône est noire mais vous pourrez utiliser l'attribut `android:tint` du bouton pour la rendre blanche (tapez "white" et laissez l'IDE compléter)
+- Donnez des contraintes en bas et à droite de ce bouton (vous pouvez utiliser le mode "🧲 Aimant")
+- Transformer votre liste de tâches `taskList` en `mutableListOf(...)` afin de pouvoir y ajouter ou supprimer des éléments
 - Utilisez `.setOnClickListener {}` sur le FAB pour ajouter une tâche à votre liste:
 
 ```kotlin
@@ -155,4 +163,4 @@ private val taskList = listOf(
 Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}")
 ```
 
-- Dans cette callback, **notifier l'adapteur** (aidez vous des suggestions de l'IDE) pour que votre modification s'affiche
+- Dans cette lambda, **notifier l'adapteur** (aidez vous des suggestions de l'IDE) pour que votre modification s'affiche
