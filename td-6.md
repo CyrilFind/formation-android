@@ -18,10 +18,11 @@ Dans le fichier `app/build.gradle`, ajouter :
 Glide.with(this).load("https://goo.gl/gEgYUd").into(image_view)
 ```
 
-- À partir de la [documentation de Glide](https://github.com/bumptech/glide), afficher l'image sous la forme d'un cercle
+- Aidez vous de la [documentation de Glide](https://github.com/bumptech/glide) pour afficher l'image sous la forme d'un cercle
 
 ### Nouvelle activité
-- Créer une nouvelle activité `UserInfoActivity` et ajoutez la dans le manifest
+- Créer un nouveau package `userinfo`
+- Créez y une nouvelle activité `UserInfoActivity` et ajoutez la dans le manifest
 - Remplir son layout:
 
 ```xml
@@ -159,7 +160,7 @@ private fun imageToBody(image: Bitmap?): MultipartBody.Part {
 
 ## Uploader l'image capturée
 
-- Dans l'interface `UserService`, ajouter une nouvelle fonction
+- Dans l'interface `UserWebService`, ajouter une nouvelle fonction
 
 ```kotlin
 @Multipart
@@ -194,9 +195,9 @@ val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, data?.data)
 ```
 
 ## Édition infos utilisateurs
-- Comme pour tasks, refactorisez en utilisant un `UserInfoViewModel` et un `UserInfoRepository`
+- Comme précedemment, refactorisez en utilisant un `UserInfoViewModel` et un `UserInfoRepository`
 - Dans `UserInfoActivity`, permettre d'éditer et d'afficher les informations (nom, prénom, email) en respectant cette architecture
-- Vous aurez besoin d'ajouter ça à `UserService`:
+- Vous aurez besoin d'ajouter ça à `UserWebService`:
 
 ```kotlin
 @PATCH("users")

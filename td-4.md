@@ -4,8 +4,8 @@
 
 Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, dans ce TD nous allons simuler que la personne est connectée, en passant un `token` dans les `headers` de nos requêtes HTTP.
 
-- Nous allons utiliser ce site: https://android-tasks-api.herokuapp.com/api-docs/index.html
-- Lisez rapidement la documentation de l'API: elle permet d'utiliser ses routes directement
+- Nous allons utiliser ce site: [https://android-tasks-api.herokuapp.com/api-docs/index.html]()
+- Lisez la documentation de l'API: le site permet d'utiliser ses routes directement
 - Cliquez sur `users/sign_up` puis sur "Try it out"
 - Vous devriez voir un JSON prérempli dont vous devez remplir les données (vous pouvez mettre des infos bidon) avant de cliquer sur "Execute":
 
@@ -19,7 +19,10 @@ Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, dans 
 }
 ```
 
-- Copiez le token généré (vous pourrez le récuperer à nouveau en vous re-loggant)
+- Copiez le token généré quelquepart (vous pourrez le récuperer à nouveau en utilisant la route `/login`)
+- Copiez votre token dans la popup du bouton "Authorize" en haut
+- Maintenant que vous êtes "loggés", testez les routes disponibles (création, suppression, etc...)
+
 
 ## Accèder à l'internet
 
@@ -145,7 +148,7 @@ data class UserInfo(
 
 ### Affichage
 
-- Dans `fragment_tasks.xml`, ajoutez une `TextView` au dessus de la liste de tâche si vous n'en avez pas
+- Dans `fragment_task_list.xml`, ajoutez une `TextView` au dessus de la liste de tâche si vous n'en avez pas
 - Overrider la méthode `onResume` pour y récuperer les infos de l'utilisateur, une erreur va s'afficher mais ne paniquez pas, on va s'en occuper:
 
 ```kotlin
@@ -177,20 +180,20 @@ coroutineScope.cancel()
 - En réalité, vous n'avez pas besoin de faire la création et la suppression, si vous utiliser directement `lifeCycleScope`
 -  Un autre scope est fourni par android: `viewModelScope`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
 
-## TasksFragment
+## TaskListFragment
 
 Il est temps de récuperer les tâches depuis le serveur !
 
-- Créer un nouveau service `TaskService`
+- Créer un nouveau service `TaskWebService`
 
 ```kotlin
-interface TasksService {
+interface TasksWebService {
     @GET("tasks")
     suspend fun getTasks(): Response<List<Task>>
 }
 ```
 
-- Utiliser l'instance de retrofit comme précédemment pour créer une instance de `TaskService` dans l'objet `Api`
+- Utiliser l'instance de retrofit comme précédemment pour créer une instance de `TasksWebService` dans l'objet `Api`
 
 - Modifier `Task` pour la rendre lisible par Moshi (i.e. faire comme pour `UserInfo`)
 
@@ -205,7 +208,7 @@ Créer la classe `TasksRepository`avec:
 
 ```kotlin
 class TasksRepository {
-    private val tasksService = Api.tasksService
+    private val tasksWebService = Api.tasksWebService
 	private val coroutineScope = MainScope()
 
     fun getTasks(): LiveData<List<Task>?> {
@@ -215,7 +218,7 @@ class TasksRepository {
     }
 
     private suspend fun loadTasks(): List<Task>? {
-        val tasksResponse = tasksService.getTasks()
+        val tasksResponse = taskWebService.getTasks()
         return if (tasksResponse.isSuccessful) tasksResponse.body() else null
     }
 }
@@ -223,7 +226,7 @@ class TasksRepository {
 
 ## LiveData
 
-- Dans `TasksFragment`, ajouter une instance de `TasksRepository` et modifier votre code pour l'utiliser: dans `onResume()`, "abonnez" le fragment à la réponse du repository et mettez à jour la liste et l'`adapter` avec le résultat (importer le `Observer` de la lib `lifecycle`):
+- Dans `TaskListFragment`, ajouter une instance de `TasksRepository` et modifier votre code pour l'utiliser: dans `onResume()`, "abonnez" le fragment à la réponse du repository et mettez à jour la liste et l'`adapter` avec le résultat (importer le `Observer` de la lib `lifecycle`):
 
 
 ```kotlin
@@ -240,9 +243,9 @@ tasksRepository.getTasks().observe(this, Observer {
 })
 ```
 
-## Compléter TasksService
+## Compléter TasksWebService
 
-Modifier `TasksService` et ajoutez y les routes suivantes:
+Modifier `TasksWebService` et ajoutez y les routes suivantes:
 
 ```kotlin
 @DELETE("tasks/{id}")
@@ -256,8 +259,6 @@ suspend fun updateTask(@Body task: Task, @Path("id") id: String? = task.id): Res
 ```
 
 ## Suppression d'une tâche
-
-**Remarque:** Vous pouvez créer des tâches dans l'interface web, en spécifiant votre token avec le bouton "Authorize" en haut
 
 - Inspirez vous du chargement de la liste pour ajouter les methodes permettant la suppression dans `TasksRepository`: utilisez `MutableLiveData<Boolean>` et retournez directement `isSucessful` cette fois
 - Dans `onDeleteClickListener`utilisez le repository pour supprimer dans le serveur et observez le résultat avant de supprimer dans la liste locale:

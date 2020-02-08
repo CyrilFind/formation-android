@@ -22,8 +22,8 @@ onDeleteClickListener.invoke(task)
 
 
 ## Ajout de tâche complet
-
-- Créer la nouvelle `TaskActivity`, n'oubliez pas de la déclarer dans le manifest
+- Créer un package `task`
+- Créez y la nouvelle `TaskActivity`, n'oubliez pas de la déclarer dans le manifest
 - Créer un layout contenant 2 `EditText`, pour le titre et la description et un bouton pour valider
 - Définir un `ADD_TASK_REQUEST_CODE` et changer l'action du FAB pour qu'il ouvre cette activité avec un `Intent`, en attendant un resultat:
  

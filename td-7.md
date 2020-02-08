@@ -65,7 +65,7 @@ findNavController().navigate(R.id.action_authenticationFragment_to_loginFragment
 
 - Créer la `data class LoginForm` qui contient un email et un password de type `String`
 - Créer la `data class LoginResponse` qui contient un token de type `String`
-- Ajouter un nouveau call réseau dans `UserService`:
+- Ajouter un nouveau call réseau dans `UserWebService`:
 
 ```kotlin
 @POST("users/login")

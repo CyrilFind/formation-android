@@ -1,46 +1,40 @@
 # TD 5: ViewModel
 
-On va faire un peu de ménage puis afficher et uploader des images
+On va faire un peu de ménage !
 
-⚠️ **Attention** ⚠️: Erreur dans le td précédent, vérifiez la version dans `app/build.gradle`:
-
-```groovy   
-implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-rc03"
-```
-
-## Refactorisation avec TasksViewModel
+## Refactorisation avec TaskListViewModel
 
 Mettre toute la logique dans le fragment est une mauvaise pratique: les `ViewModel` permettent d'en extraire une partie.
 
-Lisez bien tout le sujet et aidez vous du code:
+⚠️ Lisez bien tout le sujet et suivez les étapes en vous aidant du squelette de code plus bas !
 
-- Créer une classe `TasksViewModel` qui hérite de `ViewModel` qui va gérer:  
-    - La liste des `tasks` sous forme de `LiveData`
-    - Le `repository`
+- Créer une classe `TaskListViewModel` qui hérite de `ViewModel` qui va gérer:  
+    - La `taskListLiveData` qui contient la donnée de type `List<Task>` sous forme de `LiveData` et donc *observable*
+    - Le `repository` qui sert de source de données
     - Les coroutines avec `viewModelScope`
 
-- Dans `TaskAdapter`
-    - Rendez la liste de `tasks` publique
+- Dans `TaskListAdapter`
+    - Rendez la `taskList` publique
     - Donnez lui une valeur par défaut: `emptyList()`
 
-- Dans `TasksFragment`:
+- Dans `TaskListFragment`:
     - Récupérer le `viewModel` grâce à `ViewModelProvider`
-    - Supprimer le `repository` et la list de `tasks`
+    - Supprimer le `repository` et la `taskList`
     - Observer la valeur de `viewModel.taskListLiveData` et mettre à jour la liste de l'`adapter`
 
 - Dans `TasksRepository`, 
     - Supprimer les fonctions qui utilisent `coroutineScope`
-    - Garder seulement celles qui sont `suspend` et retirer `private`
+    - Garder seulement celles qui sont `suspend` et les rendre publiques
 
 - Procéder par étapes et inspirez vous de ce squelette (NE COPIEZ PAS TOUT!) pour refactoriser votre app (commencez juste par le chargement de la liste):
 
 ```kotlin
 // Repository simplifié, avec seulement des méthodes "suspend"
 class TasksRepository {
-    private val service = Api.tasksService
+    private val webService = Api.tasksWebService
     
     suspend fun loadTasks(): List<Task>? {
-        val response = service.getTasks()
+        val response = webService.getTasks()
         return if (response.isSuccessful) response.body() else null
     }
     
@@ -50,7 +44,7 @@ class TasksRepository {
 }
 
 // Le ViewModel met à jour la liste de task qui est une LiveData 
-class TasksViewModel: ViewModel() {
+class TaskListViewModel: ViewModel() {
   val taskListLiveData = MutableLiveData<List<Task>?>()
   private val repository = TasksRepository()
   
@@ -78,8 +72,8 @@ class TasksViewModel: ViewModel() {
 }
 
 // Le Fragment observe la LiveData et met à jour la liste de l'adapter:
-class TasksFragment: Fragment() {
-  val tasksAdapter = TaskAdapter()
+class TaskListFragment: Fragment() {
+  val adapter = TaskListAdapter()
   // On récupère une instance de ViewModel
   private val viewModel by lazy {
     ViewModelProvider(this).get(TasksViewModel::class.java)
@@ -99,7 +93,7 @@ class TasksFragment: Fragment() {
 }
 
 // On donne une valeur par défaut à la liste et on peut la retirer du constructeur:
-class TaskAdapter() : ... {
+class TaskListAdapter() : ... {
     var list: List<Task> = emptyList()
 }
 
