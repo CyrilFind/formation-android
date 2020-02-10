@@ -4,7 +4,7 @@
 
 Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, dans ce TD nous allons simuler que la personne est connectée, en passant un `token` dans les `headers` de nos requêtes HTTP.
 
-- Nous allons utiliser ce site: [https://android-tasks-api.herokuapp.com/api-docs/index.html]()
+- Nous allons utiliser ce site: [https://android-tasks-api.herokuapp.com/api-docs/index.html](https://android-tasks-api.herokuapp.com/api-docs/index.html)
 - Lisez la documentation de l'API: le site permet d'utiliser ses routes directement
 - Cliquez sur `users/sign_up` puis sur "Try it out"
 - Vous devriez voir un JSON prérempli dont vous devez remplir les données (vous pouvez mettre des infos bidon) avant de cliquer sur "Execute":
