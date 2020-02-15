@@ -203,3 +203,13 @@ val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, data?.data)
 @PATCH("users")
 suspend fun update(@Body user: UserInfo): Response<UserInfo>
 ```
+
+## Enregistrer une image dans un fichier
+
+Actuellement, la qualité d'image récupérée de l'appareil photo est faible (car passée dans le code en bitmap)
+
+Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l'image dans un fichier.
+
+Vous devrez pour ça ajouter un `FileProvider` qui est un cas particulier de `ContentProvider` (qui est un des 4 types d'App Component)
+
+Suivez la procédure de la documentation Android expliquée ici: [Take photos]()

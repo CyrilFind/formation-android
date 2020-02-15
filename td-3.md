@@ -7,19 +7,26 @@ L'objectif de ce TD est d'implémenter des actions sur nos tâches, en naviguant
 
 Dans le layout de votre ViewHolder, ajouter un `ImageButton` qui servira à supprimer la tâche associée. Vous pouvez utiliser par exemple l'icone `@android:drawable/ic_menu_delete`
 
+**Rappel:** Une [lambda](https://kotlinlang.org/docs/reference/lambdas.html) est un type de variable qui contient un bloc de code pouvant prendre des arguments et retourner un résultat, c'est donc une fonction que l'on utilise comme une variable !
+
+Aidez vous des lignes de code plus bas pour réaliser un "Click Listener" à l'aide d'une lambda en suivant ces étapes:
+
 - Dans l'adapteur, ajouter une lambda `onDeleteClickListener` qui prends en arguments une `Task` et ne renvoie rien: `(Task) -> Unit`
-
-```kotlin
-// Déclaration d'une lambda comme variable:
-var onDeleteClickListener: (Task) -> Unit = { task -> /* faire qqchose */ }
-
-// Utilisation d'une lambda:
-onDeleteClickListener.invoke(task)
-```
-
 - Utilisez cette lambda avec dans le `onClickListener` du bouton supprimer
 - Dans le fragment, accéder au `onDeleteClickListener` depuis l'adapter et implémentez là: donnez lui comme valeur une lambda qui va supprimer la tache passée en argument de la liste 
 
+```kotlin
+// Déclaration de la variable lambda dans l'adapter:
+var onDeleteClickListener: ((Task) -> Unit)? = null
+
+// "implémentation" de la lambda dans le fragment:
+adapter.onDeleteClickListener = { task ->
+    // Supprimer la tâche
+}
+
+// Utilisation de la lambda dans le ViewHolder:
+onDeleteClickListener?.invoke(task)
+```
 
 ## Ajout de tâche complet
 - Créer un package `task`
@@ -66,7 +73,13 @@ Que se passe-t-il si vous tournez votre téléphone ? 🤔
 ```kotlin
 override fun onSaveInstanceState(outState: Bundle)
 ```
-Il faudra aussi que votre classe `Task` hérite de `Parcelable`: pour implémenter automatiquement les méthodes nécessaires, ajoutez à votre classe l'annotation `@Parcelize`
+Il faudra aussi que votre classe `Task` hérite de `Parcelable`: pour implémenter automatiquement les méthodes nécessaires, ajoutez à votre classe l'annotation `@Parcelize` et à `app/build.gradle`, ajouter:
+
+```groovy
+androidExtensions {
+    experimental = true
+}
+```
 
 - Puis, pour récupérer cette list, utilisez l'argument `savedInstanceState` de `onCreateView`
 

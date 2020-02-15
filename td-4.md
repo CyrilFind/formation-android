@@ -203,44 +203,52 @@ Le Repository va chercher des data dans une ou plusieurs sources de données (ex
 
 Créer la classe `TasksRepository`avec:
 
-- une méthode publique `getTasks` qui renvoie des LiveData (auquel va s'abonner le fragment)
-- une méthode privée `loadTasks` qui récupère la liste en asynchrone
+- une propriété `tasksWebService` pour les requêtes avec `Retrofit`
+- une propriété `taskList` *publique* de type `LiveData<List<Task>>`: représente une liste de tâche *Observable* (on peut donc s'*abonner* à ses modifications)
+- une propriété `_taskList` *privée* de type `MutableLiveData<List<Task>>` qui représente la même donnée mais modifiable donc utilisable à l'intérieur du repository
+- une méthode publique `refresh` qui requête la liste et met à jour la `LiveData`
+
 
 ```kotlin
 class TasksRepository {
-    private val tasksWebService = Api.tasksWebService
-	private val coroutineScope = MainScope()
+    private val tasksWebService = Api.tasksWebService 
+    
+    private val _taskList = MutableLiveData<List<Task>>()
+    public val taskList: LiveData<List<Task>> = _tasks
 
-    fun getTasks(): LiveData<List<Task>?> {
-        val tasks = MutableLiveData<List<Task>?>()
-        coroutineScope.launch { tasks.postValue(loadTasks()) }
-        return tasks
-    }
-
-    private suspend fun loadTasks(): List<Task>? {
+    suspend fun refresh() {
         val tasksResponse = taskWebService.getTasks()
-        return if (tasksResponse.isSuccessful) tasksResponse.body() else null
+        if (tasksResponse.isSuccessful) {
+            val fetchedTasks = tasksResponse.body()
+            tasks.postValue(fetchedTasks)
+        }
     }
-}
+
 ```
 
 ## LiveData
-
-- Dans `TaskListFragment`, ajouter une instance de `TasksRepository` et modifier votre code pour l'utiliser: dans `onResume()`, "abonnez" le fragment à la réponse du repository et mettez à jour la liste et l'`adapter` avec le résultat (importer le `Observer` de la lib `lifecycle`):
+ Dans `TaskListFragment`:
+- Ajouter en propriété une instance de `TasksRepository`
+- Dans `onViewCreated()`, "abonnez" le fragment à la  `LiveData` du repository
+- Mettez à jour la liste et l'`adapter` avec le résultat (importer le `Observer` de la lib `lifecycle`)
+- Dans `onResume()`, utilisez le repository pour rafraîchir la liste de tasks
 
 
 ```kotlin
 private val tasksRepository = TasksRepository()
 private val tasks = mutableListOf<Task>()
 
-// Dans onResume()
-tasksRepository.getTasks().observe(this, Observer {
-	if (it != null) {
+// Dans onViewCreated()
+tasksRepository.taskList.observe(this, Observer {
 	  tasks.clear()
 	  tasks.addAll(it)
 	  adapter.notifyDataSetChanged()
-	}
 })
+
+// Dans onResume()
+lifecycleScope.launch {
+    tasksRepository.refresh()
+}
 ```
 
 ## Compléter TasksWebService
@@ -258,17 +266,25 @@ suspend fun createTask(@Body task: Task): Response<Task>
 suspend fun updateTask(@Body task: Task, @Path("id") id: String? = task.id): Response<Task>
 ```
 
-## Suppression d'une tâche
+## Suppression, Ajout, Édition
 
-- Inspirez vous du chargement de la liste pour ajouter les methodes permettant la suppression dans `TasksRepository`: utilisez `MutableLiveData<Boolean>` et retournez directement `isSucessful` cette fois
-- Dans `onDeleteClickListener`utilisez le repository pour supprimer dans le serveur et observez le résultat avant de supprimer dans la liste locale:
+- Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l'édition:
+
+```kotlin
+ todoRepository.updateTask(task)?.let { task ->
+    val editableList = _tasksListLiveData.value.orEmpty().toMutableList()
+    val position = editableList.indexOfFirst { task.id == it.id }
+    editableList[position] = task
+    _tasksListLiveData.value = editableList
+}
+```
+
+- Utilisez les dans le Fragment, par ex pour la suppression:
 
 ```kotlin
 adapter.onDeleteClickListener = { task ->
-    tasksRepository.deleteTask(...).observe(this, Observer { success -> 
-        if (success) {
-            // faire comme avant
-        }
-    })
+    lifecycleScope.launch {
+        tasksRepository.delete(task)
+    }
 }
 ```
