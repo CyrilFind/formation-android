@@ -1,16 +1,13 @@
 # TD 8: Améliorations
 
-Voici des sujets d'amélioration, vous pouvez les faire dans l'ordre de votre choix.
-
-Lisez bien la documentation avant de commencer chacun car il n'y a pas d'étapes pour vous guider.
-
+Voici des sujets d'amélioration à implémenter de façon autonome: lisez bien la documentation avant de commencer et/ou suivez les codelabs en adaptant à votre projet car il n'y a pas d'étapes pour vous guider.
 
 ## Deep linking
 
 Ajouter la possibilité d'ouvrir l'application à partir de certaines URI:
 
 - Ouvrir l'activité par défaut avec "https://android-tasks-api.herokuapp.com/"
-- Ouvrir l'activité d'édition de la tache avec https://android-tasks-api.herokuapp.com/tasks/ID_DE_LA_TACHE
+- Ouvrir l'activité d'édition de la tache avec "https://android-tasks-api.herokuapp.com/tasks/ID_DE_LA_TACHE"
 
 #### Documentation
 - [Deep Link](https://developer.android.com/training/app-links/deep-linking)
@@ -101,13 +98,13 @@ Implémenter un cache des données serveur avec `Room`:
 - [Codelab "Repository"](https://codelabs.developers.google.com/codelabs/kotlin-android-training-repository) (sur la mise en place d'un Cache avec Room)
 
 
-## Testing and dependency Injection
+## Tests et injection de dépendances
 
-- Créer des tests unitaires 
+- Créer des tests unitaires
 - Créer des tests UI avec Espresso sur les différentes features de l'applications:
   - Affichage de la liste des tâches
   - Résultat des actions sur les boutons: ajout, suppression, ...
-  - Mocker les appels réseaux
+  - Mocker les appels réseaux (avec l'injection de dépendances)
 
 #### Documentation
 - [Testing Codelab](https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-testing-basics/) (5.1 à 5.3)
