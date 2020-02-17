@@ -56,7 +56,7 @@ Dans le fichier `app/build.gradle`, ajouter :
 ```kotlin
 object Api {
   private const val BASE_URL = "https://android-tasks-api.herokuapp.com/api/"
-  private const val TOKEN = "COPIEZ VOTRE TOKEN ICI !"
+  private const val TOKEN = "COPIEZ_VOTRE_TOKEN_ICI"
 }
 ```
 
