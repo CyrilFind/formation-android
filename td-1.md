@@ -10,28 +10,19 @@ Prendre en main l'IDE: vous pouvez aller dans les paramètres (<kbd>Cmd</kbd> + 
 
 Je vous conseille en particulier de:
 - Changer le raccourci pour les commentaires car sur AZERTY celui par défaut ne fonctionne pas (mettez <kbd>Cmd + :</kbd>)
-- Changer la coloration syntaxique, car par défaut elle n'est pas terrible pour Kotlin: vous pouvez installer un plugin (ex: "Rainglow Color Schemes") et choisir parmis les divers proposés ou utiliser mon thème "Darculai" dispo sur ce repo (qui est juste le thème Darcula par défaut avec quelques ajouts)
-- les plugins: RainbowBrackets, Codota, grep console, SonarLint, KeyPromoter (un peu relou mais permet d'apprendre les raccourcis), et plein d'autres (regardez les plus téléchargés dans l'onglet MarketPlace)
+- Changer la coloration syntaxique qui n'est pas terrible pour Kotlin: vous pouvez installer un plugin (ex: "Rainglow Color Schemes") et choisir parmis les divers proposés ou utiliser mon thème "Darculai" dispo sur ce repo (qui est juste le thème Darcula par défaut avec quelques ajouts)
+- Ajouter des plugins comme RainbowBrackets, Codota, grep console, SonarLint (et regardez les plus téléchargés dans l'onglet MarketPlace)
+- Activer les imports automatiques: `Editor > General > Auto Import > Kotlin > cocher "Add unambiguous import on the fly" et "Optimize imports on the fly..."`
 
 ## Kotlin Koans
 
-Suivre les exercices des [Kotlin Koans](https://try.kotlinlang.org) dans Android Studio (en ajoutant le plugin "Edutools" puis `File > Learn and Teach > Browse Courses > Kotlin Koans`) ou sur le site [try.kotl.in](https://try.kotl.in) (mais vous n'aurez pas la complétion)
+Suivre les exercices des [Kotlin Koans](https://try.kotlinlang.org) dans Android Studio (en ajoutant le plugin "Edutools" puis `File > Learn and Teach > Browse Courses > Kotlin Koans`) ou sur le site [try.kotl.in](https://try.kotl.in) (mais vous n'aurez pas l'auto-complétion)
 
 ## Google Codelabs
 Faire les tutos de la collection
-[Android Kotlin Fundamentals](https://codelabs.developers.google.com/android-kotlin-fundamentals/) (au moins de 02.1 à 02.4)
+[Android Kotlin Fundamentals](https://codelabs.developers.google.com/android-kotlin-fundamentals/) à partir de 02.1 (vous pouvez survoler rapidement ceux d'avant) et 
 
-## En cas de problèmes de réseau
-Ajouter les dépendances suivantes dans le `app/build.gradle` d'un projet (n'importe lequel) et compiler (pour les télécharger en avance)
-
-```groovy
-dependencies {
-   // ...
-   implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
-   implementation 'com.squareup.retrofit2:retrofit:2.6.1'
-   implementation 'com.squareup.moshi:moshi:1.9.1'
-   implementation 'androidx.recyclerview:recyclerview:1.0.0'
-   implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
-    // ...
-}
-```
+⚠️ Attention:
+- Ne restez pas bloqués sur les pages "Introduction", "Overview", ce sont juste des résumés de ce que vous allez faire.
+- Parfois l'IDE bug et n'affiche pas certains attributs dans le layout editor (typiquement textAlignment, fontFamily,...) dans ce cas, rien de grave, passez juste en mode Text
+- Parfois les attributs avec start/end ne s'affiche pas: idem rien de grave vous pouvez utiliser left/right (ex: marginLeft au lieu de marginRight)

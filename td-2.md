@@ -4,7 +4,9 @@ L'objectif de ce TD est d'implémenter un écran affichant une liste de tâches,
 
 ⚠️ Lisez toutes les questions: souvent vous bloquez parce que vous n'avez pas fait l'étape suivante
 
-🚀 Aidez vous de l'IDE: Android Studio fait beaucoup de travail pour vous donc utilisez l'autocompletion et les raccourcis: `Alt` + `Enter` pour des "💡QuickFix" et `Shift, Shift + "recherche"` pour tout le reste 
+🚀 Aidez vous de l'IDE: Android Studio fait beaucoup de travail pour vous donc utilisez l'autocompletion et les raccourcis: `Alt` + `Enter` pour des "💡QuickFix" et `Shift, Shift + "recherche"` pour tout le reste.
+
+💡Activez les "local variable type hints" quand vous commencerez a coder, afin de voir les types des variables que Kotlin "devine"
 
 ## Créer un projet
 
