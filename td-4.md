@@ -271,11 +271,11 @@ suspend fun updateTask(@Body task: Task, @Path("id") id: String? = task.id): Res
 - Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l'édition:
 
 ```kotlin
- todoRepository.updateTask(task)?.let { task ->
-    val editableList = _tasksListLiveData.value.orEmpty().toMutableList()
+ suspend fun updateTask(task) { 
+    val editableList = _tasksList.value.orEmpty().toMutableList()
     val position = editableList.indexOfFirst { task.id == it.id }
     editableList[position] = task
-    _tasksListLiveData.value = editableList
+    _tasksList.value = editableList
 }
 ```
 
