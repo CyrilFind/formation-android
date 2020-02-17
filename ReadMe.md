@@ -12,10 +12,11 @@
 
 Un minimum de slides et un maximum de TDs:
 
-- TD 1: Kotlin Koans & Codelabs
+- TD 1: Kotlin Koans & Codelabs d'Intro
 - TD 2: RecyclerView
 - TD 3: Actions & Intents
 - TD 4: Internet
-- TD 5: Architecture Components
+- TD 5: Architecture
 - TD 6: Images & Permissions
 - TD 7: SignUp/Login et Navigation
+- TD 8: Améliorations

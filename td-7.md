@@ -165,4 +165,4 @@ Lorsque le user relance son application, il faut lui afficher directement la lis
 Ajouter un bouton pour se déconnecter qui efface le token dans les `SharedPreference` et renvoie au Login
 
 ### Ajout et Édition
-Remplacer la navigation précédente avec des `Intent` par un `NavHost` et utiliser [SafeArgs](https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args)
+Remplacer la navigation précédente avec des `Intent` par un `NavHost` et utiliser [SafeArgs](https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args) pour passer les données

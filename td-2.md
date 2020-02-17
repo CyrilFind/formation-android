@@ -156,7 +156,7 @@ private val taskList = listOf(
 - Ouvrez le volet "Resource Manager" à gauche, cliquez sur le "+" en haut à gauche puis "Vector Asset" puis double cliquez sur le clipart du logo android et trouvez une icone "+" (en tapant "add") puis "finish" pour ajouter une icone à vos resource
 - Ajouter un Floating Action Button (FAB) en bas à droite de ce layout et utilisez l'icone créée 
 - Par défaut l'icône est noire mais vous pourrez utiliser l'attribut `android:tint` du bouton pour la rendre blanche (tapez "white" et laissez l'IDE compléter)
-- Donnez des contraintes en bas et à droite de ce bouton (vous pouvez utiliser le mode "🧲 Aimant")
+- Donnez des contraintes en bas et à droite de ce bouton (vous pouvez utiliser le mode "Aimant" qui essaye de donner les bonnes contraintes automatiquement)
 - Transformer votre liste de tâches `taskList` en `mutableListOf(...)` afin de pouvoir y ajouter ou supprimer des éléments
 - Utilisez `.setOnClickListener {}` sur le FAB pour ajouter une tâche à votre liste:
 
