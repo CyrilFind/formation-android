@@ -4,18 +4,18 @@
 
 Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, dans ce TD nous allons simuler que la personne est connectée, en passant un `token` dans les `headers` de nos requêtes HTTP.
 
-- Nous allons utiliser ce site: [https://android-tasks-api.herokuapp.com/api-docs/index.html](https://android-tasks-api.herokuapp.com/api-docs/index.html)
+- Nous allons utiliser ce site: [https://android-tasks-api.herokuapp.com/api-docs/](https://android-tasks-api.herokuapp.com/api-docs/)
 - Lisez la documentation de l'API: le site permet d'utiliser ses routes directement
 - Cliquez sur `users/sign_up` puis sur "Try it out"
 - Vous devriez voir un JSON prérempli dont vous devez remplir les données (vous pouvez mettre des infos bidon) avant de cliquer sur "Execute":
 
 ```json
 {
-    "firstname": "UN PRENOM",
-    "lastname": "UN NOM",
-    "email": "UN EMAIL",
-    "password": "UN MDP",
-    "password_confirmation": "LE MEME MDP"
+  "firstname": "UN PRENOM",
+  "lastname": "UN NOM",
+  "email": "UN EMAIL",
+  "password": "UN MDP",
+  "password_confirmation": "LE MEME MDP"
 }
 ```
 
@@ -106,8 +106,8 @@ object Api {
 
 ```kotlin
 interface UserService {
-    @GET("users/info")
-    suspend fun getInfo(): Response<UserInfo>
+  @GET("users/info")
+  suspend fun getInfo(): Response<UserInfo>
 }
 ```
 
@@ -137,12 +137,12 @@ Créer la `data class` `UserInfo` avec des annotations Moshi pour récupérer ce
 
 ```kotlin
 data class UserInfo(
-    @field:Json(name = "email")
-    val email: String,
-    @field:Json(name = "firstname")
-    val firstName: String,
-    @field:Json(name = "lastname")
-    val lastName: String
+  @field:Json(name = "email")
+  val email: String,
+  @field:Json(name = "firstname")
+  val firstName: String,
+  @field:Json(name = "lastname")
+  val lastName: String
 )
 ```
 
@@ -211,18 +211,18 @@ Créer la classe `TasksRepository`avec:
 
 ```kotlin
 class TasksRepository {
-    private val tasksWebService = Api.tasksWebService 
-    
-    private val _taskList = MutableLiveData<List<Task>>()
-    public val taskList: LiveData<List<Task>> = _taskList
+  private val tasksWebService = Api.tasksWebService 
+  
+  private val _taskList = MutableLiveData<List<Task>>()
+  public val taskList: LiveData<List<Task>> = _taskList
 
-    suspend fun refresh() {
-        val tasksResponse = taskWebService.getTasks()
-        if (tasksResponse.isSuccessful) {
-            val fetchedTasks = tasksResponse.body()
-            tasks.postValue(fetchedTasks)
-        }
-    }
+  suspend fun refresh() {
+      val tasksResponse = taskWebService.getTasks()
+      if (tasksResponse.isSuccessful) {
+          val fetchedTasks = tasksResponse.body()
+          tasks.postValue(fetchedTasks)
+      }
+  }
 
 ```
 
@@ -240,14 +240,14 @@ private val tasks = mutableListOf<Task>()
 
 // Dans onViewCreated()
 tasksRepository.taskList.observe(this, Observer {
-	  tasks.clear()
-	  tasks.addAll(it)
-	  adapter.notifyDataSetChanged()
+  tasks.clear()
+  tasks.addAll(it)
+  adapter.notifyDataSetChanged()
 })
 
 // Dans onResume()
 lifecycleScope.launch {
-    tasksRepository.refresh()
+  tasksRepository.refresh()
 }
 ```
 
@@ -271,11 +271,12 @@ suspend fun updateTask(@Body task: Task, @Path("id") id: String? = task.id): Res
 - Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l'édition:
 
 ```kotlin
- suspend fun updateTask(task) { 
-    val editableList = _tasksList.value.orEmpty().toMutableList()
-    val position = editableList.indexOfFirst { task.id == it.id }
-    editableList[position] = task
-    _tasksList.value = editableList
+suspend fun updateTask(task) { 
+  tasksRepository.updateTask(task)
+  val editableList = _tasksList.value.orEmpty().toMutableList()
+  val position = editableList.indexOfFirst { task.id == it.id }
+  editableList[position] = task
+  _tasksList.value = editableList
 }
 ```
 
@@ -283,8 +284,8 @@ suspend fun updateTask(@Body task: Task, @Path("id") id: String? = task.id): Res
 
 ```kotlin
 adapter.onDeleteClickListener = { task ->
-    lifecycleScope.launch {
-        tasksRepository.delete(task)
-    }
+  lifecycleScope.launch {
+      tasksRepository.delete(task)
+  }
 }
 ```
