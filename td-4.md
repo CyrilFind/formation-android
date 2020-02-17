@@ -214,7 +214,7 @@ class TasksRepository {
     private val tasksWebService = Api.tasksWebService 
     
     private val _taskList = MutableLiveData<List<Task>>()
-    public val taskList: LiveData<List<Task>> = _tasks
+    public val taskList: LiveData<List<Task>> = _taskList
 
     suspend fun refresh() {
         val tasksResponse = taskWebService.getTasks()
