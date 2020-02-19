@@ -212,7 +212,7 @@ Améliorer cette qualité en changeant le fonctionnement pour enregistrer direc
 
 Vous devrez pour ça ajouter un `FileProvider` qui est un cas particulier de `ContentProvider` (qui est un des 4 types d'App Component)
 
-Suivez la procédure de la documentation Android expliquée ici: [Take photos]()
+Suivez la procédure de la documentation Android expliquée ici: [Take photos](https://developer.android.com/training/camera/photobasics#TaskPath)
 
 Vous pouvez utiliser cette techniuqe pour éviter la string "authorities" en dur:
 
