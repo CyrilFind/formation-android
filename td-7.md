@@ -165,4 +165,10 @@ Lorsque le user relance son application, il faut lui afficher directement la lis
 Ajouter un bouton pour se déconnecter qui efface le token dans les `SharedPreference` et renvoie au début de l'Authentification
 
 ### Ajout et Édition
-Remplacer la navigation précédente avec des `Intent` par un `NavHost` et utiliser [SafeArgs](https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args) pour passer les données
+
+Suivez les mêmes étapes pour remplacer la navigation des TDs précédents avec des `Intent` explicites par cette nouvelle navigation:
+
+- Changez le name du `<fragment>` dans `MainActivity` par un `NavHostFragment`
+- Assignez lui un nouveau graphe de navigation (qui sera très simple): `main_nav_graph` (vous pouvez renommer l'ancien en `authentication_nav_graph`)
+- Transformez `TaskActivity` en `TaskFragment` en adaptant les `override`s
+- Utilisez [SafeArgs](https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args) pour passer les données d'une activité à l'autre
