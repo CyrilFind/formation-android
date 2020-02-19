@@ -172,3 +172,4 @@ Suivez les mêmes étapes pour remplacer la navigation des TDs précédents avec
 - Assignez lui un nouveau graphe de navigation (qui sera très simple): `main_nav_graph` (vous pouvez renommer l'ancien en `authentication_nav_graph`)
 - Transformez `TaskActivity` en `TaskFragment` en adaptant les `override`s
 - Utilisez [SafeArgs](https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args) pour passer les données d'une activité à l'autre
+- Faites pareil pour `UserInfoActivity`

@@ -213,3 +213,31 @@ Améliorer cette qualité en changeant le fonctionnement pour enregistrer direc
 Vous devrez pour ça ajouter un `FileProvider` qui est un cas particulier de `ContentProvider` (qui est un des 4 types d'App Component)
 
 Suivez la procédure de la documentation Android expliquée ici: [Take photos]()
+
+Vous pouvez utiliser cette techniuqe pour éviter la string "authorities" en dur:
+
+- Dans `app/build.gradle` :
+
+```gradle
+android {
+    defaultConfig {
+       // ...
+        def addConstant = { constantName, constantValue ->
+            manifestPlaceholders += [ (constantName):constantValue] // Pour utiliser dans le manifest 
+            buildConfigField "String", "${constantName}", "\"${constantValue}\"" // Pour utiliser dans le code
+        }
+        addConstant("FILE_PROVIDER_AUTHORITY", "<MY-STRING-VALUE>")
+    }
+```
+
+- Dans le Manifest: 
+
+```xml
+android:authorities="${FILE_PROVIDER_AUTHORITY}"
+```
+
+- Dans le code:
+
+```kotlin
+BuildConfig.FILE_PROVIDER_AUTHORITY
+```

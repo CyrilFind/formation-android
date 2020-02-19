@@ -1,6 +1,10 @@
 # TD 8: Améliorations
 
-Voici des sujets d'amélioration à implémenter de façon autonome: lisez bien la documentation avant de commencer et/ou suivez les codelabs en adaptant à votre projet car il n'y a pas d'étapes pour vous guider.
+Voici des sujets d'  à implémenter de façon autonome: 
+
+Lisez bien la documentation avant de commencer et/ou suivez les codelabs en adaptant à votre projet car il n'y a pas d'étapes pour vous guider. 
+
+En revanche je suis là pour répondre à toutes vos questions !
 
 ## Deep linking
 
