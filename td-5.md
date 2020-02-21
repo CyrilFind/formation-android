@@ -24,7 +24,7 @@ Pour résumer, on va déplacer la logique de la gestion de la liste hors du Frag
     - Donnez lui une valeur par défaut: `emptyList()`
 
 - Dans `TaskListFragment`:
-    - Récupérer le `viewModel` grâce à `ViewModelProvider`
+    - Récupérer le `viewModel` grâce à `by viewModels()`
     - Supprimer le `repository` et la `taskList`
     - Observer la valeur de `viewModel.taskList` et mettre à jour la liste de l'`adapter`
 
@@ -75,9 +75,7 @@ class TaskListViewModel: ViewModel() {
 // Le Fragment observe la LiveData et met à jour la liste de l'adapter:
 class TaskListFragment: Fragment() {
     val adapter = TaskListAdapter()
-    private val viewModel by lazy { // On récupère une instance de ViewModel
-        ViewModelProvider(this).get(TasksViewModel::class.java)
-    }
+    private val viewModel: TasksViewModel by viewModels() // On récupère une instance de ViewModel
         
     // On "abonne" le Fragment aux modifications de l'objet LiveData du ViewModel
     override fun onViewCreated(...) {

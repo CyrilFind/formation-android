@@ -160,6 +160,8 @@ Faire comme pour le login mais avec une `data class SignUpForm` qui contient: `f
 
 Lorsque le user relance son application, il faut lui afficher directement la liste des tâches: vérifier dans l'`AuthenticationFragment` si un token existe
 
+- [Documentation](https://developer.android.com/guide/navigation/navigation-conditional)
+
 ### Déconnexion
 
 Ajouter un bouton pour se déconnecter qui efface le token dans les `SharedPreference` et renvoie au début de l'Authentification
@@ -173,3 +175,4 @@ Suivez les mêmes étapes pour remplacer la navigation des TDs précédents avec
 - Transformez `TaskActivity` en `TaskFragment` en adaptant les `override`s
 - Utilisez [SafeArgs](https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args) pour passer les données d'une activité à l'autre
 - Faites pareil pour `UserInfoActivity`
+- Vous pouvez simplifier pas mal de choses en utilisant `by activityViewModels()` au lieu de `by viewModels()` afin de partager une l'instance de viewmodel au sein des Fragments d'une même Activity
