@@ -1,14 +1,22 @@
 # Formation Android
 
-**But du cours**: connaître les fondamentaux du développement Android et notamment:
+## But
+Connaître les fondamentaux du développement Android et notamment:
 
 - Se familiariser avec Kotlin
 - Prendre en main Android Studio et le Layout Editor
 - Intéragir avec des `View`
 - Implémenter une `RecyclerView`
-- Intérroger une API distante
+- Passer des données entre `Fragment` et `Activity`
+- Intérroger une API distante avec `Retrofit`
+- Utiliser des Coroutines
+- Architecturer avec `LiveData`, `ViewModel` et `Repository`
+- Manipuler des images
+- Demander des permissions
+- Utiliser `Navigation Component`
 
-## Déroulement (pas définitif)
+
+## Déroulement
 
 Un minimum de slides et un maximum de TDs:
 
@@ -20,3 +28,7 @@ Un minimum de slides et un maximum de TDs:
 - TD 6: Images & Permissions
 - TD 7: SignUp/Login et Navigation
 - TD 8: Améliorations
+- Projet en Autonomie
+- Soutenance sur sujets exporatoires
+
+À adapter en fonction du temps disponible.

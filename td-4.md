@@ -156,19 +156,28 @@ data class UserInfo(
 val userInfo = Api.userService.getInfo().body()!! 
 ```
 
-- La méthode `getInfo()` étant déclarée comme `suspend`, vous aurez besoin de la lancer dans un `couroutineScope`.
-Pour cela on peut utiliser `GlobalScope`, mais une meilleure façon est d'en créer un "vrai" pour pouvoir le `cancel()` après:
+- La méthode `getInfo()` étant déclarée comme `suspend`, vous aurez besoin de la lancer dans le context d'un `couroutineScope` (c'est ce que dit le message d'erreur)
+
+  Pour cela on pourrait utiliser `GlobalScope.launch { /*...*/ }`, mais une meilleure façon est d'en créer un "vrai" pour pouvoir le `cancel()` après:
 
 ```kotlin
 // Création:
 private val coroutineScope = MainScope()
+```
+
+```kotlin
 // Utilisation:
-coroutineScope.launch {...}
+coroutineScope.launch { 
+  myRepo.mySuspendMethod()  
+}
+```
+
+```kotlin
 // Suppression dans onDestroy():
 coroutineScope.cancel()
 ```
 
-- Afficher les données dans votre `TextView`
+- Afficher les données dans votre `TextView`:
 
 ```kotlin
     my_text_view.text = "${userInfo.firstName} ${userInfo.lastName}"
@@ -213,16 +222,25 @@ Créer la classe `TasksRepository`avec:
 class TasksRepository {
   private val tasksWebService = Api.tasksWebService 
   
-  private val _taskList = MutableLiveData<List<Task>>()
-  public val taskList: LiveData<List<Task>> = _taskList
+  // Ces deux variables encapsulent la même donnée:
+  // [_taskList] est modifiable et privée: 
+  // On va l'utiliser seulement dans le contexte de cette classe
+  private val _taskList = MutableLiveData<List<Task>>() 
+  // [taskList] est publique mais non-modifiable: 
+  // On pourra seulement l'observer (s'y abonner) depuis d'autres classes
+  public val taskList: LiveData<List<Task>> = _taskList 
 
   suspend fun refresh() {
-      val tasksResponse = taskWebService.getTasks()
+      // Call HTTP (opération longue):
+      val tasksResponse = tasksWebService.getTasks() 
+      // À la ligne suivante, on a reçu la réponse de l'API:
       if (tasksResponse.isSuccessful) {
           val fetchedTasks = tasksResponse.body()
-          tasks.postValue(fetchedTasks)
+          // on modifie la valeur encapsulée, ce qui va notifier ses Observers et donc déclencher leur callback
+          _taskList.value = fetchedTasks 
       }
   }
+}
 
 ```
 
