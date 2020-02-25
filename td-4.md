@@ -36,15 +36,30 @@ Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut
 
 Dans le fichier `app/build.gradle`, ajouter : 
 
+- Dans `dependencies {...}`:
 ```groovy
-  implementation "com.squareup.retrofit2:retrofit:2.6.2"
-  implementation 'com.squareup.retrofit2:converter-moshi:2.6.2'
-  implementation "com.squareup.moshi:moshi:1.8.0"
-  implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
-  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-rc03"
-  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2"
-  implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-rc03"
-  implementation "org.jetbrains.kotlin:kotlin-reflect:1.1.0"
+implementation "com.squareup.retrofit2:retrofit:2.7.1"
+implementation 'com.squareup.retrofit2:converter-moshi:2.7.1'
+implementation "com.squareup.moshi:moshi:1.9.2"
+implementation "com.squareup.moshi:moshi-kotlin:1.9.2"
+implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3"
+implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
+implementation "org.jetbrains.kotlin:kotlin-reflect:1.1.0"
+implementation "androidx.fragment:fragment-ktx:1.2.2"
+```
+
+- Dans `android {...}`:
+
+```groovy
+compileOptions {
+  sourceCompatibility JavaVersion.VERSION_1_8
+  targetCompatibility JavaVersion.VERSION_1_8
+}
+
+kotlinOptions {
+  jvmTarget = JavaVersion.VERSION_1_8.toString()
+}
 ```
 
 ## Retrofit
