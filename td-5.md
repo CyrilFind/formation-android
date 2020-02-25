@@ -15,18 +15,18 @@ Inclure trop de logique dans le fragment est une mauvaise pratique, on va donc r
 Pour résumer, on va déplacer la logique de la gestion de la liste hors du Fragment et dans le ViewModel, qui va simplement interroger le Repository
 
 - Créer une classe `TaskListViewModel` qui hérite de `ViewModel` qui va gérer:  
-    - Les `LiveData` qui étaient dans le Repository
-    - Le `repository` qui sert de source de données
-    - Les coroutines avec `viewModelScope`
+  - Les `LiveData` qui étaient dans le Repository
+  - Le `repository` qui sert de source de données
+  - Les coroutines avec `viewModelScope`
 
 - Dans `TaskListAdapter`
-    - Rendez la `taskList` publique
-    - Donnez lui une valeur par défaut: `emptyList()`
+  - Rendez la `taskList` publique
+  - Donnez lui une valeur par défaut: `emptyList()`
 
 - Dans `TaskListFragment`:
-    - Récupérer le `viewModel` grâce à `by viewModels()`
-    - Supprimer le `repository` et la `taskList`
-    - Observer la valeur de `viewModel.taskList` et mettre à jour la liste de l'`adapter`
+  - Récupérer le `viewModel` grâce à `by viewModels()`
+  - Supprimer le `repository` et la `taskList`
+  - Observer la valeur de `viewModel.taskList` et mettre à jour la liste de l'`adapter`
 
 - Dans `TasksRepository`, déplacez les `LiveData` dans le `ViewModel`
 
@@ -36,30 +36,30 @@ Pour résumer, on va déplacer la logique de la gestion de la liste hors du Frag
 // Le Repository lance les requêtes HTTP
 class TasksRepository {
     private val webService = Api.tasksWebService
-    
+
     suspend fun loadTasks(): List<Task>? {
         val response = webService.getTasks()
         return if (response.isSuccessful) response.body() else null
     }
-    
+
     suspend fun removeTask(task: Task) {...}
     suspend fun createTask(task: Task) {...}
     suspend fun updateTask(task: Task) {...}
 }
 
-// Le ViewModel met à jour la liste de task qui est une LiveData 
+// Le ViewModel met à jour la liste de task qui est une LiveData
 class TaskListViewModel: ViewModel() {
     private val repository = TasksRepository()
     private val _taskList = MutableLiveData<List<Task>>()
     public val taskList: LiveData<List<Task>> = _taskList
-    
+
     private fun getMutableList() = _taskList.value.orEmpty().toMutableList()
 
   
     fun loadTasks() {...}
-    fun deleteTask(task: Task) {...} 
-    fun addTask(task: Task) {...} 
-    
+    fun deleteTask(task: Task) {...}
+    fun addTask(task: Task) {...}
+
     fun editTask(task: Task) {
         viewModelScope.launch {
             todoRepository.updateTask(task)?.let { task ->
@@ -68,23 +68,23 @@ class TaskListViewModel: ViewModel() {
                     set(position, task)
                 }
             }
-        }    
-    } 
+        }
+    }
 }
 
 // Le Fragment observe la LiveData et met à jour la liste de l'adapter:
 class TaskListFragment: Fragment() {
     val adapter = TaskListAdapter()
     private val viewModel: TasksViewModel by viewModels() // On récupère une instance de ViewModel
-        
+
     // On "abonne" le Fragment aux modifications de l'objet LiveData du ViewModel
     override fun onViewCreated(...) {
-        viewModel.taskList.observe(this, Observer { newList -> 
+        viewModel.taskList.observe(this, Observer { newList ->
             adapter.list = newList.orEmpty()
             adapter.notifyDataSetChanged()
         })
     }
-        
+
     override fun onResume(...) {
         viewModel.loadTasks()
     }
@@ -105,4 +105,5 @@ var list: List<Task> by Delegates.observable(emptyList()) {_, _, _ ->
     notifyDataSetChanged()
 }
 ```
+
 - Permettre la suppression, l'ajout et l'édition des tasks du serveur avec cette archi

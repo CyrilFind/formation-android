@@ -10,12 +10,11 @@ implementation "androidx.navigation:navigation-fragment-ktx:2.1.0"
 implementation "androidx.navigation:navigation-ui-ktx:2.1.0"
 ```
 
-
 ## Nouvelle Activity
 
 - Créer une nouvelle Activity : `AuthenticationActivity`
 - Ajoutez la dans l'`AndroidManifest` et déclarez la comme étant le point d'entrée de votre application (ce n'est plus MainActivity)
-- Remplacez le layout associé par un `<fragment...>` de type `NavHostFragment`: 
+- Remplacez le layout associé par un `<fragment...>` de type `NavHostFragment`:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -29,9 +28,10 @@ implementation "androidx.navigation:navigation-ui-ktx:2.1.0"
     app:defaultNavHost="true"
     app:navGraph="@navigation/nav_graph" />
 ```
+
 À partir du graphe de navigation (`app:navGraph="@navigation/nav_graph"`), le `NavHostFragment` va gérer la navigation en remplaçant le fragment à chaque changement d'écran.
 
-Vous pouvez utiliser <kbd>Alt + Enter</kbd> pour créer ce fichier de navigation, nous y reviendrons plus tard.
+Vous pouvez utiliser `Alt + Enter` pour créer ce fichier de navigation, nous y reviendrons plus tard.
 
 ## Nouveaux Fragments
 
@@ -58,6 +58,7 @@ Créer 3 nouveaux fragments et leur layout:
 ```kotlin
 findNavController().navigate(R.id.action_authenticationFragment_to_loginFragment)
 ```
+
 - Dans `AuthenticationFragment`, ajoutez des clickListener sur les 2 boutons "Log in" et "Sign Up" qui vont executer ces navigations
 - À présent, vous pouvez naviguer entre les fragments 🎊
 
@@ -77,7 +78,7 @@ suspend fun login(@Body user: LoginForm): Response<LoginResponse>
   - Créer une instance de `LoginForm`
   - Envoyer le formulaire au serveur via la fonction `login` de `UserService`
   - Si le call se passe bien, ajouter le token renvoyé dans les `SharedPreference` (cf plus bas) et affichez les taches de l'utilisateur
-  - Sinon, afficher un toast pour expliquer l'erreur: 
+  - Sinon, afficher un toast pour expliquer l'erreur:
 
 ```kotlin
 Toast.makeText(context, "text", Toast.LENGTH_LONG).show()
@@ -117,7 +118,6 @@ class Api(private val context: Context) {
 }
 ```
 
-
 - Créer une classe `App`
 
 ```kotlin
@@ -149,6 +149,7 @@ PreferenceManager.getDefaultSharedPreferences(context).getString(SHARED_PREF_TOK
 ```kotlin
 "Authorization", "Bearer ${getToken()}"
 ```
+
 - Tout devrait fonctionner ! 🙌
 
 ## SignUp
@@ -156,6 +157,7 @@ PreferenceManager.getDefaultSharedPreferences(context).getString(SHARED_PREF_TOK
 Faire comme pour le login mais avec une `data class SignUpForm` qui contient: `firstname, lastname, email, password, password_confirmation`
 
 ## Un petit coup de polish
+
 ### Redirection
 
 Lorsque le user relance son application, il faut lui afficher directement la liste des tâches: vérifier dans l'`AuthenticationFragment` si un token existe

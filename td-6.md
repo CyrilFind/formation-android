@@ -1,5 +1,6 @@
 
 # TD 6: Images
+
 ## Afficher une image distante avec Glide
 
 ### Ajout des dépendances
@@ -21,6 +22,7 @@ Glide.with(this).load("https://goo.gl/gEgYUd").into(image_view)
 - Aidez vous de la [documentation de Glide](https://github.com/bumptech/glide) pour afficher l'image sous la forme d'un cercle
 
 ### Nouvelle activité
+
 - Créer un nouveau package `userinfo`
 - Créez y une nouvelle activité `UserInfoActivity` et ajoutez la dans le manifest
 - Remplir son layout:
@@ -31,13 +33,13 @@ Glide.with(this).load("https://goo.gl/gEgYUd").into(image_view)
         android:id="@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-        
+
     <Button
         android:id="@+id/upload_image_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Choisir une Image" />
-        
+
     <Button
         android:id="@+id/take_picture_button"
         android:layout_width="match_parent"
@@ -45,6 +47,7 @@ Glide.with(this).load("https://goo.gl/gEgYUd").into(image_view)
         android:text="Prendre une photo" />
 </LinearLayout>
 ```
+
 - Lancer cette appli quand on clique sur l'`ImageView` que vous venez de remplir avec `Glide`
 
 ## Demander la Permission
@@ -52,14 +55,13 @@ Glide.with(this).load("https://goo.gl/gEgYUd").into(image_view)
 - `AndroidManifest`: ajouter la permission `android.permission.CAMERA`
 - `UserInfoActivity` : Dans `onCreate()`, ajouter un `onClickListener` à `take_picture_button`qui appele la méthode `askCameraPermissionAndOpenCamera()`
 
-
 ```kotlin
 
 private fun askCameraPermissionAndOpenCamera() {
   if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
     if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
         // l'OS dit d'expliquer pourquoi on a besoin de cette permission:
-        showDialogBeforeRequest()    
+        showDialogBeforeRequest()
     } else {
         // l'OS ne demande pas d'explication, on demande directement:
         requestCameraPermission()
@@ -70,7 +72,7 @@ private fun askCameraPermissionAndOpenCamera() {
 }
 
 private fun showDialogBeforeRequest() {
-    // Affiche une popup (Dialog) d'explications: 
+    // Affiche une popup (Dialog) d'explications:
     AlertDialog.Builder(this).apply {
         setMessage("On a besoin de la caméra sivouplé ! 🥺")
         setPositiveButton(android.R.string.ok) { _, _ -> requestCameraPermission() }
@@ -97,15 +99,15 @@ companion object {
 - Overrider la méthode `onRequestPermissionsResult`:
 Si l'utilisateur à donné accès à la camera, utilisez `openCamera()`:
 
-```kotlin 
+```kotlin
 if (requestCode == CAMERA_PERMISSION_CODE && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED)
 ```
+
 Sinon, affichez un Toast:
 
 ```kotlin
 Toast.makeText(this, "Si vous refusez, on peux pas prendre de photo ! 😢", Toast.LENGTH_LONG).show()
 ```
-
 
 ## Ouvrir l'appareil photo
 
@@ -125,7 +127,6 @@ const val CAMERA_REQUEST_CODE = 2001
 ```
 
 - Implémenter la fonction `onActivityResult` qui appelera la fonction `handlePhotoTaken(data: Intent?)`:
-
 
 ```kotlin
 private fun handlePhotoTaken(data: Intent?) {
@@ -181,6 +182,7 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response<UserInfo>
 ```
 
 ## Uploader une image stockée
+
 - Ajouter dans le manifest la permission `android.permission.READ_EXTERNAL_STORAGE`
 - Permettez à l'utilisateur d'uploader une image qu'il avait déjà sur son téléphone
 
@@ -195,6 +197,7 @@ val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, data?.data)
 ```
 
 ## Édition infos utilisateurs
+
 - Comme précedemment, refactorisez en utilisant un `UserInfoViewModel` et un `UserInfoRepository`
 - Dans `UserInfoActivity`, permettre d'éditer et d'afficher les informations (nom, prénom, email) en respectant cette architecture
 - Vous aurez besoin d'ajouter ça à `UserWebService`:
@@ -223,14 +226,14 @@ android {
     defaultConfig {
        // ...
         def addConstant = { constantName, constantValue ->
-            manifestPlaceholders += [ (constantName):constantValue] // Pour utiliser dans le manifest 
+            manifestPlaceholders += [ (constantName):constantValue] // Pour utiliser dans le manifest
             buildConfigField "String", "${constantName}", "\"${constantValue}\"" // Pour utiliser dans le code
         }
         addConstant("FILE_PROVIDER_AUTHORITY", "<MY-STRING-VALUE>")
     }
 ```
 
-- Dans le Manifest: 
+- Dans le Manifest:
 
 ```xml
 android:authorities="${FILE_PROVIDER_AUTHORITY}"

@@ -19,8 +19,9 @@ L'objectif de ce TD est d'implémenter un écran affichant une liste de tâches,
 - Initialisez un projet git et faites un commit initial
 - Committez régulièrement: à chaque fois que vous avez quelque chose qui compile et qui fonctionne
 
-## Dépendances RecyclerView
-Dans le fichier `app/build.gradle`, ajouter:
+## Ajout de Dépendances
+
+Dans le fichier `app/build.gradle`, ajouter la ligne suivante dans `dependencies { ... }`:
 
 ```groovy
 implementation "androidx.recyclerview:recyclerview:1.1.0"
@@ -38,8 +39,8 @@ Dans le volet "Projet" (à gauche d'Android Studio), vous pouvez choisir diverse
 
 Vous y mettrez tous les fichiers source (Kotlin) concernant la liste de tâches
 
-
 ## TaskListFragment
+
 - Créez y un fichier kotlin `TaskListFragment.kt` qui contiendra la classe `TaskListFragment`:
 
 ```kotlin
@@ -53,9 +54,10 @@ class TaskListFragment : Fragment() {}
 ```kotlin
 val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 ```
+
 - Remplacez la balise `<TextView.../>` par une balise `<fragment.../>` dans votre activité principale:
-    - Utilisez le glisser-déplacé en mode Design ou l'autocomplétion en mode Text pour spécifier l'attribut `android:name`: c'est la classe de Fragment qui sera affichée dans cette balise (ex: `"com.nicoalex.todo.tasklist.TaskListFragment"`)
-    - Ajoutez un id avec l'attribut `android:id` pour...ne pas faire crasher l'app 🤷‍♂️
+  - Utilisez le glisser-déplacé en mode Design ou l'autocomplétion en mode Text pour spécifier l'attribut `android:name`: c'est la classe de Fragment qui sera affichée dans cette balise (ex: `"com.nicoalex.todo.tasklist.TaskListFragment"`)
+  - Ajoutez un id avec l'attribut `android:id` pour...ne pas faire crasher l'app 🤷‍♂️
 
 ## La liste des tâches
 
@@ -77,20 +79,20 @@ class TaskListAdapter(private val taskList: List<String>) : RecyclerView.Adapter
 
 ```kotlin
 inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-	fun bind(taskTitle: String) {
-        itemView.apply { // apply permet d'éviter d'écrire `itemView.blabla...` plusieurs fois
-            // Ici on va afficher les données et attacher les listeners aux différentes vues de notre [itemView]
-        }
-	}
+  fun bind(taskTitle: String) {
+    itemView.apply { // apply permet d'éviter d'écrire `itemView.blabla...` plusieurs fois
+        // Ici on va afficher les données et attacher les listeners aux différentes vues de notre [itemView]
+    }
+  }
 }
 ```
 
 - Créer le layout `item_task.xml` correspondant à une cellule (`TaskViewHolder`)
 
 ```xml
-<LinearLayout 
+<LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="vertical" 
+  android:orientation="vertical"
   android:layout_width="match_parent"
   android:layout_height="wrap_content">
 
@@ -102,8 +104,8 @@ inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 </LinearLayout>
 ```
 
-
 - Dans `TaskListFragment`, overrider `onViewCreated` et récupérer la `RecyclerView` du layout en utilisant un "synthetic" ou un `findViewbyId`:
+
 ```kotlin
     // Pour une [RecyclerView] ayant l'id "recycler_view":
     var recyclerView = view.findById<RecyclerView>(R.id.recycler_view)
@@ -112,6 +114,7 @@ inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     // En utilisant les synthetics, on écrit juste l'id directement (c'est magique ✨):
     recycler_view.layoutManager = ...
 ```
+
 - Donnez lui un `layoutManager`: `LinearLayoutManager(activity)`
 - Donnez lui un `adapter`: `TaskListAdapter(taskList)` (ne marche pas pour l'instant)
 
@@ -125,9 +128,9 @@ Dans le `TaskListAdapter`, implémenter toutes les méthodes requises:
 
 - `getItemCount` qui renvoie la taille de la liste de tâche à afficher
 - `onCreateViewHolder`:
-    - Retourne un nouveau `TaskViewHolder`
-    - Vous aurez besoin d'un `itemView`, 
-    - Générez le à partir du layout `item_task.xml`: 
+  - Retourne un nouveau `TaskViewHolder`
+  - Vous aurez besoin d'un `itemView`,
+  - Générez le à partir du layout `item_task.xml`:
 
 ```kotlin
 val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
@@ -139,15 +142,15 @@ val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_task, p
 
 ## Ajout de la data class Task
 
-- Dans un nouveau fichier, créer une `data class Task` avec 3 attributs: un id, un titre et une description. 
+- Dans un nouveau fichier, créer une `data class Task` avec 3 attributs: un id, un titre et une description
 - Ajouter une valeur par défaut à la description.
 - Dans le `TaskListFragment`, remplacer la liste `taskList` par
 
- ```kotlin       
+ ```kotlin
 private val taskList = listOf(
-	Task(id = "id_1", title = "Task 1", description = "description 1"), 
-	Task(id = "id_2", title = "Task 2"), 
-	Task(id = "id_3", title = "Task 3")
+    Task(id = "id_1", title = "Task 1", description = "description 1"),
+    Task(id = "id_2", title = "Task 2"),
+    Task(id = "id_3", title = "Task 3")
 )
 ```
 
@@ -155,12 +158,11 @@ private val taskList = listOf(
 - Enfin afficher la description en dessous du titre
 - Admirez avec fierté le travail accompli 🤩
 
-
 ## Ajout de tâche simple
 
 - Changez la root view de `fragment_task_list.xml` en ConstraintLayout (si ce n'est pas fait) en faisant un clic droit dessus en mode design
 - Ouvrez le volet "Resource Manager" à gauche, cliquez sur le "+" en haut à gauche puis "Vector Asset" puis double cliquez sur le clipart du logo android et trouvez une icone "+" (en tapant "add") puis "finish" pour ajouter une icone à vos resource
-- Ajouter un Floating Action Button (FAB) en bas à droite de ce layout et utilisez l'icone créée 
+- Ajouter un Floating Action Button (FAB) en bas à droite de ce layout et utilisez l'icone créée
 - Par défaut l'icône est noire mais vous pourrez utiliser l'attribut `android:tint` du bouton pour la rendre blanche (tapez "white" et laissez l'IDE compléter)
 - Donnez des contraintes en bas et à droite de ce bouton (vous pouvez utiliser le mode "Aimant" qui essaye de donner les bonnes contraintes automatiquement)
 - Transformer votre liste de tâches `taskList` en `mutableListOf(...)` afin de pouvoir y ajouter ou supprimer des éléments

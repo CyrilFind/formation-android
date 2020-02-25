@@ -23,7 +23,6 @@ Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, dans 
 - Copiez votre token dans la popup du bouton "Authorize" en haut
 - Maintenant que vous êtes "loggés", testez les routes disponibles (création, suppression, etc...)
 
-
 ## Accèder à l'internet
 
 Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut ajouter la permission dans le fichier `AndroidManifest`, juste après la balise `<manifest...>`
@@ -34,9 +33,10 @@ Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut
 
 ## Ajout des dépendances
 
-Dans le fichier `app/build.gradle`, ajouter : 
+Dans le fichier `app/build.gradle`, ajouter :
 
 - Dans `dependencies {...}`:
+
 ```groovy
 implementation "com.squareup.retrofit2:retrofit:2.7.1"
 implementation 'com.squareup.retrofit2:converter-moshi:2.7.1'
@@ -117,7 +117,7 @@ object Api {
 
 ### UserService
 
-- Créez l'interface `UserService` pour requêter les infos de l'utilisateur (importez `Response` avec <kbd>alt + enter</kbd> et choisissez la version `retrofit`):
+- Créez l'interface `UserService` pour requêter les infos de l'utilisateur (importez `Response` avec `alt + enter` et choisissez la version `retrofit`):
 
 ```kotlin
 interface UserService {
@@ -168,7 +168,7 @@ data class UserInfo(
 
 ```kotlin
 // Ici on ne va pas gérer les cas d'erreur donc on force le crash avec "!!"
-val userInfo = Api.userService.getInfo().body()!! 
+val userInfo = Api.userService.getInfo().body()!!
 ```
 
 - La méthode `getInfo()` étant déclarée comme `suspend`, vous aurez besoin de la lancer dans le context d'un `couroutineScope` (c'est ce que dit le message d'erreur)
@@ -182,7 +182,7 @@ private val coroutineScope = MainScope()
 
 ```kotlin
 // Utilisation:
-coroutineScope.launch { 
+coroutineScope.launch {
   myRepo.mySuspendMethod()  
 }
 ```
@@ -199,15 +199,16 @@ coroutineScope.cancel()
 ```
 
 ⚠️ Sur émulateur, vous aurez parfois des crashes étranges:
--  "`...EPERM (operation not permitted)...`": désinstallez l'application de l'émulateur et relancez
-- L'app stoppe direct et sans stacktrace: redémarrer l'émulateur
 
-Dans ce vas
-- Lancez l'app et vérifiez que vos infos s'affichent ! 
+- "`...EPERM (operation not permitted)...`": désinstallez l'application de l'émulateur et relancez
+- L'app stoppe direct et sans stacktrace: redémarrer l'émulateur et vérifiez que son wifi est bien connecté
 
-#### Remarques:
-- En réalité, vous n'avez pas besoin de faire la création et la suppression, si vous utiliser directement `lifeCycleScope`
--  Un autre scope est fourni par android: `viewModelScope`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
+- Lancez l'app et vérifiez que vos infos s'affichent !
+
+#### Remarques
+
+- En réalité, vous n'avez pas besoin de faire la création et la suppression de `coroutineScope`: vous pouvez utiliser directement `lifeCycleScope` qui est un scope déjà définit par le système et supprimer automatiquement
+- Un autre scope est fourni par android: `viewModelScope`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
 
 ## TaskListFragment
 
@@ -237,27 +238,26 @@ Créer la classe `TasksRepository`avec:
 - une propriété `_taskList` *privée* de type `MutableLiveData<List<Task>>` qui représente la même donnée mais modifiable donc utilisable à l'intérieur du repository
 - une méthode publique `refresh` qui requête la liste et met à jour la `LiveData`
 
-
 ```kotlin
 class TasksRepository {
-  private val tasksWebService = Api.tasksWebService 
+  private val tasksWebService = Api.tasksWebService
   
   // Ces deux variables encapsulent la même donnée:
-  // [_taskList] est modifiable et privée: 
+  // [_taskList] est modifiable et privée:
   // On va l'utiliser seulement dans le contexte de cette classe
-  private val _taskList = MutableLiveData<List<Task>>() 
-  // [taskList] est publique mais non-modifiable: 
+  private val _taskList = MutableLiveData<List<Task>>()
+  // [taskList] est publique mais non-modifiable:
   // On pourra seulement l'observer (s'y abonner) depuis d'autres classes
-  public val taskList: LiveData<List<Task>> = _taskList 
+  public val taskList: LiveData<List<Task>> = _taskList
 
   suspend fun refresh() {
       // Call HTTP (opération longue):
-      val tasksResponse = tasksWebService.getTasks() 
+      val tasksResponse = tasksWebService.getTasks()
       // À la ligne suivante, on a reçu la réponse de l'API:
       if (tasksResponse.isSuccessful) {
           val fetchedTasks = tasksResponse.body()
           // on modifie la valeur encapsulée, ce qui va notifier ses Observers et donc déclencher leur callback
-          _taskList.value = fetchedTasks 
+          _taskList.value = fetchedTasks
       }
   }
 }
@@ -265,21 +265,21 @@ class TasksRepository {
 ```
 
 ## LiveData
- Dans `TaskListFragment`:
+
+Dans `TaskListFragment`:
+
 - Ajouter en propriété une instance de `TasksRepository`
 - Dans `onViewCreated()`, "abonnez" le fragment à la  `LiveData` du repository
 - Mettez à jour la liste et l'`adapter` avec le résultat (importer le `Observer` de la lib `lifecycle`)
 - Dans `onResume()`, utilisez le repository pour rafraîchir la liste de tasks
 
-
 ```kotlin
 private val tasksRepository = TasksRepository()
-private val tasks = mutableListOf<Task>()
 
 // Dans onViewCreated()
-tasksRepository.taskList.observe(this, Observer {
-  tasks.clear()
-  tasks.addAll(it)
+tasksRepository.taskList.observe(viewLifecycleOwner, Observer {
+  adapter.taskList.clear()
+  adapter.taskList.addAll(it)
   adapter.notifyDataSetChanged()
 })
 
@@ -309,7 +309,7 @@ suspend fun updateTask(@Body task: Task, @Path("id") id: String? = task.id): Res
 - Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l'édition:
 
 ```kotlin
-suspend fun updateTask(task) { 
+suspend fun updateTask(task) {
   tasksRepository.updateTask(task)
   val editableList = _tasksList.value.orEmpty().toMutableList()
   val position = editableList.indexOfFirst { task.id == it.id }
