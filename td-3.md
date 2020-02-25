@@ -64,6 +64,11 @@ val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task
 - Vous pouvez ensuite récuperer dans le `onCreate` de l'activité les infos que vous avez passées
 - Vérifier que les infos éditées s'affichent bien à notre retour sur l'activité principale.
 
+Pour la classe IIM - A5 IWM: passez au TD suivant tout de suite
+
+
+---
+
 ## Changements de configuration
 
 Que se passe-t-il si vous tournez votre téléphone ? 🤔

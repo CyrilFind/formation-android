@@ -13,6 +13,7 @@ Je vous conseille en particulier de:
 - Changer la coloration syntaxique qui n'est pas terrible pour Kotlin: vous pouvez installer un plugin (ex: "Rainglow Color Schemes") et choisir parmis les divers proposés ou utiliser mon thème "Darculai" dispo sur ce repo (qui est juste le thème Darcula par défaut avec quelques ajouts)
 - Ajouter des plugins comme RainbowBrackets, Codota, grep console, SonarLint (et regardez les plus téléchargés dans l'onglet MarketPlace)
 - Activer les imports automatiques: `Editor > General > Auto Import > Kotlin > cocher "Add unambiguous import on the fly" et "Optimize imports on the fly..."`
+- Ne pas prendre la toute dernière version d'Android pour l'émulateur (ça évitera des erreurs et pesera moins sur votre disque dur)
 
 ## Kotlin Koans
 

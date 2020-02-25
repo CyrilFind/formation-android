@@ -36,7 +36,7 @@ Dans le volet "Projet" (à gauche d'Android Studio), vous pouvez choisir diverse
 
 `app > java > com.nicoalex.todo > clic droit > New > package > "tasklist"`
 
-Vous y mettrez tous les fichiers concernant la liste de tâches
+Vous y mettrez tous les fichiers source (Kotlin) concernant la liste de tâches
 
 
 ## TaskListFragment
@@ -48,14 +48,14 @@ class TaskListFragment : Fragment() {}
 
 - Créer le layout associé `fragment_task_list.xml`
 - Dans `TaskListFragment`, overrider (surcharger) la méthode `onCreateView(...)` (commencez à taper `onCrea...` et utilisez l'auto-completion de l'IDE pour vous aider)
-- Initialisez y la `rootView` à l'aide du layout créé et retournez la
+- Initialisez y la `rootView` à l'aide du layout créé et retournez la (l'appel à `super.onCreateView(...)` est superflu)
 
 ```kotlin
 val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 ```
-- Remplacez la balise `<TextView.../>` par une balise `<fragment.../>` dans votre activité principale
-- Utilisez l'autocomplétion pour spécifier le Fragment à qui sera "inflaté" avec l'attribut `android:name` (ex: `"com.nicoalex.todo.tasklist.TaskListFragment"`)
-- Ajoutez un id avec l'attribut `android:id` pour...ne pas crasher l'app 🤷‍♂️
+- Remplacez la balise `<TextView.../>` par une balise `<fragment.../>` dans votre activité principale:
+    - Utilisez le glisser-déplacé en mode Design ou l'autocomplétion en mode Text pour spécifier l'attribut `android:name`: c'est la classe de Fragment qui sera affichée dans cette balise (ex: `"com.nicoalex.todo.tasklist.TaskListFragment"`)
+    - Ajoutez un id avec l'attribut `android:id` pour...ne pas faire crasher l'app 🤷‍♂️
 
 ## La liste des tâches
 
@@ -78,7 +78,9 @@ class TaskListAdapter(private val taskList: List<String>) : RecyclerView.Adapter
 ```kotlin
 inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 	fun bind(taskTitle: String) {
-	   // C'est ici qu'on reliera les données et les listeners une fois l'adapteur implémenté
+        itemView.apply { // apply permet d'éviter d'écrire `itemView.blabla...` plusieurs fois
+            // Ici on va afficher les données et attacher les listeners aux différentes vues de notre [itemView]
+        }
 	}
 }
 ```
@@ -88,7 +90,7 @@ inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 ```xml
 <LinearLayout 
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:orientation="horizontal" 
+  android:orientation="vertical" 
   android:layout_width="match_parent"
   android:layout_height="wrap_content">
 
@@ -101,7 +103,15 @@ inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 ```
 
 
-- Dans `TaskListFragment`, overrider `onViewCreated` et récupérer la `RecyclerView` du layout en utilisant un "synthetic" ou un `findViewbyId`
+- Dans `TaskListFragment`, overrider `onViewCreated` et récupérer la `RecyclerView` du layout en utilisant un "synthetic" ou un `findViewbyId`:
+```kotlin
+    // Pour une [RecyclerView] ayant l'id "recycler_view":
+    var recyclerView = view.findById<RecyclerView>(R.id.recycler_view)
+    recyclerView.layoutManager = ...
+
+    // En utilisant les synthetics, on écrit juste l'id directement (c'est magique ✨):
+    recycler_view.layoutManager = ...
+```
 - Donnez lui un `layoutManager`: `LinearLayoutManager(activity)`
 - Donnez lui un `adapter`: `TaskListAdapter(taskList)` (ne marche pas pour l'instant)
 
@@ -123,12 +133,8 @@ Dans le `TaskListAdapter`, implémenter toutes les méthodes requises:
 val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
 ```
 
-- `onBindViewHolder`:
-    - Insère la donnée dans la cellule (`TaskViewHolder`) 
-    - Utiliser pour cela sa `position` dans la liste
-    - Utiliser la méthode `bind()` que vous avez créée dans `TaskViewHolder` 
-    - Ce n'est pas obligatoire, mais c'est une bonne pratique
-
+- `onBindViewHolder`: insère la donnée dans la cellule (`TaskViewHolder`) en fonction de sa `position` dans la liste en tuilisant la méthode `bind()` que vous avez créée dans `TaskViewHolder` (elle ne fait rien pour l'instant)
+- Iimplémentez maintenant `bind()` en récupérant la `TextView` dans `item_layout.xml` et en y insérant le texte récupéré en argument
 - Lancez l'app: vous devez voir 3 tâches s'afficher 👏
 
 ## Ajout de la data class Task
