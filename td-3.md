@@ -32,7 +32,14 @@ onDeleteClickListener?.invoke(task)
 - Créer un package `task`
 - Créez y la nouvelle `TaskActivity`, n'oubliez pas de la déclarer dans le manifest
 - Créer un layout contenant 2 `EditText`, pour le titre et la description et un bouton pour valider
-- Définir un `ADD_TASK_REQUEST_CODE` et changer l'action du FAB pour qu'il ouvre cette activité avec un `Intent`, en attendant un resultat:
+- Définir une constante statique `ADD_TASK_REQUEST_CODE`:
+```kotlin
+companion object {
+    const val ADD_TASK_REQUEST_CODE = 666
+}
+```
+> **Rappel**: La valeur importe peu, elle servira seulement à savoir d'où on vient dans `onActivityResult(...)`
+- Changer l'action du FAB pour qu'il ouvre cette activité avec un `Intent`, en attendant un resultat:
  
 ```kotlin
 val intent = Intent(activity, TaskActivity::class.java)
@@ -42,30 +49,29 @@ startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
 - Dans le `onCreate` de la nouvelle activité, récupérer le bouton de validation puis setter son `onClickListener` pour qu'il crée une tâche:
 
 ```kotlin
-Task(id = UUID.randomUUID().toString(), title = "New Task !")
+// Instanciation d'un nouvel objet [Task]
+val newTask = Task(id = UUID.randomUUID().toString(), title = "New Task !")
 ```
-
-- Faire en sorte que la `data class Task` hérite de `Serializable` pour pouvoir passer des objets `Task` dans les `intent`
-- Passer cette task dans l'intent avec `putExtra(...)`
-- Overrider `onActivityResult`dans le `TaskFragment` pour récupérer cette task et l'ajouter à la liste
-
+- Faites hériter `Task` de `Serializable` pour pouvoir passer des objets `Task` dans les `intent`
+- Passez `newTask` dans l'intent avec `putExtra(...)`
+- utlisez `setResult(...)` et `finish()` pour retourner à l'activité principale
+- Dans celle ci, overrider `onActivityResult`dans le `TaskFragment` pour récupérer cette task et l'ajouter à la liste
 ```kotlin
 val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task 
 ```
-
 - Faites en sorte que la nouvelle tache s'affiche à notre retour sur l'activité principale
 - Maintenant, récupérez les valeurs entrées dans les `EditText` pour les donner à la création de votre tâche (vous devrez faire un `toString()`)
 
 ## Édition d'une tâche
 
-- Ajouter une bouton permettant d'éditer en ouvrant l'activité `TaskActivity` pré-remplie avec les informations de la tâche
+- Ajouter une bouton permettant d'éditer chaque tâche en ouvrant l'activité `TaskActivity` pré-remplie avec les informations de la tâche
 - Pour transmettre des infos d'une activité à l'autre, vous pouvez utiliser la méthode `putExtra` depuis une instance d'`intent`
 - Inspirez vous de l'implémentation du bouton supprimer et du bouton ajouter
 - Vous pouvez ensuite récuperer dans le `onCreate` de l'activité les infos que vous avez passées
+- Vous pourrez tirer parti des variables `Nullable` et de l'opérateur `?:` pour réutiliser le même code qu'à la création
 - Vérifier que les infos éditées s'affichent bien à notre retour sur l'activité principale.
 
-Pour la classe IIM - A5 IWM: passez au TD suivant tout de suite
-
+> Pour la classe IIM - A5 IWM: passez au TD 4 tout de suite
 
 ---
 
