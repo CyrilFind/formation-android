@@ -35,7 +35,7 @@ onDeleteClickListener?.invoke(task)
 - Définir un `ADD_TASK_REQUEST_CODE` et changer l'action du FAB pour qu'il ouvre cette activité avec un `Intent`, en attendant un resultat:
  
 ```kotlin
-val intent = Intent(this, TaskActivity::class.java)
+val intent = Intent(activity, TaskActivity::class.java)
 startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
 ```
 
