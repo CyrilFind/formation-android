@@ -67,8 +67,11 @@ val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task
 - Ajouter une bouton permettant d'éditer chaque tâche en ouvrant l'activité `TaskActivity` pré-remplie avec les informations de la tâche
 - Pour transmettre des infos d'une activité à l'autre, vous pouvez utiliser la méthode `putExtra` depuis une instance d'`intent`
 - Inspirez vous de l'implémentation du bouton supprimer et du bouton ajouter
-- Vous pouvez ensuite récuperer dans le `onCreate` de l'activité les infos que vous avez passées
-- Vous pourrez tirer parti des variables `Nullable` et de l'opérateur `?:` pour réutiliser le même code qu'à la création
+- Vous pouvez ensuite récuperer dans le `onCreate` de l'activité les infos que vous avez passées:
+    - récupérex la tâche passée avec un `getSerializableExtra` et un `as? Task`
+    - Vous pourrez tirer parti de la variable `Task?` (nullable) pour réutiliser le code de la création et remplir les `EditText`
+    - De même vous pourrez utiliser l'opérateur `?:` pour setter l'`id` en utilisant la méthode `UUID...` précédente par défaut
+    - Utilisez `setText` pour préremplir les `EditText`
 - Vérifier que les infos éditées s'affichent bien à notre retour sur l'activité principale.
 
 > Pour la classe IIM - A5 IWM: passez au TD 4 tout de suite

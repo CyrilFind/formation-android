@@ -183,6 +183,9 @@ coroutineScope.cancel()
     my_text_view.text = "${userInfo.firstName} ${userInfo.lastName}"
 ```
 
+⚠️ Sur émulateur, vous aurez parfois un crash  "`...EPERM (operation not permitted)...`": désinstallez l'application de l'émulateur et relancez
+
+Dans ce vas
 - Lancez l'app et vérifiez que vos infos s'affichent ! 
 
 #### Remarques:
