@@ -25,7 +25,7 @@ Créer une app "Pokédex", avec les fonctionnalités suivantes:
 - Commencez par une liste linéaire moche avec juste les noms et seulement la première page de l'API
 - Changez en grille avec une même image par défaut pour toutes les cellules (une pokéball par ex)
 - Ajoutez la vue détail: vous devrez faire une requête pour chaque espèce
-- Ajoutez la pagination avec PagedList
+- Ajoutez la pagination avec les [PagedList](https://developer.android.com/topic/libraries/architecture/paging/ui) de la [Paging Library](https://developer.android.com/topic/libraries/architecture/paging)
 - Afficher les bonnes images et les infos de base dans les cellules
 - Vous pouvez utilisez les ViewModel partagés (cf fin du td-7.md <sup>(*)</sup> ) pour éviter de multiplier les requête HTTP
 - Finissez par le "cochage"
