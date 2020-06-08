@@ -107,7 +107,20 @@ pokeWebService.getPokemons(
     - ...
 
 ## Évaluation:
-Comme précédemment, je noterai votre avancée puis je vous aiderai sur les points bloquants et je noterai votre avancement final
+Le projet devra être rendu sous forme de lien git de préférence (un zip sinon), au plus tard à 23h59 le 13 Juin
+
+
+Voici un barême indicatif:
+
+- Fonctionnement de base: afficher une liste non paginée (pas trop moche) / 5
+- Afficher une grille et une vue détail (pas trop moche) / 5
+- Respecter la structure MVVM + repository / 5
+- Pagination, optimisation des requêtes, autres features / 5
+
++ bonus pour ceux qui ont commencé le projet de leur côté / 5
++ bonus si vous arrivez à utiliser Room ou d'autres features avancées / 5
+
+Vous pouvez donc avoir plus que 20 ce qui améliorera votre moyenne (sauf si vous avez déjà 20 😅)
 
 <br/>
 <br/>
