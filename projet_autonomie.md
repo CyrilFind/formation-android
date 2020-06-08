@@ -89,7 +89,7 @@ interface PokemonWebService {
 // on pourra l'utiliser comme ceci:
 val currentPage = params.key
 val itemsPerPage = params.requestedLoadSize
-pokeWebService.getPokemons(
+pokemonWebService.getPokemons(
     limit = itemsPerPage,
     offset = currentPage * itemsPerPage
 )
@@ -108,7 +108,6 @@ pokeWebService.getPokemons(
 
 ## Évaluation:
 Le projet devra être rendu sous forme de lien git de préférence (un zip sinon), au plus tard à 23h59 le 13 Juin
-
 
 Voici un barême indicatif:
 
