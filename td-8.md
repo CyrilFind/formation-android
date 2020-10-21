@@ -29,7 +29,7 @@ Ajouter un menu et une page "Settings" en utilisant un `PreferenceScreen`:
   - le titre dans l'`AppBar`
   - ...
 
-#### Documentation
+**Documentation:**
 
 - [Menus](https://developer.android.com/guide/topics/ui/menus)
 - [Settings](https://developer.android.com/guide/topics/ui/settings.html)
@@ -42,7 +42,7 @@ Utiliser le data-binding pour afficher et éditer les données de l'application 
 - Faire de même dans `TaskViewHolder`
 - Permettre d'éditer directement dans `TaskActivity`
 
-#### Documentation
+**Documentation:**
 
 - [Data Binding](https://developer.android.com/topic/libraries/data-binding) (affichage)
 - [Two Way Data Binding](https://developer.android.com/topic/libraries/data-binding/two-way) (édition)
@@ -53,7 +53,7 @@ Utiliser une PagedList pour afficher une liste infinie de tâche de façon effic
 
 Pour rappel, il y a 2 parametres dans l'API permettant de récuperer les tâches: `per_page` et `page`
 
-#### Documentation
+**Documentation:**
 
 - [Paging Library](https://developer.android.com/topic/libraries/architecture/paging)
 - [Tasks API](https://android-tasks-api.herokuapp.com/api-docs/)
@@ -67,7 +67,7 @@ Ajouter une fonctionnalité "Rappel" à vos tâches à l'aide de la date `due_da
 - Ajouter un `PendingIntent` qui ouvre `TaskActivity` avec le détail de la tâche
 - Ajouter une action supplémentaire `Mark as Done` dans la notification qui supprime la `Task` directement
 
-#### Documentation
+**Documentation:**
 
 - [Alarms](https://developer.android.com/training/scheduling/alarms)
 - [Pickers](https://developer.android.com/guide/topics/ui/controls/pickers)
@@ -83,7 +83,7 @@ Implémenter des `Worker` pour executer des tâches de fond sur les images et ut
 - Ajouter un Worker appliquant un filtre sépia
 - Afficher dans l'app ou dans une notification l'état de progrès du travail
   
-#### Documentation
+**Documentation:**
 
 - [WorkManager: Getting Started](https://developer.android.com/topic/libraries/architecture/workmanager/basics.html)
 - [CoroutineWorker](https://developer.android.com/topic/libraries/architecture/workmanager/advanced/coroutineworker)
@@ -97,7 +97,7 @@ Implémenter un cache des données serveur avec `Room`:
 - Gestion offline des informations de l'utilisateur
 - Gestion offline des tâches: liste, ajout, edition, supression
 
-#### Documentation
+**Documentation:**
 
 - [Codelab "Room with a view"](https://codelabs.developers.google.com/codelabs/android-room-with-a-view-kotlin) (sur Room de façon générale)
 - [Codelab "Repository"](https://codelabs.developers.google.com/codelabs/kotlin-android-training-repository) (sur la mise en place d'un Cache avec Room)
@@ -110,7 +110,7 @@ Implémenter un cache des données serveur avec `Room`:
   - Résultat des actions sur les boutons: ajout, suppression, ...
   - Mocker les appels réseaux (avec l'injection de dépendances)
 
-#### Documentation
+**Documentation:**
 
 - [Testing Codelab](https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-testing-basics/) (5.1 à 5.3)
 - [Mockito](https://site.mockito.org/)

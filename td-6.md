@@ -3,15 +3,8 @@
 
 ## Afficher une image distante avec Glide
 
-### Ajout des dépendances
-
-Dans le fichier `app/build.gradle`, ajouter :
-
-```groovy
-    implementation 'com.github.bumptech.glide:glide:4.10.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
-```
-
+- Rendez vous sur le [repository de Glide](https://github.com/bumptech/glide) ou et lisez le `ReadMe`
+- Ajouter les dépendances nécessaires à `app/build.gradle`
 - Ajouter une `ImageView` à coté de votre `header_text_view` qui affichera l'avatar de l'utilisateur
 - Dans `onResume`, utiliser Glide pour afficher une image de test:
 
@@ -19,7 +12,8 @@ Dans le fichier `app/build.gradle`, ajouter :
 Glide.with(this).load("https://goo.gl/gEgYUd").into(image_view)
 ```
 
-- Aidez vous de la [documentation de Glide](https://github.com/bumptech/glide) pour afficher l'image sous la forme d'un cercle
+- Remplacez cette URL par celle d'une image de votre choix (disponible publiquement)
+- Trouvez comment afficher l'image sous la forme d'un cercle
 
 ### Nouvelle activité
 

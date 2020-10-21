@@ -2,10 +2,10 @@
 
 ## Avant de commencer
 
-Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, dans ce TD nous allons simuler que la personne est connectée, en passant un `token` dans les `headers` de nos requêtes HTTP.
+Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, pour commencer nous allons simuler cela en passant directement un `token` dans les `headers` de nos requêtes `HTTP`:
 
-- Nous allons utiliser ce site: [https://android-tasks-api.herokuapp.com/api-docs/](https://android-tasks-api.herokuapp.com/api-docs/)
-- Lisez la documentation de l'API: le site permet d'utiliser ses routes directement
+- Rendez vous sur [https://android-tasks-api.herokuapp.com/api-docs/](https://android-tasks-api.herokuapp.com/api-docs/)
+- Ce site permet de lire la documentation et d'utiliser les routes directement
 - Cliquez sur `users/sign_up` puis sur "Try it out"
 - Vous devriez voir un JSON prérempli dont vous devez remplir les données (vous pouvez mettre des infos bidon) avant de cliquer sur "Execute":
 
@@ -19,11 +19,11 @@ Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, dans 
 }
 ```
 
-- Copiez le token généré quelquepart (vous pourrez le récuperer à nouveau en utilisant la route `/login`)
+- Copiez le token généré quelque part (vous pourrez le récupérer à nouveau en utilisant la route `/login`)
 - Copiez votre token dans la popup du bouton "Authorize" en haut
-- Maintenant que vous êtes "loggés", testez les routes disponibles (création, suppression, etc...)
+- Maintenant que vous êtes "loggé", testez les routes disponibles (création, suppression, etc...)
 
-## Accèder à l'internet
+## Accéder à l'internet
 
 Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut ajouter la permission dans le fichier `AndroidManifest`, juste après la balise `<manifest...>`
 
@@ -38,15 +38,28 @@ Dans le fichier `app/build.gradle`, ajouter :
 - Dans `dependencies {...}`:
 
 ```groovy
-implementation "com.squareup.retrofit2:retrofit:2.7.1"
-implementation 'com.squareup.retrofit2:converter-moshi:2.7.1'
-implementation "com.squareup.moshi:moshi:1.9.2"
-implementation "com.squareup.moshi:moshi-kotlin:1.9.2"
-implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
-implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3"
-implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
-implementation "org.jetbrains.kotlin:kotlin-reflect:1.1.0"
-implementation "androidx.fragment:fragment-ktx:1.2.2"
+  // AndroidX - KTX
+    implementation 'androidx.preference:preference-ktx:1.1.1'
+    implementation 'androidx.fragment:activity-ktx:1.2.0-beta01'
+    implementation 'androidx.fragment:fragment-ktx:1.3.0-beta01'
+    implementation 'androidx.core:core-ktx:1.3.2'
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+
+    // KotlinX Serialization
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0"
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
+
+    // Lifecycle
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
 ```
 
 - Dans `android {...}`:
@@ -62,36 +75,42 @@ kotlinOptions {
 }
 ```
 
+- Tout en haut ajoutez le plugin de sérialisation:
+
+```groovy
+plugins {
+    // ...
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.10'
+}
+```
+
 ## Retrofit
 
-- Vous pouvez créer un package `network` qui contiendra les classes en rapport avec les échanges réseaux
-- Créer un `object` `Api` (ses membres et méthodes seront donc `static`)
-- Ajoutez y les constantes qui serviront à faire les requêtes:
+- Créer un package `network` qui contiendra les classes en rapport avec les échanges réseaux
+- Créer un `object Api` (ses membres et méthodes seront donc `static`):
 
 ```kotlin
 object Api {
+
+  // constantes qui serviront à faire les requêtes
   private const val BASE_URL = "https://android-tasks-api.herokuapp.com/api/"
   private const val TOKEN = "COPIEZ_VOTRE_TOKEN_ICI"
-}
-```
 
-- Créer une instance de [Moshi](https://github.com/square/moshi) pour parser le JSON renvoyé par le serveur:
+  // on construit une instance de parseur de JSON:
+  private val jsonSerializer = Json {
+      ignoreUnknownKeys = true
+      coerceInputValues = true
+  }
 
-```kotlin
-object Api {
-  // ...
-  private val moshi = Moshi.Builder().build()
-}
-```
+  // instance de convertisseur qui parse le JSON renvoyé par le serveur:
+  private val converterFactory =
+      jsonSerializer.asConverterFactory("application/json".toMediaType())
 
-- Créer le client HTTP en ajoutant un intercepteur pour ajouter le `header` d'authentification avec votre `Token`:
-
-```kotlin
-object Api {
-  // ...
+  // client HTTP
   private val okHttpClient by lazy {
     OkHttpClient.Builder()
       .addInterceptor { chain ->
+        // intercepteur qui ajoute le `header` d'authentification avec votre token:
         val newRequest = chain.request().newBuilder()
           .addHeader("Authorization", "Bearer $TOKEN")
           .build()
@@ -99,18 +118,12 @@ object Api {
       }
       .build()
   }
-}
-```
 
-- Créer une instance de retrofit qui permettra d'implémenter les interfaces que nous allons créer ensuite:
-
-```kotlin
-object Api {
-  // ...
+  // permettra d'implémenter les services que nous allons créer:
   private val retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
     .client(okHttpClient)
-    .addConverterFactory(MoshiConverterFactory.create(moshi))
+    .addConverterFactory(converterFactory)
     .build()
 }
 ```
@@ -148,15 +161,16 @@ Exemple de json renvoyé par la route `/info`:
 }
 ```
 
-Créer la `data class` `UserInfo` avec des annotations Moshi pour récupérer ces données:
+Créer la `data class` `UserInfo` avec des annotations de KotlinX Serialization pour récupérer ces données:
 
 ```kotlin
+@Serializable
 data class UserInfo(
-  @field:Json(name = "email")
+  @SerialName("email")
   val email: String,
-  @field:Json(name = "firstname")
+  @SerialName("firstname")
   val firstName: String,
-  @field:Json(name = "lastname")
+  @SerialName("lastname")
   val lastName: String
 )
 ```
@@ -164,51 +178,38 @@ data class UserInfo(
 ### Affichage
 
 - Dans `fragment_task_list.xml`, ajoutez une `TextView` au dessus de la liste de tâche si vous n'en avez pas
-- Overrider la méthode `onResume` pour y récuperer les infos de l'utilisateur, une erreur va s'afficher mais ne paniquez pas, on va s'en occuper:
+- Overrider la méthode `onResume` pour y récupérer les infos de l'utilisateur, une erreur va s'afficher mais ne paniquez pas, on va s'en occuper:
 
 ```kotlin
 // Ici on ne va pas gérer les cas d'erreur donc on force le crash avec "!!"
 val userInfo = Api.userService.getInfo().body()!!
 ```
 
-- La méthode `getInfo()` étant déclarée comme `suspend`, vous aurez besoin de la lancer dans le context d'un `couroutineScope` (c'est ce que dit le message d'erreur)
+- La méthode `getInfo()` étant déclarée comme `suspend`, vous aurez besoin de la lancer dans le à l'intérieur d'un `couroutineScope` (c'est ce que dit le message d'erreur):
 
-  Pour cela on pourrait utiliser `GlobalScope.launch { /*...*/ }`, mais une meilleure façon est d'en créer un "vrai" pour pouvoir le `cancel()` après:
-
-```kotlin
-// Création:
-private val coroutineScope = MainScope()
-```
+  on va utiliser directement `lifeCycleScope` qui est un scope déjà défini et géré par le système dans les `Activity` et `Fragment`
 
 ```kotlin
-// Utilisation:
-coroutineScope.launch {
-  myRepo.mySuspendMethod()  
+lifecycleScope.launch {
+  mySuspendMethod()
 }
-```
-
-```kotlin
-// Suppression dans onDestroy():
-coroutineScope.cancel()
 ```
 
 - Afficher les données dans votre `TextView`:
 
 ```kotlin
-    my_text_view.text = "${userInfo.firstName} ${userInfo.lastName}"
+my_text_view.text = "${userInfo.firstName} ${userInfo.lastName}"
 ```
 
 ⚠️ Sur émulateur, vous aurez parfois des crashes étranges:
 
 - "`...EPERM (operation not permitted)...`": désinstallez l'application de l'émulateur et relancez
 - L'app stoppe direct et sans stacktrace: redémarrer l'émulateur et vérifiez que son wifi est bien connecté
-
 - Lancez l'app et vérifiez que vos infos s'affichent !
 
-#### Remarques
+**Remarque:**
 
-- En réalité, vous n'avez pas besoin de faire la création et la suppression de `coroutineScope`: vous pouvez utiliser directement `lifeCycleScope` qui est un scope déjà définit par le système et supprimer automatiquement
-- Un autre scope est fourni par android: `viewModelScope`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
+Un autre scope est fourni par android: `viewModelScope`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
 
 ## TaskListFragment
 
@@ -218,23 +219,22 @@ Il est temps de récuperer les tâches depuis le serveur !
 
 ```kotlin
 interface TasksWebService {
-    @GET("tasks")
-    suspend fun getTasks(): Response<List<Task>>
+  @GET("tasks")
+  suspend fun getTasks(): Response<List<Task>>
 }
 ```
 
 - Utiliser l'instance de retrofit comme précédemment pour créer une instance de `TasksWebService` dans l'objet `Api`
-
-- Modifier `Task` pour la rendre lisible par Moshi (i.e. faire comme pour `UserInfo`)
+- Modifier `Task` pour la rendre lisible par KotlinX Serialization (i.e. faire comme pour `UserInfo`)
 
 ## TasksRepository
 
-Le Repository va chercher des data dans une ou plusieurs sources de données (ex: DB locale et API distante)
+Le but d'un Repository est d'exposer des data venant d'une ou plusieurs sources de données (ex: DB locale et API distante)
 
 Créer la classe `TasksRepository`avec:
 
 - une propriété `tasksWebService` pour les requêtes avec `Retrofit`
-- une propriété `taskList` *publique* de type `LiveData<List<Task>>`: représente une liste de tâche *Observable* (on peut donc s'*abonner* à ses modifications)
+- une propriété `taskList` *publique* de type `LiveData<List<Task>>`: représente une liste de tâche *Observable* (on peut donc s'*abonner* à ses modifications) non modifiable afin de l'exposer à l'extérieur du repository
 - une propriété `_taskList` *privée* de type `MutableLiveData<List<Task>>` qui représente la même donnée mais modifiable donc utilisable à l'intérieur du repository
 - une méthode publique `refresh` qui requête la liste et met à jour la `LiveData`
 
@@ -310,10 +310,10 @@ suspend fun updateTask(@Body task: Task, @Path("id") id: String? = task.id): Res
 
 ```kotlin
 suspend fun updateTask(task) {
-  tasksRepository.updateTask(task)
+  val editedTask = tasksRepository.updateTask(task)
   val editableList = _tasksList.value.orEmpty().toMutableList()
   val position = editableList.indexOfFirst { task.id == it.id }
-  editableList[position] = task
+  editableList[position] = editedTask
   _tasksList.value = editableList
 }
 ```

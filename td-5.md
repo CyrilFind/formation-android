@@ -33,8 +33,9 @@ Pour résumer, on va déplacer la logique de la gestion de la liste hors du Frag
 - Procéder par étapes et inspirez vous de ce squelette (NE COPIEZ PAS TOUT!) pour refactoriser votre app (commencez juste par le chargement de la liste):
 
 ```kotlin
-// Le Repository lance les requêtes HTTP
+// Le Repository récupère les données
 class TasksRepository {
+    // Le web service requête le serveur
     private val webService = Api.tasksWebService
 
     suspend fun loadTasks(): List<Task>? {
@@ -53,23 +54,10 @@ class TaskListViewModel: ViewModel() {
     private val _taskList = MutableLiveData<List<Task>>()
     public val taskList: LiveData<List<Task>> = _taskList
 
-    private fun getMutableList() = _taskList.value.orEmpty().toMutableList()
-
-  
     fun loadTasks() {...}
     fun deleteTask(task: Task) {...}
     fun addTask(task: Task) {...}
-
-    fun editTask(task: Task) {
-        viewModelScope.launch {
-            todoRepository.updateTask(task)?.let { task ->
-                _tasksList.value = getMutableList().apply {
-                    val position = indexOfFirst { task.id == it.id }
-                    set(position, task)
-                }
-            }
-        }
-    }
+    fun editTask(task: Task) {...}
 }
 
 // Le Fragment observe la LiveData et met à jour la liste de l'adapter:

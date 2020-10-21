@@ -103,9 +103,9 @@ PreferenceManager.getDefaultSharedPreferences(context).edit {
 
 ## Refacto de l'API
 
-Le but est de remplacer le `TOKEN` en dur par celui stocké et le récuperé depuis les `SharedPreference`
+Le but est de remplacer le `TOKEN` en dur par celui stocké et le récupéré depuis les `SharedPreference`
 
-Une bonne pratique serait ici l'injection de dépendance (avec Dagger2) mais pour faire simple nous allons transformer `Api` en singleton et l'initilialiser au lancement de l'app en lui passant le `Context` nécessaire pour utiliser les `SharedPreference`:
+Une bonne pratique serait ici l'injection de dépendance (avec Dagger2) mais pour faire simple nous allons transformer `Api` en singleton et l'initialiser au lancement de l'app en lui passant le `Context` nécessaire pour utiliser les `SharedPreference`:
 
 ```kotlin
 class Api(private val context: Context) {
@@ -174,7 +174,7 @@ Suivez les mêmes étapes pour remplacer la navigation des TDs précédents avec
 
 - Changez le name du `<fragment>` dans `MainActivity` par un `NavHostFragment`
 - Assignez lui un nouveau graphe de navigation (qui sera très simple): `main_nav_graph` (vous pouvez renommer l'ancien en `authentication_nav_graph`)
-- Transformez `TaskActivity` en `TaskFragment` en adaptant les `override`s
+- Transformez `TaskActivity` en `TaskFragment` en adaptant les `override`
 - Utilisez [SafeArgs](https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args) pour passer les données d'une activité à l'autre
 - Faites pareil pour `UserInfoActivity`
 - Vous pouvez simplifier pas mal de choses en utilisant `by activityViewModels()` au lieu de `by viewModels()` afin de partager une l'instance de viewmodel au sein des Fragments d'une même Activity

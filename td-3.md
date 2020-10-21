@@ -60,13 +60,13 @@ val newTask = Task(id = UUID.randomUUID().toString(), title = "New Task !")
 - Faites hériter `Task` de `Serializable` pour pouvoir passer des objets `Task` dans les `intent`
 - Passez `newTask` dans l'intent avec `putExtra(...)`
 - utlisez `setResult(...)` et `finish()` pour retourner à l'activité principale
-- Dans celle ci, overrider `onActivityResult`dans le `TaskFragment` pour récupérer cette task et l'ajouter à la liste
+- Dans celle ci, overrider `onActivityResult` dans le `TaskFragment` pour récupérer cette task et l'ajouter à la liste
 
 ```kotlin
 val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task
 ```
 
-- Faites en sorte que la nouvelle tache s'affiche à notre retour sur l'activité principale
+- Faites en sorte que la nouvelle tache s'affiche au retour sur l'activité principale
 - Maintenant, récupérez les valeurs entrées dans les `EditText` pour les donner à la création de votre tâche (vous devrez faire un `toString()`)
 
 ## Édition d'une tâche
@@ -74,38 +74,32 @@ val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task
 - Ajouter une bouton permettant d'éditer chaque tâche en ouvrant l'activité `TaskActivity` pré-remplie avec les informations de la tâche
 - Pour transmettre des infos d'une activité à l'autre, vous pouvez utiliser la méthode `putExtra` depuis une instance d'`intent`
 - Inspirez vous de l'implémentation du bouton supprimer et du bouton ajouter
-- Vous pouvez ensuite récuperer dans le `onCreate` de l'activité les infos que vous avez passées:
+- Vous pouvez ensuite récupérer dans le `onCreate` de l'activité les infos que vous avez passées:
 
-  - récupérex la tâche passée avec un `getSerializableExtra` et un `as? Task`
+  - récupérez la tâche passée avec un `getSerializableExtra` et un `as? Task`
   - Vous pourrez tirer parti de la variable `Task?` (nullable) pour réutiliser le code de la création et remplir les `EditText`
   - De même vous pourrez utiliser l'opérateur `?:` pour setter l'`id` en utilisant la méthode `UUID...` précédente par défaut
   - Utilisez `setText` pour préremplir les `EditText`
 
 - Vérifier que les infos éditées s'affichent bien à notre retour sur l'activité principale.
 
-> Pour la classe IIM - A5 IWM: passez au TD 4 tout de suite
-
----
-
 ## Changements de configuration
 
 Que se passe-t-il si vous tournez votre téléphone ? 🤔
 
-- Pour sauvegarder votre liste de task, implémentez la méthodes suivante:
+- Pour sauvegarder votre liste de task, implémentez la méthode suivante en utilisant `putParcelableArrayList`:
 
 ```kotlin
 override fun onSaveInstanceState(outState: Bundle)
 ```
 
-Il faudra aussi que votre classe `Task` hérite de `Parcelable`: pour implémenter automatiquement les méthodes nécessaires, ajoutez à votre classe l'annotation `@Parcelize` et à `app/build.gradle`, ajouter:
+Il faudra aussi que votre classe `Task` hérite de `Parcelable`: pour implémenter automatiquement les méthodes nécessaires, ajoutez à votre classe l'annotation `@Parcelize`
 
-```groovy
-androidExtensions {
-    experimental = true
-}
-```
+- Puis, pour récupérer cette list, utilisez l'argument `savedInstanceState` et la méthode `getParcelableArrayList` dans `onCreateView`
 
-- Puis, pour récupérer cette list, utilisez l'argument `savedInstanceState` de `onCreateView`
+## Nouvelle API ActivityResult
+
+Depuis peu il existe une façon plus élégante de lancer une activité en attendant un résultat, basé sur les lambdas: changez votre code pour l'utiliser en suivant la [documentation][3]
 
 ## Partager
 
@@ -115,3 +109,5 @@ androidExtensions {
 [1]: https://developer.android.com/training/sharing/receive
 
 [2]: https://developer.android.com/training/sharing/send
+
+[3]: https://developer.android.com/training/basics/intents/result#custom
