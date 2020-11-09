@@ -1,6 +1,5 @@
 ---
 marp: true
-html: true
 ---
 <!-- headingDivider: 2 -->
 <!-- class: invert -->
@@ -19,8 +18,6 @@ html: true
 
 ## Kotlin: Bases
 
-![bg left:30% 50%](assets/kotlin.png)
-
 ```kotlin
 // Mutabilité
 val myImmutableVariable = 0
@@ -36,21 +33,32 @@ val myInt: Int = 1
 val myInt = 1
 ```
 
-## Kotlin: autres particularités
-
-![bg left:30% 50%](assets/kotlin.png)
+## Kotlin: classes
 
 ```kotlin
 // Classes
-class MyFinalClass {...}
-open class MyHeritableClass {...}
-companion object {...}
+class MyFinalClass {...} // classes are final by default
+open class MyHeritableClass {...} // open makes them non-final
+data class MyPojo { ... } // equals(), toString(), ... for free
+class MyClass {
+  companion object { // static fields
+    const val MY_CONSTANT = 1
+  }
+}
+sealed class Result { // sort of "enum classes"
+  object Success : Result
+  class Failure(error: Error) : Result()
+}
+```
 
-//Lambdas
+## Kotlin: autres particularités
+
+```kotlin
+// Lambdas: function blocks handled as variables
 val add: (Int, Int) -> Int = { a, b -> a + b }
 val result = add(1, 2)
 
-// When statements
+// When statements: super-powered switch-case statements
 when (x) {
     !is Int -> print("x is not an int")
     in 1..10 -> print("x is in the range")
@@ -70,14 +78,13 @@ Dans l'IDE: plugin Edutools
 
 ## Kotlin: fonctionnalités plus avancées
 
-![bg left:30% 50%](assets/kotlin.png)
-
 ```kotlin
 // Extension functions
 fun String.reverse(): String {...}
 "blabla".reverse()
 
 // Smart casts
+var nullable: MyClass?
 if (nullable != null) { nullable.myMethod() }
 
 // Delegates
