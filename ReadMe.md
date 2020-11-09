@@ -1,6 +1,7 @@
 # Formation Android
 
 ## But
+
 Connaître les fondamentaux du développement Android et notamment:
 
 - Se familiariser avec Kotlin
@@ -14,7 +15,6 @@ Connaître les fondamentaux du développement Android et notamment:
 - Manipuler des images
 - Demander des permissions
 - Utiliser `Navigation Component`
-
 
 ## Déroulement
 
@@ -31,4 +31,4 @@ Un minimum de slides et un maximum de TDs:
 - Projet en Autonomie
 - Soutenance sur sujets exporatoires
 
-À adapter en fonction du temps disponible.
+À adapter en fonction du temps disponible

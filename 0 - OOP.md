@@ -4,7 +4,7 @@ marp: true
 <!-- headingDivider: 2 -->
 <!-- class: invert -->
 
-# Object Oriented Programming
+# OOP: Object Oriented Programming
 
 ## Principles
 
@@ -129,6 +129,13 @@ class FacebookFriendsDataSource : FriendsDataSource {
 * Interface segregation: Prefer several specific interfaces to a general one
 * Dependency inversion: Depend upon abstractions, not concretions
 
+## Other Principles
+
+* DRY: Don't Repeat Yourself
+* YAGNI: You Are Not Gonna Need It
+* KISS: Keep it simple, stupid
+* SSOT: Single source of truth
+
 ## Going Further
 
 * Design Patterns (Singleton, Factory, ...)
@@ -136,10 +143,14 @@ class FacebookFriendsDataSource : FriendsDataSource {
 * Is Inheritance bad ?
 * Often prefer composition: "has-a" VS "is-a"
 * Entity Component System
-* Is OOP good ?
+* OOP is not a silver bullet
+
+## Other Paradigms
+
 * Procedural Programming
 * Functional Programming
 * Data Oriented Design
+* Reactive Programming
 
 ## Links
 

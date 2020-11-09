@@ -3,10 +3,10 @@
 ## Avant de commencer
 
 Prendre en main l'IDE: vous pouvez aller dans les paramètres (`Cmd + ,` ou  `Android Studio > Preferences`) et les adapter à vos habitudes (Font, thème, coloration syntaxique, raccourcis clavier,plugins)
-Je vous conseille en particulier de:
+Conseils:
 
-- Changer le raccourci pour les commentaires car sur AZERTY celui par défaut ne fonctionne pas (mettez `Cmd + :`)
-- Changer la coloration syntaxique qui n'est par défaut pas terrible pour Kotlin: vous pouvez installer un plugin (ex: "Rainglow Color Schemes") et choisir parmi les divers proposés ou importer mon thème [Darculai](./Darculai_cyrilfind.icls)
+- Changer le raccourci pour les commentaires car sur AZERTY celui par défaut ne fonctionne pas (mettez `Cmd + :` par ex)
+- Changer la coloration syntaxique qui n'est par défaut pas terrible pour Kotlin: vous pouvez installer un plugin (ex: "Rainglow Color Schemes") et choisir parmi les divers proposés ou importer mon thème [Darculai](./assets/Darculai_cyrilfind.icls)
 - Ajouter des plugins comme RainbowBrackets, Codota, grep console, SonarLint (et regardez les plus téléchargés dans l'onglet MarketPlace)
 - Activer les imports automatiques: `Editor > General > Auto Import > Kotlin > cocher "Add unambiguous import on the fly" et "Optimize imports on the fly..."`
 - Ne pas prendre la toute dernière version d'Android pour l'émulateur (ça évitera des erreurs et pèsera moins sur votre disque dur)
@@ -23,6 +23,6 @@ Faire les tutos de la collection
 
 ⚠️ Attention:
 
-- Ne restez pas bloqués sur les pages "Introduction", "Overview", ce sont juste des résumés de ce que vous allez faire.
-- Parfois l'IDE bug en mode `Visuel` et n'affiche pas certains attributs dans le layout editor (typiquement textAlignment, fontFamily,...) dans ce cas, rien de grave, passez juste en mode `Text`
-- Parfois les attributs avec start/end ne s'affiche pas: idem rien de grave vous pouvez utiliser left/right (ex: marginLeft au lieu de marginRight)
+- Ne restez pas bloqués sur les pages "Introduction", "Overview" des codelabs, ce sont juste des résumés de ce que vous allez faire.
+- Parfois l'IDE bug en mode `Visuel` et n'affiche pas certains attributs dans le layout editor (typiquement `textAlignment`, `fontFamily`, ...) dans ce cas, rien de grave, passez juste en mode `Text`
+- Parfois les attributs avec start/end ne s'affiche pas: idem rien de grave vous pouvez utiliser left/right (ex: `marginLeft` au lieu de `marginRight`)
