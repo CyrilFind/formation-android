@@ -29,6 +29,12 @@ Un minimum de slides et un maximum de TDs:
 - TD 7: SignUp/Login et Navigation
 - TD 8: Améliorations
 - Projet en Autonomie
-- Soutenance sur sujets exporatoires
+- Soutenance sur sujets exploratoires
 
 À adapter en fonction du temps disponible
+
+Références:
+
+- <https://developer.android.com/modern-android-development>
+- <https://kotlinlang.org/>
+- <https://kotlinlang.org/docs/reference/basic-syntax.html>
