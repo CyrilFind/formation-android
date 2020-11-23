@@ -36,10 +36,10 @@ val myInt = 1
 ## Kotlin: classes
 
 ```kotlin
-// Classes
 class MyFinalClass {...} // classes are final by default
 open class MyHeritableClass {...} // open makes them non-final
-data class MyPojo { ... } // equals(), toString(), ... for free
+// equals(), toString(), hashCode(), copy(), destructuring for free
+data class MyPojo(val someProperty, ...)
 class MyClass {
   companion object { // static fields
     const val MY_CONSTANT = 1

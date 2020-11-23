@@ -10,10 +10,11 @@ marp: true
 
 ![bg right](assets/recyclerview.png)
 
-RecyclerView est un conteneur scrollable pour afficher une grande quantité de donnée de façon efficace:
-Il crée un nombre limité de Views
-Il les réutilise en remplaçant les données et les listeners (re-bind) sans les recréer
-Met à jour les données rapidement
+Conteneur scrollable pour afficher une grande quantité de donnée de façon efficace:
+
+- crée un nombre limité de Views
+- les réutilise en remplaçant les données et les listeners (re-bind) sans les recréer
+- Met à jour les données rapidement
 
 ## List layout
 
@@ -61,8 +62,29 @@ class WordListAdapter(val wordList: Word) : RecyclerView.Adapter<WordListAdapter
    }
 }
 
-// at fragment ou activity creation:
+// at fragment or activity creation:
 val wordList = listOf("word#1", "word #2")
 recyclerView.adapter = WordListAdapter(wordList)
 recyclerView.layoutManager = LinearLayoutManager(context)
+```
+
+## ListAdapter
+
+```kotlin
+
+object WordsDiffCallback : DiffUtil.ItemCallback<ChannelUiModel>() {
+   override fun areItemsTheSame(oldItem: ChannelUiModel, newItem: ChannelUiModel) =
+      // are they the same "entity" ? (usually same id)
+   override fun areContentsTheSame(oldItem: ChannelUiModel, newItem: ChannelUiModel) =
+      // do they have the same data ? (content)
+}
+
+class WordListAdapter : ListAdapter<,Word, WordListAdapter.WordViewHolder>(WordsDiffCallback) {
+   // same thing without getItemCount()
+}
+
+// at fragment or activity creation:
+val myAdapter = WordListAdapter()
+recyclerView.adapter = myAdapter
+myAdapter.submitList(listOf("word#1", "word #2"))
 ```
