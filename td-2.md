@@ -105,7 +105,7 @@ inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 ```kotlin
     // Pour une [RecyclerView] ayant l'id "recycler_view":
-    var recyclerView = view.findById<RecyclerView>(R.id.recycler_view)
+    var recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
     recyclerView.layoutManager = ...
 
     // En utilisant les synthetics, on écrit juste l'id directement (c'est magique ✨):
