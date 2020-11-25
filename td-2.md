@@ -12,7 +12,7 @@
 - Donnez lui un nom personnalisé (ex: ToDoNicolasAlexandre)
 - Choisissez un package name (ex: `com.nicoalex.todo`)
 - Language "Kotlin"
-- Minimum API Level: 6.0
+- Minimum API Level: API 23, Android 6.0 (Marshmallow)
 - Initialisez un projet git et faites un commit initial
 - Committez régulièrement: à chaque fois que vous avez quelque chose qui compile et qui fonctionne.
 
