@@ -10,9 +10,9 @@ Dans le layout de votre ViewHolder, ajouter un `ImageButton` qui servira à supp
 
 Aidez vous des lignes de code plus bas pour réaliser un "Click Listener" à l'aide d'une lambda en suivant ces étapes:
 
-- Dans l'adapteur, ajouter une lambda `onDeleteClickListener` qui prends en arguments une `Task` et ne renvoie rien: `(Task) -> Unit`
-- Utilisez cette lambda avec dans le `onClickListener` du bouton supprimer
-- Dans le fragment, accéder au `onDeleteClickListener` depuis l'adapter et implémentez là: donnez lui comme valeur une lambda qui va supprimer la tache passée en argument de la liste
+- Dans l'adapteur, ajouter une propriété lambda `onDeleteClickListener` qui prends en arguments une `Task` et ne renvoie rien: `(Task) -> Unit` et l'initier à `null` (elle ne fait rien par défaut)
+- Utilisez cette lambda dans le `onClickListener` du bouton supprimer
+- Dans le fragment, accéder à `onDeleteClickListener` depuis l'adapter et implémentez là: donnez lui comme valeur une lambda qui va supprimer la tache passée en argument de la liste
 
 ```kotlin
 // Déclaration de la variable lambda dans l'adapter:
@@ -38,7 +38,6 @@ onDeleteClickListener?.invoke(task)
 companion object {
     const val ADD_TASK_REQUEST_CODE = 666
 }
-
 ```
 
 > **Rappel**: La valeur importe peu, elle servira seulement à savoir d'où on vient dans `onActivityResult(...)`
@@ -83,6 +82,30 @@ val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task
 
 - Vérifier que les infos éditées s'affichent bien à notre retour sur l'activité principale.
 
+## Nouvelle API ActivityResult
+
+Depuis peu il existe une façon plus élégante et simple de lancer une activité en attendant un résultat, basée sur les lambdas: lisez la [documentation][3] et changez votre code pour l'utiliser, par ex avec `StartActivityForResult()`:
+
+```kotlin
+val startForResult = registerForActivityResult(StartActivityForResult()) {...}
+// ...
+startForResult.launch(intent)
+```
+
+Mais vous pouvez aussi définir un [contrat spécifique](https://developer.android.com/training/basics/intents/result#custom):
+
+```kotlin
+class EditTask : ActivityResultContract<Task, Task>() {
+    override fun createIntent(...)
+    override fun parseResult(...)
+}
+```
+
+## Partager
+
+- Ajouter la possibilité de partager du texte **depuis** les autres applications et ouvrir le formulaire de création de tâche pré-rempli ([Documentation][1])
+- Ajouter la possibilité de partager du texte **vers** les autres applications avec un `OnLongClickListener` sur les tâches ([Documentation][2])
+
 ## Changements de configuration
 
 Que se passe-t-il si vous tournez votre téléphone ? 🤔
@@ -93,21 +116,14 @@ Que se passe-t-il si vous tournez votre téléphone ? 🤔
 override fun onSaveInstanceState(outState: Bundle)
 ```
 
-Il faudra aussi que votre classe `Task` hérite de `Parcelable`: pour implémenter automatiquement les méthodes nécessaires, ajoutez à votre classe l'annotation `@Parcelize`
+- Il faudra aussi que votre classe `Task` hérite de `Parcelable`: pour implémenter [automatiquement][4] les méthodes nécessaires, ajoutez le plugin `kotlin-parcelize` à votre `app/build.gradle` et l'annotation `@Parcelize` à votre classe `Task`
 
 - Puis, pour récupérer cette list, utilisez l'argument `savedInstanceState` et la méthode `getParcelableArrayList` dans `onCreateView`
-
-## Nouvelle API ActivityResult
-
-Depuis peu il existe une façon plus élégante de lancer une activité en attendant un résultat, basé sur les lambdas: changez votre code pour l'utiliser en suivant la [documentation][3]
-
-## Partager
-
-- Ajouter la possibilité de partager du texte **depuis** les autres applications et ouvrir le formulaire de création de tâche pré-rempli ([Documentation][1])
-- Ajouter la possibilité de partager du texte **vers** les autres applications avec un `OnLongClickListener` sur les tâches ([Documentation][2])
 
 [1]: https://developer.android.com/training/sharing/receive
 
 [2]: https://developer.android.com/training/sharing/send
 
-[3]: https://developer.android.com/training/basics/intents/result#custom
+[3]: https://developer.android.com/training/basics/intents/result
+
+[4]: https://developer.android.com/kotlin/parcelize

@@ -19,7 +19,7 @@ Suivre les exercices des [Kotlin Koans](https://try.kotlinlang.org) dans Android
 ## Google Codelabs
 
 Faire les tutos de la collection
-[Android Kotlin Fundamentals](https://codelabs.developers.google.com/android-kotlin-fundamentals/) à partir de 02.1 (vous pouvez survoler rapidement ceux d'avant) et
+[Android Kotlin Fundamentals](https://codelabs.developers.google.com/android-kotlin-fundamentals/) en commençant directement à la [Lesson 2](https://codelabs.developers.google.com/codelabs/kotlin-android-training-linear-layout#0) (vous pouvez survoler rapidement la "Lesson 1" mais c'est très basique)
 
 ⚠️ Attention:
 

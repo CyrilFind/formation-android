@@ -8,6 +8,8 @@
 
 ## Créer un projet
 
+Vous allez créer un unique projet "fil rouge" que vous mettrez à jour au fur à mesure des TDs:
+
 - Utilisez l'IDE pour créer un projet "Empty Activity"
 - Donnez lui un nom personnalisé (ex: ToDoNicolasAlexandre)
 - Choisissez un package name (ex: `com.nicoalex.todo`)
@@ -105,7 +107,7 @@ inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 ```kotlin
     // Pour une [RecyclerView] ayant l'id "recycler_view":
-    var recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+    val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
     recyclerView.layoutManager = ...
 
     // En utilisant les synthetics, on écrit juste l'id directement (c'est magique ✨):
@@ -132,7 +134,7 @@ val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_task, p
 ```
 
 - `onBindViewHolder` doit insèrer la donnée dans la cellule (`TaskViewHolder`) en fonction de sa `position` dans la liste en utilisant la méthode `bind()` que vous avez créée dans `TaskViewHolder` (elle ne fait rien pour l'instant)
-- Implémentez maintenant `bind()` qui doit récupérer une référence à la `TextView` dans `item_layout.xml` et y insérer le texte récupéré en argument
+- Implémentez maintenant `bind()` qui doit récupérer une référence à la `TextView` dans `item_task.xml` et y insérer le texte récupéré en argument
 - Lancez l'app: vous devez voir 3 tâches s'afficher 👏
 
 ## Ajout de la data class Task
@@ -170,11 +172,14 @@ Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}")
 
 - Dans cette lambda, **notifier l'adapteur** (aidez vous des suggestions de l'IDE) pour que votre modification s'affiche
 
-## Aller plus loin
+## Finalisation
 
 Recherchez la documentation pour chaque étape et n'hésitez pas à poser des questions:
 
 - Simplifier l'implémentation de `TasksListAdapter` en héritant de `ListAdapter` au lieu de `RecyclerView.Adapter`
 - Utiliser du `ViewBinding` à la place des "synthetics" ou des `findViewByIds` et pour `inflate` les différents layouts
+
+## Aller plus loin
+
 - Utiliser du `DataBinding` pour également `bind`-er les tasks directement dans le XML
 - Créer un `BindingAdapter` pour également databinder la liste de tâches

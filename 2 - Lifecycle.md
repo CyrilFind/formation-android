@@ -4,7 +4,9 @@ marp: true
 <!-- headingDivider: 2 -->
 <!-- class: invert -->
 
-# Activity
+# Lifecycle
+
+## Activity
 
 ![bg left:30% 50%](assets/bottomnav.png)
 
@@ -68,7 +70,7 @@ class MainActivity : AppCompatActivity() {
 </activity>
 ```
 
-# Lifecycle
+# Lifecycle Components
 
 ## Activity lifecycle
 

@@ -39,7 +39,7 @@ val myInt = 1
 class MyFinalClass {...} // classes are final by default
 open class MyHeritableClass {...} // open makes them non-final
 // equals(), toString(), hashCode(), copy(), destructuring for free
-data class MyPojo(val someProperty, ...)
+data class MyPojo(val someProperty: SomeType, ...)
 class MyClass {
   companion object { // static fields
     const val MY_CONSTANT = 1

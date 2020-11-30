@@ -88,3 +88,46 @@ val myAdapter = WordListAdapter()
 recyclerView.adapter = myAdapter
 myAdapter.submitList(listOf("word#1", "word #2"))
 ```
+
+## iOS
+
+![bg right 80%](assets/ios_table.png)
+
+In storyboard:
+
+- UITableViewController
+- UITableViewCell prototype
+
+In code:
+
+- UITableViewDataSource protocol implementation
+
+[See Documentation](https://developer.apple.com/documentation/uikit/views_and_controls/table_views/filling_a_table_with_data)
+
+## Example
+
+```swift
+var hierarchicalData = [[String]]()
+
+class MyTableDataSource : UITableViewDataSource {
+
+   override func numberOfSections(in tableView: UITableView) -> Int {
+      return hierarchicalData.count
+   }
+
+   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+      return hierarchicalData[section].count
+   }
+
+   override func tableView(_ tableView: UITableView,
+                           cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+      // Ask for a cell of the appropriate type.
+      let cell = tableView.dequeueReusableCell(withIdentifier: "basicStyleCell", for: indexPath)
+
+      // Configure the cell’s contents with the row and section number.
+      // The Basic cell style guarantees a label view is present in textLabel.
+      cell.textLabel!.text = "Row \(indexPath.row)"
+      return cell
+   }
+}
+```

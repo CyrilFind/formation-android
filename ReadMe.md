@@ -36,5 +36,11 @@ Un minimum de slides et un maximum de TDs:
 Références:
 
 - <https://developer.android.com/modern-android-development>
+- <https://developer.android.com/courses/kotlin-android-fundamentals/overview>
 - <https://kotlinlang.org/>
 - <https://kotlinlang.org/docs/reference/basic-syntax.html>
+
+Outils:
+
+- Android Studio
+- scrcpy
