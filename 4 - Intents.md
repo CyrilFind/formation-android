@@ -119,6 +119,30 @@ setResult(RESULT_OK, intent)
 finish()
 ```
 
+## New API
+
+```kotlin
+// Asking for an image
+val getContent = registerForActivityResult(GetContent()) { uri: Uri? -> // Handle the returned Uri }
+// ...
+getContent.launch("image/*")
+
+// Asking for a result
+val startForResult = registerForActivityResult(StartActivityForResult()) { result: ActivityResult ->
+    if (result.resultCode == Activity.RESULT_OK) {
+        val intent = result.data
+        // Handle the Intent
+    }
+}
+// ...
+startForResult.launch(Intent(this, ResultProducingActivity::class.java))
+```
+
+Also:
+
+- [Default ActivityResultContracts](https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts)
+- [Creating a custom contract](https://developer.android.com/training/basics/intents/result#custom)
+
 ## Specifying implicit intents
 
 ```kotlin
@@ -154,30 +178,6 @@ if (intent.resolveActivity(packageManager) != null) {
    startActivity(chooserIntent)
 }
 ```
-
-## New API
-
-```kotlin
-// Asking for an image
-val getContent = registerForActivityResult(GetContent()) { uri: Uri? -> // Handle the returned Uri }
-// ...
-getContent.launch("image/*")
-
-// Asking for a result
-val startForResult = registerForActivityResult(StartActivityForResult()) { result: ActivityResult ->
-    if (result.resultCode == Activity.RESULT_OK) {
-        val intent = result.intent
-        // Handle the Intent
-    }
-}
-// ...
-startForResult.launch(Intent(this, ResultProducingActivity::class.java))
-```
-
-Also:
-
-- [Default ActivityResultContracts](https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts)
-- [Creating a custom contract](https://developer.android.com/training/basics/intents/result#custom)
 
 # iOS
 

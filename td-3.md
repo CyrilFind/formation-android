@@ -10,21 +10,21 @@ Dans le layout de votre ViewHolder, ajouter un `ImageButton` qui servira à supp
 
 Aidez vous des lignes de code plus bas pour réaliser un "Click Listener" à l'aide d'une lambda en suivant ces étapes:
 
-- Dans l'adapteur, ajouter une propriété lambda `onDeleteClickListener` qui prends en arguments une `Task` et ne renvoie rien: `(Task) -> Unit` et l'initier à `null` (elle ne fait rien par défaut)
+- Dans l'adapteur, ajouter une propriété lambda `onDeleteTask` qui prends en arguments une `Task` et ne renvoie rien: `(Task) -> Unit` et l'initier à `null` (elle ne fait rien par défaut)
 - Utilisez cette lambda dans le `onClickListener` du bouton supprimer
-- Dans le fragment, accéder à `onDeleteClickListener` depuis l'adapter et implémentez là: donnez lui comme valeur une lambda qui va supprimer la tache passée en argument de la liste
+- Dans le fragment, accéder à `onDeleteTask` depuis l'adapter et implémentez là: donnez lui comme valeur une lambda qui va supprimer la tache passée en argument de la liste
 
 ```kotlin
 // Déclaration de la variable lambda dans l'adapter:
-var onDeleteClickListener: ((Task) -> Unit)? = null
+var onDeleteTask: ((Task) -> Unit)? = null
 
 // "implémentation" de la lambda dans le fragment:
-adapter.onDeleteClickListener = { task ->
+adapter.onDeleteTask = { task ->
     // Supprimer la tâche
 }
 
 // Utilisation de la lambda dans le ViewHolder:
-onDeleteClickListener?.invoke(task)
+onDeleteTask?.invoke(task)
 ```
 
 ## Ajout de tâche complet

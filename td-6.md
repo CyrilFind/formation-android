@@ -1,9 +1,9 @@
 
 # TD 6: Images
 
-## Afficher une image distante avec Glide
+## Afficher une image distante avec Coil
 
-- Rendez vous sur le [repository de Glide](https://github.com/bumptech/glide) ou et lisez le `ReadMe`
+- Rendez vous sur le [repository de Coil](https://coil-kt.github.io/coil/) ou et lisez le `ReadMe`
 - Ajouter les dépendances nécessaires à `app/build.gradle`
 - Ajouter une `ImageView` à coté de votre `header_text_view` qui affichera l'avatar de l'utilisateur
 - Dans `onResume`, utiliser Glide pour afficher une image de test:
@@ -168,7 +168,6 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response<UserInfo>
 - Enfin au chargement de l'activité, afficher l'avatar renvoyé depuis le serveur:
 
 ```kotlin
-    val glide = Glide.with(this)
     lifecycleScope.launch {
         val userInfo = ...getInfos()
         glide.load(userInfo.avatar)...into(...)

@@ -38,7 +38,7 @@ Dans le fichier `app/build.gradle`, ajouter :
 - Dans `dependencies {...}`:
 
 ```groovy
-  // AndroidX - KTX
+    // AndroidX - KTX
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'androidx.fragment:activity-ktx:1.2.0-beta01'
     implementation 'androidx.fragment:fragment-ktx:1.3.0-beta01'
@@ -49,7 +49,7 @@ Dans le fichier `app/build.gradle`, ajouter :
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 
     // KotlinX Serialization
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
     implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
 
     // Coroutines
@@ -75,12 +75,12 @@ kotlinOptions {
 }
 ```
 
-- Tout en haut ajoutez le plugin de sérialisation:
+- Tout en haut ajoutez le plugin de sérialisation (avec votre version de kotlin):
 
 ```groovy
 plugins {
     // ...
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.10'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.20' // vérifier que votre version de kotlin est la même
 }
 ```
 
@@ -144,9 +144,10 @@ interface UserService {
 ```kotlin
 object Api {
   // ...
-  val userService: UserService by lazy { retrofit.create(UserService::class.java) }
+  val userService: UserService by lazy {
+    retrofit.create(UserService::class.java)
+  }
 }
-
 ```
 
 ### UserInfo
@@ -243,8 +244,7 @@ class TasksRepository {
   private val tasksWebService = Api.tasksWebService
   
   // Ces deux variables encapsulent la même donnée:
-  // [_taskList] est modifiable et privée:
-  // On va l'utiliser seulement dans le contexte de cette classe
+  // [_taskList] est modifiable mais privée donc inaccessible à l'extérieur de cette classe
   private val _taskList = MutableLiveData<List<Task>>()
   // [taskList] est publique mais non-modifiable:
   // On pourra seulement l'observer (s'y abonner) depuis d'autres classes

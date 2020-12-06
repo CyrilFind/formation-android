@@ -176,10 +176,10 @@ Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}")
 
 Recherchez la documentation pour chaque étape et n'hésitez pas à poser des questions:
 
-- Simplifier l'implémentation de `TasksListAdapter` en héritant de `ListAdapter` au lieu de `RecyclerView.Adapter`
-- Utiliser du `ViewBinding` à la place des "synthetics" ou des `findViewByIds` et pour `inflate` les différents layouts
+➡️ Simplifier l'implémentation de `TasksListAdapter` en héritant de `ListAdapter` au lieu de `RecyclerView.Adapter`
 
 ## Aller plus loin
 
+- Utiliser du `ViewBinding` à la place des "synthetics" ou des `findViewByIds` et pour `inflate` les différents layouts
 - Utiliser du `DataBinding` pour également `bind`-er les tasks directement dans le XML
 - Créer un `BindingAdapter` pour également databinder la liste de tâches
