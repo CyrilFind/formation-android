@@ -6,10 +6,10 @@
 - Rendez vous sur le [repository de Coil](https://coil-kt.github.io/coil/) ou et lisez le `ReadMe`
 - Ajouter les dépendances nécessaires à `app/build.gradle`
 - Ajouter une `ImageView` à coté de votre `header_text_view` qui affichera l'avatar de l'utilisateur
-- Dans `onResume`, utiliser Glide pour afficher une image de test:
+- Dans `onResume`, utiliser Coil pour afficher une image de test:
 
 ```kotlin
-Glide.with(this).load("https://goo.gl/gEgYUd").into(image_view)
+image_view.load("https://goo.gl/gEgYUd")
 ```
 
 - Remplacez cette URL par celle d'une image de votre choix (disponible publiquement)
@@ -42,7 +42,7 @@ Glide.with(this).load("https://goo.gl/gEgYUd").into(image_view)
 </LinearLayout>
 ```
 
-- Lancer cette appli quand on clique sur l'`ImageView` que vous venez de remplir avec `Glide`
+- Lancer cette appli quand on clique sur l'`ImageView` que vous venez de remplir avec `Coil`
 
 ## Demander la Permission
 
@@ -151,7 +151,7 @@ private fun imageToBody(image: Bitmap?): MultipartBody.Part {
 }
 ```
 
-- Dans la fonction `handlePhotoTaken`, afficher la photo à l'aide de Glide
+- Dans la fonction `handlePhotoTaken`, afficher la photo à l'aide de Coil
 
 ## Uploader l'image capturée
 
@@ -170,7 +170,7 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response<UserInfo>
 ```kotlin
     lifecycleScope.launch {
         val userInfo = ...getInfos()
-        glide.load(userInfo.avatar)...into(...)
+        imageView.load(userInfo.avatar)
     }
 ```
 
