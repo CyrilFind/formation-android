@@ -40,7 +40,7 @@ Dans le fichier `app/build.gradle`, ajouter :
 ```groovy
     // AndroidX - KTX
     implementation 'androidx.preference:preference-ktx:1.1.1'
-    implementation 'androidx.fragment:activity-ktx:1.2.0-beta01'
+    implementation 'androidx.activity:activity-ktx:1.2.0-beta01'
     implementation 'androidx.fragment:fragment-ktx:1.3.0-beta01'
     implementation 'androidx.core:core-ktx:1.3.2'
 
