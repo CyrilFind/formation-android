@@ -4,7 +4,7 @@ marp: true
 <!-- headingDivider: 2 -->
 <!-- class: invert -->
 
-# Background work with Coroutines
+# Background work
 
 ## Threads
 
@@ -88,29 +88,127 @@ suspend fun otherSuspendFunction() {
 ## Usage
 
 ```kotlin
+val job = scope.launch {
+    mySuspendFun()
+}
+job.join() // wait for work to finish
+job.cancel() // cancel work
 
-class Repository {
-   suspend fun getData() = withContext(Dispatchers.IO) {
-       // execute long IO operation
-   }
+val defferdResult: Deffered<SomeClass> = scope.async {
+    mySuspendFun()
+}
+val result: SomeClass = defferdResult.await() // wait for result
+```
+
+## Usage on Android
+
+```kotlin
+// in Repository
+suspend fun getData() : Int = withContext(Dispatchers.IO) {  
+    // execute long IO operation
 }
 
-class MyViewModel: ViewModel() {
-   init {
-       viewModelScope.launch { // canceled when ViewModel is cleared 
-            repository.getData()
-       }
-   }
+// in ViewModel
+viewModelScope.launch { 
+    // canceled when ViewModel is cleared
 }
 
-class MyFragment: Fragment {
-    init { 
-        lifecycleScope.launch { /* canceled when fragment is destroyed */ }
-        lifecycleScope.launch {
-            whenStarted { /* starts when fragment starts */ }
-            // the rest executes after the whenStarted block
-        }
-        lifecycleScope.launchWhenStarted { /* launches when fragment starts */ }
+
+// in Fragment or Activity
+lifecycleScope.launch { // canceled when fragment is destroyed
+    whenStarted { /* starts when fragment starts */ }
+    // the rest executes after the whenStarted block
+}
+lifecycleScope.launchWhenStarted { /* launches when fragment starts */ }
+```
+
+## Observer pattern
+
+Design pattern that allows decoupling actions and data consumption by decoupling the *observable* (or subject) from the *observers* (or listeners):
+
+```kotlin
+val observable: Observable<Data>
+
+observable.notify(data)
+
+observable.observe { data ->
+    // use the value
+}
+```
+
+## LiveData
+
+example of Observable on Android:
+
+```kotlin
+// in a ViewModel
+private val _userLiveData = MutableLiveData<User>(default)
+public val userLiveData: LiveData<User> = _user
+
+fun refreshUser() {
+    viewLifecycleScope.launch {
+        _user.value = fetchUser()
+    }
+}
+
+// in a fragment or activity
+viewModel.user.observe(lifecycleScope) {
+    userNameTextView.text = it.userName
+}
+```
+
+## Reactive Streams
+
+Represent data as a async sequence that can be Observed
+
+```kotlin
+val stream = Stream.of("red", "white", "blue")
+    .map(String::toUpperCase)
+    .subscribeOn(Schedulers.newParallel("sub"))
+    .publishOn(Schedulers.newParallel("pub"), 2)
+
+stream.subscribe(value -> {
+    log(value)
+})
+```
+
+Streams can be "hot" or "cold"
+
+## Flow
+
+Implementation of reactive streams based on coroutines:
+
+```kotlin
+val flow: Flow<String> = listOf("red", "white", "blue").asFlow() 
+            .map { it -> it.ToUpperCase() }
+            .flowOn(Dispatchers.Default)
+
+scope.launch {
+    flow.collect { response -> println(response) }
+}
+```
+
+## Mutable Flow
+
+Special type of flow used like `LiveData`
+
+```kotlin
+// repository
+private val _userFlow = MutableFlow<NetworkUser>()
+public val userFlow: Flow<NetworkUser> = _user
+
+suspend fun refreshUser() {
+    _user.value = fetchUser()
+}
+
+val adaptedUserFlow : Flow<User> = repository.userFlow
+    .map { ... }
+    .onEach { ... }
+}
+
+someScope.launch {
+    adaptedUserFlow.collect {
+        // ...
     }
 }
 ```

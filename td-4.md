@@ -295,7 +295,7 @@ Modifier `TasksWebService` et ajoutez y les routes suivantes:
 
 ```kotlin
 @DELETE("tasks/{id}")
-suspend fun deleteTask(@Path("id") id: String?): Response<String>
+suspend fun deleteTask(@Path("id") id: String?): Response<Unit>
 
 @POST("tasks")
 suspend fun createTask(@Body task: Task): Response<Task>
@@ -309,10 +309,11 @@ suspend fun updateTask(@Body task: Task, @Path("id") id: String? = task.id): Res
 - Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l'édition:
 
 ```kotlin
-suspend fun updateTask(task) {
-  val editedTask = tasksRepository.updateTask(task)
+suspend fun updateTask(task: Task) {
+  // TODO: do update request and check response
+  // ...
   val editableList = _tasksList.value.orEmpty().toMutableList()
-  val position = editableList.indexOfFirst { task.id == it.id }
+  val position = editableList.indexOfFirst { updatedTask.id == it.id }
   editableList[position] = editedTask
   _tasksList.value = editableList
 }
