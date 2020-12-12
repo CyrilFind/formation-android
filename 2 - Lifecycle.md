@@ -6,6 +6,14 @@ marp: true
 
 # Lifecycle
 
+## Context
+
+- provided by the Android system
+- Interface to global information about an application environment
+- access to application-specific resources and classes
+- launching activities
+- broadcasting and receiving intents
+
 ## Activity
 
 ![bg left:30% 50%](assets/bottomnav.png)
@@ -17,32 +25,6 @@ marp: true
 - Obéit à un "Lifecycle"
 - Les Activity peuvent être hiérarchisée dans le manifest (pour la navigation)
 - Une Activity "inflate" un layout XML dans `onCreate`
-
-<!-- ## XML Layout
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout 
-   xmlns:android="http://schemas.android.com/apk/res/android"
-   xmlns:app="http://schemas.android.com/apk/res-auto"
-   xmlns:tools="http://schemas.android.com/tools"
-   android:id="@+id/main"
-   android:layout_width="match_parent"
-   android:layout_height="match_parent"
-   tools:context=".ui.main.MainFragment">
-
-   <TextView
-       android:id="@+id/message"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:text="MainFragment"
-       app:layout_constraintBottom_toBottomOf="parent"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toTopOf="parent"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-``` -->
 
 ## Inflating Layout in Activity
 

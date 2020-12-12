@@ -179,6 +179,45 @@ if (intent.resolveActivity(packageManager) != null) {
 }
 ```
 
+# Permissions
+
+## Demander la permission
+
+- Demandées “à la volée” depuis Android M
+- Les permissions “dangereuses” doivent être demandées à chaque fois
+- On recommande d’expliquer la raison avant (et après un refus)
+- Ajouter dans le manifest:
+    `<uses-permission android:name="android.permission.CAMERA" />`
+- Vérifier si la permission a été donnée
+- La demander sinon (éventuellement demander à devenir app par défaut)
+- Éxecuter l’action ou expliquer pourquoi elle est impossible en cas de refus
+
+## Example
+
+```kotlin
+// Register the permissions callback
+val requestPermissionLauncher =
+        registerForActivityResult(RequestPermission()) { isGranted ->
+            if (isGranted) // Permission is granted
+            else // Explain required permission the user denied
+    }
+
+// Checking for a permission, and requesting a permission from the user when necessary
+when {
+    ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) 
+        == PackageManager.PERMISSION_GRANTED -> {
+        // You can use the API that requires the permission.
+    }
+    shouldShowRequestPermissionRationale(...) -> {
+        // Explain to the user why your app requires this permission
+    }
+    else -> {
+        // ask for the permission
+        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+    }
+}
+```
+
 # iOS
 
 ## segues

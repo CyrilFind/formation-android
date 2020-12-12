@@ -3,16 +3,15 @@
 
 ## Afficher une image distante avec Coil
 
-- Rendez vous sur le [repository de Coil](https://coil-kt.github.io/coil/) ou et lisez le `ReadMe`
+- Rendez vous sur le [repository de Coil](https://coil-kt.github.io/coil/) et lisez le `ReadMe`
 - Ajouter les dépendances nécessaires à `app/build.gradle`
 - Ajouter une `ImageView` à coté de votre `header_text_view` qui affichera l'avatar de l'utilisateur
-- Dans `onResume`, utiliser Coil pour afficher une image de test:
+- Dans `onResume`, utiliser Coil pour afficher une image en passant une URL de votre choix (à défault vous pouvez utiliser `"https://goo.gl/gEgYUd"`)
 
 ```kotlin
-image_view.load("https://goo.gl/gEgYUd")
+image_view.load("VOTRE_URL")
 ```
 
-- Remplacez cette URL par celle d'une image de votre choix (disponible publiquement)
 - Trouvez comment afficher l'image sous la forme d'un cercle
 
 ### Nouvelle activité
@@ -42,116 +41,68 @@ image_view.load("https://goo.gl/gEgYUd")
 </LinearLayout>
 ```
 
-- Lancer cette appli quand on clique sur l'`ImageView` que vous venez de remplir avec `Coil`
+- Lancer cette `Activity` quand on clique sur l'`ImageView` que vous venez de remplir avec `Coil`
 
 ## Demander la Permission
 
 - `AndroidManifest`: ajouter la permission `android.permission.CAMERA`
-- `UserInfoActivity` : Dans `onCreate()`, ajouter un `onClickListener` à `take_picture_button`qui appele la méthode `askCameraPermissionAndOpenCamera()`
+- `UserInfoActivity` : Dans `onCreate()`, ajouter un `onClickListener` à `take_picture_button` qui appele la méthode `askCameraPermissionAndOpenCamera()`
+
+- Prenez le temps de lire et comprendre ce pavé 🤔 :
 
 ```kotlin
+private val requestPermissionLauncher =
+        registerForActivityResult(RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) openCamera()
+            else showExplanationDialog()
+        }
+
+private fun requestCameraPermission() =
+        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
 
 private fun askCameraPermissionAndOpenCamera() {
-  if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-        // l'OS dit d'expliquer pourquoi on a besoin de cette permission:
-        showDialogBeforeRequest()
-    } else {
-        // l'OS ne demande pas d'explication, on demande directement:
-        requestCameraPermission()
+    when {
+        ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED -> openCamera()
+        shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> showExplanationDialog()
+        else -> requestCameraPermission()
     }
-  } else {
-    openCamera()
-  }
 }
 
-private fun showDialogBeforeRequest() {
-    // Affiche une popup (Dialog) d'explications:
+private fun showExplanationDialog() {
     AlertDialog.Builder(this).apply {
         setMessage("On a besoin de la caméra sivouplé ! 🥺")
-        setPositiveButton(android.R.string.ok) { _, _ -> requestCameraPermission() }
+        setPositiveButton("Bon, ok") { _, _ ->
+            requestCameraPermission() 
+        }
         setCancelable(true)
         show()
     }
 }
-
-private fun requestCameraPermission() {
-    // CAMERA_PERMISSION_CODE est défini par nous et sera récupéré dans onRequestPermissionsResult
-    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE )
-}
-
-private fun openCamera() {
-    // On va utiliser un Intent implicite
-}
-
-companion object {
-    const val CAMERA_PERMISSION_CODE = 42
-}
 ```
 
-- Prenez le temps de lire et comprendre ce pavé 🤔
-- Overrider la méthode `onRequestPermissionsResult`:
-Si l'utilisateur à donné accès à la camera, utilisez `openCamera()`:
-
-```kotlin
-if (requestCode == CAMERA_PERMISSION_CODE && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED)
-```
-
-Sinon, affichez un Toast:
-
-```kotlin
-Toast.makeText(this, "Si vous refusez, on peux pas prendre de photo ! 😢", Toast.LENGTH_LONG).show()
-```
+➡️ C'est normal que le code ne marche pas tout de suite il manque des choses
 
 ## Ouvrir l'appareil photo
 
-- Il est possible d'ouvrir des `Intent` et de récuperer des informations grâce à la fonction `startActivityForResult` qui est jumelée à la fonction `onActivityResult`
+Pour l'ouverture de la caméra, on utilise la nouvelle API:
 
 ```kotlin
-private fun openCamera() {
-  val cameraIntent = Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)
-  startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
-}
+// create a temp file and get a uri for it
+private val photoUri = getContentUri("temp")
+
+// register
+private val takePicture =
+        registerForActivityResult(TakePicture()) { success ->
+            if (success) handleImage(photoUri)
+            else Toast.makeText(this, "Si vous refusez, on peux pas prendre de photo ! 😢", Toast.LENGTH_LONG).show()
+        }
+
+// use
+private fun openCamera() = takePicture.launch(photoUri)
 ```
 
-- Déclarer la constante `CAMERA_REQUEST_CODE`
-
-```kotlin
-const val CAMERA_REQUEST_CODE = 2001
-```
-
-- Implémenter la fonction `onActivityResult` qui appelera la fonction `handlePhotoTaken(data: Intent?)`:
-
-```kotlin
-private fun handlePhotoTaken(data: Intent?) {
-  val image = data?.extras?.get("data") as? Bitmap
-  // Afficher l'image ici
-  
-  val imageBody = imageToBody(image)
-  // Plus tard, on l'enverra au serveur
-}
-
-// Celle ci n'est pas très intéressante à lire
-// En gros, elle lit le fichier et le prépare pour l'envoi HTTP
-private fun imageToBody(image: Bitmap?): MultipartBody.Part {
-  val f = File(cacheDir, "tmpfile.jpg")
-  f.createNewFile()
-  try {
-      val fos = FileOutputStream(f)
-      image?.compress(Bitmap.CompressFormat.PNG, 100, fos)
-      fos.flush()
-      fos.close()
-  } catch (e: FileNotFoundException) {
-      e.printStackTrace()
-  } catch (e: IOException) {
-      e.printStackTrace()
-  }
-  val body = RequestBody.create(MediaType.parse("image/png"), f)
-  return MultipartBody.Part.createFormData("avatar", f.path, body)
-}
-```
-
-- Dans la fonction `handlePhotoTaken`, afficher la photo à l'aide de Coil
+➡️ Il manque encore une brique !
 
 ## Uploader l'image capturée
 
@@ -163,7 +114,15 @@ private fun imageToBody(image: Bitmap?): MultipartBody.Part {
 suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response<UserInfo>
 ```
 
-- Dans `handlePhotoTaken`, appelez cette fonction pour mettre à jour le serveur avec le nouvel avatar
+- Ajouter une fonction pour convertir l'image afin de pouvoir l'envoyer en HTTP:
+
+```kotlin
+// convert     
+private fun convert(uri: Uri) =
+        MultipartBody.Part.create(uri.toFile().asRequestBody())
+```
+
+- Ajoutez une méthode `handleImage` qui utilise `updateAvatar` avec et `convert`
 - Modifier la `data class UserInfo` pour ajouter un champ `avatar: String` qui est une URL renvoyée depuis le serveur
 - Enfin au chargement de l'activité, afficher l'avatar renvoyé depuis le serveur:
 
@@ -177,16 +136,17 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response<UserInfo>
 ## Uploader une image stockée
 
 - Ajouter dans le manifest la permission `android.permission.READ_EXTERNAL_STORAGE`
-- Permettez à l'utilisateur d'uploader une image qu'il avait déjà sur son téléphone
+- Permettez à l'utilisateur d'uploader une image enregistrée sur son téléphone
 
 ```kotlin
-// Pour ouvrir la gallerie:
-val galleryIntent = Intent(Intent.ACTION_PICK)
-galleryIntent.type = "image/*"
-startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
+// register
+private val pickInGallery = 
+    registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        handleImage(uri) 
+    }
 
-// Pour récupérer le bitmap dans onActivityResult
-val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, data?.data)
+// use
+pickInGallery.launch("image/*")
 ```
 
 ## Édition infos utilisateurs
@@ -198,42 +158,4 @@ val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, data?.data)
 ```kotlin
 @PATCH("users")
 suspend fun update(@Body user: UserInfo): Response<UserInfo>
-```
-
-## Enregistrer une image dans un fichier
-
-Actuellement, la qualité d'image récupérée de l'appareil photo est faible (car passée dans le code en bitmap)
-
-Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l'image dans un fichier.
-
-Vous devrez pour ça ajouter un `FileProvider` qui est un cas particulier de `ContentProvider` (qui est un des 4 types d'App Component)
-
-Suivez la procédure de la documentation Android expliquée ici: [Take photos](https://developer.android.com/training/camera/photobasics#TaskPath)
-
-Vous pouvez utiliser cette techniuqe pour éviter la string "authorities" en dur:
-
-- Dans `app/build.gradle` :
-
-```gradle
-android {
-    defaultConfig {
-       // ...
-        def addConstant = { constantName, constantValue ->
-            manifestPlaceholders += [ (constantName):constantValue] // Pour utiliser dans le manifest
-            buildConfigField "String", "${constantName}", "\"${constantValue}\"" // Pour utiliser dans le code
-        }
-        addConstant("FILE_PROVIDER_AUTHORITY", "<MY-STRING-VALUE>")
-    }
-```
-
-- Dans le Manifest:
-
-```xml
-android:authorities="${FILE_PROVIDER_AUTHORITY}"
-```
-
-- Dans le code:
-
-```kotlin
-BuildConfig.FILE_PROVIDER_AUTHORITY
 ```
