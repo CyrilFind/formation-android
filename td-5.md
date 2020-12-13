@@ -63,14 +63,14 @@ class TaskListViewModel: ViewModel() {
 // Le Fragment observe la LiveData et met à jour la liste de l'adapter:
 class TaskListFragment: Fragment() {
     val adapter = TaskListAdapter()
-    private val viewModel: TasksViewModel by viewModels() // On récupère une instance de ViewModel
+    // On récupère une instance de ViewModel
+    private val viewModel: TasksViewModel by viewModels() 
 
-    // On "abonne" le Fragment aux modifications de l'objet LiveData du ViewModel
+    // On écoute l'objet LiveData du ViewModel ici:
     override fun onViewCreated(...) {
-        viewModel.taskList.observe(this, Observer { newList ->
-            adapter.list = newList.orEmpty()
-            adapter.notifyDataSetChanged()
-        })
+        viewModel.taskList.observe(this) { newList ->
+            // utliser la liste
+        }
     }
 
     override fun onResume(...) {
@@ -78,20 +78,13 @@ class TaskListFragment: Fragment() {
     }
 }
 
-// On donne une valeur par défaut à la liste et on peut la retirer du constructeur:
+// On donne une valeur par défaut à la liste et on peut la retirer du constructeur, 
+// ou mieux: on utilise un ListAdapter (cf fin du TD 2)
 class TaskListAdapter() : ... {
     var list: List<Task> = emptyList()
 }
 ```
 
-- Vérifier que ça fonctionne
-- Pour être sur de ne jamais oublier de notifier l'`adapter`, vous pouvez retirer la ligne du fragment et utiliser une propriété observable:
-
-```kotlin
-// L'adapter se notifie automatiquement lui même à chaque fois qu'on modifie sa liste:
-var list: List<Task> by Delegates.observable(emptyList()) {_, _, _ ->
-    notifyDataSetChanged()
-}
-```
-
+- Vérifier que ça fonctionne !
 - Permettre la suppression, l'ajout et l'édition des tasks du serveur avec cette archi
+- Transformez votre `RecyclerView.Adapter` en `ListAdapter` (cf fin du TD 2) si vous ne l'avez pas fait à ce stade

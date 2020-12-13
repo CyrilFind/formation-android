@@ -1,24 +1,55 @@
 # TD 8: Améliorations
 
-Voici des sujets d'  à implémenter de façon autonome:
+Sujets à implémenter de façon autonome:
 
-Lisez bien la documentation avant de commencer et/ou suivez les codelabs en adaptant à votre projet car il n'y a pas d'étapes pour vous guider.
+- Lisez bien la documentation avant de commencer et/ou suivez les codelabs en adaptant à votre projet car il n'y a pas d'étapes pour vous guider.
+- En revanche n'hésitez pas à poser des questions !
+- Gardez un commit "stable" avant de commencer
+- Le but est d'aller le plus loin possible mais c'est normal si vous ne terminez pas certains sujets
+- Le but est surtout de présenter à vos camarades ce que vous avez appris et comment le mettre en place
 
-En revanche je suis là pour répondre à toutes vos questions !
+**Forme:** démo rapide de votre sujet d'exploration et présentation sous forme de "retour d'expérience" avec quelques slides
+**Temps:** en ~10 min
 
-## Deep linking
+## 1 - Clean Archi et Injection de dépendance
+
+Utilisez `Koin` pour faire de la "Dependency Injection" afin de s'approcher d'une "Clean Archi":
+
+- Commencer par exposer les éléments de la classe `Api`
+- Injectez les `WebService` dans les `Repository`
+- Injectez les `Repository` dans les `ViewModels`
+- Présentez les `Repository` à travers des `interface`
+- refactorisez pour placer des `UseCase` ou `Interactor` entre les `ViewModel` et les `Repository`
+
+**Documentation:**
+
+- [Koin](https://github.com/InsertKoinIO/koin)
+- [Clean Archi (Uncle bob)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- [Clean Archi on Android](https://fernandocejas.com/2018/05/07/architecting-android-reloaded)
+- [Projet boilerplate d'exemple](https://github.com/bufferapp/clean-architecture-koin-boilerplate)
+
+## 2 - Navigation
+
+### Safe Args
+
+- Utilisez `SafeArgs` pour passer les données d'une activité à l'autre (au lieu de `startActivityForResult`
+
+### Deeplinks
 
 Ajouter la possibilité d'ouvrir l'application à partir de certaines URI:
 
 - Ouvrir l'activité par défaut avec "<https://android-tasks-api.herokuapp.com/">
-- Ouvrir l'activité d'édition de la tache avec "<https://android-tasks-api.herokuapp.com/tasks/ID_DE_LA_TACHE">
+- Ouvrir l'édition de tâche avec "<https://android-tasks-api.herokuapp.com/tasks/ID_DE_LA_TACHE">
 
-### Documentation
+**Documentation:**
 
+- [SafeArgs](https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args)
 - [Deep Link](https://developer.android.com/training/app-links/deep-linking)
 - [Deep link Navigation](https://developer.android.com/guide/navigation/navigation-deep-link)
 
-## PreferenceScreen
+## 3 - Preferences
+
+### PreferenceScreen
 
 Ajouter un menu et une page "Settings" en utilisant un `PreferenceScreen`:
 
@@ -27,44 +58,51 @@ Ajouter un menu et une page "Settings" en utilisant un `PreferenceScreen`:
   - la couleur de la police
   - La couleur de l'`AppBar`
   - le titre dans l'`AppBar`
-  - ...
+
+### Preference Data Store
+
+Remplacez l'utilisation des `SharedPreferences` par la nouvelle lib officielle: "Preference Datastore"
 
 **Documentation:**
 
 - [Menus](https://developer.android.com/guide/topics/ui/menus)
 - [Settings](https://developer.android.com/guide/topics/ui/settings.html)
+- [Datastore documentation](https://developer.android.com/topic/libraries/architecture/datastore#preferences-datastore)
+- [Datastore codelab](https://developer.android.com/codelabs/android-preferences-datastore#0)
 
-## Data-Binding
+## 4 - Data-Binding
 
 Utiliser le data-binding pour afficher et éditer les données de l'application directement dans les layouts:
 
 - Commencer par les infos user affichées dans le fragment principal
 - Faire de même dans `TaskViewHolder`
-- Permettre d'éditer directement dans `TaskActivity`
+- Permettre d'éditer directement dans les autres écrans
+- utilisez un "custom binding adapter" pour passer la liste de tâches directement
 
 **Documentation:**
 
 - [Data Binding](https://developer.android.com/topic/libraries/data-binding) (affichage)
 - [Two Way Data Binding](https://developer.android.com/topic/libraries/data-binding/two-way) (édition)
+- [Databinding Adapter](https://developer.android.com/topic/libraries/data-binding/binding-adapters)
 
-## Pagination
+## 5 - Pagination
 
-Utiliser une PagedList pour afficher une liste infinie de tâche de façon efficace à la place de la RecyclerView actuelle qui n'affiche que la première page retournée par le serveur.
+Utiliser la lib "Paging 3" pour afficher une liste infinie de tâche de façon efficace dans votre RecyclerView qui n'affiche pour l'instant que la première page retournée par le serveur.
 
 Pour rappel, il y a 2 parametres dans l'API permettant de récuperer les tâches: `per_page` et `page`
 
 **Documentation:**
 
-- [Paging Library](https://developer.android.com/topic/libraries/architecture/paging)
+- [Paging 3 Library](https://developer.android.com/topic/libraries/architecture/paging/v3-overview)
 - [Tasks API](https://android-tasks-api.herokuapp.com/api-docs/)
 
-## Notifications et AlarmManager
+## 6 - Notifications et AlarmManager
 
-Ajouter une fonctionnalité "Rappel" à vos tâches à l'aide de la date `due_date` stockée sur le serveur:
+Ajouter une fonctionnalité "Rappel" à vos tâches à l'aide du champ date `due_date` stockée sur le serveur:
 
 - ajouter un `DatePicker` et un `TimePicker` ou bien un `DatePickerDialog` et `TimePickerDialog` pour éditer cette date
 - Utiliser `AlarmManager` pour envoyer une notification 5 minutes avant la `due_date`
-- Ajouter un `PendingIntent` qui ouvre `TaskActivity` avec le détail de la tâche
+- Ajouter un `PendingIntent` qui ouvre l'édition de la tâche concernée
 - Ajouter une action supplémentaire `Mark as Done` dans la notification qui supprime la `Task` directement
 
 **Documentation:**
@@ -75,13 +113,14 @@ Ajouter une fonctionnalité "Rappel" à vos tâches à l'aide de la date `due_da
 - [Notifications](https://developer.android.com/guide/topics/ui/notifiers/notifications)
 - [Notifications Codelab](https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-notifications/index.html?index=..%2F..advanced-android-kotlin-training#0)
 
-## Work Manager
+## 7 - Work Manager
 
 Implémenter des `Worker` pour executer des tâches de fond sur les images et utiliser `WorkManager` pour les exécuter de façon efficace et avec les contraintes nécessaires (ex: réseau disponible):
 
 - Commencer par la compression et l'upload de l'image
 - Ajouter un Worker appliquant un filtre sépia
 - Afficher dans l'app ou dans une notification l'état de progrès du travail
+- Faire en sorte que l'upload reprenne quand le réseau est coupé / reconnecté
   
 **Documentation:**
 
@@ -90,7 +129,7 @@ Implémenter des `Worker` pour executer des tâches de fond sur les images et ut
 - [Tuto RayWanderlitch](https://www.raywenderlich.com/6040-workmanager-tutorial-for-android-getting-started)
 - [Article ProAndroidDev](https://proandroiddev.com/exploring-the-stable-android-jetpack-workmanager-82819d5d7c34)
 
-## Room
+## 8 - Room
 
 Implémenter un cache des données serveur avec `Room`:
 
@@ -102,13 +141,14 @@ Implémenter un cache des données serveur avec `Room`:
 - [Codelab "Room with a view"](https://codelabs.developers.google.com/codelabs/android-room-with-a-view-kotlin) (sur Room de façon générale)
 - [Codelab "Repository"](https://codelabs.developers.google.com/codelabs/kotlin-android-training-repository) (sur la mise en place d'un Cache avec Room)
 
-## Tests et injection de dépendances
+## 9 - Tests
 
 - Créer des tests unitaires
+- vérifiez votre "code coverage"
 - Créer des tests UI avec Espresso sur les différentes features de l'applications:
   - Affichage de la liste des tâches
   - Résultat des actions sur les boutons: ajout, suppression, ...
-  - Mocker les appels réseaux (avec l'injection de dépendances)
+  - Mocker les appels réseaux
 
 **Documentation:**
 
