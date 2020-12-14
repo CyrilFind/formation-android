@@ -88,18 +88,17 @@ private fun showExplanationDialog() {
 Pour l'ouverture de la caméra, on utilise la nouvelle API:
 
 ```kotlin
-// create a temp file and get a uri for it
-private val photoUri = getContentUri("temp")
-
 // register
-private val takePicture =
-        registerForActivityResult(TakePicture()) { success ->
-            if (success) handleImage(photoUri)
-            else Toast.makeText(this, "Si vous refusez, on peux pas prendre de photo ! 😢", Toast.LENGTH_LONG).show()
+private val takePicture = registerForActivityResult(TakePicturePreview()) { bitmap ->
+        val tmpFile = File.createTempFile("avatar", "jpeg")
+        tmpFile.outputStream().use {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
         }
+        hanfleImage(tmpFile.toUri())
+    }
 
 // use
-private fun openCamera() = takePicture.launch(photoUri)
+private fun openCamera() = takePicture.launch()
 ```
 
 ➡️ Il manque encore une brique !
@@ -119,7 +118,11 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response<UserInfo>
 ```kotlin
 // convert     
 private fun convert(uri: Uri) =
-        MultipartBody.Part.create(uri.toFile().asRequestBody())
+    MultipartBody.Part.createFormData(
+        name = "avatar",
+        filename = "temp.jpeg",
+        body = uri.toFile().asRequestBody()
+    )
 ```
 
 - Ajoutez une méthode `handleImage` qui utilise `updateAvatar` avec et `convert`
@@ -133,10 +136,42 @@ private fun convert(uri: Uri) =
     }
 ```
 
-## Uploader une image stockée
+## Accéder aux fichiers locaux
+
+Actuellement, la qualité d'image récupérée de l'appareil photo est faible (car passée dans le code en bitmap)
+
+Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l'image dans un fichier.
+
+Vous devrez pour ça ajouter un `FileProvider` qui est un cas particulier de `ContentProvider` (qui est un des 4 types d'App Component)
+
+Suivez la procédure de la documentation Android expliquée ici: [Take photos](https://developer.android.com/training/camera/photobasics#TaskPath)
+
+- Vous pourrez ensuite utiliser:
+
+```kotlin
+// create a temp file and get a uri for it
+private val photoUri = 
+    FileProvider.getUriForFile(
+        this,
+        BuildConfig.APPLICATION_ID +".fileProvider",
+        File.createTempFile("avatar", "jpeg")
+    )
+
+//register
+private val takePicture =
+        registerForActivityResult(TakePicture()) { success ->
+            if (success) handleImage(photoUri)
+            else Toast.makeText(this, "Si vous refusez, on peux pas prendre de photo ! 😢", Toast.LENGTH_LONG).show()
+        }
+// use
+private fun openCamera() = takePicture.launch()
+```
 
 - Ajouter dans le manifest la permission `android.permission.READ_EXTERNAL_STORAGE`
-- Permettez à l'utilisateur d'uploader une image enregistrée sur son téléphone
+
+## Uploader une image stockée
+
+Permettez à l'utilisateur d'uploader une image enregistrée sur son téléphone
 
 ```kotlin
 // register
