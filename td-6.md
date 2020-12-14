@@ -81,7 +81,7 @@ private fun showExplanationDialog() {
 }
 ```
 
-➡️ C'est normal que le code ne marche pas tout de suite il manque des choses
+➡️ C'est normal que le code ne marche pas tout de suite, il manque des choses
 
 ## Ouvrir l'appareil photo
 
@@ -94,7 +94,7 @@ private val takePicture = registerForActivityResult(TakePicturePreview()) { bitm
         tmpFile.outputStream().use {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
         }
-        hanfleImage(tmpFile.toUri())
+        handleImage(tmpFile.toUri())
     }
 
 // use
@@ -121,12 +121,12 @@ private fun convert(uri: Uri) =
     MultipartBody.Part.createFormData(
         name = "avatar",
         filename = "temp.jpeg",
-        body = uri.toFile().asRequestBody()
+        body = contentResolver.openInputStream(uri)!!.readBytes().toRequestBody()
     )
 ```
 
-- Ajoutez une méthode `handleImage` qui utilise `updateAvatar` avec et `convert`
-- Modifier la `data class UserInfo` pour ajouter un champ `avatar: String` qui est une URL renvoyée depuis le serveur
+- Ajoutez une méthode `handleImage` qui utilise `updateAvatar` avec `convert`
+- Modifier la `data class UserInfo` pour ajouter un champ `avatar: String` (avec une valeur par défaut):  c'est une URL qui sera renvoyée depuis le serveur
 - Enfin au chargement de l'activité, afficher l'avatar renvoyé depuis le serveur:
 
 ```kotlin
@@ -140,31 +140,56 @@ private fun convert(uri: Uri) =
 
 Actuellement, la qualité d'image récupérée de l'appareil photo est faible (car passée dans le code en bitmap)
 
-Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l'image dans un fichier.
+Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l'image dans un fichier...mais c'est un peu compliqué:
 
-Vous devrez pour ça ajouter un `FileProvider` qui est un cas particulier de `ContentProvider` (qui est un des 4 types d'App Component)
+Vous devrez pour ça ajouter un `FileProvider` dans `AndroidMAnifest.xml`:
 
-Suivez la procédure de la documentation Android expliquée ici: [Take photos](https://developer.android.com/training/camera/photobasics#TaskPath)
+```xml
+<provider
+    android:name="androidx.core.content.FileProvider"
+    android:authorities="VOTRE.PACKAGE.NAME.fileprovider"
+    android:exported="false"
+    android:grantUriPermissions="true">
+    <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/file_paths" />
+</provider>
+```
+
+Créez `app/src/main/res/xml/file_paths.xml`:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<paths >
+    <external-path name="external_files" path="."/>
+</paths>
+```
 
 - Vous pourrez ensuite utiliser:
 
 ```kotlin
 // create a temp file and get a uri for it
-private val photoUri = 
+private val photoUri by lazy {
     FileProvider.getUriForFile(
         this,
-        BuildConfig.APPLICATION_ID +".fileProvider",
-        File.createTempFile("avatar", "jpeg")
-    )
+        BuildConfig.APPLICATION_ID +".fileprovider",
+        File.createTempFile("avatar", ".jpeg", externalCacheDir)
 
-//register
-private val takePicture =
-        registerForActivityResult(TakePicture()) { success ->
-            if (success) handleImage(photoUri)
-            else Toast.makeText(this, "Si vous refusez, on peux pas prendre de photo ! 😢", Toast.LENGTH_LONG).show()
-        }
+    )
+}
+
+// register
+private val takePicture = registerForActivityResult(TakePicture()) { success ->
+    if (success) handleImage(photoUri)
+    else Toast.makeText(
+        this,
+        "Erreur ! 😢",
+        Toast.LENGTH_LONG
+    ).show()
+}
+
 // use
-private fun openCamera() = takePicture.launch()
+private fun openCamera() = takePicture.launch(photoUri)
 ```
 
 - Ajouter dans le manifest la permission `android.permission.READ_EXTERNAL_STORAGE`
@@ -176,9 +201,7 @@ Permettez à l'utilisateur d'uploader une image enregistrée sur son téléphone
 ```kotlin
 // register
 private val pickInGallery = 
-    registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        handleImage(uri) 
-    }
+    registerForActivityResult(GetContent()) { ... }
 
 // use
 pickInGallery.launch("image/*")
