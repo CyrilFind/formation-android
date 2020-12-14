@@ -181,11 +181,7 @@ private val photoUri by lazy {
 // register
 private val takePicture = registerForActivityResult(TakePicture()) { success ->
     if (success) handleImage(photoUri)
-    else Toast.makeText(
-        this,
-        "Erreur ! 😢",
-        Toast.LENGTH_LONG
-    ).show()
+    else Toast.makeText(this, "Erreur ! 😢", Toast.LENGTH_LONG).show()
 }
 
 // use

@@ -105,6 +105,21 @@ Ajouter une fonctionnalité "Rappel" à vos tâches à l'aide du champ date `due
 - Ajouter un `PendingIntent` qui ouvre l'édition de la tâche concernée
 - Ajouter une action supplémentaire `Mark as Done` dans la notification qui supprime la `Task` directement
 
+**Aide:** Pour récupérer une date du serveur vous aurez besoin d'utiliser l'annotation `@Serializable(with = DateSerializer::class)` qui indique d'utiliser un serializer custom comme celui ci:
+
+```kotlin
+@Serializer(forClass = Date::class)
+object DateSerializer : KSerializer<Date> {
+    private val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US)
+
+    override fun serialize(encoder: Encoder, value: Date) =
+        encoder.encodeString(formatter.format(value))
+
+    override fun deserialize(decoder: Decoder): Date =
+        formatter.parse(decoder.decodeString())
+}
+```
+
 **Documentation:**
 
 - [Alarms](https://developer.android.com/training/scheduling/alarms)
