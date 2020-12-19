@@ -147,7 +147,7 @@ Vous devrez pour ça ajouter un `FileProvider` dans `AndroidMAnifest.xml`:
 ```xml
 <provider
     android:name="androidx.core.content.FileProvider"
-    android:authorities="VOTRE.PACKAGE.NAME.fileprovider"
+    android:authorities="${applicationId}.fileprovider"
     android:exported="false"
     android:grantUriPermissions="true">
     <meta-data

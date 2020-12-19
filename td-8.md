@@ -130,17 +130,20 @@ object DateSerializer : KSerializer<Date> {
 
 ## 7 - Work Manager
 
-Implémenter des `Worker` pour executer des tâches de fond sur les images et utiliser `WorkManager` pour les exécuter de façon efficace et avec les contraintes nécessaires (ex: réseau disponible):
+Implémenter des `CoroutineWorker` pour executer des tâches de fond sur les images et utiliser `WorkManager` pour les exécuter de façon efficace et avec les contraintes nécessaires (ex: réseau disponible):
 
-- Commencer par la compression et l'upload de l'image
-- Ajouter un Worker appliquant un filtre sépia
-- Afficher dans l'app ou dans une notification l'état de progrès du travail
+- Créer un Worker appliquant un filtre sépia (local)
+- Créer un Worker pour compresser le fichier (local)
+- Créer un Worker pour uploader l'image (réseau)
+- Implémenter une "chaîne" de Worker pour compresser puis uploader
+- Afficher dans l'app et/ou dans une notification l'état de progrès du travail
 - Faire en sorte que l'upload reprenne quand le réseau est coupé / reconnecté
   
 **Documentation:**
 
 - [WorkManager: Getting Started](https://developer.android.com/topic/libraries/architecture/workmanager/basics.html)
 - [CoroutineWorker](https://developer.android.com/topic/libraries/architecture/workmanager/advanced/coroutineworker)
+- [Chaining](https://developer.android.com/topic/libraries/architecture/workmanager/how-to/chain-work)
 - [Tuto RayWanderlitch](https://www.raywenderlich.com/6040-workmanager-tutorial-for-android-getting-started)
 - [Article ProAndroidDev](https://proandroiddev.com/exploring-the-stable-android-jetpack-workmanager-82819d5d7c34)
 
