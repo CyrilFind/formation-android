@@ -173,7 +173,7 @@ data class UserInfo(
   val firstName: String,
   @SerialName("lastname")
   val lastName: String
-)
+) : java.io.Serializable
 ```
 
 ### Affichage
