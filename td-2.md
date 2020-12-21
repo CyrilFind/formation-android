@@ -152,7 +152,7 @@ private val taskList = listOf(
 ```
 
 - Corriger votre code en conséquence afin qu'il compile de nouveau
-- Enfin afficher la description en dessous du titre
+- Enfin afficher la description en dessous du titre en ajoutant une nouvelle `TextView` 
 - Admirez avec fierté le travail accompli 🤩
 
 ## Ajout de tâche simple
