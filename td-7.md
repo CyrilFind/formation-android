@@ -172,8 +172,9 @@ Ajouter un bouton pour se déconnecter qui efface le token dans les `SharedPrefe
 
 Suivez les mêmes étapes pour remplacer la navigation des TDs précédents avec des `Intent` explicites par cette nouvelle navigation:
 
-- Changez le name du `<fragment>` dans `MainActivity` par un `NavHostFragment`
-- Assignez lui un nouveau graphe de navigation (qui sera très simple): `main_nav_graph` (vous pouvez renommer l'ancien en `authentication_nav_graph`)
-- Transformez `TaskActivity` en `TaskFragment` en adaptant les `override`
+- Remplacez le `<fragment>` dans `MainActivity` par le `<NavHostFragment>` de `AuthenticationActivity` et supprimmez `AuthenticationActivity`
+- Ajoutez `TaskListFragment` au graphe de navigation
+- Transformez `TaskActivity` en `TaskFragment` en adaptant les `override` et ajoutez le au graphe
 - Faites pareil pour `UserInfoActivity`
-- Vous pouvez simplifier certaines choses en utilisant `by activityViewModels()` ou `by navGraphViewModels(R.id.nav_graph)` au lieu de `by viewModels()` afin de partager une l'instance de viewmodel au sein des Fragments d'une même Activity
+- Pour communiquer entre Fragments vous pouvez utiliser `savedStateHandle` ([exemple](https://stackoverflow.com/a/62320979/3466492))
+- Vous pouvez aussi utiliser `by activityViewModels()` ou `by navGraphViewModels(R.id.nav_graph)` au lieu de `by viewModels()` afin de partager une instance de viewmodel au sein des Fragments d'une même Activity: dans ce cas pas besoind e communiquer entre fragments mais directement avec le VM

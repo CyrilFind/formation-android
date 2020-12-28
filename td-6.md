@@ -142,7 +142,7 @@ Actuellement, la qualité d'image récupérée de l'appareil photo est faible (c
 
 Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l'image dans un fichier...mais c'est un peu compliqué:
 
-Vous devrez pour ça ajouter un `FileProvider` dans `AndroidMAnifest.xml`:
+Vous devrez pour ça ajouter un `FileProvider` dans `AndroidManifest.xml`:
 
 ```xml
 <provider
