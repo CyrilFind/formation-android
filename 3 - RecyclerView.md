@@ -56,9 +56,9 @@ class WordListAdapter(val wordList: Word) : RecyclerView.Adapter<WordListAdapter
    }
 
    inner class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    fun bind(word: Word) {
-      // Fill a cell with data
-    }
+      fun bind(word: Word) {
+         // Fill a cell with data
+      }  
    }
 }
 
@@ -72,10 +72,10 @@ recyclerView.layoutManager = LinearLayoutManager(context)
 
 ```kotlin
 
-object WordsDiffCallback : DiffUtil.ItemCallback<ChannelUiModel>() {
-   override fun areItemsTheSame(oldItem: ChannelUiModel, newItem: ChannelUiModel) =
+object WordsDiffCallback : DiffUtil.ItemCallback<Word>() {
+   override fun areItemsTheSame(oldItem: Word, newItem: Word) =
       // are they the same "entity" ? (usually same id)
-   override fun areContentsTheSame(oldItem: ChannelUiModel, newItem: ChannelUiModel) =
+   override fun areContentsTheSame(oldItem: Word, newItem: Word) =
       // do they have the same data ? (content)
 }
 

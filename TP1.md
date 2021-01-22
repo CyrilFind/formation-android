@@ -1,4 +1,4 @@
-# TD 2 - RecyclerView
+# TP 1 - RecyclerView
 
 *Objectif*: implémenter un écran affichant une liste de tâches et permettre de créer des nouvelles tâches.
 
@@ -8,15 +8,16 @@
 
 ## Créer un projet
 
-Vous allez créer un unique projet "fil rouge" que vous mettrez à jour au fur à mesure des TDs:
+Vous allez créer un unique projet "fil rouge" que vous mettrez à jour au fur à mesure des TPs:
 
 - Utilisez l'IDE pour créer un projet "Empty Activity"
-- Donnez lui un nom personnalisé (ex: ToDoNicolasAlexandre)
+- Donnez lui un nom personnalisé comme "ToDoNicolasAlexandre" (⚠️ pas "TP1" SVP ⚠️)
 - Choisissez un package name (ex: `com.nicoalex.todo`)
 - Language "Kotlin"
 - Minimum API Level: API 23, Android 6.0 (Marshmallow)
 - Initialisez un projet git et faites un commit initial
 - Committez régulièrement: à chaque fois que vous avez quelque chose qui compile et qui fonctionne.
+- Faites au minimum un commit à la fin de chaque TP (et taggez ce commit avec le numéro du TP !)
 
 ## Ajout de Dépendances
 
@@ -53,6 +54,8 @@ class TaskListFragment : Fragment() {}
 ```kotlin
 val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 ```
+
+⚠️ Si vous executez du code *avant* cette ligne `inflate`, il va crasher ou ne rien faire car votre vue n'existera pas encore
 
 - Remplacez la balise `<TextView.../>` par une balise `<fragment.../>` dans votre activité principale:
   - Utilisez le glisser-déplacé en mode Design ou bien l'autocomplétion en mode Text pour spécifier l'attribut `android:name`: il faut donner la classe de Fragment qui sera affichée dans cette balise (ex: `"com.nicoalex.todo.tasklist.TaskListFragment"`)
@@ -103,15 +106,12 @@ inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 </LinearLayout>
 ```
 
-- Dans `TaskListFragment > onViewCreated`, récupérer la `RecyclerView` du layout en utilisant un "synthetic" ou un `findViewbyId`:
+- Dans `TaskListFragment`, overridez `onViewCreated` pour y récupérer la `RecyclerView` du layout en utilisant un `findViewbyId`:
 
 ```kotlin
     // Pour une [RecyclerView] ayant l'id "recycler_view":
     val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
     recyclerView.layoutManager = ...
-
-    // En utilisant les synthetics, on écrit juste l'id directement (c'est magique ✨):
-    recycler_view.layoutManager = ...
 ```
 
 - Donnez lui un `layoutManager`: `LinearLayoutManager(activity)`
@@ -172,14 +172,17 @@ Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}")
 
 - Dans cette lambda, **notifier l'adapteur** (aidez vous des suggestions de l'IDE) pour que votre modification s'affiche
 
-## Finalisation
+## ListAdapter
 
-Recherchez la documentation pour chaque étape et n'hésitez pas à poser des questions:
+Améliorer l'implémentation de `TasksListAdapter` en héritant de `ListAdapter` au lieu de `RecyclerView.Adapter` (cf [slides](./3%20-%20RecyclerView.pdf))
 
-➡️ Simplifier l'implémentation de `TasksListAdapter` en héritant de `ListAdapter` au lieu de `RecyclerView.Adapter`
+⚠️ Comme on utilise une `MutableList` (ce qu'on ne fait pas en général), il faut envoyer une nouvelle instance à chaque fois pour que le `ListAdapter` puisse les comparer, utilisez `toList()` pour cela: `adapter.submitList(taskList.toList())`
 
-## Aller plus loin
+## ViewBinding
 
-- Utiliser du `ViewBinding` à la place des "synthetics" ou des `findViewByIds` et pour `inflate` les différents layouts
+Utiliser le [`ViewBinding`](https://developer.android.com/topic/libraries/view-binding) pour `inflate` les différents layouts et éviter les `findViewByIds` (cf [slides](./1%20-%20Introduction.pdf))
+
+## Databinding
+
 - Utiliser du `DataBinding` pour également `bind`-er les tasks directement dans le XML
 - Créer un `BindingAdapter` pour également databinder la liste de tâches

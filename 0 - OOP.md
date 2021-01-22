@@ -6,6 +6,12 @@ marp: true
 
 # OOP: Object Oriented Programming
 
+## Vocabulary
+
+* Type, Primitive, Class, Instance, Generics
+* Variable, Function, Property, Method
+* Inherit, Override, Implement, Abstract
+
 ## Principles
 
 * Encapsulation
@@ -15,7 +21,9 @@ marp: true
 
 ## Encapsulation
 
-![invert](assets/encapsulation.png)
+Hide the internal state
+
+![invert bg right:65% 100%](assets/encapsulation.png)
 
 ## Encapsulation: Example
 
@@ -24,7 +32,8 @@ class Cat {
     private var lives = 9
 
     public fun die() {
-        lives--
+        if (lives > 0) lives--
+        else print("Meowargh 💀")
     }
 }
 
@@ -32,30 +41,34 @@ class Cat {
 
 ## Abstraction
 
-![invert](assets/abstraction.png)
+Expose high level handles
+
+![invert bg right:65% 100%](assets/abstraction.png)
 
 ## Abstraction Example
 
 ```kotlin
 class CoffeeMachine {
-
     private var isWaterHot = false
-    // ...
-
-    private fun complicatedProcess() {
-        // ...
-    }
+    private fun makeEspresso() { ... }
+    private fun makeLatte() { ... }
+    //...
 
     public fun makeCoffee(coffeeType: CoffeeType) {
-        complicatedProcess()
-        // ...
+        when(coffeeType) {
+            Espresso -> makeEspresso()
+            Latte -> makeLatte()
+            //...
+        }
     }
 }
 ```
 
 ## Inheritance
 
-![invert](assets/inheritance.png)
+Extend an other Class
+
+![invert bg right:65% 100%](assets/inheritance.png)
 
 ## Inheritance Example
 
@@ -67,6 +80,7 @@ class Animal {
 }
 
 class Cat : Animal {
+    var isBored = false
     override fun eat() {
         if (isBored) {
             super.eat()
@@ -75,24 +89,23 @@ class Cat : Animal {
 }
 ```
 
-## Polymorphism
-
-![invert](assets/polymorphism.png)
-
 ## Interface
 
 ```kotlin
 interface FriendsDataSource {
-    fun getFriends() : List<Friend
+    val url: String
+    fun getFriends() : List<Friend>
 }
 
 class TwitterFriendsDataSource : FriendsDataSource {
+    override val url = "https://twitter.com/friends"
     override fun getFriends() : List<Friend> {
         // request from Twitter
     }
 }
 
 class FacebookFriendsDataSource : FriendsDataSource {
+    override val url = "https://facebook.com/friends"
     override fun getFriends() : List<Friend> {
         // request from Facebook
     }
@@ -103,21 +116,42 @@ class FacebookFriendsDataSource : FriendsDataSource {
 
 ```kotlin
 abstract class FriendsDataSource {
-    fun getFriends() : List<Friend {
+    val url: String
+    fun getFriends() : List<Friend> {
         return emptyList()
     }
 }
 
 class TwitterFriendsDataSource : FriendsDataSource {
+    override val url = "https://twitter.com/friends"
     override fun getFriends() : List<Friend> {
         // request from Twitter
     }
 }
 
 class FacebookFriendsDataSource : FriendsDataSource {
+    override val url = "https://facebook.com/friends"
     override fun getFriends() : List<Friend> {
         // request from Facebook
     }
+}
+```
+
+## Polymorphism
+
+Use the same code for different types
+
+![invert bg right:65% 100%](assets/polymorphism.png)
+
+## Polymorphism example
+
+```kotlin
+fun calculateTotalSurface(figures: List<Figure>) : Int {
+    var totalSurface = 0
+    figures.forEach { figure ->
+        totalSurface += figure.calculateSurface()
+    }
+    return totalSurface
 }
 ```
 

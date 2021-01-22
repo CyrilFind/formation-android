@@ -1,14 +1,16 @@
-# TD 8: Améliorations
+# TP 7: Sujets Exploratoires
 
 Sujets à implémenter de façon autonome:
 
 - Lisez bien la documentation avant de commencer et/ou suivez les codelabs en adaptant à votre projet car il n'y a pas d'étapes pour vous guider.
 - En revanche n'hésitez pas à poser des questions !
-- Gardez un commit "stable" avant de commencer
+- Faites cette partie sur une branche à part de votre rendu principal
 - Le but est d'aller le plus loin possible mais c'est normal si vous ne terminez pas certains sujets
-- Le but est surtout de présenter à vos camarades ce que vous avez appris et comment le mettre en place
 
-**Forme:** démo rapide de votre sujet d'exploration et présentation sous forme de "retour d'expérience" avec quelques slides
+**But:** Expliquer à vos camarades comment implémenter votre sujet et les avantages/inconvénients, les difficultés/les raccourcis que vous avez trouvés
+
+**Forme:** démo très rapide et présentation sous forme de "retour d'expérience" avec du code et des slides
+
 **Temps:** en ~10 min
 
 ## 1 - Clean Archi et Injection de dépendance
@@ -55,7 +57,7 @@ Ajouter un menu et une page "Settings" en utilisant un `PreferenceScreen`:
 
 - Ajout un OptionsMenu menu pour y acceder
 - Permettre de changer l'aspect de l'app:
-  - la couleur de la police
+  - la couleur de la police ???
   - La couleur de l'`AppBar`
   - le titre dans l'`AppBar`
 
@@ -70,26 +72,29 @@ Remplacez l'utilisation des `SharedPreferences` par la nouvelle lib officielle: 
 - [Datastore documentation](https://developer.android.com/topic/libraries/architecture/datastore#preferences-datastore)
 - [Datastore codelab](https://developer.android.com/codelabs/android-preferences-datastore#0)
 
-## 4 - Data-Binding
+## 4 - DataBinding
 
-Utiliser le data-binding pour afficher et éditer les données de l'application directement dans les layouts:
+Utiliser le data-binding pour afficher et éditer les données de l'application directement dans les layouts XML:
 
 - Commencer par les infos user affichées dans le fragment principal
 - Faire de même dans `TaskViewHolder`
-- Permettre d'éditer directement dans les autres écrans
+- Faire de même dans les autres écrans
+- Dans les écrans comme ajout/édition, userinfo, login/signup, utilisez le "two-way databinding" afin de remonter les modifications de données effectuées par l'utilisateur
 - utilisez un "custom binding adapter" pour passer la liste de tâches directement
 
 **Documentation:**
 
-- [Data Binding](https://developer.android.com/topic/libraries/data-binding) (affichage)
-- [Two Way Data Binding](https://developer.android.com/topic/libraries/data-binding/two-way) (édition)
-- [Databinding Adapter](https://developer.android.com/topic/libraries/data-binding/binding-adapters)
+- [DataBinding](https://developer.android.com/topic/libraries/data-binding) (affichage)
+- [Two-Way DataBinding](https://developer.android.com/topic/libraries/data-binding/two-way) (édition)
+- [DataBinding Adapter](https://developer.android.com/topic/libraries/data-binding/binding-adapters)
 
 ## 5 - Pagination
 
 Utiliser la lib "Paging 3" pour afficher une liste infinie de tâche de façon efficace dans votre RecyclerView qui n'affiche pour l'instant que la première page retournée par le serveur.
 
 Pour rappel, il y a 2 parametres dans l'API permettant de récuperer les tâches: `per_page` et `page`
+
+comment refresh ??
 
 **Documentation:**
 
@@ -167,6 +172,11 @@ Implémenter un cache des données serveur avec `Room`:
   - Affichage de la liste des tâches
   - Résultat des actions sur les boutons: ajout, suppression, ...
   - Mocker les appels réseaux
+
+<!-- 
+## 10 - Jetpack compose ?
+## 11 - style
+-->
 
 **Documentation:**
 

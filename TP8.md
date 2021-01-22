@@ -1,8 +1,8 @@
-# Projet en Autonomie
+# TP 8: Autonomie
 
 ## But
 
-Réutiliser ce que vous avez appris en TD pour vous l'approprier.
+Réutiliser ce que vous avez appris en TP pour vous l'approprier.
 
 ## Sujet
 
@@ -19,12 +19,12 @@ Créer une app "Pokédex", avec les fonctionnalités suivantes:
   - `GET https://pokeapi.coapi/v2/pokemon-species/27`
 - [Paging Library](https://developer.android.com/topic/libraries/architecture/paging)
 - [Room Database](https://developer.android.com/topic/libraries/architecture/room)
-- Les slides et TDs précédents
+- Les slides et TPs précédents
 
 ## Instructions
 
-- Nommez le projet et le package en fonction de votre binome (cf [TD 2](./td-2.md))
-- Utilisez git tout de suite et commitez régulièrement pour pouvoir toujours revenir à une version qui marche ;) (cf [TD 2](./td-2.md))
+- Nommez le projet et le package en fonction de votre binome (cf [TP 1](./TP1.md))
+- Utilisez git tout de suite et commitez régulièrement pour pouvoir toujours revenir à une version qui marche ;) (cf [TP 1](./TP1.md))
 - Essayez de coder "proprement" (pour la syntaxe: `cmd + alt + L`)
 - Vous pouvez vous mettre par 2 (mais ne vous faites trop carry !)
 
@@ -111,7 +111,7 @@ pokemonWebService.getPokemons(
   - soit en RAM c'est à dire dans une variable de type `Map<Int, Pokemon>` dans un repository par ex, (plus simple)
   - soit dans une BD locale [Room](https://developer.android.com/topic/libraries/architecture/room) (plus compliqué mais de meilleur qualité car la donnée survie au kill de l'app)
 - Ajoutez la possibilité de "cocher" les espèces attrapées (vous pouvez dans l'ordre de de difficulté et de qualité: en RAM, dans les SharedPreference, ou dans Room)
-- la plupart des améliorations du [TD 8](./td-8.md) peuvent aussi s'appliquer
+- la plupart des améliorations des [sujets exploratoires](./sujets_explo.md) peuvent aussi s'appliquer
 - Ajoutez des fonctionnalités si vous avez des idées, par ex:
   - Une barre de recherche
   - Un filtre par génération

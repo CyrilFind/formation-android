@@ -1,4 +1,4 @@
-# TD 1 - Introduction à Android
+# TP 0 - Introduction
 
 ## Avant de commencer
 
@@ -14,12 +14,12 @@ Conseils:
 
 ## Kotlin Koans
 
-Suivre les exercices des [Kotlin Koans](https://try.kotlinlang.org) dans Android Studio (en ajoutant le plugin "Edutools" puis `File > Learn and Teach > Browse Courses > Kotlin Koans`) ou sur le site [try.kotl.in](https://try.kotl.in) (mais vous n'aurez pas l'auto-complétion)
+Suivre les exercices des [Kotlin Koans](https://try.kotlinlang.org) dans Android Studio (en ajoutant le plugin "Edutools" puis `File > Learn and Teach > Browse Courses > Community Courses > Kotlin Koans`) ou sur le site [try.kotl.in](https://try.kotl.in) (mais vous n'aurez pas l'auto-complétion)
 
 ## Google Codelabs
 
 Faire les tutos de la collection
-[Android Kotlin Fundamentals](https://codelabs.developers.google.com/android-kotlin-fundamentals/) en commençant directement à la [Lesson 2](https://codelabs.developers.google.com/codelabs/kotlin-android-training-linear-layout#0) (vous pouvez survoler rapidement la "Lesson 1" mais c'est très basique)
+[Android Kotlin Fundamentals](https://developer.android.com/courses/kotlin-android-fundamentals/overview) en commençant directement à la [Lesson 2](https://developer.android.com/codelabs/kotlin-android-training-linear-layout#0) (vous pouvez survoler rapidement la "Lesson 1" mais c'est très basique)
 
 ⚠️ Attention:
 

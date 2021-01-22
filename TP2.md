@@ -1,6 +1,6 @@
-# TD 3 - Actions & Intents
+# TP 2 - Actions & Intents
 
-L'objectif de ce TD est d'implémenter des actions sur nos tâches, en naviguant entre des `Activity` et de les partager des infos entre elle ou dans une autre application avec des `Intent`.
+L'objectif de ce TP est d'implémenter des actions sur nos tâches, en naviguant entre des `Activity` et de les partager des infos entre elle ou dans une autre application avec des `Intent`.
 
 ## Suppression d'une tache
 
@@ -62,7 +62,7 @@ val newTask = Task(id = UUID.randomUUID().toString(), title = "New Task !")
 - Dans celle ci, overrider `onActivityResult` dans le `TaskFragment` pour récupérer cette task et l'ajouter à la liste
 
 ```kotlin
-val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task
+val task = data?.getSerializableExtra(TaskActivity.TASK_KEY) as? Task
 ```
 
 - Faites en sorte que la nouvelle tache s'affiche au retour sur l'activité principale
@@ -80,11 +80,21 @@ val task = data!!.getSerializableExtra(TaskActivity.TASK_KEY) as Task
   - De même vous pourrez utiliser l'opérateur `?:` pour setter l'`id` en utilisant la méthode `UUID...` précédente par défaut
   - Utilisez `setText` pour préremplir les `EditText`
 
+- Au retour dans `onActivityResult`, vous pouvez utiliser `indexOfFirst { /* une condition */ }` sur votre liste pour trouver la tache concernée et la remplacer dans la liste, et s'il n'y  a pas, c'est qu'il s'agit d'un ajout
 - Vérifier que les infos éditées s'affichent bien à notre retour sur l'activité principale.
 
 ## Nouvelle API ActivityResult
 
-Depuis peu il existe une façon plus élégante et simple de lancer une activité en attendant un résultat, basée sur les lambdas: lisez la [documentation][3] et changez votre code pour l'utiliser, par ex avec `StartActivityForResult()`:
+Depuis peu il existe une façon plus élégante et simple de lancer une activité en attendant un résultat, basée sur les lambdas: lisez la [documentation][3]
+
+Dans le fichier `app/build.gradle` > `dependencies {...}`, ajouter:
+
+```groovy
+implementation 'androidx.activity:activity-ktx:1.2.0-rc01'
+implementation 'androidx.fragment:fragment-ktx:1.3.0-rc01'
+```
+
+Changez votre code pour utiliser cette nouvelle méthode, par ex avec `StartActivityForResult()`:
 
 ```kotlin
 val startForResult = registerForActivityResult(StartActivityForResult()) {...}
@@ -103,8 +113,8 @@ class EditTask : ActivityResultContract<Task, Task>() {
 
 ## Partager
 
-- Ajouter la possibilité de partager du texte **depuis** les autres applications et ouvrir le formulaire de création de tâche pré-rempli ([Documentation][1])
-- Ajouter la possibilité de partager du texte **vers** les autres applications avec un `OnLongClickListener` sur les tâches ([Documentation][2])
+- En modifiant `AndroidManifest.xml`, ajouter la possibilité de partager du texte **depuis les autres applications** (par ex en surlignant un texte dans un navigateur puis en cliquant sur "partager") et ouvrir le formulaire de création de tâche avec une description pré-remplie ([Documentation][1])
+- En utilisant un `Intent` **implicite**, ajouter la possibilité de partager du texte **vers les autres applications** (avec un `OnLongClickListener` sur les tâches par ex ou bien avec un bouton dans la vue formulaire) ([Documentation][2])
 
 ## Changements de configuration
 

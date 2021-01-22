@@ -1,5 +1,5 @@
 
-# TD 6: Images
+# TP 5: Images
 
 ## Afficher une image distante avec Coil
 

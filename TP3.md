@@ -1,4 +1,4 @@
-# TD 4: L'Internet
+# TP 3: L'Internet
 
 ## Avant de commencer
 
@@ -35,13 +35,13 @@ Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut
 
 Dans le fichier `app/build.gradle`, ajouter :
 
-- Dans `dependencies {...}`:
+- Dans `dependencies {...}` (mettre les versions plus récentes si l'IDE vous le propose):
 
 ```groovy
     // AndroidX - KTX
     implementation 'androidx.preference:preference-ktx:1.1.1'
-    implementation 'androidx.activity:activity-ktx:1.2.0-beta01'
-    implementation 'androidx.fragment:fragment-ktx:1.3.0-beta01'
+    implementation 'androidx.activity:activity-ktx:1.2.0-rc01'
+    implementation 'androidx.fragment:fragment-ktx:1.3.0-rc01'
     implementation 'androidx.core:core-ktx:1.3.2'
 
     // Retrofit
@@ -53,8 +53,8 @@ Dans le fichier `app/build.gradle`, ajouter :
     implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
 
     // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"

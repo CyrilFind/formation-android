@@ -1,4 +1,4 @@
-# TD 5: ViewModel
+# TP 4: ViewModel
 
 On va faire un peu de ménage !
 
@@ -87,4 +87,4 @@ class TaskListAdapter() : ... {
 
 - Vérifier que ça fonctionne !
 - Permettre la suppression, l'ajout et l'édition des tasks du serveur avec cette archi
-- Transformez votre `RecyclerView.Adapter` en `ListAdapter` (cf fin du TD 2) si vous ne l'avez pas fait à ce stade
+- Transformez votre `RecyclerView.Adapter` en `ListAdapter` (cf fin du TP 1) si vous ne l'avez pas fait à ce stade

@@ -4,6 +4,8 @@ marp: true
 <!-- headingDivider: 2 -->
 <!-- class: invert -->
 
+<!-- TODO: Deeplinks ? -->
+
 # Intents
 
 ## Définition
@@ -18,53 +20,58 @@ Un intent peut être "lancé" par une application ou par le système
 
 ## Explicit / Implicit
 
-![height:200px](assets/intents_explicit_implicit.png)
+![bg right 95%](assets/intents_explicit_implicit.png)
 
 ```kotlin
-val explicitIntent = Intent(this, MyActivity::class.java)
+val explicitIntent = Intent(context, MyActivity::class.java)
 
 // implicit intents:
-val callButtonIntent = Intent(Intent.ACTION_CALL_BUTTON)
-val urlIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"))
-val phoneIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:8005551234"))
+val callButtonIntent = Intent(ACTION_CALL_BUTTON)
+val urlIntent = Intent(ACTION_VIEW, "http://www.google.com")
+val phoneIntent = Intent(ACTION_DIAL, "tel:8005551234")
+val searchIntent = Intent(Intent.ACTION_WEB_SEARCH)
+searchIntent.putExtra(SearchManager.QUERY, "query")
+
+val createPdfIntent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+createPdfIntent.type = "application/pdf" // set MIME type
+createPdfIntent.addCategory(Intent.CATEGORY_OPENABLE)
 
 // use:
 startActivity(intent)
 
 // To use later (ex: in Notifications)
-val pendingIntent = PendingIntent.getActivity(this, 1, intent,FLAG_UPDATE_CURRENT) // Parcelable
+val pendingIntent = PendingIntent.getActivity(
+    context, 
+    REQUEST_CODE, 
+    intent, 
+    FLAG_UPDATE_CURRENT) // Parcelable
 pendingIntent.send()
 ```
 
-## Send
+## Send / Receive data
 
 ```kotlin
-// Preparing data in sending Activity:
+// Preparing intent in FirstActivity
 val intent = Intent(this, SecondActivity::class.java)
 
 intent.data = Uri.parse("http://www.google.com") // Web URL
 intent.data = Uri.fromFile(File("/file_path/file.jpg")) // File URI
-intent.putExtra("level", 406) // Int extra
-val array = arrayOf("Rice", "Beans", "Fruit")
-intent.putExtra("food", array) // Array extra
+
+intent.putExtra("level_key", 42)
+intent.putExtra("food_key", arrayOf("Rice", "Beans", "Fruit"))
 
 val bundle = Bundle() // Use bundle to prepare a lot of data
-bundle.putFloat("percent", 58f) // Float data
-intent.putExtras(bundle) // Put whole bundle
-
-val UNIQUE_KEY = packageName + ".extra.MESSAGE"
-intent.putExtra(UNIQUE_KEY, "Hello Activity!")
+bundle.putFloat("percent_key", 55f)
+intent.putExtras(bundle)
 
 startActivity(intent)
 
-// Getting data in receiving activity:
-
+// Receiving data in SecondActivity
 val uri = intent.data
-val level = intent.getIntExtra("level", 0)
-val food = intent.getStringArrayExtra("food")
-
+val level = intent.getIntExtra("level_key", 0) // default to 0
+val food = intent.getStringArrayExtra("food_key")
 val bundle = intent.extras
-val percent = bundle.getFloat("percent")
+val percent = bundle.getFloat("percent_key")
 ```
 
 ## Intent Filters
@@ -142,17 +149,6 @@ Also:
 
 - [Default ActivityResultContracts](https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts)
 - [Creating a custom contract](https://developer.android.com/training/basics/intents/result#custom)
-
-## Specifying implicit intents
-
-```kotlin
-val intent = Intent(Intent.ACTION_WEB_SEARCH)
-intent.putExtra(SearchManager.QUERY, "query")
-
-val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-intent.type = "application/pdf" // set MIME type
-intent.addCategory(Intent.CATEGORY_OPENABLE)
-```
 
 ## Resolving intents
 

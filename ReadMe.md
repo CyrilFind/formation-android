@@ -18,29 +18,30 @@ Connaître les fondamentaux du développement Android et notamment:
 
 ## Déroulement
 
-Un minimum de slides et un maximum de TDs:
+Un minimum de slides et un maximum de TPs:
 
-- TD 1: Kotlin Koans & Codelabs d'Intro
-- TD 2: RecyclerView
-- TD 3: Actions & Intents
-- TD 4: Internet
-- TD 5: Architecture
-- TD 6: Images & Permissions
-- TD 7: SignUp/Login et Navigation
-- TD 8: Améliorations
-- Projet en Autonomie
-- Soutenance sur sujets exploratoires
+- [TP 0](./TP0.md) : Kotlin Koans & Codelabs d'Intro
+- [TP 1](./TP1.md) : RecyclerView
+- [TP 2](./TP2.md) : Actions & Intents
+- [TP 3](./TP3.md) : Internet
+- [TP 4](./TP4.md) : Architecture
+- [TP 5](./TP5.md) : Images & Permissions
+- [TP 6](./TP6.md) : SignUp/Login et Navigation
+- [TP 7](./TP7.md) : Sujets exploratoires & soutenance
+- [TP 8](./TP8.md) : Projet en Autonomie
 
-À adapter en fonction du temps disponible
+À adapter en fonction des promotions et du temps disponible
 
-Références:
+### Références
 
 - <https://developer.android.com/modern-android-development>
 - <https://developer.android.com/courses/kotlin-android-fundamentals/overview>
 - <https://kotlinlang.org/>
 - <https://kotlinlang.org/docs/reference/basic-syntax.html>
 
-Outils:
+### Outils
 
-- Android Studio
-- scrcpy
+- [Android Studio](https://developer.android.com/studio)
+- [scrcpy](https://github.com/Genymobile/scrcpy)
+
+Pour ceux qui o

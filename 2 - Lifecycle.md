@@ -8,23 +8,27 @@ marp: true
 
 ## Context
 
-- provided by the Android system
-- Interface to global information about an application environment
-- access to application-specific resources and classes
-- launching activities
-- broadcasting and receiving intents
+Objet très présent sur Android:
+
+- Fourni par le système
+- Interface aux infos globales sur l'environnement de l'application
+- Accède aux resources et aux classes spécifiques à l'application
+- Permet de lancer des `Activity`
+- Diffuse et reçoit des `Intents`
 
 ## Activity
 
 ![bg left:30% 50%](assets/bottomnav.png)
 
-- Représente en gros une "page"
-- Généralement prends tout l’écran
-- Gère l’interaction entre la vue et l’utilisateur
+- Hérite de `Context`
+- Une Activity "inflate" un layout XML dans `onCreate`
+- Permet d'afficher les données dans le layout
+- Contrôle l’interaction entre le layout et l’utilisateur
+- Représente une "page" qui  prends généralement tout l’écran
 - Peut démarrer d’autres Activity dans la même app ou d’autres
 - Obéit à un "Lifecycle"
 - Les Activity peuvent être hiérarchisée dans le manifest (pour la navigation)
-- Une Activity "inflate" un layout XML dans `onCreate`
+- Peut contenir des `Fragments`
 
 ## Inflating Layout in Activity
 
@@ -32,9 +36,16 @@ marp: true
 class MainActivity : AppCompatActivity() {
    override fun onCreate(savedInstanceState: Bundle?) {
        super.onCreate(savedInstanceState)
-       setContentView(R.layout.activity_main)
+       setContentView(R.layout.activity_main) // inflate
 //    access resources^ ^layouts   ^layout file name
 }
+
+class MainFragment : Fragment() {
+  override fin onCreateView(...) {
+    return inflater.inflate(R.layout.fragment_main, container, false)
+  }
+}
+
 ```
 
 ## Declare main activity in manifest

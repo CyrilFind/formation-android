@@ -19,6 +19,12 @@ marp: true
 ## Kotlin: Bases
 
 ```kotlin
+// Typage statique inféré
+val myInt: Int = 1
+val myInt = 1
+val myString: String = "coucou"
+val myInt = "coucou"
+
 // Mutabilité
 val myImmutableVariable = 0
 var myMutableVariable = 0
@@ -27,24 +33,24 @@ var myMutableVariable = 0
 val variable: SomeClass? = null
 variable?.myMethod() ?: doSomethingElse()
 variable!!.myMethod()
-
-// Typage statique inféré
-val myInt: Int = 1
-val myInt = 1
 ```
 
 ## Kotlin: classes
 
 ```kotlin
 class MyFinalClass {...} // classes are final by default
+
 open class MyHeritableClass {...} // open makes them non-final
+
 // equals(), toString(), hashCode(), copy(), destructuring for free
 data class MyPojo(val someProperty: SomeType, ...)
+
 class MyClass {
   companion object { // static fields
     const val MY_CONSTANT = 1
   }
 }
+
 sealed class Result { // sort of "enum classes"
   object Success : Result
   class Failure(error: Error) : Result()
@@ -60,10 +66,11 @@ val result = add(1, 2)
 
 // When statements: super-powered switch-case statements
 when (x) {
+    null -> print("x is null")
     !is Int -> print("x is not an int")
-    in 1..10 -> print("x is in the range")
+    in 1..10 -> print("x is between 1 and 10")
     in validNumbers -> print("x is valid")
-    !in 10..20 -> print("x is outside the range")
+    !in 10..20 -> print("x is not between 10 and 20")
     else -> print("none of the above")
 }
 ```
@@ -72,7 +79,8 @@ when (x) {
 
 En ligne: [try.kotl.in](try.kotl.in)
 
-Dans l'IDE: plugin Edutools
+Dans l'IDE: ajouter plugin Edutools, redémarrer
+puis `Browse Courses > Community Courses`
 
 ![bg right:60% 90%](assets/koans.png)
 
@@ -88,18 +96,18 @@ var nullable: MyClass?
 if (nullable != null) { nullable.myMethod() }
 
 // Delegates
-class SomeClass : SomeInterface by SomeImplementation {...}
+class MyClass(myImplementation: MyInterface) : MyInterface by myImplementation {...}
 
 // Lambda for SAM
 button.setOnClickListener {...}
 
 // Specified returns
 fun method() {
-  // ...
-  for(i in 1..10) {
     // ...
-    return@method
-  }
+    for(i in 1..10) {
+        // ...
+        return@method
+    }
 }
 ```
 
@@ -202,10 +210,6 @@ val loginTextView = findViewById<TextView>(R.id.textView_login)
 // ButterKnife
 @BindView(R.id.textView_login) val loginTextView: TextView
 
-// synthetics
-import kotlinx.android.synthetic.main.fragment_login.*
-textView_login // directly available
-
 // viewbinding / databinding
 binding.textViewLogin
 ```
@@ -217,7 +221,6 @@ binding.textViewLogin
 * Tous les avantages de Kotlin
 * Conversion depuis Java avec Android Studio
 * Android KTX
-* Synthetics
 * Lambdas: setOnClickListener
 * Coroutines, Flow, ...
 * Compose
@@ -260,3 +263,30 @@ class LoginViewController: UIViewController {
   * Dart: Flutter
   * Kotlin: Jetpack Compose (desktop, web, iOS ?)
   * Swift: SwiftUI (pas cross-platform)
+
+# Annexe: Utilisation du ViewBinding
+
+Ajouter:
+
+```gradle
+android {
+    buildFeatures {
+        viewBinding true
+    }
+}
+```
+
+Activity:
+
+```kotlin
+private lateinit var binding: ResultProfileBinding
+
+override fun onCreate(...) {
+    super.onCreate(...)
+    binding = ResultProfileBinding.inflate(layoutInflater)
+    setContentView(binding.root)
+    binding.myButton.setOnCLickListener { ... }
+}
+```
+
+Fragments: [Documentation](https://developer.android.com/topic/libraries/view-binding#fragments)

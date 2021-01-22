@@ -1,4 +1,4 @@
-# TD 7: SignUp/Login et Navigation
+# TP 6: SignUp/Login et Navigation
 
 ## Ajout des dépendances
 
@@ -176,5 +176,8 @@ Suivez les mêmes étapes pour remplacer la navigation des TDs précédents avec
 - Ajoutez `TaskListFragment` au graphe de navigation
 - Transformez `TaskActivity` en `TaskFragment` en adaptant les `override` et ajoutez le au graphe
 - Faites pareil pour `UserInfoActivity`
-- Pour communiquer entre Fragments vous pouvez utiliser `savedStateHandle` ([exemple](https://stackoverflow.com/a/62320979/3466492))
-- Vous pouvez aussi utiliser `by activityViewModels()` ou `by navGraphViewModels(R.id.nav_graph)` au lieu de `by viewModels()` afin de partager une instance de viewmodel au sein des Fragments d'une même Activity: dans ce cas pas besoind e communiquer entre fragments mais directement avec le VM
+- La destination de départ doit être la task list et rediriger vers l'authent quand il n'y a pas d'utilisateur
+- Pour communiquer entre Fragments vous pouvez utiliser:
+  - un `Bundle` passé en 2nd argument de `navigate()` et récupéré de l'autre côté avec `requireArguments()`
+  - les `savedStateHandle` ([exemple](https://stackoverflow.com/a/62320979/3466492))
+  - en faisant `by activityViewModels()` ou `by navGraphViewModels(R.id.nav_graph)` au lieu de `by viewModels()` vous pouvez partager une instance unique d'un viewmodel au sein des Fragments d'une même Activity ce qui évite des allers-retours de données entre fragments
