@@ -17,10 +17,6 @@ marp: true
 REST: Representational state transfer
 CRUD: Create, Read, Update, Delete
 
-## Request a server
-
-![rest](assets/request.png)
-
 ## Build a URI
 
 the old way
@@ -37,12 +33,16 @@ val uri = Uri.parse(BASE_URL).buildUpon()
 val requestURL = URL(uri.toString())
 ```
 
+## Request a server
+
+![rest](assets/request.png)
+
 ## HTTP Client
 
 with OkHttp
 
 ```kotlin
-private val okHttpClient by lazy {
+private val okHttpClient =
   OkHttpClient.Builder()
     .addInterceptor { chain ->
       val newRequest = chain.request().newBuilde()
@@ -51,7 +51,6 @@ private val okHttpClient by lazy {
       chain.proceed(newRequest)
     }
     .build()
-}
 ```
 
 ## Parsing JSON
@@ -59,11 +58,6 @@ private val okHttpClient by lazy {
 with KotlinX Serialization
 
 ```kotlin
-private val jsonSerializer = Json {
-  ignoreUnknownKeys = true
-  coerceInputValues = true
-}
-
 val movieJson = """{
   \"id\": 19404,
   \"title\":
@@ -78,6 +72,14 @@ data class Movie (
   @SerialName("image_path")  
   val imagePath: String? = null,
 )
+
+private val jsonSerializer = Json {
+  ignoreUnknownKeys = true
+  coerceInputValues = true
+}
+
+val converterFactory =
+  jsonSerializer.asConverterFactory("application/json".toMediaType())
 ```
 
 ## Api Service
@@ -85,21 +87,30 @@ data class Movie (
 with Retrofit
 
 ```kotlin
-interface MovieService {
-  @GET("movies/{user_id}")
-  suspend fun getMovies(@Path("user_id") userId: String): Response<List<Movie>>
-}
-
-val converterFactory =
-  jsonSerializer.asConverterFactory("application/json".toMediaType())
-
 val retrofit = Retrofit.Builder()
   .client(okHttpClient)
   .baseUrl(BASE_URL)
   .addConverterFactory(converterFactory)
   .build()
 
-val movieService: MovieService = retrofit.create(MovieService::class.java)
+interface MovieWebService {
+  @GET("movies/{user_id}")
+  fun getMovies(@Path("user_id") userId: String): List<Movie>
+}
+
+// Create an object that implements MovieWebService
+val movieWebService: MovieWebService = retrofit.create(MovieWebService::class.java)
+
+// Pseudo-code equivalent:
+val movieWebService = object : MovieWebService {
+    override fun getMovies(userId: String) : List<Movie> {
+      val json = okHttpClient.get("$BASE_URL/movies/$userId")
+      return converterFactory.convert<List<Movie>>(json)
+    }
+}
+
+// Usage:
+val movies = movieWebService.getMovies("myUserId")
 ```
 
 ## Config
@@ -110,12 +121,11 @@ Full implementation example:
 object MovieApi {
   private const val BASE_URL = "https://movies.com/API/"
 
-  private val okHttpClient by lazy {
+  private val okHttpClient =
     OkHttpClient.Builder().addInterceptor { chain ->
         val newRequest = chain.request().newBuilde().addHeader("Authorization", "Bearer $TOKEN").build()
         chain.proceed(newRequest)
       }.build()
-    }
 
   private val jsonSerializer = Json {
     ignoreUnknownKeys = true
@@ -131,7 +141,7 @@ object MovieApi {
     .addConverterFactory(converterFactory)
     .build()
 
-   val movieService: MovieService by lazy { retrofit.create(MovieService::class.java) }
+   val movieWebService: MovieWebService = retrofit.create(MovieWebService::class.java)
 }
 ```
 

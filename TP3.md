@@ -33,9 +33,9 @@ Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut
 
 ## Ajout des dépendances
 
-Dans le fichier `app/build.gradle`, ajouter :
+Dans le fichier `app/build.gradle`:
 
-- Dans `dependencies {...}` (mettre les versions plus récentes si l'IDE vous le propose):
+- Dans `dependencies {...}`, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l'IDE vous le propose):
 
 ```groovy
     // AndroidX - KTX
@@ -53,7 +53,7 @@ Dans le fichier `app/build.gradle`, ajouter :
     implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
 
     // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
 
     // Lifecycle
@@ -80,9 +80,15 @@ kotlinOptions {
 ```groovy
 plugins {
     // ...
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.20' // vérifier que votre version de kotlin est la même
+    id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlinVersion"
 }
 ```
+
+Vérifiez que:
+
+- Android Studio est à jour ("Check for updates")
+- Le Plugin Kotlin est à jour (`Settings > Plugins > Installed > Kotlin`)
+- `kotlinVersion` est récente (en haut de `<PROJECT>/build.gradle`, à l'heure où j'écris c'est `1.4.21`)
 
 ## Retrofit
 
@@ -179,7 +185,7 @@ data class UserInfo(
 ### Affichage
 
 - Dans `fragment_task_list.xml`, ajoutez une `TextView` au dessus de la liste de tâche si vous n'en avez pas
-- Overrider la méthode `onResume` pour y récupérer les infos de l'utilisateur, une erreur va s'afficher mais ne paniquez pas, on va s'en occuper:
+- Overrider la méthode `onResume` pour y récupérer les infos de l'utilisateur, en ajoutant cette ligne, une erreur va s'afficher mais ne paniquez pas, on va s'en occuper:
 
 ```kotlin
 // Ici on ne va pas gérer les cas d'erreur donc on force le crash avec "!!"
@@ -206,7 +212,8 @@ my_text_view.text = "${userInfo.firstName} ${userInfo.lastName}"
 
 - "`...EPERM (operation not permitted)...`": désinstallez l'application de l'émulateur et relancez
 - L'app stoppe direct et sans stacktrace: redémarrer l'émulateur et vérifiez que son wifi est bien connecté
-- Lancez l'app et vérifiez que vos infos s'affichent !
+
+➡️ Lancez l'app et vérifiez que vos infos s'affichent !
 
 **Remarque:**
 
@@ -277,11 +284,9 @@ Dans `TaskListFragment`:
 private val tasksRepository = TasksRepository()
 
 // Dans onViewCreated()
-tasksRepository.taskList.observe(viewLifecycleOwner, Observer {
-  adapter.taskList.clear()
-  adapter.taskList.addAll(it)
-  adapter.notifyDataSetChanged()
-})
+tasksRepository.taskList.observe(viewLifecycleOwner) { list ->
+  // mettre à jour la liste dans l'adapteur
+}
 
 // Dans onResume()
 lifecycleScope.launch {

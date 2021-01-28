@@ -73,7 +73,7 @@ suspend fun doSomethingLong() {
 }
 
 fun main() {
-    doSomethingLong() // ⚠️ KO 
+    doSomethingLong() // ❌ KO 
 
     GlobalScope.launch { 
         doSomethingLong() // ✅ OK
@@ -116,10 +116,10 @@ viewModelScope.launch {
 
 // in Fragment or Activity
 lifecycleScope.launch { // canceled when fragment is destroyed
-    whenStarted { /* starts when fragment starts */ }
+    whenStarted { /* starts when fragment is in started state */ }
     // the rest executes after the whenStarted block
 }
-lifecycleScope.launchWhenStarted { /* launches when fragment starts */ }
+lifecycleScope.launchWhenStarted { /* launches when fragment is in started state */ }
 ```
 
 ## Observer pattern
@@ -131,9 +131,7 @@ val observable: Observable<Data>
 
 observable.notify(data)
 
-observable.observe { data ->
-    // use the value
-}
+observable.observe { data -> /* use the value */ }
 ```
 
 ## LiveData
