@@ -12,7 +12,7 @@
 image_view.load("VOTRE_URL")
 ```
 
-- Trouvez comment afficher l'image sous la forme d'un cercle
+- Trouvez comment utiliser Coil pour afficher l'image sous la forme d'un cercle
 
 ### Nouvelle activité
 

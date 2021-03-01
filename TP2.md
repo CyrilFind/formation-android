@@ -118,17 +118,19 @@ class EditTask : ActivityResultContract<Task, Task>() {
 
 ## Changements de configuration
 
-Que se passe-t-il si vous tournez votre téléphone ? 🤔
+Que se passe-t-il si vous tournez votre téléphone pour passer l'app en mode paysage ? 🤔
 
-- Pour sauvegarder votre liste de task, implémentez la méthode suivante en utilisant `putParcelableArrayList`:
+- Une façon de régler ce soucis est d'overrider la méthode suivante:
 
 ```kotlin
 override fun onSaveInstanceState(outState: Bundle)
 ```
 
+- Il faudra utiliser `putParcelableArrayList`
+
 - Il faudra aussi que votre classe `Task` hérite de `Parcelable`: pour implémenter [automatiquement][4] les méthodes nécessaires, ajoutez le plugin `kotlin-parcelize` à votre `app/build.gradle` et l'annotation `@Parcelize` à votre classe `Task`
 
-- Puis, pour récupérer cette list, utilisez l'argument `savedInstanceState` et la méthode `getParcelableArrayList` dans `onCreateView`
+- Puis, pour récupérer cette liste, utilisez l'argument `savedInstanceState` et la méthode `getParcelableArrayList` dans `onCreateView`
 
 [1]: https://developer.android.com/training/sharing/receive
 

@@ -170,9 +170,7 @@ if (intent.resolveActivity(packageManager) != null) {
 // using Chooser Intent / Sharesheet
 val intent = Intent(Intent.ACTION_SEND)
 val chooserIntent = Intent.createChooser(intent, "Chooser Title")
-if (intent.resolveActivity(packageManager) != null) {
-   startActivity(chooserIntent)
-}
+startActivity(chooserIntent)
 ```
 
 # Permissions

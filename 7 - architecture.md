@@ -4,6 +4,8 @@ marp: true
 <!-- headingDivider: 2 -->
 <!-- class: invert -->
 
+<!-- use Flow from repositories + avoid UserInfo refresh calls ? -->
+
 # Architecture
 
 ## MVC

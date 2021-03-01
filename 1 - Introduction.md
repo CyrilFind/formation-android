@@ -16,7 +16,7 @@ marp: true
 * Développé par JetBrains
 * Kotlin everywhere: JVM, Backend, JS, KTS, iOS...
 
-## Kotlin: Bases
+## Variables
 
 ```kotlin
 // Typage statique inféré
@@ -33,46 +33,78 @@ var myMutableVariable = 0
 val variable: SomeClass? = null
 variable?.myMethod() ?: doSomethingElse()
 variable!!.myMethod()
+
+// Smart casts
+var nullable: MyClass?
+if (nullable != null) { nullable.myMethod() }
+
+
+// When statements: super-powered switch-case statements
+val primeNumbers = listOf(1, 3, 5, 7, 11, 13, 17)
+val x = 13
+when (x) {
+    null -> print("x is null")
+    !is Int -> print("x is not an int")
+    in 1..10 -> print("x is between 1 and 10")
+    !in 10..20 -> print("x is not between 10 and 20")
+    in primeNumbers -> print("x is a prime") // ⬅️
+    else -> print("none of the above")
+}
 ```
 
-## Kotlin: classes
+## Classes
 
 ```kotlin
 class MyFinalClass {...} // classes are final by default
-
 open class MyHeritableClass {...} // open makes them non-final
 
-// equals(), toString(), hashCode(), copy(), destructuring for free
-data class MyPojo(val someProperty: SomeType, ...)
+object MySingleton { 
+  val myUtilFunction() { ... }
+}
+MySingleton.myUtilFunction() // used like "static" methods in Java
 
 class MyClass {
   companion object { // static fields
     const val MY_CONSTANT = 1
   }
 }
+MyClass.MY_CONSTANT // in java: MyClass.Companion.MY_CONSTANT
+
+// equals(), toString(), hashCode(), copy(), destructuring for free
+data class MyPojo(val someProperty: SomeType, ...)
 
 sealed class Result { // sort of "enum classes"
   object Success : Result
   class Failure(error: Error) : Result()
 }
+
+// Extension functions
+fun String.reverse(): String {...}
+"blabla".reverse()
+
+// Delegates
+class Survey(firstItem: Question, vararg items: Question) : List<Question> by listOf(firstItem, *items)
 ```
 
-## Kotlin: autres particularités
+## Lambdas
 
 ```kotlin
 // Lambdas: function blocks handled as variables
 val add: (Int, Int) -> Int = { a, b -> a + b }
 val result = add(1, 2)
 
-// When statements: super-powered switch-case statements
-when (x) {
-    null -> print("x is null")
-    !is Int -> print("x is not an int")
-    in 1..10 -> print("x is between 1 and 10")
-    in validNumbers -> print("x is valid")
-    !in 10..20 -> print("x is not between 10 and 20")
-    else -> print("none of the above")
+fun listOperation(number: Int, list: List<Int?>, operation: (Int, Int) -> Int): List<Int>? {
+    list.forEach { element -> 
+        if (element == null) return@applyOperation null // Specified return
+        operation(number, element)
+    }
 }
+
+listOperation(1, listOf(2, 4, 6, 8), add)
+listOperation(1, listOf(2, 4, 6, 8)) { a, b -> a - b }
+
+// Lambda for SAM
+button.setOnClickListener { view -> ... }
 ```
 
 ## Kotlin Koans
@@ -80,36 +112,9 @@ when (x) {
 En ligne: [try.kotl.in](try.kotl.in)
 
 Dans l'IDE: ajouter plugin Edutools, redémarrer
-puis `Browse Courses > Community Courses`
+puis `Start New Course > Community Courses`
 
 ![bg right:60% 90%](assets/koans.png)
-
-## Kotlin: fonctionnalités plus avancées
-
-```kotlin
-// Extension functions
-fun String.reverse(): String {...}
-"blabla".reverse()
-
-// Smart casts
-var nullable: MyClass?
-if (nullable != null) { nullable.myMethod() }
-
-// Delegates
-class MyClass(myImplementation: MyInterface) : MyInterface by myImplementation {...}
-
-// Lambda for SAM
-button.setOnClickListener {...}
-
-// Specified returns
-fun method() {
-    // ...
-    for(i in 1..10) {
-        // ...
-        return@method
-    }
-}
-```
 
 # Android
 
@@ -147,84 +152,15 @@ fun method() {
 * Broadcast Receiver ➡ Event Listener
 * ContentProvider ➡ Shared Data API
 
-## Activity / Fragment
-
-![bg left:30% 50%](assets/bottomnav.png)
-
-* Component le plus important.
-* Rôle: Fait le lien entre le Layout et la logique de l’app
-* Attention: Éviter la tendance à mettre toute l’app dans l'Activity
-* Fragment ≈ SubActivity
-
-## Layouts
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    ...
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        ... >
-
-        <ImageView ... />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
-```
-
-* Fichier XML décrivant un écran (ou une partie)
-* ViewGroup: View contenant d’autres Views, avec diverses règles d’affichage: LinearLayout, RelativeLayout, ConstraintLayout, Stack, ...
-* View: Élément graphique de l’interface: Text, Image, Button
-
-## ViewGroups
-
-![view groups](assets/layouts.png)
-
-## Views
-
-```xml
-<TextView
-  android:id="@+id/textView_login" // reference to the view
-  android:layout_width="match_parent" // use all available width in parent
-  android:layout_height="wrap_content" // use only needed height
-/>
-
-<Button
-  android:id="@+id/button_login"
-  android:layout_width="0dp" // match width to constraints
-  android:layout_height="200dp" // specify explicit height
-  app:layout_constraintEnd_toEndOf="@id/textView_login" // constraint start
-  app:layout_constraintStart_toStartOf="parent" // contraint end
-  android:visibility="invisible" // visible, invisible or gone
-/>
-```
-
-## References to views
-
-![bg left:40% 90%](assets/views.png)
-
-```kotlin
-// traditional
-val loginTextView = findViewById<TextView>(R.id.textView_login)
-
-// ButterKnife
-@BindView(R.id.textView_login) val loginTextView: TextView
-
-// viewbinding / databinding
-binding.textViewLogin
-```
-
 ## Kotlin sur Android
 
 ![bg left:30% 70%](assets/kotlin_android.png)
 
-* Tous les avantages de Kotlin
 * Conversion depuis Java avec Android Studio
 * Android KTX
-* Lambdas: setOnClickListener
 * Coroutines, Flow, ...
-* Compose
-* Pas vraiment de désavantages car équivalent à Java et interop
+* Jetpack Compose
+* Pas vraiment de désavantages car équivalent à Java et interop facile
 * ⚠️ On peut être dépassés par les features de Kotlin: rester simple et lisible
 
 # iOS
@@ -236,19 +172,6 @@ binding.textViewLogin
 * Plus de 💰 dépensés
 * Swift (interop Objective-C)
 * XCode 💩
-* UIViewController (Équivalent de Activity)
-* Storyboards (Layout XML manipulé visuellement)
-* Xibs (Vue XML)
-
-```swift
-class LoginViewController: UIViewController {
-    @IBOutlet weak var label: UILabel!
-    @IBAction func setDefaultLabelText(_ sender: UIButton) {
-        let defaultText = "Default Text"
-        label.text = defaultText
-    }
-}
-```
 
 # Cross-Platform et Composants
 
@@ -263,30 +186,3 @@ class LoginViewController: UIViewController {
   * Dart: Flutter
   * Kotlin: Jetpack Compose (desktop, web, iOS ?)
   * Swift: SwiftUI (pas cross-platform)
-
-# Annexe: Utilisation du ViewBinding
-
-Ajouter:
-
-```gradle
-android {
-    buildFeatures {
-        viewBinding true
-    }
-}
-```
-
-Activity:
-
-```kotlin
-private lateinit var binding: ResultProfileBinding
-
-override fun onCreate(...) {
-    super.onCreate(...)
-    binding = ResultProfileBinding.inflate(layoutInflater)
-    setContentView(binding.root)
-    binding.myButton.setOnCLickListener { ... }
-}
-```
-
-Fragments: [Documentation](https://developer.android.com/topic/libraries/view-binding#fragments)
