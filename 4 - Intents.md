@@ -1,9 +1,7 @@
 ---
 marp: true
 ---
-<!-- headingDivider: 2 -->
-<!-- class: invert -->
-
+<!-- headingDivider: 2 --><!-- class: invert -->
 <!-- TODO: Deeplinks ? -->
 
 # Intents
@@ -170,7 +168,7 @@ if (intent.resolveActivity(packageManager) != null) {
 // using Chooser Intent / Sharesheet
 val intent = Intent(Intent.ACTION_SEND)
 val chooserIntent = Intent.createChooser(intent, "Chooser Title")
-startActivity(chooserIntent)
+   startActivity(chooserIntent)
 ```
 
 # Permissions

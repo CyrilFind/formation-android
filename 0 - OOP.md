@@ -2,7 +2,6 @@
 marp: true
 ---
 <!-- headingDivider: 2 -->
-<!-- class: invert -->
 
 # OOP: Object Oriented Programming
 
