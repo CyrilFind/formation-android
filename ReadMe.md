@@ -43,3 +43,5 @@ Un minimum de slides et un maximum de TPs:
 
 - [Android Studio](https://developer.android.com/studio)
 - [scrcpy](https://github.com/Genymobile/scrcpy)
+
+contact: cyrilfind@gmail.com

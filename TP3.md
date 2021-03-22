@@ -75,20 +75,22 @@ kotlinOptions {
 }
 ```
 
-- Tout en haut ajoutez le plugin de sérialisation (avec votre version de kotlin):
+- Tout en haut ajoutez le plugin de sérialisation:
 
 ```groovy
 plugins {
     // ...
-    id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlinVersion"
+    id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlin_version"
 }
 ```
 
-Vérifiez que:
+Après tout cela vous pouvez cliquer sur "Sync Now" pour que l'IDE synchronise le projet.
+
+En cas de soucis à ce moment là, vérifiez que:
 
 - Android Studio est à jour ("Check for updates")
 - Le Plugin Kotlin est à jour (`Settings > Plugins > Installed > Kotlin`)
-- `kotlinVersion` est récente (en haut de `<PROJECT>/build.gradle`, à l'heure où j'écris c'est `1.4.21`)
+- votre `kotlin_version` est récente (en haut de `<PROJECT>/build.gradle`, à l'heure où j'écris c'est `1.4.30`)
 
 ## Retrofit
 
@@ -134,28 +136,6 @@ object Api {
 }
 ```
 
-### UserService
-
-- Créez l'interface `UserService` pour requêter les infos de l'utilisateur (importez `Response` avec `alt + enter` et choisissez la version `retrofit`):
-
-```kotlin
-interface UserService {
-  @GET("users/info")
-  suspend fun getInfo(): Response<UserInfo>
-}
-```
-
-- Utilisez retrofit pour créer une implémentation de ce service (grace aux annotations):
-
-```kotlin
-object Api {
-  // ...
-  val userService: UserService by lazy {
-    retrofit.create(UserService::class.java)
-  }
-}
-```
-
 ### UserInfo
 
 Exemple de json renvoyé par la route `/info`:
@@ -182,6 +162,28 @@ data class UserInfo(
 )
 ```
 
+### UserService
+
+- Créez l'interface `UserService` pour requêter les infos de l'utilisateur (importez `Response` avec `alt + enter` et choisissez la version `retrofit`):
+
+```kotlin
+interface UserService {
+  @GET("users/info")
+  suspend fun getInfo(): Response<UserInfo>
+}
+```
+
+- Utilisez retrofit pour créer une implémentation de ce service (grace aux annotations):
+
+```kotlin
+object Api {
+  // ...
+  val userService: UserService by lazy {
+    retrofit.create(UserService::class.java)
+  }
+}
+```
+
 ### Affichage
 
 - Dans `fragment_task_list.xml`, ajoutez une `TextView` au dessus de la liste de tâche si vous n'en avez pas
@@ -205,7 +207,7 @@ lifecycleScope.launch {
 - Afficher les données dans votre `TextView`:
 
 ```kotlin
-my_text_view.text = "${userInfo.firstName} ${userInfo.lastName}"
+userInfoTextView.text = "${userInfo.firstName} ${userInfo.lastName}"
 ```
 
 ⚠️ Sur émulateur, vous aurez parfois des crashes étranges:
@@ -239,7 +241,7 @@ interface TasksWebService {
 
 Le but d'un Repository est d'exposer des data venant d'une ou plusieurs sources de données (ex: DB locale et API distante)
 
-Créer la classe `TasksRepository`avec:
+Créer la classe `TasksRepository` avec:
 
 - une propriété `tasksWebService` pour les requêtes avec `Retrofit`
 - une propriété `taskList` *publique* de type `LiveData<List<Task>>`: représente une liste de tâche *Observable* (on peut donc s'*abonner* à ses modifications) non modifiable afin de l'exposer à l'extérieur du repository

@@ -174,7 +174,7 @@ Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}")
 
 ## ListAdapter
 
-Améliorer l'implémentation de `TasksListAdapter` en héritant de `ListAdapter` au lieu de `RecyclerView.Adapter` (cf [slides](./3%20-%20RecyclerView.pdf))
+Améliorer l'implémentation de `TasksListAdapter` en héritant de `ListAdapter` au lieu de `RecyclerView.Adapter` (cf [slides](./3\ -\ RecyclerView.md))
 
 ⚠️ Comme on utilise une `MutableList` (ce qu'on ne fait pas en général), il faut envoyer une nouvelle instance à chaque fois pour que le `ListAdapter` puisse les comparer, utilisez `toList()` pour cela: `adapter.submitList(taskList.toList())`
 

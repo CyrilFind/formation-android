@@ -19,9 +19,7 @@ Pour résumer, on va déplacer la logique de la gestion de la liste hors du Frag
   - Le `repository` qui sert de source de données
   - Les coroutines avec `viewModelScope`
 
-- Dans `TaskListAdapter`
-  - Rendez la `taskList` publique
-  - Donnez lui une valeur par défaut: `emptyList()`
+- Dans `TaskListAdapter`: Si vous ne l'avez pas fait à ce stade, transformez votre `RecyclerView.Adapter` pour hériter de `ListAdapter` (cf fin du TP 1)
 
 - Dans `TaskListFragment`:
   - Récupérer le `viewModel` grâce à `by viewModels()`
@@ -30,7 +28,7 @@ Pour résumer, on va déplacer la logique de la gestion de la liste hors du Frag
 
 - Dans `TasksRepository`, déplacez les `LiveData` dans le `ViewModel`
 
-- Procéder par étapes et inspirez vous de ce squelette (NE COPIEZ PAS TOUT!) pour refactoriser votre app (commencez juste par le chargement de la liste):
+- Procéder petit à petit et inspirez vous de ce squelette (NE COPIEZ PAS TOUT!) pour refactoriser votre app (commencez juste par le chargement de la liste):
 
 ```kotlin
 // Le Repository récupère les données
@@ -77,14 +75,7 @@ class TaskListFragment: Fragment() {
         viewModel.loadTasks()
     }
 }
-
-// On donne une valeur par défaut à la liste et on peut la retirer du constructeur, 
-// ou mieux: on utilise un ListAdapter (cf fin du TD 2)
-class TaskListAdapter() : ... {
-    var list: List<Task> = emptyList()
-}
 ```
 
 - Vérifier que ça fonctionne !
 - Permettre la suppression, l'ajout et l'édition des tasks du serveur avec cette archi
-- Transformez votre `RecyclerView.Adapter` en `ListAdapter` (cf fin du TP 1) si vous ne l'avez pas fait à ce stade
