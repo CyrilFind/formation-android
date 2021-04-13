@@ -14,7 +14,7 @@ Inclure trop de logique dans le fragment est une mauvaise pratique, on va donc r
 
 Pour résumer, on va déplacer la logique de la gestion de la liste hors du Fragment et dans le ViewModel, qui va simplement interroger le Repository
 
-- Créer une classe `TaskListViewModel` qui hérite de `ViewModel` qui va gérer:  
+- Créer une classe `TaskListViewModel` qui hérite de `ViewModel` et qui va gérer:  
   - Les `LiveData` qui étaient dans le Repository
   - Le `repository` qui sert de source de données
   - Les coroutines avec `viewModelScope`

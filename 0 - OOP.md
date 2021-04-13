@@ -115,7 +115,7 @@ class FacebookFriendsDataSource : FriendsDataSource {
 
 ```kotlin
 abstract class FriendsDataSource {
-    val url: String
+    abstract val url: String
     fun getFriends() : List<Friend> {
         return emptyList()
     }

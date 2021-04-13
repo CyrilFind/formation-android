@@ -87,16 +87,14 @@ suspend fun otherSuspendFunction() {
 ## Usage
 
 ```kotlin
-val job = scope.launch {
-    mySuspendFun()
-}
+val job = scope.launch { /* Do something long */ }
 job.join() // wait for work to finish
 job.cancel() // cancel work
 
-val defferdResult: Deffered<SomeClass> = scope.async {
+val result: Deffered<SomeClass> = scope.async {
     mySuspendFun()
 }
-val result: SomeClass = defferdResult.await() // wait for result
+val result: SomeClass = result.await() // wait for result data
 ```
 
 ## Usage on Android
@@ -108,8 +106,8 @@ suspend fun getData() : Int = withContext(Dispatchers.IO) {
 }
 
 // in ViewModel
-viewModelScope.launch { 
-    // canceled when ViewModel is cleared
+viewModelScope.launch { // canceled when ViewModel is destroyed
+    repository.getData()
 }
 
 
@@ -140,17 +138,17 @@ example of Observable on Android:
 ```kotlin
 // in a ViewModel
 private val _userLiveData = MutableLiveData<User>(default)
-public val userLiveData: LiveData<User> = _user
+public val userLiveData: LiveData<User> = _userLiveData
 
 fun refreshUser() {
     viewLifecycleScope.launch {
-        _user.value = fetchUser()
+        _userLiveData.value = fetchUser()
     }
 }
 
 // in a fragment or activity
-viewModel.user.observe(lifecycleScope) {
-    userNameTextView.text = it.userName
+viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
+    userNameTextView.text = user.userName
 }
 ```
 
@@ -164,12 +162,12 @@ val stream = Stream.of("red", "white", "blue")
     .subscribeOn(Schedulers.newParallel("sub"))
     .publishOn(Schedulers.newParallel("pub"), 2)
 
-stream.subscribe(value -> {
+stream.subscribe { value ->
     log(value)
-})
+}
 ```
 
-Streams can be "hot" or "cold"
+Streams can be "hot" or "cold" (analogy: Radio // CD)
 
 ## Flow
 
@@ -192,10 +190,10 @@ Special type of flow used like `LiveData`
 ```kotlin
 // repository
 private val _userFlow = MutableFlow<NetworkUser>()
-public val userFlow: Flow<NetworkUser> = _user
+public val userFlow: Flow<NetworkUser> = _userFlow
 
 suspend fun refreshUser() {
-    _user.value = fetchUser()
+    _userFlow.value = fetchUser()
 }
 
 val adaptedUserFlow : Flow<User> = repository.userFlow

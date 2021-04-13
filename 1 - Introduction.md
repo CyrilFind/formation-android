@@ -127,8 +127,8 @@ puis `Start New Course > Community Courses`
 * Devices très variables
 * Versions d’OS anciennes
 * Puissance limitée
-* Phone, Tablet, TV, Watch, Auto, Things, Chrome OS
-* Language : Java et Kotlin
+* Phone, Tablet, TV, Watch, Auto, Chrome OS, Fuschia OS
+* Language : Kotlin et Java
 * IDE : Android Studio
 
 ## Éléments d'une app Android
@@ -180,8 +180,8 @@ puis `Start New Course > Community Courses`
 * On perd souvent les possibilités spécifiques ou récentes des OS (effet "PPCD")
 * On perd parfois aussi en performances ou en UX
 * Programmation à base "Components" à la React
-* Xamarin, React, NativeScript, Ionic
+* Xamarin, ReactNative, NativeScript, Ionic
 * Google et Apple s’en inspirent et poussent maintenant beaucoup à utiliser:
-  * Dart: Flutter
-  * Kotlin: Jetpack Compose (desktop, web, iOS ?)
-  * Swift: SwiftUI (pas cross-platform)
+  * Dart: Flutter (iOS, Android, Desktop, Web)
+  * Swift: SwiftUI (iOS only)
+  * Kotlin: Jetpack Compose (Android, Desktop, Web, iOS?)

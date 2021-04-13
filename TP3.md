@@ -104,16 +104,6 @@ object Api {
   private const val BASE_URL = "https://android-tasks-api.herokuapp.com/api/"
   private const val TOKEN = "COPIEZ_VOTRE_TOKEN_ICI"
 
-  // on construit une instance de parseur de JSON:
-  private val jsonSerializer = Json {
-      ignoreUnknownKeys = true
-      coerceInputValues = true
-  }
-
-  // instance de convertisseur qui parse le JSON renvoyé par le serveur:
-  private val converterFactory =
-      jsonSerializer.asConverterFactory("application/json".toMediaType())
-
   // client HTTP
   private val okHttpClient by lazy {
     OkHttpClient.Builder()
@@ -126,6 +116,16 @@ object Api {
       }
       .build()
   }
+
+  // sérializeur JSON: transforme le JSON en objets kotlin et inversement
+  private val jsonSerializer = Json {
+      ignoreUnknownKeys = true
+      coerceInputValues = true
+  }
+
+  // instance de convertisseur qui parse le JSON renvoyé par le serveur:
+  private val converterFactory =
+      jsonSerializer.asConverterFactory("application/json".toMediaType())
 
   // permettra d'implémenter les services que nous allons créer:
   private val retrofit = Retrofit.Builder()
@@ -321,7 +321,7 @@ suspend fun updateTask(task: Task) {
   // ...
   val editableList = _tasksList.value.orEmpty().toMutableList()
   val position = editableList.indexOfFirst { updatedTask.id == it.id }
-  editableList[position] = editedTask
+  editableList[position] = updatedTask
   _tasksList.value = editableList
 }
 ```

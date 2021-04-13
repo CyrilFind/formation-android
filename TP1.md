@@ -57,9 +57,16 @@ val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 
 ⚠️ Si vous executez du code *avant* cette ligne `inflate`, il va crasher ou ne rien faire car votre vue n'existera pas encore
 
-- Remplacez la balise `<TextView.../>` par une balise `<fragment.../>` dans votre activité principale:
-  - Utilisez le glisser-déplacé en mode Design ou bien l'autocomplétion en mode Text pour spécifier l'attribut `android:name`: il faut donner la classe de Fragment qui sera affichée dans cette balise (ex: `"com.nicoalex.todo.tasklist.TaskListFragment"`)
-  - Ajoutez un id: `android:id="@+id/fragment_tasklist"` pour...ne pas faire crasher l'app 🤷‍♂️
+- Remplacez la balise `<TextView.../>` par une balise `<FragmentContainerView.../>` dans votre activité principale:
+
+```xml
+<FragmentContainerView
+    android:id="@+id/fragment_tasklist"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:name="androidx.navigation.fragment.NavHostFragment"
+    app:defaultNavHost="true" />
+```
 
 ## La liste des tâches
 

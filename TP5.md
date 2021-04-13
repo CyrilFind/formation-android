@@ -5,7 +5,7 @@
 
 - Rendez vous sur le [repository de Coil](https://coil-kt.github.io/coil/) et lisez le `ReadMe`
 - Ajouter les dépendances nécessaires à `app/build.gradle`
-- Ajouter une `ImageView` à coté de votre `header_text_view` qui affichera l'avatar de l'utilisateur
+- Ajouter une `<ImageView .../>` dans `fragment_tasklist.xml` principal qui affichera l'avatar de l'utilisateur
 - Dans `onResume`, utiliser Coil pour afficher une image en passant une URL de votre choix (à défault vous pouvez utiliser `"https://goo.gl/gEgYUd"`)
 
 ```kotlin
@@ -113,7 +113,7 @@ private fun openCamera() = takePicture.launch()
 suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response<UserInfo>
 ```
 
-- Ajouter une fonction pour convertir l'image afin de pouvoir l'envoyer en HTTP:
+- Ajouter une fonction pour convertir l'image en `MultipartBody.Part` afin de pouvoir l'envoyer en HTTP:
 
 ```kotlin
 // convert     

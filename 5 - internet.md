@@ -16,21 +16,33 @@ marp: true
 REST: Representational state transfer
 CRUD: Create, Read, Update, Delete
 
-## Build a URI
+## Permission
 
-the old way
+```xml
+// Necessary to make HTTP requests
+<uses-permission android:name="android.permission.INTERNET"/>
+```
+
+## Build a URI & Request
+
+the old way:
 
 ```kotlin
-val BASE_URL = "https://www.googleapis.com/books/v1/volumes?"
-val QUERY_PARAM = "q"
-val MAX_RESULTS = "maxResults"
-val PRINT_TYPE = "printType"
-val uri = Uri.parse(BASE_URL).buildUpon()
-  .appendQueryParameter(QUERY_PARAM, "pride+prejudice")
-  .appendQueryParameter(MAX_RESULTS, "10")
-  .appendQueryParameter(PRINT_TYPE, "books").build()
-val requestURL = URL(uri.toString())
+val uri = Uri.parse("https://www.googleapis.com/books/v1/volumes")
+  .buildUpon()
+  .appendQueryParameter("q", "pride+prejudice")
+  .appendQueryParameter("maxResults", "10")
+  .appendQueryParameter("printType", "books")
+  .build()
+
+val queue = Volley.newRequestQueue(context)
+val stringRequest = StringRequest(Request.Method.GET, uri.toString(),
+        Response.Listener<String> { response -> ... },
+        Response.ErrorListener { ... })
+queue.add(stringRequest)
 ```
+
+Parsing example: [with GSON](https://developer.android.com/training/volley/request-custom#example:-gsonrequest)
 
 ## Request a server
 
@@ -41,8 +53,7 @@ val requestURL = URL(uri.toString())
 with OkHttp
 
 ```kotlin
-private val okHttpClient =
-  OkHttpClient.Builder()
+private val okHttpClient = OkHttpClient.Builder()
     .addInterceptor { chain ->
       val newRequest = chain.request().newBuilde()
         .addHeader("Authorization", "Bearer $TOKEN")
@@ -54,13 +65,12 @@ private val okHttpClient =
 
 ## Parsing JSON
 
-with KotlinX Serialization
+with KotlinX Serialization (see also: [Moshi](https://github.com/square/moshi))
 
 ```kotlin
 val movieJson = """{
   \"id\": 19404,
-  \"title\":
-  \"Example Movie\",
+  \"title\": \"Example Movie\",
   \"image_path\":\"/example-movie-image.jpg\"
 }"""
 
@@ -77,8 +87,7 @@ private val jsonSerializer = Json {
   coerceInputValues = true
 }
 
-val converterFactory =
-  jsonSerializer.asConverterFactory("application/json".toMediaType())
+val converterFactory = jsonSerializer.asConverterFactory("application/json".toMediaType())
 ```
 
 ## Api Service
@@ -86,6 +95,8 @@ val converterFactory =
 with Retrofit
 
 ```kotlin
+val BASE_URL = "https://movies.com/API/"
+
 val retrofit = Retrofit.Builder()
   .client(okHttpClient)
   .baseUrl(BASE_URL)
@@ -94,13 +105,13 @@ val retrofit = Retrofit.Builder()
 
 interface MovieWebService {
   @GET("movies/{user_id}")
-  fun getMovies(@Path("user_id") userId: String): List<Movie>
+  fun getMovies(@Path("user_id") userId: String): RespoList<Movie>
 }
 
-// Create an object that implements MovieWebService
+// Create an object that *implements* MovieWebService
 val movieWebService: MovieWebService = retrofit.create(MovieWebService::class.java)
 
-// Pseudo-code equivalent:
+// Pseudo-code equivalent
 val movieWebService = object : MovieWebService {
     override fun getMovies(userId: String) : List<Movie> {
       val json = okHttpClient.get("$BASE_URL/movies/$userId")
@@ -108,8 +119,7 @@ val movieWebService = object : MovieWebService {
     }
 }
 
-// Usage:
-val movies = movieWebService.getMovies("myUserId")
+val movies = movieWebService.getMovies("myUserId") // Usage
 ```
 
 ## Config
@@ -120,19 +130,17 @@ Full implementation example:
 object MovieApi {
   private const val BASE_URL = "https://movies.com/API/"
 
-  private val okHttpClient =
-    OkHttpClient.Builder().addInterceptor { chain ->
-        val newRequest = chain.request().newBuilde().addHeader("Authorization", "Bearer $TOKEN").build()
-        chain.proceed(newRequest)
-      }.build()
+  private val okHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
+    val newRequest = chain.request().newBuilde().addHeader("Authorization", "Bearer $TOKEN").build()
+    chain.proceed(newRequest)
+  }.build()
 
   private val jsonSerializer = Json {
     ignoreUnknownKeys = true
     coerceInputValues = true
   }
 
-  val converterFactory =
-    jsonSerializer.asConverterFactory("application/json".toMediaType())
+  val converterFactory = jsonSerializer.asConverterFactory("application/json".toMediaType())
 
   val retrofit = Retrofit.Builder()
     .client(okHttpClient)
