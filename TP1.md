@@ -60,12 +60,12 @@ val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 - Remplacez la balise `<TextView.../>` par une balise `<FragmentContainerView.../>` dans votre activité principale:
 
 ```xml
-<FragmentContainerView
+ <androidx.fragment.app.FragmentContainerView
+    android:name="com.example.nicoalex.TaskListFragment"
     android:id="@+id/fragment_tasklist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="androidx.navigation.fragment.NavHostFragment"
-    app:defaultNavHost="true" />
+    />
 ```
 
 ## La liste des tâches
