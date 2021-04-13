@@ -151,30 +151,3 @@ object MovieApi {
    val movieWebService: MovieWebService = retrofit.create(MovieWebService::class.java)
 }
 ```
-
-## Permissions
-
-```xml
-// Necessary to make HTTP requests
-<uses-permission android:name="android.permission.INTERNET"/>
-// Necessary to get wifi, ethernet or mobile data status
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-```
-
-## Check Network
-
-```kotlin
-val connectionManager =
-  getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-val networkInfo = connectionManager.activeNetworkInfo
-
-if (networkInfo != null && networkInfo.isConnected) doNetworkStuff()
-else textView.setText("No network connection available.")
-
-val isWifiConnected =
-  connectionManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected
-
-val mobileConnected =
-  connectionManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnected
-```

@@ -21,10 +21,11 @@ Vous allez créer un unique projet "fil rouge" que vous mettrez à jour au fur 
 
 ## Ajout de Dépendances
 
-Dans le fichier `app/build.gradle`, ajouter la ligne suivante dans `dependencies { ... }`:
+Dans le fichier `app/build.gradle`, ajouter les libs suivante dans `dependencies { ... }`:
 
 ```groovy
-implementation "androidx.recyclerview:recyclerview:1.1.0"
+implementation "androidx.recyclerview:recyclerview:1.2.0"
+implementation 'androidx.fragment:fragment-ktx:1.3.2'
 ```
 
 ## Gestion des fichiers
@@ -33,7 +34,7 @@ Les fichiers source Java ou Kotlin sont rangés en "packages" (noté en haut de 
 
 Dans le volet "Projet" (à gauche d'Android Studio), vous pouvez choisir diverses visualisations de vos fichers: la plus adaptée est "Android", mais il peut parfois être pratique de passer en "Project Files" par ex
 
-- Ouvrez l'arborescence de fichiers jusqu'à la racine de vos fichiers source et créez un package `tasklist`:
+- Ouvrez l'arborescence de fichiers jusqu'à la racine de vos fichiers source et créez un package `tasklist` à l'intérieur:
 
 `app > java > com.nicoalex.todo > clic droit > New > package > "tasklist"`
 
@@ -57,7 +58,7 @@ val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 
 ⚠️ Si vous executez du code *avant* cette ligne `inflate`, il va crasher ou ne rien faire car votre vue n'existera pas encore
 
-- Remplacez la balise `<TextView.../>` par une balise `<FragmentContainerView.../>` dans votre activité principale:
+- Remplacez la balise `<TextView.../>` par une balise `<FragmentContainerView.../>` dans le layout de votre activité principale (à adapter à votre projet):
 
 ```xml
  <androidx.fragment.app.FragmentContainerView
