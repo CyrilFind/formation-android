@@ -9,15 +9,18 @@ marp: true
 
 ## MVC
 
-![bg right:70% 95%](assets/mvc.png)
+Model View Controller
+
+![bg right:60% 95%](assets/mvc.png)
 
 ## MVP
 
-![bg right:70% 95%](assets/mvp.png)
+Model View Presenter
+![bg right:60% 95%](assets/mvp.png)
 
-## Dependecy Rule
+## Dependency Rule
 
-![bg right:70% 95%](assets/dependency.png)
+![bg right:60% 95%](assets/dependency.png)
 
 ## Clean Architecture
 
@@ -25,11 +28,25 @@ marp: true
 
 # MVVM
 
+Model View ViewModel
+![bg right:60% 90%](assets/mvvm.png)
+
+## MVI
+
+Model View Intent
+![bg right:60% 90%](assets/mvi.png)
+
+⚠️ Ici `Intent` n'est pas le type spécifique à Android
+
+💡 Ceci s'adapte encore plus directement avec Jetpack Compose
+
+## Google Architecture
+
 ![bg right:70%](assets/google_arch.png)
 
 ## ViewModel
 
-- Formatte les données pour l'UI
+- Formate les données pour l'UI
 - Survis aux configuration changes
 - Peut aussi partager des données entre Fragments
 - Fait partie lifecycle library
@@ -41,7 +58,7 @@ Analogie: Serveur
 
 - Pas un Architecture Components mais une bonne pratique
 - Récupère les données d'une ou plusieurs `DataSource`
-- Choisis la source en fonction des circonstantces
+- Choisis la source en fonction des circonstances
 - Synchronise les sources
 - Présente les données
 

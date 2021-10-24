@@ -9,98 +9,206 @@ marp: true
 
 ![bg left:30% 50%](assets/kotlin.png)
 
-* Peu verbeux
 * Moderne
+* Concis
 * Java Interop
 * Développé par JetBrains
 * Kotlin everywhere: JVM, Backend, JS, KTS, iOS...
 
-## Variables
+## Typage statique inféré
 
 ```kotlin
-// Typage statique inféré
 val myInt: Int = 1
 val myInt = 1
+
 val myString: String = "coucou"
 val myInt = "coucou"
-
-// Mutabilité
-val myImmutableVariable = 0
-var myMutableVariable = 0
-
-// Nullabilité (Interop:  @Nullable)
-val variable: SomeClass? = null
-variable?.myMethod() ?: doSomethingElse()
-variable!!.myMethod()
-
-// Smart casts
-var nullable: MyClass?
-if (nullable != null) { nullable.myMethod() }
-
-
-// When statements: super-powered switch-case statements
-val primeNumbers = listOf(1, 3, 5, 7, 11, 13, 17)
-val x = 13
-when (x) {
-    null -> print("x is null")
-    !is Int -> print("x is not an int")
-    in 1..10 -> print("x is between 1 and 10")
-    !in 10..20 -> print("x is not between 10 and 20")
-    in primeNumbers -> print("x is a prime") // ⬅️
-    else -> print("none of the above")
-}
 ```
 
-## Classes
+## Mutabilité
+
+```kotlin
+// valeur donnée à la compilation qui ne peut pas changer:
+const val MY_CONSTANT = 0 
+
+// valeur est donnée à l'execution qui ne peut pas changer:
+val myImmutableVariable = 0 
+
+// valeur qui peut changer:
+var myMutableVariable = 0 
+```
+
+## Nullabilité
+
+```kotlin
+val nullable: MyClass? = null
+
+// Éxécute une méthode SI l'instance est non nulle (retourne null sinon)
+nullable?.toString() // soft unwrap
+    
+// Éxécute une méthode OU crash si l'instance est nulle
+nullable!!.toString() // force unwrap
+
+// 
+nullable ?: "default" // coalesce operator
+```
+
+⚠️ Pour l'interopérabilité avec Java il faut une annotation `@Nullable`
+
+## Smart casts
+
+```kotlin
+var nullable: MyClass?
+
+nullable?.myMethod()
+
+if (nullable != null) { nullable.myMethod() }
+```
+
+## When statements
+
+Un `switch-case` sous stéroïdes
+
+```kotlin
+val primeNumbers = listOf(1, 3, 5, 7, 11, 13, 17)
+
+val x: Any? = 13
+
+val result = when (x) {
+    null -> "x is null" // ❌ -> smart casté comme Any
+    !is Int -> "x is not an int" // ❌ -> smart casté comme Int
+    in 1..10 -> "x is between 1 and 10" // ❌
+    !in 10..20 -> "x is not between 10 and 20" // ❌
+    in primeNumbers -> "x is a prime" // ✅
+    else -> "none of the above" // ignoré
+}
+
+print(result)
+```
+
+## Functions
+
+```kotlin
+fun functionName(firstArgumentName: FirstArgumentType, secondArgumentName: SecondArgumentType) : ReturnType {
+  val result: ReturnType
+  // ...
+  return result
+}
+
+// short syntax:
+fun add(first: Int, second: Int) = first + second
+```
+
+## Final class
 
 ```kotlin
 class MyFinalClass {...} // classes are final by default
-open class MyHeritableClass {...} // open makes them non-final
 
+open class MyHeritableClass {...} // open makes them non-final
+```
+
+## Object
+
+Permet de créer facilement un Singleton
+
+``` kotlin
 object MySingleton { 
+  
   val myUtilFunction() { ... }
 }
-MySingleton.myUtilFunction() // used like "static" methods in Java
 
+// à utiliser comme une classe `static` Java:
+MySingleton.myUtilFunction() 
+```
+
+## Companion object
+
+Permet d'avoir l'équivalent des membres `static` en Java:
+
+``` kotlin
 class MyClass {
-  companion object { // static fields
+  
+  companion object {
+    
     const val MY_CONSTANT = 1
   }
 }
-MyClass.MY_CONSTANT // in java: MyClass.Companion.MY_CONSTANT
 
-// equals(), toString(), hashCode(), copy(), destructuring for free
-data class MyPojo(val someProperty: SomeType, ...)
+MyClass.MY_CONSTANT // interop java: MyClass.Companion.MY_CONSTANT
+```
 
-sealed class Result { // sort of "enum classes"
-  object Success : Result
-  class Failure(error: Error) : Result()
+## Data class
+
+`equals(), toString(), hashCode(), copy()` et destructuration sans rien coder !
+
+``` kotlin
+data class Point(val x: Float, val y: Float)
+
+val pointA = Point(1.0f, 2.0f)
+
+val (x, y) = point
+
+val pointB = pointA.copy(y = 1.0f)
+
+pointB.toString() // Point(x=1.0f, y=1.0f)
+
+val pointC = Point(1.0f, 2.0f)
+pointA == pointC // ➡️ true
+```
+
+## Sealed class
+
+Classes ayant un nombre de sous classes défini et limité
+
+``` kotlin
+sealed class Result {
+  
+  class Success(val value: Any) : Result()
+  
+  class Failure(val error: Error) : Result()
+}
+```
+
+➡️ Permet d'être smart-casté
+
+## Extension functions
+
+``` kotlin
+fun String.capitalize(): String { 
+  this.chars().mapIndexed { char, index -> 
+    if (index == 1) char.toUpperCase() else char 
+  } 
 }
 
-// Extension functions
-fun String.reverse(): String {...}
-"blabla".reverse()
+"blabla".reverse() // ➡️ "albalb"
+```
 
-// Delegates
-class Survey(firstItem: Question, vararg items: Question) : List<Question> by listOf(firstItem, *items)
+## Delegates
+
+``` kotlin
+class DraggableButton(
+  clickListener: ClickListener, 
+  dragListener: DragListener
+) : ClickListener by clickListener, DragListener by dragListener
+
+val lazyString: String by lazy { "my lazy string" }
 ```
 
 ## Lambdas
 
-```kotlin
-// Lambdas: function blocks handled as variables
-val add: (Int, Int) -> Int = { a, b -> a + b }
-val result = add(1, 2)
+Blocs d'éxecution qui se manipulent en tant que variables:
 
-fun listOperation(number: Int, list: List<Int?>, operation: (Int, Int) -> Int): List<Int>? {
-    list.forEach { element -> 
-        if (element == null) return@applyOperation null // Specified return
-        operation(number, element)
-    }
+```kotlin
+val add: (Int, Int) -> Int = { a, b -> a + b }
+
+val result = add(1, 2) // result == 3
+
+fun listOperation(number: Int, list: List<Int>, operation: (Int, Int) -> Int): List<Int> {
+    list.forEach { element -> operation(number, element) }
 }
 
-listOperation(1, listOf(2, 4, 6, 8), add)
-listOperation(1, listOf(2, 4, 6, 8)) { a, b -> a - b }
+listOperation(1, listOf(2, 4, 6, 8), add) // 3, 5, 7, 9
+listOperation(1, listOf(2, 4, 6, 8)) { a, b -> a - b } // 1, 3, 5, 7
 
 // Lambda for SAM
 button.setOnClickListener { view -> ... }
@@ -108,12 +216,14 @@ button.setOnClickListener { view -> ... }
 
 ## Kotlin Koans
 
-En ligne: [try.kotl.in](try.kotl.in)
+Petits exercices pour prendre en main le langage:
 
-Dans l'IDE: ajouter plugin Edutools, redémarrer
-puis `Start New Course > Community Courses`
+* Soit en ligne: [try.kotl.in/koans](http://try.kotl.in/koans)
 
-![bg right:60% 90%](assets/koans.png)
+* Soit dans l'IDE (pour avoir l'autocompletion), :
+  * installer le plugin Edutools: `Plugins > Marketplace > Edutools > Install`
+  * accepter de redémarrer
+  * Démarrer le cours: `My Courses > Start New Course > Marketplace > Kotlin Koans > Start`
 
 # Android
 
@@ -160,7 +270,7 @@ puis `Start New Course > Community Courses`
 * Coroutines, Flow, ...
 * Jetpack Compose
 * Pas vraiment de désavantages car équivalent à Java et interop facile
-* ⚠️ On peut être dépassés par les features de Kotlin: rester simple et lisible
+* ⚠️ On peut être dépassé par les différentes possibilités offertes par Kotlin: rester simple et lisible
 
 # iOS
 

@@ -143,3 +143,25 @@ class MyTableDataSource : UITableViewDataSource {
    }
 }
 ```
+
+## Jetpack Compose
+
+![bg left:30% 80%](assets/compose.svg)
+
+```kotlin
+LazyColumn {
+    item {
+        Text("Single item")
+    }
+
+    items(5) { index ->
+        Text("Item: $index")
+    }
+
+    items(wordList) { word ->
+         Text("Object: $word")
+   }
+}
+```
+
+hé oui, c'est tout 🤷

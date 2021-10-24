@@ -32,7 +32,7 @@ class Cat {
 
     public fun die() {
         if (lives > 0) lives--
-        else print("Meowargh 💀")
+        else print("🙀💀")
     }
 }
 

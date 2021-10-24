@@ -221,3 +221,29 @@ class LoginViewController: UIViewController {
   - `loadView`, `viewDidLoad`, ...
 - rotation: `viewWillTransition`
 - state restauration:  `restorationIdentifiers` on VC and Views
+
+## Jetpack Compose: Layouts
+
+```kotlin
+@Composable
+fun MyComposable() {
+    Column {
+        Text("Hello")
+        Text("World")
+    }
+}
+```
+
+![bg right:50% 95%](assets/compose_tree.png)
+
+## Jetpack Compose: Lifecycle
+
+![bg right:50% 95%](assets/compose_lifecycle.png)
+
+Beaucoup plus simple:
+
+- une première Composition quand le composant apparaît à l'écran
+- une Recomposition à chaque fois que c'est nécessaire: en général lorsqu'un `State<T>` a changé de valeur
+- le composant quitte l'écran
+
+⚠️ C'est en fait un lifecycle de nature très différente
