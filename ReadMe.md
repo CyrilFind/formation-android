@@ -30,7 +30,7 @@ Un minimum de slides et un maximum de TPs:
 - [TP 7](./TP7.md) : Sujets exploratoires & soutenance
 - [TP 8](./TP8.md) : Projet en Autonomie
 
-À adapter en fonction des promotions et du temps disponible
+⚠️ Ce déroulement indicatif change régulièrement et sera adapté en fonction de chaque promotion, du temps disponible, etc
 
 ### Références
 

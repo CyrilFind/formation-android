@@ -194,9 +194,9 @@ object Api {
 val userInfo = Api.userService.getInfo().body()!!
 ```
 
-- La méthode `getInfo()` étant déclarée comme `suspend`, vous aurez besoin de la lancer dans le à l'intérieur d'un `couroutineScope` (c'est ce que dit le message d'erreur):
+- La méthode `getInfo()` étant déclarée comme `suspend`, vous aurez besoin de la lancer dans un `CouroutineScope` (c'est ce que dit le message d'erreur):
 
-  on va utiliser directement `lifeCycleScope` qui est un scope déjà défini et géré par le système dans les `Activity` et `Fragment`
+  on va utiliser directement `lifeCycleScope` qui est un `CouroutineScope` déjà défini et géré par le système dans les `Activity` et `Fragment`
 
 ```kotlin
 lifecycleScope.launch {
@@ -313,23 +313,27 @@ suspend fun updateTask(@Body task: Task, @Path("id") id: String? = task.id): Res
 
 ## Suppression, Ajout, Édition
 
-- Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l'édition:
+- Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l'édition (les autres sont plus simples):
 
 ```kotlin
 suspend fun updateTask(task: Task) {
-  // TODO: do update request and check response
-  // ...
-  val editableList = _tasksList.value.orEmpty().toMutableList()
+  // TODO appel réseau et récupérationd de la tache:
+  val updatedTask = ...
+  // version "mutable" de la liste actuelle:
+  val mutableList = _tasksList.value.orEmpty().toMutableList()
+  // position actuelle de l'élément:
   val position = editableList.indexOfFirst { updatedTask.id == it.id }
+  // modification de la liste mutable:
   editableList[position] = updatedTask
+  // mise à jour de la livedata pour notifier les observers:
   _tasksList.value = editableList
 }
 ```
 
-- Utilisez les dans le Fragment, par ex pour la suppression:
+- Utilisez les méthodes du repository dans le Fragment, par ex pour la suppression:
 
 ```kotlin
-adapter.onDeleteClickListener = { task ->
+adapter.onClickDelete = { task ->
   lifecycleScope.launch {
       tasksRepository.delete(task)
   }

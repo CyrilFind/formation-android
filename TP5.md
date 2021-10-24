@@ -6,10 +6,10 @@
 - Rendez vous sur le [repository de Coil](https://coil-kt.github.io/coil/) et lisez le `ReadMe`
 - Ajouter les dépendances nécessaires à `app/build.gradle`
 - Ajouter une `<ImageView .../>` dans `fragment_tasklist.xml` principal qui affichera l'avatar de l'utilisateur
-- Dans `onResume`, utiliser Coil pour afficher une image en passant une URL de votre choix (à défault vous pouvez utiliser `"https://goo.gl/gEgYUd"`)
+- Dans `onResume`, utiliser Coil pour afficher une image en passant une URL de votre choix, par exemple:
 
 ```kotlin
-image_view.load("VOTRE_URL")
+image_view.load("https://goo.gl/gEgYUd")
 ```
 
 - Trouvez comment utiliser Coil pour afficher l'image sous la forme d'un cercle
@@ -21,11 +21,18 @@ image_view.load("VOTRE_URL")
 - Remplir son layout:
 
 ```xml
-<LinearLayout ...>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
     <ImageView
         android:id="@+id/image_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <Button
         android:id="@+id/upload_image_button"
@@ -72,8 +79,8 @@ private fun askCameraPermissionAndOpenCamera() {
 private fun showExplanationDialog() {
     AlertDialog.Builder(this).apply {
         setMessage("On a besoin de la caméra sivouplé ! 🥺")
-        setPositiveButton("Bon, ok") { _, _ ->
-            requestCameraPermission() 
+        setPositiveButton("Bon, ok") { dialogInterface, _ ->
+            dialogInterface.dismiss() 
         }
         setCancelable(true)
         show()
@@ -132,7 +139,9 @@ private fun convert(uri: Uri) =
 ```kotlin
     lifecycleScope.launch {
         val userInfo = ...getInfos()
-        imageView.load(userInfo.avatar)
+        imageView.load(userInfo.avatar) {
+            error(R.drawable.ic_launcher_background) // display something when image request fails
+        }
     }
 ```
 

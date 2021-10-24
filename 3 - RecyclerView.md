@@ -22,7 +22,7 @@ Conteneur scrollable pour afficher une grande quantité de donnée de façon eff
    android:id="@+id/recyclerview"
    android:layout_width="match_parent"
    android:layout_height="match_parent"
-   app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+   app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 ```
 
 ## Item layout
@@ -38,7 +38,7 @@ Conteneur scrollable pour afficher une grande quantité de donnée de façon eff
 </LinearLayout>
 ```
 
-## Adapter
+## RecyclerView Adapter: implementation
 
 ```kotlin
 class WordListAdapter(val wordList: Word) : RecyclerView.Adapter<WordListAdapter.WordViewHolder>() {
@@ -60,17 +60,28 @@ class WordListAdapter(val wordList: Word) : RecyclerView.Adapter<WordListAdapter
       }  
    }
 }
+```
 
-// at fragment or activity creation:
-val wordList = listOf("word#1", "word #2")
-recyclerView.adapter = WordListAdapter(wordList)
+## RecyclerView Adapter: usage
+
+```kotlin
+// At fragment or activity creation:
+val wordList = mutableListOf("word#1", "word #2")
+val myAdapter = WordListAdapter(wordList)
+
+// Setup when view is ready:
+recyclerView.adapter = myAdapter
 recyclerView.layoutManager = LinearLayoutManager(context)
+
+// Notify when data changes
+worldList.add("word #3)
+myAdapter.notifyDataSetChanged()
+myAdapter.notifyItemChanged(2)
 ```
 
 ## ListAdapter
 
 ```kotlin
-
 object WordsDiffCallback : DiffUtil.ItemCallback<Word>() {
    override fun areItemsTheSame(oldItem: Word, newItem: Word) =
       // are they the same "entity" ? (usually same id)
@@ -79,10 +90,12 @@ object WordsDiffCallback : DiffUtil.ItemCallback<Word>() {
 }
 
 class WordListAdapter : ListAdapter<,Word, WordListAdapter.WordViewHolder>(WordsDiffCallback) {
-   // same thing without getItemCount()
+   // use `currentList`
+   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {...}
+   override fun onBindViewHolder(holder: WordViewHolder, position: Int)  {...}
 }
 
-// at fragment or activity creation:
+// Usage is simpler:
 val myAdapter = WordListAdapter()
 recyclerView.adapter = myAdapter
 myAdapter.submitList(listOf("word#1", "word #2"))

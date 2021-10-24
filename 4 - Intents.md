@@ -24,15 +24,15 @@ Un intent peut être "lancé" par une application ou par le système
 val explicitIntent = Intent(context, MyActivity::class.java)
 
 // implicit intents:
+val urlIntent = Intent("http://www.google.com")
 val callButtonIntent = Intent(ACTION_CALL_BUTTON)
-val urlIntent = Intent(ACTION_VIEW, "http://www.google.com")
 val phoneIntent = Intent(ACTION_DIAL, "tel:8005551234")
 val searchIntent = Intent(Intent.ACTION_WEB_SEARCH)
-searchIntent.putExtra(SearchManager.QUERY, "query")
+searchIntent.putExtra(SearchManager.QUERY, "cute cat pictures")
 
-val createPdfIntent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+val createPdfIntent = Intent(ACTION_CREATE_DOCUMENT)
 createPdfIntent.type = "application/pdf" // set MIME type
-createPdfIntent.addCategory(Intent.CATEGORY_OPENABLE)
+createPdfIntent.addCategory(CATEGORY_OPENABLE)
 
 // use:
 startActivity(intent)
@@ -52,7 +52,7 @@ pendingIntent.send()
 // Preparing intent in FirstActivity
 val intent = Intent(this, SecondActivity::class.java)
 
-intent.data = Uri.parse("http://www.google.com") // Web URL
+intent.data = Uri.parse("https://www.google.com") // Web URL
 intent.data = Uri.fromFile(File("/file_path/file.jpg")) // File URI
 
 intent.putExtra("level_key", 42)
@@ -76,52 +76,68 @@ val percent = bundle.getFloat("percent_key")
 
 ```xml
 <activity android:name="ShareActivity">
-   <intent-filter>
-       <action android:name="android.intent.action.SEND" />
-       <action android:name="android.intent.action.SEND_MULTIPLE"/>
-       <category android:name="android.intent.category.DEFAULT" />
-       <data android:mimeType="text/plain" />
-       <data android:mimeType="image/*" />
-       <data android:mimeType="video/*" />
-   </intent-filter>
+    <intent-filter>
+        <action android:name="android.intent.action.SEND" />
+        <action android:name="android.intent.action.SEND_MULTIPLE"/>
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="text/plain" />
+        <data android:mimeType="image/*" />
+        <data android:mimeType="video/*" />
+    </intent-filter>
 </activity>
 <activity android:name="BrowserActivity">
-   <intent-filter>
-       <action android:name="android.intent.action.VIEW" />
-       <category android:name="android.intent.category.BROWSABLE" />
-       <data android:scheme="https" />
-       <data android:host="developer.android.com" />
-   </intent-filter>
-   <intent-filter>
-       <category android:name="android.intent.category.LAUNCHER" />
-   </intent-filter>
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="https" />
+        <data android:host="developer.android.com" />
+    </intent-filter>
+    <intent-filter>
+        <intent-filter> 
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </intent-filter>
 </activity>
 ```
 
 ## Requesting
 
 ```kotlin
-// setup in requesting Activity
+class FirstActivity : Activity() { // requesting Activity
+    companion object {
+        const val UNIQUE_REQUEST_CODE = 666 // ID of the request
+    }
 
-val intent = Intent(this, SecondActivity::class.java)
-const val UNIQUE_REQUEST_CODE = 666
-startActivityForResult(intent, UNIQUE_REQUEST_CODE)
-
-public override fun onActivityResult(
-requestCode: Int, resultCode: Int, data: Intent?) {
-   super.onActivityResult(requestCode, resultCode, data)
-   if (requestCode == UNIQUE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-        val reply = data!!.getStringExtra(SecondActivity.EXTRA_REPLY)
-        // … do something with the data
+    override fun onCreate() {
+        // ...
+        val intent = Intent(this, SecondActivity::class.java) // explicit intent
+        startActivityForResult(intent, UNIQUE_REQUEST_CODE) // launch request
+    }
+    
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == UNIQUE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+                val reply = intent!!.getStringExtra(SecondActivity.EXTRA_REPLY)
+                // … do something with the data
+            }
+        }
     }
 }
 
-// use in requested Activity
+class SecondActivity : Activity() { // requested Activity
+    companion object {
+        const val EXTRA_REPLY = "reply_key" // use a key to put/get result data
+    }
 
-const val EXTRA_REPLY = "reply_key"
-intent.putExtra(EXTRA_REPLY, "Done !")
-setResult(RESULT_OK, intent)
-finish()
+    override fun onCreate() {
+        // ...
+        intent.putExtra(EXTRA_REPLY, "Done !") // add result data to intent
+        setResult(RESULT_OK, intent) // specify all went well and return the data
+        finish() // close this activity
+    }
+}
 ```
 
 ## New API

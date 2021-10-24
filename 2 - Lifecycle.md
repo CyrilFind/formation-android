@@ -96,7 +96,7 @@ class MainFragment : Fragment() {
 
 ```kotlin
 // traditional
-val loginTextView = findViewById<TextView>(R.id.textView_login)
+val loginTextView: TextView = findViewById(R.id.textView_login)
 
 // ButterKnife
 @BindView(R.id.textView_login) val loginTextView: TextView
@@ -120,13 +120,13 @@ android {
 Activity:
 
 ```kotlin
-private lateinit var binding: ResultProfileBinding
+private lateinit var binding: ActivityMainBinding
 
 override fun onCreate(...) {
     super.onCreate(...)
-    binding = ResultProfileBinding.inflate(layoutInflater)
+    binding = ActivityMainBinding.inflate(layoutInflater)
     setContentView(binding.root)
-    binding.myButton.setOnCLickListener { ... }
+    binding.textViewLogin.setOnCLickListener { ... }
 }
 ```
 

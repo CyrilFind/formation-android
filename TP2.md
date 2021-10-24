@@ -1,6 +1,8 @@
+<!-- https://stackoverflow.com/a/49969478/3466492  -->
+
 # TP 2 - Actions & Intents
 
-L'objectif de ce TP est d'implémenter des actions sur nos tâches, en naviguant entre des `Activity` et de les partager des infos entre elle ou dans une autre application avec des `Intent`.
+*objectif*: implémenter des actions sur nos tâches, en naviguant entre des `Activity` et partager des infos entre elle ou dans une autre application avec des `Intent`.
 
 ## Suppression d'une tache
 
@@ -10,21 +12,21 @@ Dans le layout de votre ViewHolder, ajouter un `ImageButton` qui servira à supp
 
 Aidez vous des lignes de code plus bas pour réaliser un "Click Listener" à l'aide d'une lambda en suivant ces étapes:
 
-- Dans l'adapteur, ajouter une propriété lambda `onDeleteTask` qui prends en arguments une `Task` et ne renvoie rien: `(Task) -> Unit` et l'initier à `null` (elle ne fait rien par défaut)
+- Dans l'adapteur, ajouter une propriété lambda `onClickDelete` qui prends en arguments une `Task` et ne renvoie rien: `(Task) -> Unit` et l'initier à `null` (elle ne fait rien par défaut)
 - Utilisez cette lambda dans le `onClickListener` du bouton supprimer
-- Dans le fragment, accéder à `onDeleteTask` depuis l'adapter et implémentez là: donnez lui comme valeur une lambda qui va supprimer la tache passée en argument de la liste
+- Dans le fragment, accéder à `onClickDelete` depuis l'adapter et implémentez là: donnez lui comme valeur une lambda qui va supprimer la tache passée en argument de la liste
 
 ```kotlin
 // Déclaration de la variable lambda dans l'adapter:
-var onDeleteTask: ((Task) -> Unit)? = null
+var onClickDelete: ((Task) -> Unit)? = null
 
 // "implémentation" de la lambda dans le fragment:
-adapter.onDeleteTask = { task ->
+adapter.onClickDelete = { task ->
     // Supprimer la tâche
 }
 
 // Utilisation de la lambda dans le ViewHolder:
-onDeleteTask?.invoke(task)
+onClickDelete?.invoke(task)
 ```
 
 ## Ajout de tâche complet
@@ -32,21 +34,12 @@ onDeleteTask?.invoke(task)
 - Créer un package `task`
 - Créez y la nouvelle `TaskActivity`, n'oubliez pas de la déclarer dans le manifest
 - Créer un layout contenant 2 `EditText`, pour le titre et la description et un bouton pour valider
-- Définir une constante statique `ADD_TASK_REQUEST_CODE`:
-
-```kotlin
-companion object {
-    const val ADD_TASK_REQUEST_CODE = 666
-}
-```
-
-> **Rappel**: La valeur importe peu, elle servira seulement à savoir d'où on vient dans `onActivityResult(...)`
 
 - Changer l'action du FAB pour qu'il ouvre cette activité avec un `Intent`, en attendant un resultat:
 
 ```kotlin
 val intent = Intent(activity, TaskActivity::class.java)
-startActivityForResult(intent, ADD_TASK_REQUEST_CODE)
+startActivityForResult(intent, ADD_TASK_REQUEST_ID)
 ```
 
 - Dans le `onCreate` de la nouvelle activité, récupérer le bouton de validation puis setter son `onClickListener` pour qu'il crée une tâche:
@@ -84,15 +77,6 @@ val task = data?.getSerializableExtra(TaskActivity.TASK_KEY) as? Task
 - Vérifier que les infos éditées s'affichent bien à notre retour sur l'activité principale.
 
 ## Nouvelle API ActivityResult
-
-Depuis peu il existe une façon plus élégante et simple de lancer une activité en attendant un résultat, basée sur les lambdas: lisez la [documentation][3]
-
-Dans le fichier `app/build.gradle` > `dependencies {...}`, ajouter:
-
-```groovy
-implementation 'androidx.activity:activity-ktx:1.2.0-rc01'
-implementation 'androidx.fragment:fragment-ktx:1.3.0-rc01'
-```
 
 Changez votre code pour utiliser cette nouvelle méthode, par ex avec `StartActivityForResult()`:
 

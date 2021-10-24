@@ -22,7 +22,3 @@ Faire les tutos de la collection
 [Android Kotlin Fundamentals](https://developer.android.com/courses/kotlin-android-fundamentals/overview) en commençant directement à la [Lesson 2](https://developer.android.com/codelabs/kotlin-android-training-linear-layout#0)
 
 ⚠️ Ne restez pas bloqués sur les pages "Introduction", "Overview" des codelabs, ce sont juste des résumés de ce que vous allez faire.
-
-<!-- pas vu depuis longtemps:
-- Parfois l'IDE bug en mode `Visuel` et n'affiche pas certains attributs dans le layout editor (typiquement `textAlignment`, `fontFamily`, ...) dans ce cas, rien de grave, passez juste en mode `Text`
-- Parfois les attributs avec start/end ne s'affiche pas: idem rien de grave vous pouvez utiliser left/right (ex: `marginLeft` au lieu de `marginRight`) -->

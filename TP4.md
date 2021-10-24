@@ -52,7 +52,9 @@ class TaskListViewModel: ViewModel() {
     private val _taskList = MutableLiveData<List<Task>>()
     public val taskList: LiveData<List<Task>> = _taskList
 
-    fun loadTasks() {...}
+    fun loadTasks() {
+        viewModelScope.launch { ... }
+    }
     fun deleteTask(task: Task) {...}
     fun addTask(task: Task) {...}
     fun editTask(task: Task) {...}
@@ -66,7 +68,7 @@ class TaskListFragment: Fragment() {
 
     // On écoute l'objet LiveData du ViewModel ici:
     override fun onViewCreated(...) {
-        viewModel.taskList.observe(this) { newList ->
+        viewModel.taskList.observe(viewLifecycleOwner) { newList ->
             // utliser la liste
         }
     }

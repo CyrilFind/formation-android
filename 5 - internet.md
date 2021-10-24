@@ -55,7 +55,7 @@ with OkHttp
 ```kotlin
 private val okHttpClient = OkHttpClient.Builder()
     .addInterceptor { chain ->
-      val newRequest = chain.request().newBuilde()
+      val newRequest = chain.request().newBuilder()
         .addHeader("Authorization", "Bearer $TOKEN")
         .build()
       chain.proceed(newRequest)
@@ -131,7 +131,7 @@ object MovieApi {
   private const val BASE_URL = "https://movies.com/API/"
 
   private val okHttpClient = OkHttpClient.Builder().addInterceptor { chain ->
-    val newRequest = chain.request().newBuilde().addHeader("Authorization", "Bearer $TOKEN").build()
+    val newRequest = chain.request().newBuilder().addHeader("Authorization", "Bearer $TOKEN").build()
     chain.proceed(newRequest)
   }.build()
 
