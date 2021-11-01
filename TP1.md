@@ -166,7 +166,7 @@ private val taskList = listOf(
 * Enfin afficher la description en dessous du titre
 * Admirez avec fierté le travail accompli 🤩
 
-## Ajout de tâche simple
+## Ajout de tâche rapide
 
 * Changez la root view de `fragment_task_list.xml` en ConstraintLayout en faisant un clic droit dessus en mode design
 * Ouvrez le volet "Resource Manager" à gauche, cliquez sur le "+" en haut à gauche puis "Vector Asset" puis double cliquez sur le clipart du logo android et trouvez une icone "+" (en tapant "add") puis "finish" pour ajouter une icone à vos resource
@@ -193,7 +193,24 @@ Améliorer l'implémentation de `TasksListAdapter` en héritant de `ListAdapter`
 
 Utiliser le [`ViewBinding`](https://developer.android.com/topic/libraries/view-binding) pour `inflate` les différents layouts et éviter les `findViewByIds` (cf [slides](./1%20-%20Introduction.pdf))
 
-## Databinding
+## Interface et délégation
 
-* Utiliser du `DataBinding` pour également `bind`-er les tasks directement dans le XML
-* Créer un `BindingAdapter` pour également databinder la liste de tâches
+Une façon plus classique de gérer les clicks d'un item est de définir une interface que l'on implémentera dans l'Activity/Fragment.
+Mettez à jour votre code pour utiliser cette méthode:
+
+```kotlin
+interface TaskListListener {
+  fun onClickDelete(task: Task)
+}
+
+class TaskListAdapter(val listener: TaskListListener) : ... {
+  // use: listener.onClickDelete(task)
+}
+
+class TaskListFragment : Fragment {
+  val adapterListener = object : TaskListListener {
+    override onClickDelete(task: Task) {...}
+  }
+  val adapter = TaskListAdapter(adapterListener)
+}
+```

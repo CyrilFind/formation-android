@@ -12,7 +12,7 @@ Dans le layout de votre ViewHolder, ajouter un `ImageButton` qui servira à supp
 
 Aidez vous des lignes de code plus bas pour réaliser un "Click Listener" à l'aide d'une lambda en suivant ces étapes:
 
-- Dans l'adapteur, ajouter une propriété lambda `onClickDelete` qui prends en arguments une `Task` et ne renvoie rien: `(Task) -> Unit` et l'initier à `null` (elle ne fait rien par défaut)
+- Dans l'adapter, ajouter une propriété lambda `onClickDelete` qui prends en arguments une `Task` et ne renvoie rien: `(Task) -> Unit` et l'initier à `null` (elle ne fait rien par défaut)
 - Utilisez cette lambda dans le `onClickListener` du bouton supprimer
 - Dans le fragment, accéder à `onClickDelete` depuis l'adapter et implémentez là: donnez lui comme valeur une lambda qui va supprimer la tache passée en argument de la liste
 

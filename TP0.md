@@ -14,7 +14,14 @@ Conseils:
 
 ## Kotlin Koans
 
-Suivre les exercices des [Kotlin Koans](https://try.kotlinlang.org) dans Android Studio (en ajoutant le plugin "Edutools" puis `File > Learn and Teach > Browse Courses > Community Courses > Kotlin Koans`) ou sur le site [try.kotl.in](https://try.kotl.in) (mais vous n'aurez pas l'auto-complétion)
+Petits exercices pour prendre en main le langage:
+
+- Soit en ligne: [try.kotl.in/koans](http://try.kotl.in/koans)
+
+- Soit dans l'IDE (pour avoir l'autocompletion), :
+  - installer le plugin Edutools: `Plugins > Marketplace > Edutools > Install`
+  - accepter de redémarrer
+  - Démarrer le cours: `My Courses > Start New Course > Marketplace > Kotlin Koans > Start`
 
 ## Google Codelabs
 

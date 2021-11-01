@@ -9,6 +9,8 @@ Sujets à implémenter de façon autonome:
 
 **But:** Expliquer à vos camarades comment implémenter votre sujet et les avantages/inconvénients, les difficultés/les raccourcis que vous avez trouvés
 
+**Barème** approximatif sur 10: 3pts sur l'avancée + 7pts sur la présentation
+
 **Forme:** démo très rapide et présentation sous forme de "retour d'expérience" avec du code et des slides
 
 **Temps:** en ~10 min
@@ -183,3 +185,11 @@ Implémenter un cache des données serveur avec `Room`:
 - [Testing Codelab](https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-testing-basics/) (5.1 à 5.3)
 - [Mockito](https://site.mockito.org/)
 - [Espresso](https://developer.android.com/training/testing/ui-testing/espresso-testing)
+
+## 10 - Jetpack Compose
+
+Remplacer vos vues XML par du Kotlin:
+
+- [Documentation](https://developer.android.com/jetpack/compose/documentation)
+- [Listes](https://developer.android.com/jetpack/compose/lists)
+- [Navigation](https://developer.android.com/jetpack/compose/navigation)
