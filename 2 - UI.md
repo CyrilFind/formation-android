@@ -3,7 +3,7 @@ marp: true
 ---
 <!-- headingDivider: 2 -->
 
-# Activities, Fragments, Lifecycle
+# UI Framework: Activities, Fragments, Lifecycle, Views
 
 ## Context
 
@@ -227,14 +227,14 @@ class LoginViewController: UIViewController {
 ```kotlin
 @Composable
 fun MyComposable() {
-    Column {
+    Column(Modifier.fillMaxWidth()) {
         Text("Hello")
         Text("World")
     }
 }
 ```
 
-![bg right:50% 95%](assets/compose_tree.png)
+![bg right:40% 95%](assets/compose_tree.png)
 
 ## Jetpack Compose: Lifecycle
 

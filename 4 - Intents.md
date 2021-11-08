@@ -1,7 +1,7 @@
 ---
 marp: true
 ---
-<!-- headingDivider: 2 --><!-- class: invert -->
+<!-- headingDivider: 2 -->
 <!-- TODO: Deeplinks ? -->
 
 # Intents

@@ -146,7 +146,7 @@ data class Point(val x: Float, val y: Float)
 
 val pointA = Point(1.0f, 2.0f)
 
-val (x, y) = point
+val (x, y) = pointA
 
 val pointB = pointA.copy(y = 1.0f)
 
@@ -180,7 +180,7 @@ fun String.capitalize(): String {
   } 
 }
 
-"blabla".reverse() // ➡️ "albalb"
+"blabla".capitalize() // ➡️ "albalb"
 ```
 
 ## Delegates
@@ -294,4 +294,4 @@ Petits exercices pour prendre en main le langage:
 * Google et Apple s’en inspirent et poussent maintenant beaucoup à utiliser:
   * Dart: Flutter (iOS, Android, Desktop, Web)
   * Swift: SwiftUI (iOS only)
-  * Kotlin: Jetpack Compose (Android, Desktop, Web, iOS?)
+  * Kotlin: Jetpack Compose sur Android, Desktop, Web et même iOS (non-officiel)

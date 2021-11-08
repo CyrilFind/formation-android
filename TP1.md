@@ -8,7 +8,7 @@
 
 * `Ctrl` ou `Cmd` + `click` pour voir les usages ou la définition d'un élément
 * `Alt` + `Enter` pour des "💡 QuickFix"
-* `Shift, Shift + "recherche"` pour tout le reste (recherches, actions, options, ...)
+* `Shift, Shift + "recherche"` pour tout le reste (rechercher une variable, fonction, classe, actions, options, ...)
 
 ## Créer un projet
 

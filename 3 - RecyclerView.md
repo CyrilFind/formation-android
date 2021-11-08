@@ -150,16 +150,8 @@ class MyTableDataSource : UITableViewDataSource {
 
 ```kotlin
 LazyColumn {
-    item {
-        Text("Single item")
-    }
-
-    items(5) { index ->
-        Text("Item: $index")
-    }
-
     items(wordList) { word ->
-         Text("Object: $word")
+      Text("Object: $word")
    }
 }
 ```
