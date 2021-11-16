@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build & Deploy to GitHub Pages
+      env: 
+        MARP_ARGS: "-I cours/ --output dist/"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        PUBLISH_TO_BRANCH: master
+      uses: ralexander-phi/marp-action@master
+      
