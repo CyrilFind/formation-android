@@ -17,7 +17,7 @@ Objet très présent sur Android:
 
 ## Activity
 
-![bg left:30% 50%](../assets/bottomnav.png)
+![bg left:30% 50%](assets/bottomnav.png)
 
 - Hérite de `Context`
 - Permet d'afficher les données dans le layout
@@ -51,7 +51,7 @@ Objet très présent sur Android:
 
 ## ViewGroups
 
-![view groups](../assets/layouts.png)
+![view groups](assets/layouts.png)
 
 ## Views
 
@@ -92,7 +92,7 @@ class MainFragment : Fragment() {
 
 ## References to views
 
-![bg left:40% 90%](../assets/views.png)
+![bg left:40% 90%](assets/views.png)
 
 ```kotlin
 // traditional
@@ -151,15 +151,15 @@ Fragments: [Documentation](https://developer.android.com/topic/libraries/view-bi
 
 ## Activity lifecycle
 
-![bg right](../assets/activity_lifecycle.png)
+![bg right](assets/activity_lifecycle.png)
 
 ## Fragment lifecycle
 
-![bg right](../assets/fragment_lifecycle.png)
+![bg right](assets/fragment_lifecycle.png)
 
 ## Configuration Changes
 
-![bg right:40% 80%](../assets/rotation.png)
+![bg right:40% 80%](assets/rotation.png)
 
 - Rotation
 - Changement de langage
@@ -195,7 +195,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
 # iOS
 
-![bg left:30% 80%](../assets/xcode.png)
+![bg left:30% 80%](assets/xcode.png)
 
 - UIViewController (Équivalent de Activity)
 - Storyboards (Layout XML manipulé visuellement)
@@ -213,7 +213,7 @@ class LoginViewController: UIViewController {
 
 ## UIViewController
 
-![bg right:40% 95%](../assets/ios_lifecycle.png)
+![bg right:40% 95%](assets/ios_lifecycle.png)
 
 - Layout:
   - StoryBoard
@@ -234,11 +234,11 @@ fun MyComposable() {
 }
 ```
 
-![bg right:40% 95%](../assets/compose_tree.png)
+![bg right:40% 95%](assets/compose_tree.png)
 
 ## Jetpack Compose: Lifecycle
 
-![bg right:50% 95%](../assets/compose_lifecycle.png)
+![bg right:50% 95%](assets/compose_lifecycle.png)
 
 Beaucoup plus simple:
 

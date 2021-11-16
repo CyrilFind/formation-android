@@ -7,7 +7,7 @@ marp: true
 
 ## HTTP
 
-![bg right 90%](../assets/http.png)
+![bg right 90%](assets/http.png)
 
 - GET: read data
 - POST / PUT: write data
@@ -46,7 +46,7 @@ Parsing example: [with GSON](https://developer.android.com/training/volley/reque
 
 ## Request a server
 
-![rest](../assets/request.png)
+![rest](assets/request.png)
 
 ## HTTP Client
 

@@ -8,7 +8,7 @@ marp: true
 
 ## Définition
 
-![height:350px](../assets/intents.png)
+![height:350px](assets/intents.png)
 
 Un objet contenant les infos nécessaires à démarrer une `Activity` (en général) ➡️ Conceptuellement proche d'un lien HTML
 
@@ -18,7 +18,7 @@ Un intent peut être "lancé" par une application ou par le système
 
 ## Explicit / Implicit
 
-![bg right 95%](../assets/intents_explicit_implicit.png)
+![bg right 95%](assets/intents_explicit_implicit.png)
 
 ```kotlin
 val explicitIntent = Intent(context, MyActivity::class.java)
@@ -174,11 +174,11 @@ if (intent.resolveActivity(packageManager) != null) {
 }
 ```
 
-![height:300px](../assets/disambiguation.png)
+![height:300px](assets/disambiguation.png)
 
 ## Using Chooser Intent / Sharesheet
 
-![height:300px](../assets/app_chooser.png)
+![height:300px](assets/app_chooser.png)
 
 ```kotlin
 // using Chooser Intent / Sharesheet
@@ -230,7 +230,7 @@ when {
 
 ## segues
 
-![height:400px](../assets/segue.png)
+![height:400px](assets/segue.png)
 
 ```swift
 self.performSegue(withIdentifier: "SECOND_SCREEN_SEGUE", for sender: self)
@@ -255,4 +255,4 @@ Separate module with custom ViewController
 
 Capabilities configured with a plist file:
 
-![height:250px](../assets/ios_share_extensions.png)
+![height:250px](assets/ios_share_extensions.png)
