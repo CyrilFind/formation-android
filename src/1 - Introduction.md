@@ -7,7 +7,7 @@ marp: true
 
 ## Kotlin
 
-![bg left:30% 50%](./../assets/kotlin.png)
+![bg left:30% 50%](../assets/kotlin.png)
 
 - Moderne
 - Concis
@@ -227,7 +227,7 @@ Petits exercices pour prendre en main le langage:
 
 # Android
 
-![bg right:70% 100%](../assets/ts/jetpack.svg)
+![bg right:70% 100%](../assets/jetpack.svg)
 
 ## Intro
 
