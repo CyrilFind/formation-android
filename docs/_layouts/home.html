@@ -1,8 +1,0 @@
-{% assign files = site.static_files %}
-<ul>
-  {% for file in files %}
-      {% if file.name contains '.md' or file.name contains '.html' %}
-          <li><a href="{{ site.baseurl }}{{ file.path }}">{{ file.name }}</a></li>
-      {% endif %}
-  {% endfor %}
-</ul>
