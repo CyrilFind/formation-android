@@ -13,7 +13,7 @@ jobs:
 
     - name: Build & Deploy to GitHub Pages
       env: 
-        MARP_ARGS: "-I cours/ --output dist/"
+        MARP_ARGS: "-I cours/ --output docs/"
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REPOSITORY: ${{ github.repository }}
         PUBLISH_TO_BRANCH: master
