@@ -22,7 +22,7 @@ marp: true
 
 Hide the internal state
 
-![invert bg right:65% 100%](assets/encapsulation.png)
+![invert bg right:65% 100%](../assets/encapsulation.png)
 
 ## Encapsulation: Example
 
@@ -42,7 +42,7 @@ class Cat {
 
 Expose high level handles
 
-![invert bg right:65% 100%](assets/abstraction.png)
+![invert bg right:65% 100%](../assets/abstraction.png)
 
 ## Abstraction Example
 
@@ -67,7 +67,7 @@ class CoffeeMachine {
 
 Extend an other Class
 
-![invert bg right:65% 100%](assets/inheritance.png)
+![invert bg right:65% 100%](../assets/inheritance.png)
 
 ## Inheritance Example
 
@@ -140,7 +140,7 @@ class FacebookFriendsDataSource : FriendsDataSource {
 
 Use the same code for different types
 
-![invert bg right:65% 100%](assets/polymorphism.png)
+![invert bg right:65% 100%](../assets/polymorphism.png)
 
 ## Polymorphism example
 

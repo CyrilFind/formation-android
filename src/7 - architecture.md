@@ -11,30 +11,30 @@ marp: true
 
 Model View Controller
 
-![bg right:60% 95%](assets/mvc.png)
+![bg right:60% 95%](../assets/mvc.png)
 
 ## MVP
 
 Model View Presenter
-![bg right:60% 95%](assets/mvp.png)
+![bg right:60% 95%](../assets/mvp.png)
 
 ## Dependency Rule
 
-![bg right:60% 95%](assets/dependency.png)
+![bg right:60% 95%](../assets/dependency.png)
 
 ## Clean Architecture
 
-![bg right:70% 95%](assets/clean_arch.png)
+![bg right:70% 95%](../assets/clean_arch.png)
 
 # MVVM
 
 Model View ViewModel
-![bg right:60% 90%](assets/mvvm.png)
+![bg right:60% 90%](../assets/mvvm.png)
 
 ## MVI
 
 Model View Intent
-![bg right:60% 90%](assets/mvi.png)
+![bg right:60% 90%](../assets/mvi.png)
 
 ⚠️ Ici `Intent` n'est pas le type spécifique à Android
 
@@ -42,7 +42,7 @@ Model View Intent
 
 ## Google Architecture
 
-![bg right:70%](assets/google_arch.png)
+![bg right:70%](../assets/google_arch.png)
 
 ## ViewModel
 

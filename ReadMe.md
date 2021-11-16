@@ -20,17 +20,17 @@ Connaître les fondamentaux du développement Android et notamment:
 
 Un minimum de slides et un maximum de TPs:
 
-- Liste des slides: <https://cyrilfind.github.io/formation-android/>
+- [Slides](slides/)
 
-- [TP 0](./TP0.md) : Kotlin Koans & Codelabs d'Intro
-- [TP 1](./TP1.md) : RecyclerView
-- [TP 2](./TP2.md) : Actions & Intents
-- [TP 3](./TP3.md) : Internet
-- [TP 4](./TP4.md) : Architecture
-- [TP 5](./TP5.md) : Images & Permissions
-- [TP 6](./TP6.md) : SignUp/Login et Navigation
-- [TP 7](./TP7.md) : Sujets exploratoires & soutenance
-- [TP 8](./TP8.md) : Projet en Autonomie
+- [TP 0](tp/TP0.md) : Kotlin Koans & Codelabs d'Intro
+- [TP 1](tp/TP1.md) : RecyclerView
+- [TP 2](tp/TP2.md) : Actions & Intents
+- [TP 3](tp/TP3.md) : Internet
+- [TP 4](tp/TP4.md) : Architecture
+- [TP 5](tp/TP5.md) : Images & Permissions
+- [TP 6](tp/TP6.md) : SignUp/Login et Navigation
+- [TP 7](tp/TP7.md) : Sujets exploratoires & soutenance
+- [TP 8](tp/TP8.md) : Projet en Autonomie
 
 ⚠️ Ce déroulement indicatif change régulièrement et sera adapté en fonction de chaque promotion, du temps disponible, etc
 

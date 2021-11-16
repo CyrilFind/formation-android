@@ -7,7 +7,7 @@ marp: true
 
 ## Fonctionnement
 
-![bg right](assets/recyclerview.png)
+![bg right](../assets/recyclerview.png)
 
 Conteneur scrollable pour afficher une grande quantité de donnée de façon efficace:
 
@@ -103,7 +103,7 @@ myAdapter.submitList(listOf("word#1", "word #2"))
 
 ## iOS
 
-![bg right 80%](assets/ios_table.png)
+![bg right 80%](../assets/ios_table.png)
 
 In storyboard:
 
@@ -146,7 +146,7 @@ class MyTableDataSource : UITableViewDataSource {
 
 ## Jetpack Compose
 
-![bg left:30% 80%](assets/compose.svg)
+![bg left:30% 80%](../assets/compose.svg)
 
 ```kotlin
 LazyColumn {

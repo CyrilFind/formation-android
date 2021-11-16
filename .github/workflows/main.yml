@@ -15,7 +15,7 @@ jobs:
 
     - name: Build & Deploy to GitHub Pages
       env: 
-        MARP_ARGS: "-I cours/ --output docs/"
+        MARP_ARGS: "-I src/ --output slides/"
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REPOSITORY: ${{ github.repository }}
         PUBLISH_TO_BRANCH: master

@@ -6,7 +6,7 @@ Prendre en main l'IDE: vous pouvez aller dans les paramètres (`Cmd + ,` ou  `An
 Conseils:
 
 - Changer le raccourci pour les commentaires car sur AZERTY celui par défaut ne fonctionne pas (mettez `Cmd + :` par ex)
-- Changer la coloration syntaxique qui n'est par défaut pas terrible pour Kotlin: vous pouvez installer un plugin (ex: "Rainglow Color Schemes") et choisir parmi les divers proposés ou importer mon thème [Darculai](./Darculai_cyrilfind.icls)
+- Changer la coloration syntaxique qui n'est par défaut pas terrible pour Kotlin: vous pouvez installer un plugin (ex: "Rainglow Color Schemes") et choisir parmi les divers proposés ou importer mon thème [Darculai](../assets/Darculai_cyrilfind.icls)
 - Ajouter des plugins comme RainbowBrackets, Codota, grep console, SonarLint (et regardez les plus téléchargés dans l'onglet MarketPlace)
 - Activer les imports automatiques: `Editor > General > Auto Import > Kotlin > cocher "Add unambiguous import on the fly" et "Optimize imports on the fly..."`
 - Ne pas prendre la toute dernière version d'Android pour l'émulateur (ça évitera des erreurs et pèsera moins sur votre disque dur)

@@ -7,11 +7,11 @@ marp: true
 
 ## Threads
 
-![thread bg right](assets/thread.png)
+![thread bg right](../assets/thread.png)
 
 ## Coroutines
 
-![coroutine bg right](assets/coroutine.png)
+![coroutine bg right](../assets/coroutine.png)
 
 - Coroutines are asynchronous and non-blocking.
 - Coroutines use suspend functions to make asynchronous code sequential.
