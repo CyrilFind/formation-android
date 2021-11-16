@@ -7,7 +7,7 @@ marp: true
 
 ## Kotlin
 
-![bg left:30% 50%](assets/kotlin.png)
+![bg left:30% 50%](../assets/kotlin.png)
 
 - Moderne
 - Concis
@@ -227,11 +227,11 @@ Petits exercices pour prendre en main le langage:
 
 # Android
 
-![bg right:70% 100%](assets/jetpack.svg)
+![bg right:70% 100%](../assets/ts/jetpack.svg)
 
 ## Intro
 
-![bg left:30% 50%](assets/android.png)
+![bg left:30% 50%](../assets/android.png)
 
 - Nombreux utilisateurs
 - Devices très variables
@@ -243,7 +243,7 @@ Petits exercices pour prendre en main le langage:
 
 ## Éléments d'une app Android
 
-![bg left:30% 100%](assets/android_studio.svg)
+![bg left:30% 100%](../assets/android_studio.svg)
 
 - Scripts Gradle
 - AndroidManifest.xml
@@ -254,7 +254,7 @@ Petits exercices pour prendre en main le langage:
 
 ## App Components
 
-![bg left:30% 160%](assets/app_components.png)
+![bg left:30% 160%](../assets/app_components.png)
 
 - Activity / Fragments ➡ Screen Controller
 - Service ➡ Headless Controller
@@ -263,7 +263,7 @@ Petits exercices pour prendre en main le langage:
 
 ## Kotlin sur Android
 
-![bg left:30% 70%](assets/kotlin_android.png)
+![bg left:30% 70%](../assets/kotlin_android.png)
 
 - Conversion depuis Java avec Android Studio
 - Android KTX
@@ -274,7 +274,7 @@ Petits exercices pour prendre en main le langage:
 
 # iOS
 
-![bg left:30% 80%](assets/xcode.png)
+![bg left:30% 80%](../assets/xcode.png)
 
 - Moins de devices différents
 - OS mis à jour plus rapidement
@@ -284,7 +284,7 @@ Petits exercices pour prendre en main le langage:
 
 # Cross-Platform et Composants
 
-![bg left:30% 80%](assets/compose.svg)
+![bg left:30% 80%](../assets/compose.svg)
 
 - Permet de coder une seule fois
 - On perd souvent les possibilités spécifiques ou récentes des OS (effet "PPCD")
