@@ -7,7 +7,7 @@ marp: true
 
 ## Kotlin
 
-![bg left:30% 50%](assets/kotlin.png)
+![bg left:30% 50%](./assets/kotlin.png)
 
 - Moderne
 - Concis
