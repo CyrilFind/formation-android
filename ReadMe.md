@@ -20,6 +20,8 @@ Connaître les fondamentaux du développement Android et notamment:
 
 Un minimum de slides et un maximum de TPs:
 
+- Liste des slides: https://cyrilfind.github.io/formation-android/
+
 - [TP 0](./TP0.md) : Kotlin Koans & Codelabs d'Intro
 - [TP 1](./TP1.md) : RecyclerView
 - [TP 2](./TP2.md) : Actions & Intents
