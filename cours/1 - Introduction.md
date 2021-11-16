@@ -9,11 +9,11 @@ marp: true
 
 ![bg left:30% 50%](assets/kotlin.png)
 
-* Moderne
-* Concis
-* Java Interop
-* Développé par JetBrains
-* Kotlin everywhere: JVM, Backend, JS, KTS, iOS...
+- Moderne
+- Concis
+- Java Interop
+- Développé par JetBrains
+- Kotlin everywhere: JVM, Backend, JS, KTS, iOS...
 
 ## Typage statique inféré
 
@@ -218,12 +218,12 @@ button.setOnClickListener { view -> ... }
 
 Petits exercices pour prendre en main le langage:
 
-* Soit en ligne: [try.kotl.in/koans](http://try.kotl.in/koans)
+- Soit en ligne: [try.kotl.in/koans](http://try.kotl.in/koans)
 
-* Soit dans l'IDE (pour avoir l'autocompletion), :
-  * installer le plugin Edutools: `Plugins > Marketplace > Edutools > Install`
-  * accepter de redémarrer
-  * Démarrer le cours: `My Courses > Start New Course > Marketplace > Kotlin Koans > Start`
+- Soit dans l'IDE (pour avoir l'autocompletion), :
+  - installer le plugin Edutools: `Plugins > Marketplace > Edutools > Install`
+  - accepter de redémarrer
+  - Démarrer le cours: `My Courses > Start New Course > Marketplace > Kotlin Koans > Start`
 
 # Android
 
@@ -233,65 +233,65 @@ Petits exercices pour prendre en main le langage:
 
 ![bg left:30% 50%](assets/android.png)
 
-* Nombreux utilisateurs
-* Devices très variables
-* Versions d’OS anciennes
-* Puissance limitée
-* Phone, Tablet, TV, Watch, Auto, Chrome OS, Fuschia OS
-* Language : Kotlin et Java
-* IDE : Android Studio
+- Nombreux utilisateurs
+- Devices très variables
+- Versions d’OS anciennes
+- Puissance limitée
+- Phone, Tablet, TV, Watch, Auto, Chrome OS, Fuschia OS
+- Language : Kotlin et Java
+- IDE : Android Studio
 
 ## Éléments d'une app Android
 
 ![bg left:30% 100%](assets/android_studio.svg)
 
-* Scripts Gradle
-* AndroidManifest.xml
-* App
-* Activity
-* Fragment
-* Layouts XML
+- Scripts Gradle
+- AndroidManifest.xml
+- App
+- Activity
+- Fragment
+- Layouts XML
 
 ## App Components
 
 ![bg left:30% 160%](assets/app_components.png)
 
-* Activity / Fragments ➡ Screen Controller
-* Service ➡ Headless Controller
-* Broadcast Receiver ➡ Event Listener
-* ContentProvider ➡ Shared Data API
+- Activity / Fragments ➡ Screen Controller
+- Service ➡ Headless Controller
+- Broadcast Receiver ➡ Event Listener
+- ContentProvider ➡ Shared Data API
 
 ## Kotlin sur Android
 
 ![bg left:30% 70%](assets/kotlin_android.png)
 
-* Conversion depuis Java avec Android Studio
-* Android KTX
-* Coroutines, Flow, ...
-* Jetpack Compose
-* Pas vraiment de désavantages car équivalent à Java et interop facile
-* ⚠️ On peut être dépassé par les différentes possibilités offertes par Kotlin: rester simple et lisible
+- Conversion depuis Java avec Android Studio
+- Android KTX
+- Coroutines, Flow, ...
+- Jetpack Compose
+- Pas vraiment de désavantages car équivalent à Java et interop facile
+- ⚠️ On peut être dépassé par les différentes possibilités offertes par Kotlin: rester simple et lisible
 
 # iOS
 
 ![bg left:30% 80%](assets/xcode.png)
 
-* Moins de devices différents
-* OS mis à jour plus rapidement
-* Plus de 💰 dépensés
-* Swift (interop Objective-C)
-* XCode 💩
+- Moins de devices différents
+- OS mis à jour plus rapidement
+- Plus de 💰 dépensés
+- Swift (interop Objective-C)
+- XCode 💩
 
 # Cross-Platform et Composants
 
 ![bg left:30% 80%](assets/compose.svg)
 
-* Permet de coder une seule fois
-* On perd souvent les possibilités spécifiques ou récentes des OS (effet "PPCD")
-* On perd parfois aussi en performances ou en UX
-* Programmation à base "Components" à la React
-* Xamarin, ReactNative, NativeScript, Ionic
-* Google et Apple s’en inspirent et poussent maintenant beaucoup à utiliser:
-  * Dart: Flutter (iOS, Android, Desktop, Web)
-  * Swift: SwiftUI (iOS only)
-  * Kotlin: Jetpack Compose sur Android, Desktop, Web et même iOS (non-officiel)
+- Permet de coder une seule fois
+- On perd souvent les possibilités spécifiques ou récentes des OS (effet "PPCD")
+- On perd parfois aussi en performances ou en UX
+- Programmation à base "Components" à la React
+- Xamarin, ReactNative, NativeScript, Ionic
+- Google et Apple s’en inspirent et poussent maintenant beaucoup à utiliser:
+  - Dart: Flutter (iOS, Android, Desktop, Web)
+  - Swift: SwiftUI (iOS only)
+  - Kotlin: Jetpack Compose sur Android, Desktop, Web et même iOS (non-officiel)
