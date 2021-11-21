@@ -1,3 +1,6 @@
+id: tp1
+
+
 # TP 1 - RecyclerView
 
 *Objectif*: implémenter un écran affichant une liste de tâches et permettre de créer des nouvelles tâches.
@@ -14,10 +17,10 @@
 
 Vous allez créer un unique projet "fil rouge" que vous mettrez à jour au fur à mesure des TPs:
 
-* Utilisez l'IDE pour créer un projet "Empty Activity"
-* Donnez lui un nom personnalisé comme "ToDoNicolasAlexandre" (⚠️ pas "TP1" SVP ⚠️)
+* Utilisez l'IDE pour créer un projet `Empty Activity`
+* Donnez lui un nom personnalisé comme `ToDoNicolasAlexandre` (⚠️ pas `TP1` SVP ⚠️)
 * Choisissez un package name (ex: `com.nicoalex.todo`)
-* Language "Kotlin"
+* Language `Kotlin`
 * Minimum API Level: API 23, Android 6.0 (Marshmallow)
 * Initialisez un projet git et faites un commit initial
 * Committez régulièrement: à chaque fois que vous avez quelque chose qui compile et qui fonctionne.

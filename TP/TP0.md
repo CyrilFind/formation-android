@@ -1,15 +1,23 @@
+id: tp0
+
 # TP 0 - Introduction
 
-## Avant de commencer
+## Préparation
 
-Prendre en main l'IDE: vous pouvez aller dans les paramètres (`Cmd + ,` ou  `Android Studio > Preferences`) et les adapter à vos habitudes (Font, thème, coloration syntaxique, raccourcis clavier,plugins)
-Conseils:
+Si possible, avant le 1er cours:
 
-- Changer le raccourci pour les commentaires car sur AZERTY celui par défaut ne fonctionne pas (mettez `Cmd + :` par ex)
-- Changer la coloration syntaxique qui n'est par défaut pas terrible pour Kotlin: vous pouvez installer un plugin (ex: "Rainglow Color Schemes") et choisir parmi les divers proposés ou importer mon thème [Darculai](../assets/Darculai_cyrilfind.icls)
-- Ajouter des plugins comme RainbowBrackets, Codota, grep console, SonarLint (et regardez les plus téléchargés dans l'onglet MarketPlace)
-- Activer les imports automatiques: `Editor > General > Auto Import > Kotlin > cocher "Add unambiguous import on the fly" et "Optimize imports on the fly..."`
-- Ne pas prendre la toute dernière version d'Android pour l'émulateur (ça évitera des erreurs et pèsera moins sur votre disque dur)
+- Si vous avez un device physique et un bon cable, passez le en mode développeur et prenez le avec vous en cours, ça vous évitera pas mal de soucis.
+- Sinon, créez un émulateur (choisissez plutôt l'avant-dernière version d'OS Android pour éviter des erreurs obscures)
+- Créez un projet vide (choisissez Android 6.0 en api minimale) et essayez de le lancer
+- N'hésitez pas à me contacter en avance si vous avez un soucis
+
+Prenez en main l'IDE: vous pouvez aller dans les paramètres (`Cmd + ,` ou  `Android Studio > Preferences`) et utilisez la fonction recherche pour adapter l'IDE à vos habitudes.
+
+Quelques suggestions:
+
+- Personnalisez les raccourcis clavier (ou importez [mon setup](https://raw.githubusercontent.com/CyrilFind/intellij-settings-repository/master/keymaps/cyrilfind.xml?token=ABCPJUDBCDID5IBL6NY7QXTBSUSPA))
+- Personnalisez la coloration syntaxique (par ex avec un plugin comme plugin "Rainglow Color Schemes" ou en important mon thème [Darculai](https://raw.githubusercontent.com/CyrilFind/intellij-settings-repository/master/colors/Darculai%20_cyrilfind_.icls?token=ABCPJUH6VSR6KERAPUUHTVDBSUS3C)
+- Activez les imports automatiques: `Editor > General > Auto Import > Kotlin > cocher "Add unambiguous import on the fly" et "Optimize imports on the fly..."`
 - Activer les "type hints" afin de voir les types des variables que Kotlin "devine"
 
 ## Kotlin Koans
@@ -18,7 +26,7 @@ Petits exercices pour prendre en main le langage:
 
 - Soit en ligne: [try.kotl.in/koans](http://try.kotl.in/koans)
 
-- Soit dans l'IDE (pour avoir l'autocompletion), :
+- Soit dans l'IDE (pour avoir l'autocompletion) :
   - installer le plugin Edutools: `Plugins > Marketplace > Edutools > Install`
   - accepter de redémarrer
   - Démarrer le cours: `My Courses > Start New Course > Marketplace > Kotlin Koans > Start`
@@ -29,3 +37,11 @@ Faire les tutos de la collection
 [Android Kotlin Fundamentals](https://developer.android.com/courses/kotlin-android-fundamentals/overview) en commençant directement à la [Lesson 2](https://developer.android.com/codelabs/kotlin-android-training-linear-layout#0)
 
 ⚠️ Ne restez pas bloqués sur les pages "Introduction", "Overview" des codelabs, ce sont juste des résumés de ce que vous allez faire.
+
+## Résolution de problèmes
+
+Listes de soucis rencontrés souvent au début et leur résolution:
+
+### Signature Licence
+
+aller dans SDK Manager (petit cube en haut à droite) > SDK Tools > cocher le premier élément (il y a un "-") et tout valider et accepter

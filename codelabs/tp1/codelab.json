@@ -1,0 +1,17 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2021-11-21T16:42:05+01:00",
+  "id": "tp1",
+  "duration": 0,
+  "title": "TP 1 - RecyclerView",
+  "summary": "",
+  "source": "tp/TP1.md",
+  "theme": "",
+  "status": null,
+  "category": null,
+  "tags": [],
+  "url": "tp1"
+}

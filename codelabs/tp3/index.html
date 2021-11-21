@@ -1,0 +1,366 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>TP 3: L&#39;Internet</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="tp3"
+                  title="TP 3: L&#39;Internet"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Avant de commencer" duration="0">
+        <p>Les APIs qui nous allons utiliser exigent qu&#39;une personne soit connectée, pour commencer nous allons simuler cela en passant directement un <code>token</code> dans les <code>headers</code> de nos requêtes <code>HTTP</code>:</p>
+<ul>
+<li>Rendez vous sur <a href="https://android-tasks-api.herokuapp.com/api-docs/" target="_blank">https://android-tasks-api.herokuapp.com/api-docs/</a></li>
+<li>Ce site permet de lire la documentation et d&#39;utiliser les routes directement</li>
+<li>Cliquez sur <code>users/sign_up</code> puis sur &#34;Try it out&#34;</li>
+<li>Vous devriez voir un JSON prérempli dont vous devez remplir les données (vous pouvez mettre des infos bidon) avant de cliquer sur &#34;Execute&#34;:</li>
+</ul>
+<pre><code language="language-json" class="language-json">{
+  &#34;firstname&#34;: &#34;UN PRENOM&#34;,
+  &#34;lastname&#34;: &#34;UN NOM&#34;,
+  &#34;email&#34;: &#34;UN EMAIL&#34;,
+  &#34;password&#34;: &#34;UN MDP&#34;,
+  &#34;password_confirmation&#34;: &#34;LE MEME MDP&#34;
+}
+</code></pre>
+<ul>
+<li>Copiez le token généré quelque part (vous pourrez le récupérer à nouveau en utilisant la route <code>/login</code>)</li>
+<li>Copiez votre token dans la popup du bouton &#34;Authorize&#34; en haut</li>
+<li>Maintenant que vous êtes &#34;loggé&#34;, testez les routes disponibles (création, suppression, etc...)</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Accéder à l&#39;internet" duration="0">
+        <p>Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut ajouter la permission dans le fichier <code>AndroidManifest</code>, juste après la balise <code><manifest...></code></p>
+<pre><code language="language-xml" class="language-xml">&lt;uses-permission android:name=&#34;android.permission.INTERNET&#34; /&gt;
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Ajout des dépendances" duration="0">
+        <p>Dans le fichier <code>app/build.gradle</code>:</p>
+<ul>
+<li>Dans <code>dependencies {...}</code>, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l&#39;IDE vous le propose):</li>
+</ul>
+<pre><code language="language-groovy" class="language-groovy">    //  Android - KTX
+    implementation &#39;androidx.preference:preference-ktx:1.1.1&#39;
+    implementation &#39;androidx.activity:activity-ktx:1.3.0-alpha06&#39;
+    implementation &#39;androidx.fragment:fragment-ktx:1.3.2&#39;
+    implementation &#39;androidx.core:core-ktx:1.3.2&#39;
+
+    // Retrofit
+    implementation &#39;com.squareup.retrofit2:retrofit:2.9.0&#39;
+    implementation &#39;com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2&#39;
+
+    // KotlinX Serialization
+    implementation &#34;org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0&#34;
+    implementation &#39;com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0&#39;
+
+    // Coroutines
+    implementation &#34;org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3&#34;
+    implementation &#34;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3&#34;
+
+    // Lifecycle
+    implementation &#34;androidx.lifecycle:lifecycle-extensions:2.2.0&#34;
+    implementation &#34;androidx.lifecycle:lifecycle-runtime-ktx:2.3.1&#34;
+    implementation &#34;androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1&#34;
+</code></pre>
+<ul>
+<li>Dans <code>android {...}</code>:</li>
+</ul>
+<pre><code language="language-groovy" class="language-groovy">compileOptions {
+  sourceCompatibility JavaVersion.VERSION_1_8
+  targetCompatibility JavaVersion.VERSION_1_8
+}
+
+kotlinOptions {
+  jvmTarget = JavaVersion.VERSION_1_8.toString()
+}
+</code></pre>
+<ul>
+<li>Tout en haut ajoutez le plugin de sérialisation:</li>
+</ul>
+<pre><code language="language-groovy" class="language-groovy">plugins {
+    // ...
+    id &#39;org.jetbrains.kotlin.plugin.serialization&#39; version &#34;$kotlin_version&#34;
+}
+</code></pre>
+<p>Après tout cela vous pouvez cliquer sur &#34;Sync Now&#34; pour que l&#39;IDE synchronise le projet.</p>
+<p>En cas de soucis à ce moment là, vérifiez que:</p>
+<ul>
+<li>Android Studio est à jour (&#34;Check for updates&#34;)</li>
+<li>Le Plugin Kotlin est à jour (<code>Settings > Plugins > Installed > Kotlin</code>)</li>
+<li>votre <code>kotlin_version</code> est récente (en haut de <code><PROJECT>/build.gradle</code>, à l&#39;heure où j&#39;écris c&#39;est <code>1.4.30</code>)</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Retrofit" duration="0">
+        <ul>
+<li>Créer un package <code>network</code> qui contiendra les classes en rapport avec les échanges réseaux</li>
+<li>Créer un <code>object Api</code> (ses membres et méthodes seront donc <code>static</code>):</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">object Api {
+
+  // constantes qui serviront à faire les requêtes
+  private const val BASE_URL = &#34;https://android-tasks-api.herokuapp.com/api/&#34;
+  private const val TOKEN = &#34;COPIEZ_VOTRE_TOKEN_ICI&#34;
+
+  // client HTTP
+  private val okHttpClient by lazy {
+    OkHttpClient.Builder()
+      .addInterceptor { chain -&gt;
+        // intercepteur qui ajoute le `header` d&#39;authentification avec votre token:
+        val newRequest = chain.request().newBuilder()
+          .addHeader(&#34;Authorization&#34;, &#34;Bearer $TOKEN&#34;)
+          .build()
+        chain.proceed(newRequest)
+      }
+      .build()
+  }
+
+  // sérializeur JSON: transforme le JSON en objets kotlin et inversement
+  private val jsonSerializer = Json {
+      ignoreUnknownKeys = true
+      coerceInputValues = true
+  }
+
+  // instance de convertisseur qui parse le JSON renvoyé par le serveur:
+  private val converterFactory =
+      jsonSerializer.asConverterFactory(&#34;application/json&#34;.toMediaType())
+
+  // permettra d&#39;implémenter les services que nous allons créer:
+  private val retrofit = Retrofit.Builder()
+    .baseUrl(BASE_URL)
+    .client(okHttpClient)
+    .addConverterFactory(converterFactory)
+    .build()
+}
+</code></pre>
+<h2 is-upgraded>UserInfo</h2>
+<p>Exemple de json renvoyé par la route <code>/info</code>:</p>
+<pre><code language="language-json" class="language-json">{
+  &#34;email&#34;: &#34;email&#34;,
+  &#34;firstname&#34;: &#34;john&#34;,
+  &#34;lastname&#34;: &#34;doe&#34;
+}
+</code></pre>
+<p>Créer la <code>data class</code> <code>UserInfo</code> avec des annotations de KotlinX Serialization pour récupérer ces données:</p>
+<pre><code language="language-kotlin" class="language-kotlin">@Serializable
+data class UserInfo(
+  @SerialName(&#34;email&#34;)
+  val email: String,
+  @SerialName(&#34;firstname&#34;)
+  val firstName: String,
+  @SerialName(&#34;lastname&#34;)
+  val lastName: String
+)
+</code></pre>
+<h2 is-upgraded>UserService</h2>
+<ul>
+<li>Créez l&#39;interface <code>UserService</code> pour requêter les infos de l&#39;utilisateur (importez <code>Response</code> avec <code>alt + enter</code> et choisissez la version <code>retrofit</code>):</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">interface UserService {
+  @GET(&#34;users/info&#34;)
+  suspend fun getInfo(): Response&lt;UserInfo&gt;
+}
+</code></pre>
+<ul>
+<li>Utilisez retrofit pour créer une implémentation de ce service (grace aux annotations):</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">object Api {
+  // ...
+  val userService: UserService by lazy {
+    retrofit.create(UserService::class.java)
+  }
+}
+</code></pre>
+<h2 is-upgraded>Affichage</h2>
+<ul>
+<li>Dans <code>fragment_task_list.xml</code>, ajoutez une <code>TextView</code> au dessus de la liste de tâche si vous n&#39;en avez pas</li>
+<li>Overrider la méthode <code>onResume</code> pour y récupérer les infos de l&#39;utilisateur, en ajoutant cette ligne, une erreur va s&#39;afficher mais ne paniquez pas, on va s&#39;en occuper:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">// Ici on ne va pas gérer les cas d&#39;erreur donc on force le crash avec &#34;!!&#34;
+val userInfo = Api.userService.getInfo().body()!!
+</code></pre>
+<ul>
+<li>La méthode <code>getInfo()</code> étant déclarée comme <code>suspend</code>, vous aurez besoin de la lancer dans un <code>CouroutineScope</code> (c&#39;est ce que dit le message d&#39;erreur):on va utiliser directement <code>lifeCycleScope</code> qui est un <code>CouroutineScope</code> déjà défini et géré par le système dans les <code>Activity</code> et <code>Fragment</code></li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">lifecycleScope.launch {
+  mySuspendMethod()
+}
+</code></pre>
+<ul>
+<li>Afficher les données dans votre <code>TextView</code>:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">userInfoTextView.text = &#34;${userInfo.firstName} ${userInfo.lastName}&#34;
+</code></pre>
+<p>⚠️ Sur émulateur, vous aurez parfois des crashes étranges:</p>
+<ul>
+<li>&#34;<code>...EPERM (operation not permitted)...</code>&#34;: désinstallez l&#39;application de l&#39;émulateur et relancez</li>
+<li>L&#39;app stoppe direct et sans stacktrace: redémarrer l&#39;émulateur et vérifiez que son wifi est bien connecté</li>
+</ul>
+<p>➡️ Lancez l&#39;app et vérifiez que vos infos s&#39;affichent !</p>
+<p><strong>Remarque:</strong></p>
+<p>Un autre scope est fourni par android: <code>viewModelScope</code>, mais pour l&#39;instant on implémente tout dans les fragments comme des 🐷</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="TaskListFragment" duration="0">
+        <p>Il est temps de récuperer les tâches depuis le serveur !</p>
+<ul>
+<li>Créer un nouveau service <code>TaskWebService</code></li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">interface TasksWebService {
+  @GET(&#34;tasks&#34;)
+  suspend fun getTasks(): Response&lt;List&lt;Task&gt;&gt;
+}
+</code></pre>
+<ul>
+<li>Utiliser l&#39;instance de retrofit comme précédemment pour créer une instance de <code>TasksWebService</code> dans l&#39;objet <code>Api</code></li>
+<li>Modifier <code>Task</code> pour la rendre lisible par KotlinX Serialization (i.e. faire comme pour <code>UserInfo</code>)</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="TasksRepository" duration="0">
+        <p>Le but d&#39;un Repository est d&#39;exposer des data venant d&#39;une ou plusieurs sources de données (ex: DB locale et API distante)</p>
+<p>Créer la classe <code>TasksRepository</code> avec:</p>
+<ul>
+<li>une propriété <code>tasksWebService</code> pour les requêtes avec <code>Retrofit</code></li>
+<li>une propriété <code>taskList</code> <em>publique</em> de type <code>LiveData<List<Task>></code>: représente une liste de tâche <em>Observable</em> (on peut donc s&#39;<em>abonner</em> à ses modifications) non modifiable afin de l&#39;exposer à l&#39;extérieur du repository</li>
+<li>une propriété <code>_taskList</code> <em>privée</em> de type <code>MutableLiveData<List<Task>></code> qui représente la même donnée mais modifiable donc utilisable à l&#39;intérieur du repository</li>
+<li>une méthode publique <code>refresh</code> qui requête la liste et met à jour la <code>LiveData</code></li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">class TasksRepository {
+  private val tasksWebService = Api.tasksWebService
+  
+  // Ces deux variables encapsulent la même donnée:
+  // [_taskList] est modifiable mais privée donc inaccessible à l&#39;extérieur de cette classe
+  private val _taskList = MutableLiveData&lt;List&lt;Task&gt;&gt;()
+  // [taskList] est publique mais non-modifiable:
+  // On pourra seulement l&#39;observer (s&#39;y abonner) depuis d&#39;autres classes
+  public val taskList: LiveData&lt;List&lt;Task&gt;&gt; = _taskList
+
+  suspend fun refresh() {
+      // Call HTTP (opération longue):
+      val tasksResponse = tasksWebService.getTasks()
+      // À la ligne suivante, on a reçu la réponse de l&#39;API:
+      if (tasksResponse.isSuccessful) {
+          val fetchedTasks = tasksResponse.body()
+          // on modifie la valeur encapsulée, ce qui va notifier ses Observers et donc déclencher leur callback
+          _taskList.value = fetchedTasks
+      }
+  }
+}
+
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="LiveData" duration="0">
+        <p>Dans <code>TaskListFragment</code>:</p>
+<ul>
+<li>Ajouter en propriété une instance de <code>TasksRepository</code></li>
+<li>Dans <code>onViewCreated()</code>, &#34;abonnez&#34; le fragment à la  <code>LiveData</code> du repository</li>
+<li>Mettez à jour la liste et l&#39;<code>adapter</code> avec le résultat (importer le <code>Observer</code> de la lib <code>lifecycle</code>)</li>
+<li>Dans <code>onResume()</code>, utilisez le repository pour rafraîchir la liste de tasks</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">private val tasksRepository = TasksRepository()
+
+// Dans onViewCreated()
+tasksRepository.taskList.observe(viewLifecycleOwner) { list -&gt;
+  // mettre à jour la liste dans l&#39;adapteur
+}
+
+// Dans onResume()
+lifecycleScope.launch {
+  tasksRepository.refresh()
+}
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Compléter TasksWebService" duration="0">
+        <p>Modifier <code>TasksWebService</code> et ajoutez y les routes suivantes:</p>
+<pre><code language="language-kotlin" class="language-kotlin">@DELETE(&#34;tasks/{id}&#34;)
+suspend fun deleteTask(@Path(&#34;id&#34;) id: String?): Response&lt;Unit&gt;
+
+@POST(&#34;tasks&#34;)
+suspend fun createTask(@Body task: Task): Response&lt;Task&gt;
+
+@PATCH(&#34;tasks/{id}&#34;)
+suspend fun updateTask(@Body task: Task, @Path(&#34;id&#34;) id: String? = task.id): Response&lt;Task&gt;
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Suppression, Ajout, Édition" duration="0">
+        <ul>
+<li>Inspirez vous du fonctionnement de <code>refresh()</code> pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l&#39;édition (les autres sont plus simples):</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">suspend fun updateTask(task: Task) {
+  // TODO appel réseau et récupérationd de la tache:
+  val updatedTask = ...
+  // version &#34;mutable&#34; de la liste actuelle:
+  val mutableList = _tasksList.value.orEmpty().toMutableList()
+  // position actuelle de l&#39;élément:
+  val position = editableList.indexOfFirst { updatedTask.id == it.id }
+  // modification de la liste mutable:
+  editableList[position] = updatedTask
+  // mise à jour de la livedata pour notifier les observers:
+  _tasksList.value = editableList
+}
+</code></pre>
+<ul>
+<li>Utilisez les méthodes du repository dans le Fragment, par ex pour la suppression:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">adapter.onClickDelete = { task -&gt;
+  lifecycleScope.launch {
+      tasksRepository.delete(task)
+  }
+}
+</code></pre>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

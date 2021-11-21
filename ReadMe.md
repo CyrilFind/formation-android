@@ -1,15 +1,17 @@
 # Formation Android
 
+⚠️ Ce déroulement indicatif change régulièrement et sera adapté en fonction de chaque promotion, du temps disponible, etc
+
 ## But
 
 Connaître les fondamentaux du développement Android et notamment:
 
 - Se familiariser avec Kotlin
 - Prendre en main Android Studio et le Layout Editor
-- Intéragir avec des `View`
+- Interagir avec des `View`
 - Implémenter une `RecyclerView`
 - Passer des données entre `Fragment` et `Activity`
-- Intérroger une API distante avec `Retrofit`
+- Interroger une API distante avec `Retrofit`
 - Utiliser des Coroutines
 - Architecturer avec `LiveData`, `ViewModel` et `Repository`
 - Manipuler des images
@@ -18,7 +20,7 @@ Connaître les fondamentaux du développement Android et notamment:
 
 ## Déroulement
 
-Un minimum de slides et un maximum de TPs:
+Un minimum de slides et un maximum de TP ([Markdown](tp), [Codelab](codelabs)):
 
 - [Slides](slides/)
 
@@ -32,8 +34,6 @@ Un minimum de slides et un maximum de TPs:
 - [TP 7](tp/TP7.md) : Sujets exploratoires & soutenance
 - [TP 8](tp/TP8.md) : Projet en Autonomie
 
-⚠️ Ce déroulement indicatif change régulièrement et sera adapté en fonction de chaque promotion, du temps disponible, etc
-
 ### Références
 
 - <https://developer.android.com/modern-android-development>
@@ -46,4 +46,4 @@ Un minimum de slides et un maximum de TPs:
 - [Android Studio](https://developer.android.com/studio)
 - [scrcpy](https://github.com/Genymobile/scrcpy)
 
-contact: cyrilfind@gmail.com
+contact: <cyrilfind@gmail.com>
