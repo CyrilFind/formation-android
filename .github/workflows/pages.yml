@@ -1,4 +1,4 @@
-name: CI
+name: Build Slides
 
 on:
   workflow_dispatch:

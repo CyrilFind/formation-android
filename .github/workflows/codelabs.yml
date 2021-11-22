@@ -1,0 +1,35 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build Codelabs
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths:
+      - 'tp/*'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Setup Go environment
+        uses: actions/setup-go@v2.1.4
+        with:
+          go-version: '1.17.1'
+      - name: Install claat
+        # run: go get github.com/googlecodelabs/tools/claat
+        run: go install github.com/googlecodelabs/tools/claat@latest
+      - name: Make codelabs
+        run: claat export -auth '4/1AX4XfWjxE4X1Wl30JEkhedcDMAyKNcfOXQLaBrK8CqPk_-bwps6uXQM6RKw' -o codelabs/ tp/TP*.md
+      - name: Push
+        run: |
+          git config user.name "Codelabs Builder"
+          git config user.email "<>"
+          git add codelabs/*
+          git commit -m "make codelabs"
+          git push
