@@ -41,7 +41,7 @@ implementation &#34;androidx.navigation:navigation-ui-ktx:2.1.0&#34;
         <ul>
 <li>Créer une nouvelle Activity : <code>AuthenticationActivity</code></li>
 <li>Ajoutez la dans l&#39;<code>AndroidManifest</code> et déclarez la comme étant le point d&#39;entrée de votre application (ce n&#39;est plus MainActivity)</li>
-<li>Remplacez le layout associé par cette balise <code><FragmentContainerView...></code>:</li>
+<li>Remplacez le layout associé par cette balise <code>< FragmentContainerView...></code>:</li>
 </ul>
 <pre><code language="language-xml" class="language-xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;
 &lt;FragmentContainerView
@@ -203,7 +203,7 @@ suspend fun login(@Body user: LoginForm): Response&lt;LoginResponse&gt;
 <h2 is-upgraded>Ajout et Édition</h2>
 <p>Suivez les mêmes étapes pour remplacer la navigation des TDs précédents avec des <code>Intent</code> explicites par cette nouvelle navigation:</p>
 <ul>
-<li>Remplacez le <code><FragmentContainerView></code> dans <code>MainActivity</code> par le <code><NavHostFragment></code> de <code>AuthenticationActivity</code> et supprimmez <code>AuthenticationActivity</code></li>
+<li>Remplacez le <code>< FragmentContainerView></code> dans <code>MainActivity</code> par le <code>< NavHostFragment></code> de <code>AuthenticationActivity</code> et supprimmez <code>AuthenticationActivity</code></li>
 <li>Ajoutez <code>TaskListFragment</code> au graphe de navigation</li>
 <li>Transformez <code>TaskActivity</code> en <code>TaskFragment</code> en adaptant les <code>override</code> et ajoutez le au graphe</li>
 <li>Faites pareil pour <code>UserInfoActivity</code></li>

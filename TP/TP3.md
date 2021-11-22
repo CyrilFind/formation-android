@@ -27,7 +27,7 @@ Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, pour 
 
 ## Accéder à l'internet
 
-Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut ajouter la permission dans le fichier `AndroidManifest`, juste après la balise `<manifest...>`
+Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut ajouter la permission dans le fichier `AndroidManifest`, juste après la balise `manifest`
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
@@ -40,41 +40,23 @@ Dans le fichier `app/build.gradle`:
 - Dans `dependencies {...}`, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l'IDE vous le propose):
 
 ```groovy
-    //  Android - KTX
-    implementation 'androidx.preference:preference-ktx:1.1.1'
-    implementation 'androidx.activity:activity-ktx:1.3.0-alpha06'
-    implementation 'androidx.fragment:fragment-ktx:1.3.2'
-    implementation 'androidx.core:core-ktx:1.3.2'
+  //TP 3
+  // Retrofit
+  implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+  implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
 
-    // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
+  // KotlinX Serialization
+  implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1"
+  implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
 
-    // KotlinX Serialization
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
-    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
+  // Coroutines
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
 
-    // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
-
-    // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
-```
-
-- Dans `android {...}`:
-
-```groovy
-compileOptions {
-  sourceCompatibility JavaVersion.VERSION_1_8
-  targetCompatibility JavaVersion.VERSION_1_8
-}
-
-kotlinOptions {
-  jvmTarget = JavaVersion.VERSION_1_8.toString()
-}
+  // Lifecycle
+  implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+  implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
+  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
 ```
 
 - Tout en haut ajoutez le plugin de sérialisation:
@@ -92,7 +74,7 @@ En cas de soucis à ce moment là, vérifiez que:
 
 - Android Studio est à jour ("Check for updates")
 - Le Plugin Kotlin est à jour (`Settings > Plugins > Installed > Kotlin`)
-- votre `kotlin_version` est récente (en haut de `<PROJECT>/build.gradle`, à l'heure où j'écris c'est `1.4.30`)
+- votre `kotlin_version` est récente (en haut de `.build.gradle`, à l'heure où j'écris c'est `1.5.31`)
 
 ## Retrofit
 
@@ -246,8 +228,8 @@ Le but d'un Repository est d'exposer des data venant d'une ou plusieurs sources 
 Créer la classe `TasksRepository` avec:
 
 - une propriété `tasksWebService` pour les requêtes avec `Retrofit`
-- une propriété `taskList` *publique* de type `LiveData<List<Task>>`: représente une liste de tâche *Observable* (on peut donc s'*abonner* à ses modifications) non modifiable afin de l'exposer à l'extérieur du repository
-- une propriété `_taskList` *privée* de type `MutableLiveData<List<Task>>` qui représente la même donnée mais modifiable donc utilisable à l'intérieur du repository
+- une propriété `taskList` *publique* de type `LiveData< List< Task>>`: représente une liste de tâche *Observable* (on peut donc s'*abonner* à ses modifications) non modifiable afin de l'exposer à l'extérieur du repository
+- une propriété `_taskList` *privée* de type `MutableLiveData< List< Task>>` qui représente la même donnée mais modifiable donc utilisable à l'intérieur du repository
 - une méthode publique `refresh` qui requête la liste et met à jour la `LiveData`
 
 ```kotlin

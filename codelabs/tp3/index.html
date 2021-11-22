@@ -53,7 +53,7 @@
       </google-codelab-step>
     
       <google-codelab-step label="Accéder à l&#39;internet" duration="0">
-        <p>Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut ajouter la permission dans le fichier <code>AndroidManifest</code>, juste après la balise <code><manifest...></code></p>
+        <p>Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut ajouter la permission dans le fichier <code>AndroidManifest</code>, juste après la balise <code>manifest</code></p>
 <pre><code language="language-xml" class="language-xml">&lt;uses-permission android:name=&#34;android.permission.INTERNET&#34; /&gt;
 </code></pre>
 
@@ -65,40 +65,23 @@
 <ul>
 <li>Dans <code>dependencies {...}</code>, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l&#39;IDE vous le propose):</li>
 </ul>
-<pre><code language="language-groovy" class="language-groovy">    //  Android - KTX
-    implementation &#39;androidx.preference:preference-ktx:1.1.1&#39;
-    implementation &#39;androidx.activity:activity-ktx:1.3.0-alpha06&#39;
-    implementation &#39;androidx.fragment:fragment-ktx:1.3.2&#39;
-    implementation &#39;androidx.core:core-ktx:1.3.2&#39;
+<pre><code language="language-groovy" class="language-groovy">  //TP 3
+  // Retrofit
+  implementation &#39;com.squareup.retrofit2:retrofit:2.9.0&#39;
+  implementation &#39;com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2&#39;
 
-    // Retrofit
-    implementation &#39;com.squareup.retrofit2:retrofit:2.9.0&#39;
-    implementation &#39;com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2&#39;
+  // KotlinX Serialization
+  implementation &#34;org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1&#34;
+  implementation &#39;com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0&#39;
 
-    // KotlinX Serialization
-    implementation &#34;org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0&#34;
-    implementation &#39;com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0&#39;
+  // Coroutines
+  implementation &#34;org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2&#34;
+  implementation &#34;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2&#34;
 
-    // Coroutines
-    implementation &#34;org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3&#34;
-    implementation &#34;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3&#34;
-
-    // Lifecycle
-    implementation &#34;androidx.lifecycle:lifecycle-extensions:2.2.0&#34;
-    implementation &#34;androidx.lifecycle:lifecycle-runtime-ktx:2.3.1&#34;
-    implementation &#34;androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1&#34;
-</code></pre>
-<ul>
-<li>Dans <code>android {...}</code>:</li>
-</ul>
-<pre><code language="language-groovy" class="language-groovy">compileOptions {
-  sourceCompatibility JavaVersion.VERSION_1_8
-  targetCompatibility JavaVersion.VERSION_1_8
-}
-
-kotlinOptions {
-  jvmTarget = JavaVersion.VERSION_1_8.toString()
-}
+  // Lifecycle
+  implementation &#34;androidx.lifecycle:lifecycle-extensions:2.2.0&#34;
+  implementation &#34;androidx.lifecycle:lifecycle-runtime-ktx:2.4.0&#34;
+  implementation &#34;androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0&#34;
 </code></pre>
 <ul>
 <li>Tout en haut ajoutez le plugin de sérialisation:</li>
@@ -113,7 +96,7 @@ kotlinOptions {
 <ul>
 <li>Android Studio est à jour (&#34;Check for updates&#34;)</li>
 <li>Le Plugin Kotlin est à jour (<code>Settings > Plugins > Installed > Kotlin</code>)</li>
-<li>votre <code>kotlin_version</code> est récente (en haut de <code><PROJECT>/build.gradle</code>, à l&#39;heure où j&#39;écris c&#39;est <code>1.4.30</code>)</li>
+<li>votre <code>kotlin_version</code> est récente (en haut de <code>.build.gradle</code>, à l&#39;heure où j&#39;écris c&#39;est <code>1.5.31</code>)</li>
 </ul>
 
 
@@ -254,8 +237,8 @@ val userInfo = Api.userService.getInfo().body()!!
 <p>Créer la classe <code>TasksRepository</code> avec:</p>
 <ul>
 <li>une propriété <code>tasksWebService</code> pour les requêtes avec <code>Retrofit</code></li>
-<li>une propriété <code>taskList</code> <em>publique</em> de type <code>LiveData<List<Task>></code>: représente une liste de tâche <em>Observable</em> (on peut donc s&#39;<em>abonner</em> à ses modifications) non modifiable afin de l&#39;exposer à l&#39;extérieur du repository</li>
-<li>une propriété <code>_taskList</code> <em>privée</em> de type <code>MutableLiveData<List<Task>></code> qui représente la même donnée mais modifiable donc utilisable à l&#39;intérieur du repository</li>
+<li>une propriété <code>taskList</code> <em>publique</em> de type <code>LiveData< List< Task>></code>: représente une liste de tâche <em>Observable</em> (on peut donc s&#39;<em>abonner</em> à ses modifications) non modifiable afin de l&#39;exposer à l&#39;extérieur du repository</li>
+<li>une propriété <code>_taskList</code> <em>privée</em> de type <code>MutableLiveData< List< Task>></code> qui représente la même donnée mais modifiable donc utilisable à l&#39;intérieur du repository</li>
 <li>une méthode publique <code>refresh</code> qui requête la liste et met à jour la <code>LiveData</code></li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">class TasksRepository {

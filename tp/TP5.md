@@ -6,7 +6,7 @@ id:tp5
 
 - Rendez vous sur le [repository de Coil](https://coil-kt.github.io/coil/) et lisez le `ReadMe`
 - Ajouter les dépendances nécessaires à `app/build.gradle`
-- Ajouter une `<ImageView .../>` dans `fragment_tasklist.xml` principal qui affichera l'avatar de l'utilisateur
+- Ajouter une `< ImageView .../>` dans `fragment_tasklist.xml` principal qui affichera l'avatar de l'utilisateur
 - Dans `onResume`, utiliser Coil pour afficher une image en passant une URL de votre choix, par exemple:
 
 ```kotlin

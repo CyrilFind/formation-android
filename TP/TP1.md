@@ -1,6 +1,5 @@
 id: tp1
 
-
 # TP 1 - RecyclerView
 
 *Objectif*: implémenter un écran affichant une liste de tâches et permettre de créer des nouvelles tâches.
@@ -24,25 +23,52 @@ Vous allez créer un unique projet "fil rouge" que vous mettrez à jour au fur 
 * Minimum API Level: API 23, Android 6.0 (Marshmallow)
 * Initialisez un projet git et faites un commit initial
 * Committez régulièrement: à chaque fois que vous avez quelque chose qui compile et qui fonctionne.
-* Faites au minimum un commit à la fin de chaque TP (et taggez ce commit avec le numéro du TP !)
+* Faites au minimum un commit à la fin de chaque TP
 
 ## Ajout de Dépendances
 
-Dans le fichier `app/build.gradle`, ajouter les libs suivante dans `dependencies { ... }`:
+Dans `./build.gradle` (celui du *projet*), vérifiez que `kotlin_version` est récent (ex: `1.5.31`)
+
+Dans `app/build.gradle` (celui du *module* `app`), ajouter les libs suivante dans `dependencies{}`:
 
 ```groovy
-implementation "androidx.recyclerview:recyclerview:1.2.0"
-implementation 'androidx.fragment:fragment-ktx:1.3.2'
-implementation 'androidx.activity:activity-ktx:1.2.2'
+implementation "androidx.recyclerview:recyclerview:1.2.1"
+implementation 'androidx.fragment:fragment-ktx:1.4.0'
+implementation 'androidx.activity:activity-ktx:1.4.0'
+```
+
+Vérifiez que le block `android{}` ressemble à ceci:
+
+```groovy
+android {
+    compileSdkVersion 31
+    defaultConfig {
+        applicationId "com.nicoalex.kodo"
+        minSdkVersion 23
+        targetSdkVersion 31
+        // ...
+    }
+
+    // ...
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+  }
+}
 ```
 
 ## Gestion des fichiers
 
-Les fichiers source Java ou Kotlin sont rangés en "packages" (noté en haut de chaque classe: `package com.nicoalex.todo.nomdupackage`) qui sont aussi répliqués en tant que dossiers dans le file system
+Les fichiers source Java ou Kotlin sont rangés en "packages" (noté en haut de chaque classe: `package com.nicoalex.todo.nomdupackage`) qui sont aussi répliqués en tant que dossiers dans le filesystem
 
-Dans le volet "Projet" (à gauche d'Android Studio), vous pouvez choisir diverses visualisations de vos fichers: la plus adaptée est "Android", mais il peut parfois être pratique de passer en "Project Files" par ex
+Dans le volet "Projet" (à gauche d'Android Studio), vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est "Android", mais il peut parfois être pratique de passer en "Project Files" par ex pour voir l'arborescence réelle.
 
-Ouvrez l'arborescence de fichiers jusqu'à la racine de vos fichiers source et créez un package `tasklist` à l'intérieur:
+Créez un nouveau package `tasklist` dans votre package source de base:
 
 `app > java > com.nicoalex.todo > clic droit > New > package > "tasklist"`
 
@@ -66,7 +92,7 @@ val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 
 ⚠️ Si vous executez du code *avant* cette ligne `inflate`, il va crasher ou ne rien faire car votre vue n'existera pas encore
 
-* Remplacez la balise `<TextView.../>` par une balise `<FragmentContainerView.../>` dans le layout de votre activité principale (à adapter à votre projet):
+* Remplacez la balise `< TextView.../>` par une balise `< FragmentContainerView.../>` dans le layout de votre activité principale (à adapter à votre projet):
 
 ```xml
  <androidx.fragment.app.FragmentContainerView
@@ -85,7 +111,7 @@ val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 private val taskList = listOf("Task 1", "Task 2", "Task 3")
 ```
 
-* Dans le layout associé à `TaskListFragment`, placez une balise `<androidx.recyclerview.widget.RecyclerView...>`:
+* Dans le layout associé à `TaskListFragment`, placez une balise `< androidx.recyclerview.widget.RecyclerView...>`:
 
 * Créer une nouvelle classe `TaskListAdapter`:
 

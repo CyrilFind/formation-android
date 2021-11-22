@@ -16,7 +16,7 @@ implementation "androidx.navigation:navigation-ui-ktx:2.1.0"
 
 - Créer une nouvelle Activity : `AuthenticationActivity`
 - Ajoutez la dans l'`AndroidManifest` et déclarez la comme étant le point d'entrée de votre application (ce n'est plus MainActivity)
-- Remplacez le layout associé par cette balise `<FragmentContainerView...>`:
+- Remplacez le layout associé par cette balise `< FragmentContainerView...>`:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -174,7 +174,7 @@ Ajouter un bouton pour se déconnecter qui efface le token dans les `SharedPrefe
 
 Suivez les mêmes étapes pour remplacer la navigation des TDs précédents avec des `Intent` explicites par cette nouvelle navigation:
 
-- Remplacez le `<FragmentContainerView>` dans `MainActivity` par le `<NavHostFragment>` de `AuthenticationActivity` et supprimmez `AuthenticationActivity`
+- Remplacez le `< FragmentContainerView>` dans `MainActivity` par le `< NavHostFragment>` de `AuthenticationActivity` et supprimmez `AuthenticationActivity`
 - Ajoutez `TaskListFragment` au graphe de navigation
 - Transformez `TaskActivity` en `TaskFragment` en adaptant les `override` et ajoutez le au graphe
 - Faites pareil pour `UserInfoActivity`

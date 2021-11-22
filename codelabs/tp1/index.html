@@ -37,26 +37,49 @@
 <li>Minimum API Level: API 23, Android 6.0 (Marshmallow)</li>
 <li>Initialisez un projet git et faites un commit initial</li>
 <li>Committez régulièrement: à chaque fois que vous avez quelque chose qui compile et qui fonctionne.</li>
-<li>Faites au minimum un commit à la fin de chaque TP (et taggez ce commit avec le numéro du TP !)</li>
+<li>Faites au minimum un commit à la fin de chaque TP</li>
 </ul>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Ajout de Dépendances" duration="0">
-        <p>Dans le fichier <code>app/build.gradle</code>, ajouter les libs suivante dans <code>dependencies { ... }</code>:</p>
-<pre><code language="language-groovy" class="language-groovy">implementation &#34;androidx.recyclerview:recyclerview:1.2.0&#34;
-implementation &#39;androidx.fragment:fragment-ktx:1.3.2&#39;
-implementation &#39;androidx.activity:activity-ktx:1.2.2&#39;
+        <p>Dans <code>./build.gradle</code> (celui du <em>projet</em>), vérifiez que <code>kotlin_version</code> est récent (ex: <code>1.5.31</code>)</p>
+<p>Dans <code>app/build.gradle</code> (celui du <em>module </em><code>app</code>), ajouter les libs suivante dans <code>dependencies{}</code>:</p>
+<pre><code language="language-groovy" class="language-groovy">implementation &#34;androidx.recyclerview:recyclerview:1.2.1&#34;
+implementation &#39;androidx.fragment:fragment-ktx:1.4.0&#39;
+implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
+</code></pre>
+<p>Vérifiez que le block <code>android{}</code> ressemble à ceci:</p>
+<pre><code language="language-groovy" class="language-groovy">android {
+    compileSdkVersion 31
+    defaultConfig {
+        applicationId &#34;com.nicoalex.kodo&#34;
+        minSdkVersion 23
+        targetSdkVersion 31
+        // ...
+    }
+
+    // ...
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    kotlinOptions {
+        jvmTarget = &#34;1.8&#34;
+    }
+  }
+}
 </code></pre>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Gestion des fichiers" duration="0">
-        <p>Les fichiers source Java ou Kotlin sont rangés en &#34;packages&#34; (noté en haut de chaque classe: <code>package com.nicoalex.todo.nomdupackage</code>) qui sont aussi répliqués en tant que dossiers dans le file system</p>
-<p>Dans le volet &#34;Projet&#34; (à gauche d&#39;Android Studio), vous pouvez choisir diverses visualisations de vos fichers: la plus adaptée est &#34;Android&#34;, mais il peut parfois être pratique de passer en &#34;Project Files&#34; par ex</p>
-<p>Ouvrez l&#39;arborescence de fichiers jusqu&#39;à la racine de vos fichiers source et créez un package <code>tasklist</code> à l&#39;intérieur:</p>
+        <p>Les fichiers source Java ou Kotlin sont rangés en &#34;packages&#34; (noté en haut de chaque classe: <code>package com.nicoalex.todo.nomdupackage</code>) qui sont aussi répliqués en tant que dossiers dans le filesystem</p>
+<p>Dans le volet &#34;Projet&#34; (à gauche d&#39;Android Studio), vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est &#34;Android&#34;, mais il peut parfois être pratique de passer en &#34;Project Files&#34; par ex pour voir l&#39;arborescence réelle.</p>
+<p>Créez un nouveau package <code>tasklist</code> dans votre package source de base:</p>
 <p><code>app > java > com.nicoalex.todo > clic droit > New > package > "tasklist"</code></p>
 <p>Vous y mettrez tous les fichiers source (Kotlin) concernant la liste de tâches</p>
 
@@ -78,7 +101,7 @@ implementation &#39;androidx.activity:activity-ktx:1.2.2&#39;
 </code></pre>
 <p>⚠️ Si vous executez du code <em>avant</em> cette ligne <code>inflate</code>, il va crasher ou ne rien faire car votre vue n&#39;existera pas encore</p>
 <ul>
-<li>Remplacez la balise <code><TextView.../></code> par une balise <code><FragmentContainerView.../></code> dans le layout de votre activité principale (à adapter à votre projet):</li>
+<li>Remplacez la balise <code>< TextView.../></code> par une balise <code>< FragmentContainerView.../></code> dans le layout de votre activité principale (à adapter à votre projet):</li>
 </ul>
 <pre><code language="language-xml" class="language-xml"> &lt;androidx.fragment.app.FragmentContainerView
     android:name=&#34;com.example.nicoalex.TaskListFragment&#34;
@@ -98,7 +121,7 @@ implementation &#39;androidx.activity:activity-ktx:1.2.2&#39;
 <pre><code language="language-kotlin" class="language-kotlin">private val taskList = listOf(&#34;Task 1&#34;, &#34;Task 2&#34;, &#34;Task 3&#34;)
 </code></pre>
 <ul>
-<li>Dans le layout associé à <code>TaskListFragment</code>, placez une balise <code><androidx.recyclerview.widget.RecyclerView...></code>:</li>
+<li>Dans le layout associé à <code>TaskListFragment</code>, placez une balise <code>< androidx.recyclerview.widget.RecyclerView...></code>:</li>
 <li>Créer une nouvelle classe <code>TaskListAdapter</code>:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">class TaskListAdapter(private val taskList: List&lt;String&gt;) : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&gt;() {}
