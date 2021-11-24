@@ -89,7 +89,7 @@ object WordsDiffCallback : DiffUtil.ItemCallback<Word>() {
       // do they have the same data ? (content)
 }
 
-class WordListAdapter : ListAdapter<,Word, WordListAdapter.WordViewHolder>(WordsDiffCallback) {
+class WordListAdapter : ListAdapter<Word, WordListAdapter.WordViewHolder>(WordsDiffCallback) {
    // use `currentList`
    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {...}
    override fun onBindViewHolder(holder: WordViewHolder, position: Int)  {...}

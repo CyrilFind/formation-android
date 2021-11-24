@@ -24,12 +24,12 @@ jobs:
       - name: Install claat
         # run: go get github.com/googlecodelabs/tools/claat
         run: go install github.com/googlecodelabs/tools/claat@latest
-      - name: Make codelabs
+      - name: Build codelabs
         run: claat export -auth '4/1AX4XfWjxE4X1Wl30JEkhedcDMAyKNcfOXQLaBrK8CqPk_-bwps6uXQM6RKw' -o codelabs/ tp/TP*.md
       - name: Push
         run: |
           git config user.name "Codelabs Builder"
           git config user.email "<>"
           git add codelabs/*
-          git commit -m "make codelabs"
+          git commit -m "build codelabs"
           git push

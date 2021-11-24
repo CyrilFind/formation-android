@@ -4,7 +4,7 @@ id: tp2
 
 # TP 2 - Actions & Intents
 
-*objectif*: implémenter des actions sur nos tâches, en naviguant entre des `Activity` et partager des infos entre elle ou dans une autre application avec des `Intent`.
+*Objectif*: implémenter des actions sur nos tâches, en naviguant entre des `Activity` et partager des infos entre elle ou dans une autre application avec des `Intent`.
 
 ## Suppression d'une tache
 
@@ -117,6 +117,30 @@ override fun onSaveInstanceState(outState: Bundle)
 - Il faudra aussi que votre classe `Task` hérite de `Parcelable`: pour implémenter [automatiquement][4] les méthodes nécessaires, ajoutez le plugin `kotlin-parcelize` à votre `app/build.gradle` et l'annotation `@Parcelize` à votre classe `Task`
 
 - Puis, pour récupérer cette liste, utilisez l'argument `savedInstanceState` et la méthode `getParcelableArrayList` dans `onCreateView`
+
+## Interface et délégation
+
+Une façon plus classique de gérer les clicks d'un item est de définir une interface que l'on implémentera dans l'Activity/Fragment.
+Mettez à jour votre code pour utiliser cette méthode:
+
+```kotlin
+interface TaskListListener {
+  fun onClickDelete(task: Task)
+}
+
+class TaskListAdapter(val listener: TaskListListener) : ... {
+  // use: listener.onClickDelete(task)
+}
+
+class TaskListFragment : Fragment {
+  val adapterListener = object : TaskListListener {
+    override onClickDelete(task: Task) {...}
+  }
+  val adapter = TaskListAdapter(adapterListener)
+}
+```
+
+Prenez exemple sur ceci pour remplacer vos lambdas.
 
 [1]: https://developer.android.com/training/sharing/receive
 

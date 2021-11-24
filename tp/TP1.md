@@ -74,15 +74,33 @@ Créez un nouveau package `tasklist` dans votre package source de base:
 
 Vous y mettrez tous les fichiers source (Kotlin) concernant la liste de tâches
 
+## MainActivity
+
+Cette activity va servir de conteneur de fragments:
+
+Dans `activity_main.xml`, remplacez la balise `TextView` par celle ci (à adapter):
+
+```xml
+ <androidx.fragment.app.FragmentContainerView
+    android:name="com.nicoalex.todo.TaskListFragment"
+    android:id="@+id/fragment_tasklist"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    />
+```
+
 ## TaskListFragment
 
-* Créez y un fichier kotlin `TaskListFragment.kt` qui contiendra la classe `TaskListFragment`:
+* Créez dans votre nouveau package `tasklist` un fichier kotlin `TaskListFragment.kt` qui contiendra la classe `TaskListFragment`:
 
 ```kotlin
 class TaskListFragment : Fragment() {}
 ```
 
-* Créer le layout associé `fragment_task_list.xml`
+* Créer le layout associé `fragment_task_list.xml` dans `res/layout`
+
+*Note*: vous pouvez aussi utiliser l'IDE pour créer les 2 fichiers à la fois: `Clic droit sur le package > New > Fragment > Fragment (Blank)`
+
 * Dans `TaskListFragment`, overrider la méthode `onCreateView(...)`: commencez à taper `onCrea...` et utilisez l'auto-completion de l'IDE pour vous aider (vous pouvez supprimer la ligne `super.onCreateView(...)`)
 * Cette méthode vous demande de *retourner* la `rootView` à afficher: créez la à l'aide de votre nouveau layout comme ceci:
 
@@ -90,46 +108,50 @@ class TaskListFragment : Fragment() {}
 val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 ```
 
-⚠️ Si vous executez du code *avant* cette ligne `inflate`, il va crasher ou ne rien faire car votre vue n'existera pas encore
+⚠️ Si vous exécutez du code *avant* cette ligne `inflate`, il va crasher ou ne rien faire car votre vue n'existera pas encore
 
-* Remplacez la balise `< TextView.../>` par une balise `< FragmentContainerView.../>` dans le layout de votre activité principale (à adapter à votre projet):
-
-```xml
- <androidx.fragment.app.FragmentContainerView
-    android:name="com.example.nicoalex.TaskListFragment"
-    android:id="@+id/fragment_tasklist"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    />
-```
-
-## La liste des tâches
-
-* Pour commencer, la liste des tâches sera simplement une liste de `String`:
+* Pour commencer, la liste des tâches sera simplement une liste de `String` que vous pouvez ajouter en propriété de votre classe `TaskListFragment`:
 
 ```kotlin
 private val taskList = listOf("Task 1", "Task 2", "Task 3")
 ```
 
-* Dans le layout associé à `TaskListFragment`, placez une balise `< androidx.recyclerview.widget.RecyclerView...>`:
+## RecyclerView et Adapter
 
-* Créer une nouvelle classe `TaskListAdapter`:
+* Dans le layout associé à `TaskListFragment`, placez une balise `RecyclerView` (vous pouvez taper `< Recyc...>` et vous aider de l'IDE ou bien utilisez le mode visuel):
 
-```kotlin
-class TaskListAdapter(private val taskList: List<String>) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {}
-```
-
-* À l'intérieur de `TaskListAdapter`, créer la classe `TaskViewHolder`:
+* Dans un nouveau fichier `TaskListAdapter.kt`, créez 2 nouvelles classes: `TaskListAdapter` et `TaskViewHolder`:
 
 ```kotlin
-inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-  fun bind(taskTitle: String) {
-    
+// l'IDE va râler ici car on a pas encore implémenté les méthodes nécessaires
+class TaskListAdapter(private val taskList: List<String>) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
+  
+
+  // on utilise `inner` ici afin d'avoir accès aux propriétés de l'adapter directement
+  inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun bind(taskTitle: String) {
+      // on affichera les données ici
+    }
   }
 }
+
 ```
 
-* Créer le layout `item_task.xml` correspondant à une cellule (`TaskViewHolder`)
+* Dans `TaskListFragment`, overridez `onViewCreated` pour y récupérer la `RecyclerView` du layout en utilisant un `findViewById`:
+
+```kotlin
+    val recyclerView = view.findViewById<RecyclerView>(R.id.id_de_votre_recycler_view)
+    recyclerView.layoutManager = ...
+```
+
+* Donnez lui un `layoutManager`: `LinearLayoutManager(activity)`
+* Donnez lui un `adapter`: `TaskListAdapter(taskList)` (ne marche pas pour l'instant)
+
+**Rappel**: l'Adapter gère le recyclage des cellules (`ViewHolder`): il en `inflate` juste assez pour remplir l'écran (coûteux) puis change seulement les données quand on scroll (peu coûteux)
+
+## Item View
+
+* Créer le layout `item_task.xml` correspondant à une cellule (et donc lié à `TaskViewHolder`)
 
 ```xml
 <LinearLayout
@@ -146,19 +168,6 @@ inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 </LinearLayout>
 ```
 
-* Dans `TaskListFragment`, overridez `onViewCreated` pour y récupérer la `RecyclerView` du layout en utilisant un `findViewbyId`:
-
-```kotlin
-    // Pour une [RecyclerView] ayant l'id "recycler_view":
-    val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-    recyclerView.layoutManager = ...
-```
-
-* Donnez lui un `layoutManager`: `LinearLayoutManager(activity)`
-* Donnez lui un `adapter`: `TaskListAdapter(taskList)` (ne marche pas pour l'instant)
-
-**Rappel**: l'Adapter gère le recyclage des cellules (`ViewHolder`): il en `inflate` juste assez pour remplir l'écran (coûteux) puis change seulement les données quand on scroll (peu coûteux)
-
 ## Implémentation du RecyclerViewAdapter
 
 Dans le `TaskListAdapter`, implémenter toutes les méthodes requises:
@@ -173,8 +182,8 @@ Dans le `TaskListAdapter`, implémenter toutes les méthodes requises:
 val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
 ```
 
-* `onBindViewHolder` doit insèrer la donnée dans la cellule (`TaskViewHolder`) en fonction de sa `position` dans la liste en utilisant la méthode `bind()` que vous avez créée dans `TaskViewHolder` (elle ne fait rien pour l'instant)
-* Implémentez maintenant `bind()` qui doit récupérer une référence à la `TextView` dans `item_task.xml` et y insérer le texte récupéré en argument
+* `onBindViewHolder` doit insérer la donnée dans la cellule (`TaskViewHolder`) en fonction de sa `position` dans la liste en utilisant la méthode `bind()` que vous avez créée dans `TaskViewHolder` (elle ne fait rien pour l'instant)
+* Implémentez maintenant `bind()` qui doit récupérer une référence à la `TextView` dans `item_task.xml` et y insérer le texte récupéré en argument
 * Lancez l'app: vous devez voir 3 tâches s'afficher 👏
 
 ## Ajout de la data class Task
@@ -191,8 +200,8 @@ private val taskList = listOf(
 )
 ```
 
-* Corriger votre code en conséquence afin qu'il compile de nouveau
-* Enfin afficher la description en dessous du titre
+* Corriger et adapter votre code en conséquence afin qu'il compile de nouveau en utilisant votre `data class` à la place de simples `String`
+* Ajoutez la description en dessous du titre (avec une seconde `TextView`)
 * Admirez avec fierté le travail accompli 🤩
 
 ## Ajout de tâche rapide
@@ -214,32 +223,14 @@ Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}")
 
 ## ListAdapter
 
-Améliorer l'implémentation de `TasksListAdapter` en héritant de `ListAdapter` au lieu de `RecyclerView.Adapter` (cf [slides](./3\ -\ RecyclerView.md))
+Améliorer l'implémentation de `TasksListAdapter` en héritant de `ListAdapter` au lieu de `RecyclerView.Adapter`
+
+Il faudra notamment: créer un `DiffUtil.ItemCallback<Task>` et le passer au constructeur parent, supprimer la propriété `taskList` et utiliser `currentList` à la place, et vous pourrez supprimet `getItemCount` qui sera déjà implémentée pour vous
+
+(cf [slides](https://cyrilfind.github.io/formation-android/slides/3%20-%20RecyclerView.html#7) pour un squelette d'implémentation)
 
 ⚠️ Comme on utilise une `MutableList` (ce qu'on ne fait pas en général), il faut envoyer une nouvelle instance à chaque fois pour que le `ListAdapter` puisse les comparer, utilisez `toList()` pour cela: `adapter.submitList(taskList.toList())`
 
 ## ViewBinding
 
 Utiliser le [`ViewBinding`](https://developer.android.com/topic/libraries/view-binding) pour `inflate` les différents layouts et éviter les `findViewByIds` (cf [slides](./1%20-%20Introduction.pdf))
-
-## Interface et délégation
-
-Une façon plus classique de gérer les clicks d'un item est de définir une interface que l'on implémentera dans l'Activity/Fragment.
-Mettez à jour votre code pour utiliser cette méthode:
-
-```kotlin
-interface TaskListListener {
-  fun onClickDelete(task: Task)
-}
-
-class TaskListAdapter(val listener: TaskListListener) : ... {
-  // use: listener.onClickDelete(task)
-}
-
-class TaskListFragment : Fragment {
-  val adapterListener = object : TaskListListener {
-    override onClickDelete(task: Task) {...}
-  }
-  val adapter = TaskListAdapter(adapterListener)
-}
-```

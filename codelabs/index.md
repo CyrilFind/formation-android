@@ -10,3 +10,5 @@
 
 {% endif %}
 {% endfor %}
+
+Aussi dispo au format [Codelab](/codelabs/)
