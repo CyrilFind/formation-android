@@ -1,0 +1,199 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>TP 8: Autonomie</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="TP8"
+                  title="TP 8: Autonomie"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="But" duration="0">
+        <p>Réutiliser ce que vous avez appris en TP pour vous l&#39;approprier.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Sujet" duration="0">
+        <p>Créer une app &#34;Pokédex&#34;, avec les fonctionnalités suivantes:</p>
+<ul>
+<li>Afficher une grille paginée de pokémons avec leurs infos de base: images, noms, numéro, type 1, type 2</li>
+<li>Afficher le détail d&#39;un pokémon avec les autres infos: poids, description, ... (pas obligé de tout mettre)</li>
+<li>Permettre de &#34;cocher&#34; les pokémons que l&#39;on a déjà attrapés en enregistrant l&#39;info localement</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Documentation" duration="0">
+        <ul>
+<li><a href="https://pokeapi.co/" target="_blank">Poké API</a>, exemples: <ul>
+<li><code>GET https://pokeapi.co/api/v2/pokemon-species</code></li>
+<li><code>GET https://pokeapi.coapi/v2/pokemon-species/27</code></li>
+</ul>
+</li>
+<li><a href="https://developer.android.com/topic/libraries/architecture/paging" target="_blank">Paging Library</a></li>
+<li><a href="https://developer.android.com/topic/libraries/architecture/room" target="_blank">Room Database</a></li>
+<li>Les slides et TPs précédents</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Instructions" duration="0">
+        <ul>
+<li>Nommez le projet et le package en fonction de votre binome (cf <a href="./TP1.md" target="_blank">TP 1</a>)</li>
+<li>Utilisez git tout de suite et commitez régulièrement pour pouvoir toujours revenir à une version qui marche ;) (cf <a href="./TP1.md" target="_blank">TP 1</a>)</li>
+<li>Essayez de coder &#34;proprement&#34; (pour la syntaxe: <code>cmd + alt + L</code>)</li>
+<li>Vous pouvez vous mettre par 2 (mais ne vous faites trop carry !)</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Étapes pour l&#39;appli de base" duration="0">
+        <ul>
+<li>Commencez par une liste linéaire moche avec juste les noms et seulement la première page de l&#39;API</li>
+<li>Changez en grille avec une même image par défaut pour toutes les cellules (une pokéball par ex)</li>
+<li>Ajoutez la vue détail: vous devrez faire une requête pour chaque espèce</li>
+<li>Afficher les bonnes images dans la liste (en observant le format de l&#39;url dans la réponse de la requête de détails)</li>
+<li>Afficher les infos de base dans la liste: un peu compliqué car on est obligés de faire une requête pour chaque espèce (ce qui est lourd dans une liste mais améliorable plus tard)</li>
+<li>Vous pouvez utilisez les <code>ViewModel</code> partagés (<code>by activityViewModel</code>) pour éviter de multiplier certaines requête HTTP</li>
+<li>Essayez de faire quelque chose de joli cette fois: <a href="https://www.instagram.com/p/Bx86mp2hWT-/" target="_blank">Un exemple pour vous inspirer</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Ajouter la pagination" duration="0">
+        <ul>
+<li>Commencez par utiliser <a href="https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter" target="_blank"><code>ListAdapter</code></a> à la place de <code>RecyclerView.Adapter</code>: vous devrez implémenter un <code>ListAdapter.DiffCallback</code> mais cela simplifie certaines choses que l&#39;on faisait à la main: pas besoin de <code>notify*Changed</code>, pas besoin de spécifier le nombre d&#39;items, la liste des données est stockée dans la variable <code>currentList</code> et on utilise <code>adapter.submitList(newList)</code> pour setter les données</li>
+<li>Ajoutez la pagination en passant votre <code>ListAdapter</code> en <code>PagedListAdapter</code></li>
+<li>Vous devez maintenant lui passer une <a href="https://developer.android.com/topic/libraries/architecture/paging/ui" target="_blank">PagedList</a>: on va utiliser les LiveData donc on va construire cette liste avec <code>LivePagedListBuilder</code>:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">class MyViewModel : ViewModel() {
+    val pagedList = LivePagedListBuilder(object : DataSource.Factory&lt;String, Pokemon&gt;() {
+        override fun create(): DataSource&lt;Int, Pokemon&gt; = PokemonPageKeyedDataSource(viewModelScope)
+    }, PER_PAGE).build()
+
+    companion object {
+        private const val PER_PAGE = 20
+    }
+}
+
+// on pourra faire presque comme d&#39;habitude dans le fragment ou l&#39;activity:
+viewModel.pagedList.observe(viewLifecycleOwner, Observer {
+    pokemonListAdapter.submitList(it)
+})
+</code></pre>
+<ul>
+<li>Mais pour que cela fonctionne on a besoin de créer <code>PokemonPageKeyedDataSource</code>:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">class PokemonPageKeyedDataSource(private val scope: CoroutineScope) : PageKeyedDataSource&lt;Int, Pokemon&gt;() {
+
+    override fun loadBefore(
+        params: LoadParams&lt;Int&gt;,
+        callback: LoadCallback&lt;Int, Pokemon&gt;
+    ) {
+        // on ne fait rien ici car on commence au 1er pokémon et il n&#39;y a rien avant
+        // (ce serait utile pour un feed à la twitter ou facebook)
+    }
+
+    override fun loadInitial(
+        params: LoadInitialParams&lt;Int&gt;,
+        callback: LoadInitialCallback&lt;Int, Pokemon&gt;
+    ) {
+        // Charger la page 0, utiliser la callback avec la valeur 1 comme &#34;key&#34;
+    }
+
+    override fun loadAfter(params: LoadParams&lt;Int&gt;, callback: LoadCallback&lt;Int, Pokemon&gt;) {
+        val currentPage = params.key
+       // utiliser la valeur de &#34;key&#34; pour requêter la page &#34;currentPage&#34; et utiliser la callback avec currentPage + 1
+     }
+}
+</code></pre>
+<ul>
+<li>Pour pouvoir faire des requêtes avec des pages, il faut utiliser les &#34;query parameters&#34; permis par l&#39;api:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">interface PokemonWebService {
+    @GET(&#34;pokemon&#34;)
+    suspend fun getPokemons(@Query(&#34;limit&#34;) limit: Int, @Query(&#34;offset&#34;) offset: Int = 0): Response&lt;PokeListResponse&gt;
+}
+
+// on pourra l&#39;utiliser comme ceci:
+val currentPage = params.key
+val itemsPerPage = params.requestedLoadSize
+pokemonWebService.getPokemons(
+    limit = itemsPerPage,
+    offset = currentPage * itemsPerPage
+)
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Aller plus loin" duration="0">
+        <ul>
+<li>Stocker les réponses des requêtes pour ne pas les refaire tout le temps, sachant que les donnée ne changent pas souvent: <ul>
+<li>soit en RAM c&#39;est à dire dans une variable de type <code>Map<Int, Pokemon></code> dans un repository par ex, (plus simple)</li>
+<li>soit dans une BD locale <a href="https://developer.android.com/topic/libraries/architecture/room" target="_blank">Room</a> (plus compliqué mais de meilleur qualité car la donnée survie au kill de l&#39;app)</li>
+</ul>
+</li>
+<li>Ajoutez la possibilité de &#34;cocher&#34; les espèces attrapées (vous pouvez dans l&#39;ordre de de difficulté et de qualité: en RAM, dans les SharedPreference, ou dans Room)</li>
+<li>la plupart des améliorations des <a href="./sujets_explo.md" target="_blank">sujets exploratoires</a> peuvent aussi s&#39;appliquer</li>
+<li>Ajoutez des fonctionnalités si vous avez des idées, par ex: <ul>
+<li>Une barre de recherche</li>
+<li>Un filtre par génération</li>
+<li>...</li>
+</ul>
+</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Évaluation" duration="0">
+        <p>Le projet devra être rendu sous forme de lien git de préférence (un zip sinon), au plus tard à 23h59 le 13 Juin</p>
+<p>Voici un barême indicatif:</p>
+<ul>
+<li>Fonctionnement de base: afficher une liste non paginée (pas trop moche) / 5</li>
+<li>Afficher une grille et une vue détail (pas trop moche) / 5</li>
+<li>Respecter la structure MVVM + repository / 5</li>
+<li>Pagination, optimisation des requêtes, autres features / 5</li>
+<li>bonus: pour ceux qui ont commencé le projet de leur côté / 5</li>
+<li>bonus: si vous arrivez à utiliser Room ou d&#39;autres features avancées / 5</li>
+</ul>
+<p>Vous pouvez donc avoir plus que 20 ce qui améliorera votre moyenne (sauf si vous avez déjà 20 😅)</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

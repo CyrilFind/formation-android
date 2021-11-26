@@ -1,0 +1,17 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2021-11-26T20:10:22Z",
+  "id": "TP3",
+  "duration": 0,
+  "title": "TP 3: L'Internet",
+  "summary": "",
+  "source": "tp/TP3.md",
+  "theme": "",
+  "status": null,
+  "category": null,
+  "tags": [],
+  "url": "TP3"
+}

@@ -1,0 +1,17 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2021-11-26T20:10:22Z",
+  "id": "TP2",
+  "duration": 0,
+  "title": "TP 2 - Actions \u0026 Intents",
+  "summary": "",
+  "source": "tp/TP2.md",
+  "theme": "",
+  "status": null,
+  "category": null,
+  "tags": [],
+  "url": "TP2"
+}

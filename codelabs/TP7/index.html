@@ -1,0 +1,238 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>TP 7: Sujets Exploratoires</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="TP7"
+                  title="TP 7: Sujets Exploratoires"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="1 - Clean Archi et Injection de dépendance" duration="0">
+        <p>Utilisez <code>Koin</code> pour faire de la &#34;Dependency Injection&#34; afin de s&#39;approcher d&#39;une &#34;Clean Archi&#34;:</p>
+<ul>
+<li>Commencer par exposer les éléments de la classe <code>Api</code></li>
+<li>Injectez les <code>WebService</code> dans les <code>Repository</code></li>
+<li>Injectez les <code>Repository</code> dans les <code>ViewModels</code></li>
+<li>Présentez les <code>Repository</code> à travers des <code>interface</code></li>
+<li>refactorisez pour placer des <code>UseCase</code> ou <code>Interactor</code> entre les <code>ViewModel</code> et les <code>Repository</code></li>
+</ul>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><a href="https://github.com/InsertKoinIO/koin" target="_blank">Koin</a></li>
+<li><a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html" target="_blank">Clean Archi (Uncle bob)</a></li>
+<li><a href="https://fernandocejas.com/2018/05/07/architecting-android-reloaded" target="_blank">Clean Archi on Android</a></li>
+<li><a href="https://github.com/bufferapp/clean-architecture-koin-boilerplate" target="_blank">Projet boilerplate d&#39;exemple</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="2 - Navigation" duration="0">
+        <h2 is-upgraded>Safe Args</h2>
+<ul>
+<li>Utilisez <code>SafeArgs</code> pour passer les données d&#39;une activité à l&#39;autre (au lieu de <code>startActivityForResult</code></li>
+</ul>
+<h2 is-upgraded>Deeplinks</h2>
+<p>Ajouter la possibilité d&#39;ouvrir l&#39;application à partir de certaines URI:</p>
+<ul>
+<li>Ouvrir l&#39;activité par défaut avec &#34;<a href="https://android-tasks-api.herokuapp.com/%22" target="_blank">https://android-tasks-api.herokuapp.com/&#34;</a></li>
+<li>Ouvrir l&#39;édition de tâche avec &#34;<a href="https://android-tasks-api.herokuapp.com/tasks/ID_DE_LA_TACHE%22" target="_blank">https://android-tasks-api.herokuapp.com/tasks/ID_DE_LA_TACHE&#34;</a></li>
+</ul>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><a href="https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args" target="_blank">SafeArgs</a></li>
+<li><a href="https://developer.android.com/training/app-links/deep-linking" target="_blank">Deep Link</a></li>
+<li><a href="https://developer.android.com/guide/navigation/navigation-deep-link" target="_blank">Deep link Navigation</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="3 - Preferences" duration="0">
+        <h2 is-upgraded>PreferenceScreen</h2>
+<p>Ajouter un menu et une page &#34;Settings&#34; en utilisant un <code>PreferenceScreen</code>:</p>
+<ul>
+<li>Ajout un OptionsMenu menu pour y acceder</li>
+<li>Permettre de changer l&#39;aspect de l&#39;app: <ul>
+<li>la couleur de la police ???</li>
+<li>La couleur de l&#39;<code>AppBar</code></li>
+<li>le titre dans l&#39;<code>AppBar</code></li>
+</ul>
+</li>
+</ul>
+<h2 is-upgraded>Preference Data Store</h2>
+<p>Remplacez l&#39;utilisation des <code>SharedPreferences</code> par la nouvelle lib officielle: &#34;Preference Datastore&#34;</p>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><a href="https://developer.android.com/guide/topics/ui/menus" target="_blank">Menus</a></li>
+<li><a href="https://developer.android.com/guide/topics/ui/settings.html" target="_blank">Settings</a></li>
+<li><a href="https://developer.android.com/topic/libraries/architecture/datastore#preferences-datastore" target="_blank">Datastore documentation</a></li>
+<li><a href="https://developer.android.com/codelabs/android-preferences-datastore#0" target="_blank">Datastore codelab</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="4 - DataBinding" duration="0">
+        <p>Utiliser le data-binding pour afficher et éditer les données de l&#39;application directement dans les layouts XML:</p>
+<ul>
+<li>Commencer par les infos user affichées dans le fragment principal</li>
+<li>Faire de même dans <code>TaskViewHolder</code></li>
+<li>Faire de même dans les autres écrans</li>
+<li>Dans les écrans comme ajout/édition, userinfo, login/signup, utilisez le &#34;two-way databinding&#34; afin de remonter les modifications de données effectuées par l&#39;utilisateur</li>
+<li>utilisez un &#34;custom binding adapter&#34; pour passer la liste de tâches directement</li>
+</ul>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><a href="https://developer.android.com/topic/libraries/data-binding" target="_blank">DataBinding</a> (affichage)</li>
+<li><a href="https://developer.android.com/topic/libraries/data-binding/two-way" target="_blank">Two-Way DataBinding</a> (édition)</li>
+<li><a href="https://developer.android.com/topic/libraries/data-binding/binding-adapters" target="_blank">DataBinding Adapter</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="5 - Pagination" duration="0">
+        <p>Utiliser la lib &#34;Paging 3&#34; pour afficher une liste infinie de tâche de façon efficace dans votre RecyclerView qui n&#39;affiche pour l&#39;instant que la première page retournée par le serveur.</p>
+<p>Pour rappel, il y a 2 parametres dans l&#39;API permettant de récuperer les tâches: <code>per_page</code> et <code>page</code></p>
+<p>comment refresh ??</p>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><a href="https://developer.android.com/topic/libraries/architecture/paging/v3-overview" target="_blank">Paging 3 Library</a></li>
+<li><a href="https://android-tasks-api.herokuapp.com/api-docs/" target="_blank">Tasks API</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="6 - Notifications et AlarmManager" duration="0">
+        <p>Ajouter une fonctionnalité &#34;Rappel&#34; à vos tâches à l&#39;aide du champ date <code>due_date</code> stockée sur le serveur:</p>
+<ul>
+<li>ajouter un <code>DatePicker</code> et un <code>TimePicker</code> ou bien un <code>DatePickerDialog</code> et <code>TimePickerDialog</code> pour éditer cette date</li>
+<li>Utiliser <code>AlarmManager</code> pour envoyer une notification 5 minutes avant la <code>due_date</code></li>
+<li>Ajouter un <code>PendingIntent</code> qui ouvre l&#39;édition de la tâche concernée</li>
+<li>Ajouter une action supplémentaire <code>Mark as Done</code> dans la notification qui supprime la <code>Task</code> directement</li>
+</ul>
+<p><strong>Aide:</strong> Pour récupérer une date du serveur vous aurez besoin d&#39;utiliser l&#39;annotation <code>@Serializable(with = DateSerializer::class)</code> qui indique d&#39;utiliser un serializer custom comme celui ci:</p>
+<pre><code language="language-kotlin" class="language-kotlin">@Serializer(forClass = Date::class)
+object DateSerializer : KSerializer&lt;Date&gt; {
+    private val formatter = SimpleDateFormat(&#34;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSS&#34;, Locale.US)
+
+    override fun serialize(encoder: Encoder, value: Date) =
+        encoder.encodeString(formatter.format(value))
+
+    override fun deserialize(decoder: Decoder): Date =
+        formatter.parse(decoder.decodeString())
+}
+</code></pre>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><a href="https://developer.android.com/training/scheduling/alarms" target="_blank">Alarms</a></li>
+<li><a href="https://developer.android.com/guide/topics/ui/controls/pickers" target="_blank">Pickers</a></li>
+<li><a href="https://www.journaldev.com/9976/android-date-time-picker-dialog" target="_blank">PickerDialog</a></li>
+<li><a href="https://developer.android.com/guide/topics/ui/notifiers/notifications" target="_blank">Notifications</a></li>
+<li><a href="https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-notifications/index.html?index=..%2F..advanced-android-kotlin-training#0" target="_blank">Notifications Codelab</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="7 - Work Manager" duration="0">
+        <p>Implémenter des <code>CoroutineWorker</code> pour executer des tâches de fond sur les images et utiliser <code>WorkManager</code> pour les exécuter de façon efficace et avec les contraintes nécessaires (ex: réseau disponible):</p>
+<ul>
+<li>Créer un Worker appliquant un filtre sépia (local)</li>
+<li>Créer un Worker pour compresser le fichier (local)</li>
+<li>Créer un Worker pour uploader l&#39;image (réseau)</li>
+<li>Implémenter une &#34;chaîne&#34; de Worker pour compresser puis uploader</li>
+<li>Afficher dans l&#39;app et/ou dans une notification l&#39;état de progrès du travail</li>
+<li>Faire en sorte que l&#39;upload reprenne quand le réseau est coupé / reconnecté</li>
+</ul>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><a href="https://developer.android.com/topic/libraries/architecture/workmanager/basics.html" target="_blank">WorkManager: Getting Started</a></li>
+<li><a href="https://developer.android.com/topic/libraries/architecture/workmanager/advanced/coroutineworker" target="_blank">CoroutineWorker</a></li>
+<li><a href="https://developer.android.com/topic/libraries/architecture/workmanager/how-to/chain-work" target="_blank">Chaining</a></li>
+<li><a href="https://www.raywenderlich.com/6040-workmanager-tutorial-for-android-getting-started" target="_blank">Tuto RayWanderlitch</a></li>
+<li><a href="https://proandroiddev.com/exploring-the-stable-android-jetpack-workmanager-82819d5d7c34" target="_blank">Article ProAndroidDev</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="8 - Room" duration="0">
+        <p>Implémenter un cache des données serveur avec <code>Room</code>:</p>
+<ul>
+<li>Gestion offline des informations de l&#39;utilisateur</li>
+<li>Gestion offline des tâches: liste, ajout, edition, suppression</li>
+</ul>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><a href="https://codelabs.developers.google.com/codelabs/android-room-with-a-view-kotlin" target="_blank">Codelab &#34;Room with a view&#34;</a> (sur Room de façon générale)</li>
+<li><a href="https://codelabs.developers.google.com/codelabs/kotlin-android-training-repository" target="_blank">Codelab &#34;Repository&#34;</a> (sur la mise en place d&#39;un Cache avec Room)</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="9 - Tests" duration="0">
+        <ul>
+<li>Créer des tests unitaires</li>
+<li>vérifiez votre &#34;code coverage&#34;</li>
+<li>Créer des tests UI avec Espresso sur les différentes features de l&#39;applications: <ul>
+<li>Affichage de la liste des tâches</li>
+<li>Résultat des actions sur les boutons: ajout, suppression, ...</li>
+<li>Mocker les appels réseaux</li>
+</ul>
+</li>
+</ul>
+<p><strong>Documentation:</strong></p>
+<ul>
+<li><a href="https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-testing-basics/" target="_blank">Testing Codelab</a> (5.1 à 5.3)</li>
+<li><a href="https://site.mockito.org/" target="_blank">Mockito</a></li>
+<li><a href="https://developer.android.com/training/testing/ui-testing/espresso-testing" target="_blank">Espresso</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="10 - Jetpack Compose" duration="0">
+        <p>Remplacer vos vues XML par du Kotlin:</p>
+<ul>
+<li><a href="https://developer.android.com/jetpack/compose/documentation" target="_blank">Documentation</a></li>
+<li><a href="https://developer.android.com/jetpack/compose/lists" target="_blank">Listes</a></li>
+<li><a href="https://developer.android.com/jetpack/compose/navigation" target="_blank">Navigation</a></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

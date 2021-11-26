@@ -1,0 +1,177 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>TP 2 - Actions &amp; Intents</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="TP2"
+                  title="TP 2 - Actions &amp; Intents"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Suppression d&#39;une tache" duration="0">
+        <p>Dans le layout de votre ViewHolder, ajouter un <code>ImageButton</code> qui servira à supprimer la tâche associée. Vous pouvez utiliser par exemple l&#39;icone <code>@android:drawable/ic_menu_delete</code></p>
+<p><strong>Rappel:</strong> Une <a href="https://kotlinlang.org/docs/reference/lambdas.html" target="_blank">lambda</a> est un type de variable qui contient un bloc de code pouvant prendre des arguments et retourner un résultat, c&#39;est donc une fonction que l&#39;on utilise comme une variable !</p>
+<p>Aidez vous des lignes de code plus bas pour réaliser un &#34;Click Listener&#34; à l&#39;aide d&#39;une lambda en suivant ces étapes:</p>
+<ul>
+<li>Dans l&#39;adapter, ajouter une propriété lambda <code>onClickDelete</code> qui prends en arguments une <code>Task</code> et ne renvoie rien: <code>(Task) -> Unit</code> et l&#39;initier à <code>null</code> (elle ne fait rien par défaut)</li>
+<li>Utilisez cette lambda dans le <code>onClickListener</code> du bouton supprimer</li>
+<li>Dans le fragment, accéder à <code>onClickDelete</code> depuis l&#39;adapter et implémentez là: donnez lui comme valeur une lambda qui va supprimer la tache passée en argument de la liste</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">// Déclaration de la variable lambda dans l&#39;adapter:
+var onClickDelete: ((Task) -&gt; Unit)? = null
+
+// &#34;implémentation&#34; de la lambda dans le fragment:
+adapter.onClickDelete = { task -&gt;
+    // Supprimer la tâche
+}
+
+// Utilisation de la lambda dans le ViewHolder:
+onClickDelete?.invoke(task)
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Ajout de tâche complet" duration="0">
+        <ul>
+<li>Créer un package <code>task</code></li>
+<li>Créez y la nouvelle <code>TaskActivity</code>, n&#39;oubliez pas de la déclarer dans le manifest</li>
+<li>Créer un layout contenant 2 <code>EditText</code>, pour le titre et la description et un bouton pour valider</li>
+<li>Changer l&#39;action du FAB pour qu&#39;il ouvre cette activité avec un <code>Intent</code>, en attendant un resultat:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">val intent = Intent(activity, TaskActivity::class.java)
+startActivityForResult(intent, ADD_TASK_REQUEST_ID)
+</code></pre>
+<ul>
+<li>Dans le <code>onCreate</code> de la nouvelle activité, récupérer le bouton de validation puis setter son <code>onClickListener</code> pour qu&#39;il crée une tâche:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">// Instanciation d&#39;un nouvel objet [Task]
+val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;New Task !&#34;)
+</code></pre>
+<ul>
+<li>Faites hériter <code>Task</code> de <code>Serializable</code> pour pouvoir passer des objets <code>Task</code> dans les <code>intent</code></li>
+<li>Passez <code>newTask</code> dans l&#39;intent avec <code>putExtra(...)</code></li>
+<li>utlisez <code>setResult(...)</code> et <code>finish()</code> pour retourner à l&#39;activité principale</li>
+<li>Dans celle ci, overrider <code>onActivityResult</code> dans le <code>TaskFragment</code> pour récupérer cette task et l&#39;ajouter à la liste</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">val task = data?.getSerializableExtra(TaskActivity.TASK_KEY) as? Task
+</code></pre>
+<ul>
+<li>Faites en sorte que la nouvelle tache s&#39;affiche au retour sur l&#39;activité principale</li>
+<li>Maintenant, récupérez les valeurs entrées dans les <code>EditText</code> pour les donner à la création de votre tâche (vous devrez faire un <code>toString()</code>)</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Édition d&#39;une tâche" duration="0">
+        <ul>
+<li>Ajouter une bouton permettant d&#39;éditer chaque tâche en ouvrant l&#39;activité <code>TaskActivity</code> pré-remplie avec les informations de la tâche</li>
+<li>Pour transmettre des infos d&#39;une activité à l&#39;autre, vous pouvez utiliser la méthode <code>putExtra</code> depuis une instance d&#39;<code>intent</code></li>
+<li>Inspirez vous de l&#39;implémentation du bouton supprimer et du bouton ajouter</li>
+<li>Vous pouvez ensuite récupérer dans le <code>onCreate</code> de l&#39;activité les infos que vous avez passées:<ul>
+<li>récupérez la tâche passée avec un <code>getSerializableExtra</code> et un <code>as? Task</code></li>
+<li>Vous pourrez tirer parti de la variable <code>Task?</code> (nullable) pour réutiliser le code de la création et remplir les <code>EditText</code></li>
+<li>De même vous pourrez utiliser l&#39;opérateur <code>?:</code> pour setter l&#39;<code>id</code> en utilisant la méthode <code>UUID...</code> précédente par défaut</li>
+<li>Utilisez <code>setText</code> pour préremplir les <code>EditText</code></li>
+</ul>
+</li>
+<li>Au retour dans <code>onActivityResult</code>, vous pouvez utiliser <code>indexOfFirst { /* une condition */ }</code> sur votre liste pour trouver la tache concernée et la remplacer dans la liste, et s&#39;il n&#39;y  a pas, c&#39;est qu&#39;il s&#39;agit d&#39;un ajout</li>
+<li>Vérifier que les infos éditées s&#39;affichent bien à notre retour sur l&#39;activité principale.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Nouvelle API ActivityResult" duration="0">
+        <p>Changez votre code pour utiliser cette nouvelle méthode, par ex avec <code>StartActivityForResult()</code>:</p>
+<pre><code language="language-kotlin" class="language-kotlin">val startForResult = registerForActivityResult(StartActivityForResult()) {...}
+// ...
+startForResult.launch(intent)
+</code></pre>
+<p>Mais vous pouvez aussi définir un <a href="https://developer.android.com/training/basics/intents/result#custom" target="_blank">contrat spécifique</a>:</p>
+<pre><code language="language-kotlin" class="language-kotlin">class EditTask : ActivityResultContract&lt;Task, Task&gt;() {
+    override fun createIntent(...)
+    override fun parseResult(...)
+}
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Partager" duration="0">
+        <ul>
+<li>En modifiant <code>AndroidManifest.xml</code>, ajouter la possibilité de partager du texte <strong>depuis les autres applications</strong> (par ex en surlignant un texte dans un navigateur puis en cliquant sur &#34;partager&#34;) et ouvrir le formulaire de création de tâche avec une description pré-remplie (<a href="https://developer.android.com/training/sharing/receive" target="_blank">Documentation</a>)</li>
+<li>En utilisant un <code>Intent</code> <strong>implicite</strong>, ajouter la possibilité de partager du texte <strong>vers les autres applications</strong> (avec un <code>OnLongClickListener</code> sur les tâches par ex ou bien avec un bouton dans la vue formulaire) (<a href="https://developer.android.com/training/sharing/send" target="_blank">Documentation</a>)</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Changements de configuration" duration="0">
+        <p>Que se passe-t-il si vous tournez votre téléphone pour passer l&#39;app en mode paysage ? 🤔</p>
+<ul>
+<li>Une façon de régler ce soucis est d&#39;overrider la méthode suivante:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">override fun onSaveInstanceState(outState: Bundle)
+</code></pre>
+<ul>
+<li>Il faudra utiliser <code>putParcelableArrayList</code></li>
+<li>Il faudra aussi que votre classe <code>Task</code> hérite de <code>Parcelable</code>: pour implémenter <a href="https://developer.android.com/kotlin/parcelize" target="_blank">automatiquement</a> les méthodes nécessaires, ajoutez le plugin <code>kotlin-parcelize</code> à votre <code>app/build.gradle</code> et l&#39;annotation <code>@Parcelize</code> à votre classe <code>Task</code></li>
+<li>Puis, pour récupérer cette liste, utilisez l&#39;argument <code>savedInstanceState</code> et la méthode <code>getParcelableArrayList</code> dans <code>onCreateView</code></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Interface et délégation" duration="0">
+        <p>Une façon plus classique de gérer les clicks d&#39;un item est de définir une interface que l&#39;on implémentera dans l&#39;Activity/Fragment. Mettez à jour votre code pour utiliser cette méthode:</p>
+<pre><code language="language-kotlin" class="language-kotlin">interface TaskListListener {
+  fun onClickDelete(task: Task)
+}
+
+class TaskListAdapter(val listener: TaskListListener) : ... {
+  // use: listener.onClickDelete(task)
+}
+
+class TaskListFragment : Fragment {
+  val adapterListener = object : TaskListListener {
+    override onClickDelete(task: Task) {...}
+  }
+  val adapter = TaskListAdapter(adapterListener)
+}
+</code></pre>
+<p>Prenez exemple sur ceci pour remplacer vos lambdas.</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
