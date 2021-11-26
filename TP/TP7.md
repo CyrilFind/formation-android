@@ -161,7 +161,7 @@ Implémenter des `CoroutineWorker` pour executer des tâches de fond sur les ima
 Implémenter un cache des données serveur avec `Room`:
 
 - Gestion offline des informations de l'utilisateur
-- Gestion offline des tâches: liste, ajout, edition, supression
+- Gestion offline des tâches: liste, ajout, edition, suppression
 
 **Documentation:**
 
@@ -178,8 +178,9 @@ Implémenter un cache des données serveur avec `Room`:
   - Mocker les appels réseaux
 
 <!-- 
-## 10 - Jetpack compose ?
-## 11 - style
+style
+sqdelight
+
 -->
 
 **Documentation:**

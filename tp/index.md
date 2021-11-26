@@ -10,4 +10,4 @@
 {% endif %}
 {% endfor %}
 
-Aussi dispo au format [Markdown](/tp)
+Aussi dispo au format [Codelab](codelabs/)

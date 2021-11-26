@@ -11,4 +11,4 @@
 {% endif %}
 {% endfor %}
 
-Aussi dispo au format [Codelab](/codelabs/)
+Aussi dispo au format [Markdown](tp/)
