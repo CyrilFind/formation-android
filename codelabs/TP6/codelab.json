@@ -1,0 +1,17 @@
+{
+  "environment": "web",
+  "format": "md",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2021-11-26T19:57:23Z",
+  "id": "TP6",
+  "duration": 0,
+  "title": "TP 6: SignUp/Login et Navigation",
+  "summary": "",
+  "source": "tp/TP6.md",
+  "theme": "",
+  "status": null,
+  "category": null,
+  "tags": [],
+  "url": "TP6"
+}
