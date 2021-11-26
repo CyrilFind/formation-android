@@ -12,7 +12,7 @@ Si possible, avant le 1er cours:
 - Créez un projet vide (choisissez Android 6.0 en api minimale) et essayez de le lancer
 - N'hésitez pas à me contacter en avance si vous avez un soucis
 
-Prenez en main l'IDE: vous pouvez aller dans les paramètres (`Cmd + ,` ou  `Android Studio > Preferences`) et utilisez la fonction recherche pour adapter l'IDE à vos habitudes.
+Prenez en main l'IDE: vous pouvez aller dans les paramètres (`Cmd + ,` ou `Android Studio > Preferences`) et utilisez la fonction recherche pour adapter l'IDE à vos habitudes.
 
 Quelques suggestions:
 
@@ -37,4 +37,6 @@ Petits exercices pour prendre en main le langage:
 Faire les tutos de la collection
 [Android Kotlin Fundamentals](https://developer.android.com/courses/kotlin-android-fundamentals/overview) en commençant directement à la [Lesson 2](https://developer.android.com/codelabs/kotlin-android-training-linear-layout#0)
 
+<aside class="negative">
 ⚠️ Ne restez pas bloqués sur les pages "Introduction", "Overview" des codelabs, ce sont juste des résumés de ce que vous allez faire.
+</aside>

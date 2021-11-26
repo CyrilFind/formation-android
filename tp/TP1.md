@@ -4,7 +4,9 @@ id: TP1
 
 *Objectif*: implémenter un écran affichant une liste de tâches et permettre de créer des nouvelles tâches.
 
+<aside class="negative">
 ⚠️ Lisez toutes les questions: souvent vous bloquez simplement parce que vous n'avez pas encore regardé l'étape suivante ou le sujet dans son ensemble.
+</aside>
 
 🚀 Aidez vous de l'IDE: Android Studio fait beaucoup de travail pour vous donc utilisez l'autocompletion et les raccourcis:
 
@@ -99,7 +101,10 @@ class TaskListFragment : Fragment() {}
 
 * Créer le layout associé `fragment_task_list.xml` dans `res/layout`
 
-*Note*: vous pouvez aussi utiliser l'IDE pour créer les 2 fichiers à la fois: `Clic droit sur le package > New > Fragment > Fragment (Blank)`
+<aside class="positive">
+
+vous pouvez aussi utiliser l'IDE pour créer les 2 fichiers à la fois: `Clic droit sur le package > New > Fragment > Fragment (Blank)`
+</aside>
 
 * Dans `TaskListFragment`, overrider la méthode `onCreateView(...)`: commencez à taper `onCrea...` et utilisez l'auto-completion de l'IDE pour vous aider (vous pouvez supprimer la ligne `super.onCreateView(...)`)
 * Cette méthode vous demande de *retourner* la `rootView` à afficher: créez la à l'aide de votre nouveau layout comme ceci:
@@ -108,7 +113,9 @@ class TaskListFragment : Fragment() {}
 val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 ```
 
+<aside class="negative">
 ⚠️ Si vous exécutez du code *avant* cette ligne `inflate`, il va crasher ou ne rien faire car votre vue n'existera pas encore
+</aside>
 
 * Pour commencer, la liste des tâches sera simplement une liste de `String` que vous pouvez ajouter en propriété de votre classe `TaskListFragment`:
 
@@ -147,7 +154,10 @@ class TaskListAdapter(private val taskList: List<String>) : RecyclerView.Adapter
 * Donnez lui un `layoutManager`: `LinearLayoutManager(activity)`
 * Donnez lui un `adapter`: `TaskListAdapter(taskList)` (ne marche pas pour l'instant)
 
+<aside class="positive">
+
 **Rappel**: l'Adapter gère le recyclage des cellules (`ViewHolder`): il en `inflate` juste assez pour remplir l'écran (coûteux) puis change seulement les données quand on scroll (peu coûteux)
+</aside>
 
 ## Item View
 
@@ -229,7 +239,10 @@ Il faudra notamment: créer un `DiffUtil.ItemCallback<Task>` et le passer au con
 
 (cf [slides](https://cyrilfind.github.io/formation-android/slides/3%20-%20RecyclerView.html#7) pour un squelette d'implémentation)
 
+<aside class="negative">
+
 ⚠️ Comme on utilise une `MutableList` (ce qu'on ne fait pas en général), il faut envoyer une nouvelle instance à chaque fois pour que le `ListAdapter` puisse les comparer, utilisez `toList()` pour cela: `adapter.submitList(taskList.toList())`
+</aside>
 
 ## ViewBinding
 
