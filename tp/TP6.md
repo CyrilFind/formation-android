@@ -1,5 +1,3 @@
-id: TP6
-
 # TP 6: SignUp/Login et Navigation
 
 ## Ajout des dépendances

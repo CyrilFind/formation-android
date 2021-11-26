@@ -1,6 +1,3 @@
-id: TP0
-url: codelabs/
-
 # TP 0 - Introduction
 
 ## Préparation

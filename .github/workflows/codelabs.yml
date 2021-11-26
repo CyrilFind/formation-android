@@ -24,8 +24,10 @@ jobs:
       - name: Install claat
         # run: go get github.com/googlecodelabs/tools/claat
         run: go install github.com/googlecodelabs/tools/claat@latest
+      - name: Pre Process
+        run: python3 ./scripts/pre_codelabs.py
       - name: Build codelabs
-        run: claat export -auth '4/1AX4XfWjxE4X1Wl30JEkhedcDMAyKNcfOXQLaBrK8CqPk_-bwps6uXQM6RKw' -o codelabs/ tp/TP*.md
+        run: claat export -o codelabs/ tp/TP*.md
       - name: Post Process
         run: python3 ./scripts/post_codelabs.py
       - name: Push

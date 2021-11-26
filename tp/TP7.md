@@ -1,5 +1,3 @@
-id: TP7
-
 # TP 7: Sujets Exploratoires
 
 Sujets à implémenter de façon autonome:

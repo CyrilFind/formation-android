@@ -1,5 +1,3 @@
-id: TP5
-
 # TP 5: Images
 
 ## Afficher une image distante avec Coil

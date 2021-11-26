@@ -1,5 +1,3 @@
-id: TP3
-
 # TP 3: L'Internet
 
 ## Avant de commencer
