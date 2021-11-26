@@ -1,9 +1,9 @@
 {
   "environment": "web",
-  "format": "html",
+  "format": "md",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2021-11-22T09:41:36Z",
+  "updated": "2021-11-26T19:52:59Z",
   "id": "tp2",
   "duration": 0,
   "title": "TP 2 - Actions \u0026 Intents",
