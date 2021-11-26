@@ -109,14 +109,16 @@ implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
 <ul>
 <li>Créer le layout associé <code>fragment_task_list.xml</code> dans <code>res/layout</code></li>
 </ul>
-<p><em>Note</em>: vous pouvez aussi utiliser l&#39;IDE pour créer les 2 fichiers à la fois: <code>Clic droit sur le package > New > Fragment > Fragment (Blank)</code></p>
+<aside class="special"><p>vous pouvez aussi utiliser l&#39;IDE pour créer les 2 fichiers à la fois: <code>Clic droit sur le package > New > Fragment > Fragment (Blank)</code></p>
+</aside>
 <ul>
 <li>Dans <code>TaskListFragment</code>, overrider la méthode <code>onCreateView(...)</code>: commencez à taper <code>onCrea...</code> et utilisez l&#39;auto-completion de l&#39;IDE pour vous aider (vous pouvez supprimer la ligne <code>super.onCreateView(...)</code>)</li>
 <li>Cette méthode vous demande de <em>retourner</em> la <code>rootView</code> à afficher: créez la à l&#39;aide de votre nouveau layout comme ceci:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 </code></pre>
-<p>⚠️ Si vous exécutez du code <em>avant</em> cette ligne <code>inflate</code>, il va crasher ou ne rien faire car votre vue n&#39;existera pas encore</p>
+<aside class="warning"><p> ⚠️ Si vous exécutez du code *avant* cette ligne `inflate`, il va crasher ou ne rien faire car votre vue n&#39;existera pas encore </p>
+</aside>
 <ul>
 <li>Pour commencer, la liste des tâches sera simplement une liste de <code>String</code> que vous pouvez ajouter en propriété de votre classe <code>TaskListFragment</code>:</li>
 </ul>
@@ -154,7 +156,8 @@ class TaskListAdapter(private val taskList: List&lt;String&gt;) : RecyclerView.A
 <li>Donnez lui un <code>layoutManager</code>: <code>LinearLayoutManager(activity)</code></li>
 <li>Donnez lui un <code>adapter</code>: <code>TaskListAdapter(taskList)</code> (ne marche pas pour l&#39;instant)</li>
 </ul>
-<p><strong>Rappel</strong>: l&#39;Adapter gère le recyclage des cellules (<code>ViewHolder</code>): il en <code>inflate</code> juste assez pour remplir l&#39;écran (coûteux) puis change seulement les données quand on scroll (peu coûteux)</p>
+<aside class="special"><p><strong>Rappel</strong>: l&#39;Adapter gère le recyclage des cellules (<code>ViewHolder</code>): il en <code>inflate</code> juste assez pour remplir l&#39;écran (coûteux) puis change seulement les données quand on scroll (peu coûteux)</p>
+</aside>
 
 
       </google-codelab-step>
@@ -243,7 +246,8 @@ Task(id = UUID.randomUUID().toString(), title = &#34;Task ${taskList.size + 1}&#
         <p>Améliorer l&#39;implémentation de <code>TasksListAdapter</code> en héritant de <code>ListAdapter</code> au lieu de <code>RecyclerView.Adapter</code></p>
 <p>Il faudra notamment: créer un <code>DiffUtil.ItemCallback<Task></code> et le passer au constructeur parent, supprimer la propriété <code>taskList</code> et utiliser <code>currentList</code> à la place, et vous pourrez supprimet <code>getItemCount</code> qui sera déjà implémentée pour vous</p>
 <p>(cf <a href="https://cyrilfind.github.io/formation-android/slides/3%20-%20RecyclerView.html#7" target="_blank">slides</a> pour un squelette d&#39;implémentation)</p>
-<p>⚠️ Comme on utilise une <code>MutableList</code> (ce qu&#39;on ne fait pas en général), il faut envoyer une nouvelle instance à chaque fois pour que le <code>ListAdapter</code> puisse les comparer, utilisez <code>toList()</code> pour cela: <code>adapter.submitList(taskList.toList())</code></p>
+<aside class="warning"><p>⚠️ Comme on utilise une <code>MutableList</code> (ce qu&#39;on ne fait pas en général), il faut envoyer une nouvelle instance à chaque fois pour que le <code>ListAdapter</code> puisse les comparer, utilisez <code>toList()</code> pour cela: <code>adapter.submitList(taskList.toList())</code></p>
+</aside>
 
 
       </google-codelab-step>
