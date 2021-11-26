@@ -1,4 +1,4 @@
-id:tp7
+id: TP7
 
 # TP 7: Sujets Exploratoires
 

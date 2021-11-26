@@ -1,4 +1,4 @@
-id: tp0
+id: TP0
 
 # TP 0 - Introduction
 

@@ -1,4 +1,4 @@
-id:tp8
+id: TP8
 
 # TP 8: Autonomie
 
