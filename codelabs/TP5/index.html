@@ -45,7 +45,7 @@
 <li>Créez y une nouvelle activité <code>UserInfoActivity</code> et ajoutez la dans le manifest</li>
 <li>Remplir son layout:</li>
 </ul>
-<pre><code language="language-xml" class="language-xml">&lt;LinearLayout 
+<pre><code language="language-xml" class="language-xml">&lt;LinearLayout
     xmlns:android=&#34;http://schemas.android.com/apk/res/android&#34;
     xmlns:app=&#34;http://schemas.android.com/apk/res-auto&#34;
     xmlns:tools=&#34;http://schemas.android.com/tools&#34;
@@ -85,13 +85,13 @@
 <li>Prenez le temps de lire et comprendre ce pavé 🤔 :</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">private val requestPermissionLauncher =
-        registerForActivityResult(RequestPermission()) { isGranted: Boolean -&gt;
-            if (isGranted) openCamera()
-            else showExplanationDialog()
-        }
+    registerForActivityResult(RequestPermission()) { isGranted: Boolean -&gt;
+        if (isGranted) openCamera()
+        else showExplanationDialog()
+    }
 
 private fun requestCameraPermission() =
-        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+    requestPermissionLauncher.launch(Manifest.permission.CAMERA)
 
 private fun askCameraPermissionAndOpenCamera() {
     when {
@@ -106,7 +106,7 @@ private fun showExplanationDialog() {
     AlertDialog.Builder(this).apply {
         setMessage(&#34;On a besoin de la caméra sivouplé ! 🥺&#34;)
         setPositiveButton(&#34;Bon, ok&#34;) { dialogInterface, _ -&gt;
-            dialogInterface.dismiss() 
+            dialogInterface.dismiss()
         }
         setCancelable(true)
         show()
@@ -148,7 +148,7 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response&lt;UserInfo
 <ul>
 <li>Ajouter une fonction pour convertir l&#39;image en <code>MultipartBody.Part</code> afin de pouvoir l&#39;envoyer en HTTP:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">// convert     
+<pre><code language="language-kotlin" class="language-kotlin">// convert
 private fun convert(uri: Uri) =
     MultipartBody.Part.createFormData(
         name = &#34;avatar&#34;,
@@ -158,7 +158,7 @@ private fun convert(uri: Uri) =
 </code></pre>
 <ul>
 <li>Ajoutez une méthode <code>handleImage</code> qui utilise <code>updateAvatar</code> avec <code>convert</code></li>
-<li>Modifier la <code>data class UserInfo</code> pour ajouter un champ <code>avatar: String</code> (avec une valeur par défaut):  c&#39;est une URL qui sera renvoyée depuis le serveur</li>
+<li>Modifier la <code>data class UserInfo</code> pour ajouter un champ <code>avatar: String</code> (avec une valeur par défaut): c&#39;est une URL qui sera renvoyée depuis le serveur</li>
 <li>Enfin au chargement de l&#39;activité, afficher l&#39;avatar renvoyé depuis le serveur:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">    lifecycleScope.launch {
@@ -224,7 +224,7 @@ private fun openCamera() = takePicture.launch(photoUri)
       <google-codelab-step label="Uploader une image stockée" duration="0">
         <p>Permettez à l&#39;utilisateur d&#39;uploader une image enregistrée sur son téléphone</p>
 <pre><code language="language-kotlin" class="language-kotlin">// register
-private val pickInGallery = 
+private val pickInGallery =
     registerForActivityResult(GetContent()) { ... }
 
 // use

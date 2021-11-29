@@ -65,24 +65,25 @@
 <ul>
 <li>Dans <code>dependencies {...}</code>, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l&#39;IDE vous le propose):</li>
 </ul>
-<pre><code language="language-groovy" class="language-groovy">  //TP 3
-  // Retrofit
-  implementation &#39;com.squareup.retrofit2:retrofit:2.9.0&#39;
-  implementation &#39;com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2&#39;
+<pre><code language="language-groovy" class="language-groovy">  // Retrofit
+  implementation &#39;com.squareup.retrofit2:retrofit:2.+&#39;
+  implementation &#39;com.squareup.okhttp3:logging-interceptor:5.+&#39;
 
   // KotlinX Serialization
-  implementation &#34;org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1&#34;
-  implementation &#39;com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0&#39;
+  implementation &#34;org.jetbrains.kotlinx:kotlinx-serialization-json:1.+&#34;
+  implementation &#39;com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.+&#39;
 
   // Coroutines
-  implementation &#34;org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2&#34;
-  implementation &#34;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2&#34;
+  implementation &#34;org.jetbrains.kotlinx:kotlinx-coroutines-core:1.+&#34;
+  implementation &#34;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.+&#34;
 
   // Lifecycle
-  implementation &#34;androidx.lifecycle:lifecycle-extensions:2.2.0&#34;
-  implementation &#34;androidx.lifecycle:lifecycle-runtime-ktx:2.4.0&#34;
-  implementation &#34;androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0&#34;
+  implementation &#34;androidx.lifecycle:lifecycle-extensions:2.+&#34;
+  implementation &#34;androidx.lifecycle:lifecycle-runtime-ktx:2.+&#34;
+  implementation &#34;androidx.lifecycle:lifecycle-viewmodel-ktx:2.+&#34;
 </code></pre>
+<aside class="warning"><p>L&#39;IDE va râler, et à raison, car on devrait utiliser des versions spécifiques (ex: <code>2.1.0</code>) mais c&#39;est pour être sûr d&#39;avoir les dernières versions majeures disponibles chaque année</p>
+</aside>
 <ul>
 <li>Tout en haut ajoutez le plugin de sérialisation:</li>
 </ul>
@@ -96,7 +97,7 @@
 <ul>
 <li>Android Studio est à jour (&#34;Check for updates&#34;)</li>
 <li>Le Plugin Kotlin est à jour (<code>Settings > Plugins > Installed > Kotlin</code>)</li>
-<li>votre <code>kotlin_version</code> est récente (en haut de <code>.build.gradle</code>, à l&#39;heure où j&#39;écris c&#39;est <code>1.5.31</code>)</li>
+<li>votre <code>kotlin_version</code> est récente (doit être défini en haut de <code><project>/.build.gradle</code>, à l&#39;heure où j&#39;écris c&#39;est <code>1.5.31</code>)</li>
 </ul>
 
 
@@ -144,8 +145,14 @@
     .build()
 }
 </code></pre>
-<h2 is-upgraded>UserInfo</h2>
-<p>Exemple de json renvoyé par la route <code>/info</code>:</p>
+<aside class="special"><p>Ici je vous donne tout ce code de config car ce n&#39;est pas très intéressant à chercher mais prenez quelques minutes pour lire et comprendre ce qu&#39;il fait</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="UserInfo" duration="0">
+        <p>Exemple de json renvoyé par la route <code>/info</code>:</p>
 <pre><code language="language-json" class="language-json">{
   &#34;email&#34;: &#34;email&#34;,
   &#34;firstname&#34;: &#34;john&#34;,
@@ -163,32 +170,42 @@ data class UserInfo(
   val lastName: String
 )
 </code></pre>
-<h2 is-upgraded>UserService</h2>
-<ul>
-<li>Créez l&#39;interface <code>UserService</code> pour requêter les infos de l&#39;utilisateur (importez <code>Response</code> avec <code>alt + enter</code> et choisissez la version <code>retrofit</code>):</li>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="UserWebService" duration="0">
+        <ul>
+<li>Créez l&#39;interface <code>UserWebService</code> pour requêter les infos de l&#39;utilisateur (importez <code>Response</code> avec <code>alt + enter</code> et choisissez la version <code>retrofit</code>):</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">interface UserService {
+<pre><code language="language-kotlin" class="language-kotlin">interface UserWebService {
   @GET(&#34;users/info&#34;)
   suspend fun getInfo(): Response&lt;UserInfo&gt;
 }
 </code></pre>
 <ul>
-<li>Utilisez retrofit pour créer une implémentation de ce service (grace aux annotations):</li>
+<li>Utilisez retrofit pour créer une implémentation de ce service:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">object Api {
   // ...
-  val userService: UserService by lazy {
-    retrofit.create(UserService::class.java)
+  val userWebService by lazy {
+    retrofit.create(UserWebService::class.java)
   }
 }
 </code></pre>
-<h2 is-upgraded>Affichage</h2>
-<ul>
-<li>Dans <code>fragment_task_list.xml</code>, ajoutez une <code>TextView</code> au dessus de la liste de tâche si vous n&#39;en avez pas</li>
+<aside class="special"><p>Ici, Retrofit va créer une implémentation de l&#39;interface <code>UserWebService</code> pour nous, en utilisant d&#39;une part les valeurs de base configurées dans <code>Api</code> et d&#39;autre part les annotations qui lui donnent le type de requête (ex: <code>GET</code>), la route, les types de paramètres, etc.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Affichage" duration="0">
+        <ul>
+<li>Dans le layout qui contient la liste, ajoutez une <code>TextView</code> tout en haut (vous devrez probablement régler un peu les contraintes)</li>
 <li>Overrider la méthode <code>onResume</code> pour y récupérer les infos de l&#39;utilisateur, en ajoutant cette ligne, une erreur va s&#39;afficher mais ne paniquez pas, on va s&#39;en occuper:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">// Ici on ne va pas gérer les cas d&#39;erreur donc on force le crash avec &#34;!!&#34;
-val userInfo = Api.userService.getInfo().body()!!
+val userInfo = Api.userWebService.getInfo().body()!!
 </code></pre>
 <ul>
 <li>La méthode <code>getInfo()</code> étant déclarée comme <code>suspend</code>, vous aurez besoin de la lancer dans un <code>CouroutineScope</code> (c&#39;est ce que dit le message d&#39;erreur):on va utiliser directement <code>lifeCycleScope</code> qui est un <code>CouroutineScope</code> déjà défini et géré par le système dans les <code>Activity</code> et <code>Fragment</code></li>
@@ -202,23 +219,22 @@ val userInfo = Api.userService.getInfo().body()!!
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">userInfoTextView.text = &#34;${userInfo.firstName} ${userInfo.lastName}&#34;
 </code></pre>
-<p>⚠️ Sur émulateur, vous aurez parfois des crashes étranges:</p>
+<aside class="warning"><p>⚠️ Sur émulateur, à cette étape il y a parfois des crashes étranges:</p>
 <ul>
 <li>&#34;<code>...EPERM (operation not permitted)...</code>&#34;: désinstallez l&#39;application de l&#39;émulateur et relancez</li>
 <li>L&#39;app stoppe direct et sans stacktrace: redémarrer l&#39;émulateur et vérifiez que son wifi est bien connecté</li>
 </ul>
+</aside>
 <p>➡️ Lancez l&#39;app et vérifiez que vos infos s&#39;affichent !</p>
-<p><strong>Remarque:</strong></p>
-<p>Un autre scope est fourni par android: <code>viewModelScope</code>, mais pour l&#39;instant on implémente tout dans les fragments comme des 🐷</p>
+<aside class="special"><p><strong>Remarque:</strong> Un autre scope est fourni par android: <code>viewModelScope</code>, mais pour l&#39;instant on implémente tout dans les fragments comme des 🐷</p>
+</aside>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="TaskListFragment" duration="0">
-        <p>Il est temps de récuperer les tâches depuis le serveur !</p>
-<ul>
-<li>Créer un nouveau service <code>TaskWebService</code></li>
-</ul>
+        <p>Il est temps de récupérer les tâches depuis le serveur !</p>
+<p>Créer un nouveau service <code>TaskWebService</code>:</p>
 <pre><code language="language-kotlin" class="language-kotlin">interface TasksWebService {
   @GET(&#34;tasks&#34;)
   suspend fun getTasks(): Response&lt;List&lt;Task&gt;&gt;
@@ -234,22 +250,16 @@ val userInfo = Api.userService.getInfo().body()!!
     
       <google-codelab-step label="TasksRepository" duration="0">
         <p>Le but d&#39;un Repository est d&#39;exposer des data venant d&#39;une ou plusieurs sources de données (ex: DB locale et API distante)</p>
-<p>Créer la classe <code>TasksRepository</code> avec:</p>
-<ul>
-<li>une propriété <code>tasksWebService</code> pour les requêtes avec <code>Retrofit</code></li>
-<li>une propriété <code>taskList</code> <em>publique</em> de type <code>LiveData< List< Task>></code>: représente une liste de tâche <em>Observable</em> (on peut donc s&#39;<em>abonner</em> à ses modifications) non modifiable afin de l&#39;exposer à l&#39;extérieur du repository</li>
-<li>une propriété <code>_taskList</code> <em>privée</em> de type <code>MutableLiveData< List< Task>></code> qui représente la même donnée mais modifiable donc utilisable à l&#39;intérieur du repository</li>
-<li>une méthode publique <code>refresh</code> qui requête la liste et met à jour la <code>LiveData</code></li>
-</ul>
+<p>Créer la classe <code>TasksRepository</code>, avec une liste de tâches <em>Observable</em> grâce aux type <code>StateFlow</code> et <code>MutableStateFlow</code>:</p>
 <pre><code language="language-kotlin" class="language-kotlin">class TasksRepository {
   private val tasksWebService = Api.tasksWebService
-  
+
   // Ces deux variables encapsulent la même donnée:
   // [_taskList] est modifiable mais privée donc inaccessible à l&#39;extérieur de cette classe
-  private val _taskList = MutableLiveData&lt;List&lt;Task&gt;&gt;()
+  private val _taskList = MutableStateFlow&lt;List&lt;Task&gt;&gt;(value = emptyList())
   // [taskList] est publique mais non-modifiable:
   // On pourra seulement l&#39;observer (s&#39;y abonner) depuis d&#39;autres classes
-  public val taskList: LiveData&lt;List&lt;Task&gt;&gt; = _taskList
+  public val taskList: StateFlow&lt;List&lt;Task&gt;&gt; = _taskList.asStateFlow()
 
   suspend fun refresh() {
       // Call HTTP (opération longue):
@@ -258,34 +268,34 @@ val userInfo = Api.userService.getInfo().body()!!
       if (tasksResponse.isSuccessful) {
           val fetchedTasks = tasksResponse.body()
           // on modifie la valeur encapsulée, ce qui va notifier ses Observers et donc déclencher leur callback
-          _taskList.value = fetchedTasks
+          if (fetchedTasks != null) _taskList.value = fetchedTasks
       }
   }
 }
-
 </code></pre>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="LiveData" duration="0">
-        <p>Dans <code>TaskListFragment</code>:</p>
+      <google-codelab-step label="&#34;Collecter&#34; le Flow" duration="0">
+        <p>Dans <code>TaskListFragment</code>, à l&#39;aide du squelette de code plus bas:</p>
 <ul>
 <li>Ajouter en propriété une instance de <code>TasksRepository</code></li>
-<li>Dans <code>onViewCreated()</code>, &#34;abonnez&#34; le fragment à la  <code>LiveData</code> du repository</li>
-<li>Mettez à jour la liste et l&#39;<code>adapter</code> avec le résultat (importer le <code>Observer</code> de la lib <code>lifecycle</code>)</li>
 <li>Dans <code>onResume()</code>, utilisez le repository pour rafraîchir la liste de tasks</li>
+<li>Dans <code>onViewCreated()</code>, &#34;abonnez&#34; le fragment au <code>StateFlow</code> du repository et mettez à jour la liste et l&#39;<code>adapter</code> dans la lambda de retour</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">private val tasksRepository = TasksRepository()
 
-// Dans onViewCreated()
-tasksRepository.taskList.observe(viewLifecycleOwner) { list -&gt;
-  // mettre à jour la liste dans l&#39;adapteur
-}
-
 // Dans onResume()
 lifecycleScope.launch {
-  tasksRepository.refresh()
+  tasksRepository.refresh() // on demande de rafraîchir les données sans attendre le retour directement
+}
+
+// Dans onViewCreated()
+lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
+    tasksRepository.taskList.collect {
+          // on met à jour la liste dans l&#39;adapteur
+    }
 }
 </code></pre>
 
@@ -293,15 +303,16 @@ lifecycleScope.launch {
       </google-codelab-step>
     
       <google-codelab-step label="Compléter TasksWebService" duration="0">
-        <p>Modifier <code>TasksWebService</code> et ajoutez y les routes suivantes:</p>
-<pre><code language="language-kotlin" class="language-kotlin">@DELETE(&#34;tasks/{id}&#34;)
-suspend fun deleteTask(@Path(&#34;id&#34;) id: String?): Response&lt;Unit&gt;
-
-@POST(&#34;tasks&#34;)
-suspend fun createTask(@Body task: Task): Response&lt;Task&gt;
+        <p>Modifier <code>TasksWebService</code> et ajoutez y les routes manquantes:</p>
+<pre><code language="language-kotlin" class="language-kotlin">@POST(&#34;tasks&#34;)
+suspend fun create(@Body task: Task): Response&lt;Task&gt;
 
 @PATCH(&#34;tasks/{id}&#34;)
-suspend fun updateTask(@Body task: Task, @Path(&#34;id&#34;) id: String? = task.id): Response&lt;Task&gt;
+suspend fun update(@Body task: Task, @Path(&#34;id&#34;) id: String? = task.id): Response&lt;Task&gt;
+
+// Inspirez vous d&#39;au dessus et de la doc de l&#39;API pour compléter: 
+@...(...)
+suspend fun delete(@...(...) id: String): Response&lt;Unit&gt;
 </code></pre>
 
 
@@ -312,25 +323,11 @@ suspend fun updateTask(@Body task: Task, @Path(&#34;id&#34;) id: String? = task.
 <li>Inspirez vous du fonctionnement de <code>refresh()</code> pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l&#39;édition (les autres sont plus simples):</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">suspend fun updateTask(task: Task) {
-  // TODO appel réseau et récupérationd de la tache:
+  // TODO: appel réseau et récupération de la tache:
+  // ...
   val updatedTask = ...
-  // version &#34;mutable&#34; de la liste actuelle:
-  val mutableList = _tasksList.value.orEmpty().toMutableList()
-  // position actuelle de l&#39;élément:
-  val position = editableList.indexOfFirst { updatedTask.id == it.id }
-  // modification de la liste mutable:
-  editableList[position] = updatedTask
-  // mise à jour de la livedata pour notifier les observers:
-  _tasksList.value = editableList
-}
-</code></pre>
-<ul>
-<li>Utilisez les méthodes du repository dans le Fragment, par ex pour la suppression:</li>
-</ul>
-<pre><code language="language-kotlin" class="language-kotlin">adapter.onClickDelete = { task -&gt;
-  lifecycleScope.launch {
-      tasksRepository.delete(task)
-  }
+  val oldTask = taskList.value.firstOrNull { it.id == updatedTask.id }
+  if (oldTask != null) _taskList.value = taskList.value - oldTask + updatedTask
 }
 </code></pre>
 
