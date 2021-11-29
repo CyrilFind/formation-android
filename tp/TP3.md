@@ -242,7 +242,7 @@ interface TasksWebService {
 
 Le but d'un Repository est d'exposer des data venant d'une ou plusieurs sources de données (ex: DB locale et API distante)
 
-Créer la classe `TasksRepository`:
+Créer la classe `TasksRepository`, avec une liste de tâches *Observable* grâce aux type `StateFlow` et `MutableStateFlow`:
 
 ```kotlin
 class TasksRepository {
@@ -250,10 +250,10 @@ class TasksRepository {
 
   // Ces deux variables encapsulent la même donnée:
   // [_taskList] est modifiable mais privée donc inaccessible à l'extérieur de cette classe
-  private val _taskList = MutableLiveData<List<Task>>()
+  private val _taskList = MutableStateFlow<List<Task>>(value = emptyList())
   // [taskList] est publique mais non-modifiable:
   // On pourra seulement l'observer (s'y abonner) depuis d'autres classes
-  public val taskList: LiveData<List<Task>> = _taskList
+  public val taskList: StateFlow<List<Task>> = _taskList.asStateFlow()
 
   suspend fun refresh() {
       // Call HTTP (opération longue):
@@ -262,49 +262,50 @@ class TasksRepository {
       if (tasksResponse.isSuccessful) {
           val fetchedTasks = tasksResponse.body()
           // on modifie la valeur encapsulée, ce qui va notifier ses Observers et donc déclencher leur callback
-          _taskList.value = fetchedTasks
+          if (fetchedTasks != null) _taskList.value = fetchedTasks
       }
   }
 }
-
 ```
 
-## LiveData
+## "Collecter" le Flow
 
-Dans `TaskListFragment`:
+Dans `TaskListFragment`, à l'aide du squelette de code plus bas:
 
 - Ajouter en propriété une instance de `TasksRepository`
-- Dans `onViewCreated()`, "abonnez" le fragment à la `LiveData` du repository
-- Mettez à jour la liste et l'`adapter` avec le résultat (importer le `Observer` de la lib `lifecycle`)
 - Dans `onResume()`, utilisez le repository pour rafraîchir la liste de tasks
+- Dans `onViewCreated()`, "abonnez" le fragment au `StateFlow` du repository et mettez à jour la liste et l'`adapter` dans la lambda de retour
 
 ```kotlin
 private val tasksRepository = TasksRepository()
 
-// Dans onViewCreated()
-tasksRepository.taskList.observe(viewLifecycleOwner) { list ->
-  // mettre à jour la liste dans l'adapteur
-}
-
 // Dans onResume()
 lifecycleScope.launch {
-  tasksRepository.refresh()
+  tasksRepository.refresh() // on demande de rafraîchir les données sans attendre le retour directement
+}
+
+// Dans onViewCreated()
+lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
+    tasksRepository.taskList.collect {
+          // on met à jour la liste dans l'adapteur
+    }
 }
 ```
 
 ## Compléter TasksWebService
 
-Modifier `TasksWebService` et ajoutez y les routes suivantes:
+Modifier `TasksWebService` et ajoutez y les routes manquantes:
 
 ```kotlin
-@DELETE("tasks/{id}")
-suspend fun deleteTask(@Path("id") id: String?): Response<Unit>
-
 @POST("tasks")
-suspend fun createTask(@Body task: Task): Response<Task>
+suspend fun create(@Body task: Task): Response<Task>
 
 @PATCH("tasks/{id}")
-suspend fun updateTask(@Body task: Task, @Path("id") id: String? = task.id): Response<Task>
+suspend fun update(@Body task: Task, @Path("id") id: String? = task.id): Response<Task>
+
+// Inspirez vous d'au dessus et de la doc de l'API pour compléter: 
+@...(...)
+suspend fun delete(@...(...) id: String): Response<Unit>
 ```
 
 ## Suppression, Ajout, Édition
@@ -313,25 +314,10 @@ suspend fun updateTask(@Body task: Task, @Path("id") id: String? = task.id): Res
 
 ```kotlin
 suspend fun updateTask(task: Task) {
-  // TODO appel réseau et récupérationd de la tache:
+  // TODO: appel réseau et récupération de la tache:
+  // ...
   val updatedTask = ...
-  // version "mutable" de la liste actuelle:
-  val mutableList = _tasksList.value.orEmpty().toMutableList()
-  // position actuelle de l'élément:
-  val position = editableList.indexOfFirst { updatedTask.id == it.id }
-  // modification de la liste mutable:
-  editableList[position] = updatedTask
-  // mise à jour de la livedata pour notifier les observers:
-  _tasksList.value = editableList
-}
-```
-
-- Utilisez les méthodes du repository dans le Fragment, par ex pour la suppression:
-
-```kotlin
-adapter.onClickDelete = { task ->
-  lifecycleScope.launch {
-      tasksRepository.delete(task)
-  }
+  val oldTask = taskList.value.firstOrNull { it.id == updatedTask.id }
+  if (oldTask != null) _taskList.value = taskList.value - oldTask + updatedTask
 }
 ```
