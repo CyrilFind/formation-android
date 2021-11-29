@@ -239,7 +239,7 @@ Petits exercices pour prendre en main le langage:
 - Puissance limitée
 - Phone, Tablet, TV, Watch, Auto, Chrome OS, Fuschia OS
 - Language : Kotlin et Java
-- IDE : Android Studio
+- IDE : Android Studio (resources, émulateur, Logcat, ...)
 
 ## Éléments d'une app Android
 
@@ -260,17 +260,6 @@ Petits exercices pour prendre en main le langage:
 - Service ➡ Headless Controller
 - Broadcast Receiver ➡ Event Listener
 - ContentProvider ➡ Shared Data API
-
-## Kotlin sur Android
-
-![bg left:30% 70%](../assets/kotlin_android.png)
-
-- Conversion depuis Java avec Android Studio
-- Android KTX
-- Coroutines, Flow, ...
-- Jetpack Compose
-- Pas vraiment de désavantages car équivalent à Java et interop facile
-- ⚠️ On peut être dépassé par les différentes possibilités offertes par Kotlin: rester simple et lisible
 
 # iOS
 

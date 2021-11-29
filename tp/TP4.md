@@ -1,7 +1,5 @@
 # TP 4: ViewModel
 
-On va faire un peu de ménage !
-
 ## Refactorisation avec TaskListViewModel
 
 Inclure trop de logique dans le fragment est une mauvaise pratique, on va donc refactoriser notre code pour améliorer notre architecture en s'inspirant de:
@@ -14,7 +12,8 @@ Inclure trop de logique dans le fragment est une mauvaise pratique, on va donc r
 
 Pour résumer, on va déplacer la logique de la gestion de la liste hors du Fragment et dans le ViewModel, qui va simplement interroger le Repository
 
-- Créer une classe `TaskListViewModel` qui hérite de `ViewModel` et qui va gérer:  
+- Créer une classe `TaskListViewModel` qui hérite de `ViewModel` et qui va gérer:
+
   - Les `LiveData` qui étaient dans le Repository
   - Le `repository` qui sert de source de données
   - Les coroutines avec `viewModelScope`
@@ -22,6 +21,7 @@ Pour résumer, on va déplacer la logique de la gestion de la liste hors du Frag
 - Dans `TaskListAdapter`: Si vous ne l'avez pas fait à ce stade, transformez votre `RecyclerView.Adapter` pour hériter de `ListAdapter` (cf fin du TP 1)
 
 - Dans `TaskListFragment`:
+
   - Récupérer le `viewModel` grâce à `by viewModels()`
   - Supprimer le `repository` et la `taskList`
   - Observer la valeur de `viewModel.taskList` et mettre à jour la liste de l'`adapter`
@@ -64,7 +64,7 @@ class TaskListViewModel: ViewModel() {
 class TaskListFragment: Fragment() {
     val adapter = TaskListAdapter()
     // On récupère une instance de ViewModel
-    private val viewModel: TasksViewModel by viewModels() 
+    private val viewModel: TasksViewModel by viewModels()
 
     // On écoute l'objet LiveData du ViewModel ici:
     override fun onViewCreated(...) {

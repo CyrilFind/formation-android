@@ -20,7 +20,7 @@ image_view.load("https://goo.gl/gEgYUd")
 - Remplir son layout:
 
 ```xml
-<LinearLayout 
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -58,13 +58,13 @@ image_view.load("https://goo.gl/gEgYUd")
 
 ```kotlin
 private val requestPermissionLauncher =
-        registerForActivityResult(RequestPermission()) { isGranted: Boolean ->
-            if (isGranted) openCamera()
-            else showExplanationDialog()
-        }
+    registerForActivityResult(RequestPermission()) { isGranted: Boolean ->
+        if (isGranted) openCamera()
+        else showExplanationDialog()
+    }
 
 private fun requestCameraPermission() =
-        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+    requestPermissionLauncher.launch(Manifest.permission.CAMERA)
 
 private fun askCameraPermissionAndOpenCamera() {
     when {
@@ -79,7 +79,7 @@ private fun showExplanationDialog() {
     AlertDialog.Builder(this).apply {
         setMessage("On a besoin de la caméra sivouplé ! 🥺")
         setPositiveButton("Bon, ok") { dialogInterface, _ ->
-            dialogInterface.dismiss() 
+            dialogInterface.dismiss()
         }
         setCancelable(true)
         show()
@@ -122,7 +122,7 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response<UserInfo>
 - Ajouter une fonction pour convertir l'image en `MultipartBody.Part` afin de pouvoir l'envoyer en HTTP:
 
 ```kotlin
-// convert     
+// convert
 private fun convert(uri: Uri) =
     MultipartBody.Part.createFormData(
         name = "avatar",
@@ -132,7 +132,7 @@ private fun convert(uri: Uri) =
 ```
 
 - Ajoutez une méthode `handleImage` qui utilise `updateAvatar` avec `convert`
-- Modifier la `data class UserInfo` pour ajouter un champ `avatar: String` (avec une valeur par défaut):  c'est une URL qui sera renvoyée depuis le serveur
+- Modifier la `data class UserInfo` pour ajouter un champ `avatar: String` (avec une valeur par défaut): c'est une URL qui sera renvoyée depuis le serveur
 - Enfin au chargement de l'activité, afficher l'avatar renvoyé depuis le serveur:
 
 ```kotlin
@@ -204,7 +204,7 @@ Permettez à l'utilisateur d'uploader une image enregistrée sur son téléphone
 
 ```kotlin
 // register
-private val pickInGallery = 
+private val pickInGallery =
     registerForActivityResult(GetContent()) { ... }
 
 // use

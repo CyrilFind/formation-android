@@ -1,5 +1,7 @@
 # TP 7: Sujets Exploratoires
 
+## But
+
 Sujets à implémenter de façon autonome:
 
 - Lisez bien la documentation avant de commencer et/ou suivez les codelabs en adaptant à votre projet car il n'y a pas d'étapes pour vous guider.
@@ -145,7 +147,7 @@ Implémenter des `CoroutineWorker` pour executer des tâches de fond sur les ima
 - Implémenter une "chaîne" de Worker pour compresser puis uploader
 - Afficher dans l'app et/ou dans une notification l'état de progrès du travail
 - Faire en sorte que l'upload reprenne quand le réseau est coupé / reconnecté
-  
+
 **Documentation:**
 
 - [WorkManager: Getting Started](https://developer.android.com/topic/libraries/architecture/workmanager/basics.html)
@@ -175,7 +177,7 @@ Implémenter un cache des données serveur avec `Room`:
   - Résultat des actions sur les boutons: ajout, suppression, ...
   - Mocker les appels réseaux
 
-<!-- 
+<!--
 style
 sqdelight
 

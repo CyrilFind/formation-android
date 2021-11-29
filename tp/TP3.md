@@ -38,24 +38,28 @@ Dans le fichier `app/build.gradle`:
 - Dans `dependencies {...}`, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l'IDE vous le propose):
 
 ```groovy
-  //TP 3
   // Retrofit
-  implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-  implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
+  implementation 'com.squareup.retrofit2:retrofit:2.+'
+  implementation 'com.squareup.okhttp3:logging-interceptor:5.+'
 
   // KotlinX Serialization
-  implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1"
-  implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
+  implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.+"
+  implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.+'
 
   // Coroutines
-  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
-  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.+"
+  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.+"
 
   // Lifecycle
-  implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
-  implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
-  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
+  implementation "androidx.lifecycle:lifecycle-extensions:2.+"
+  implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.+"
+  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.+"
 ```
+
+<aside class="negative">
+
+L'IDE va râler, et à raison, car on devrait utiliser des versions spécifiques (ex: `2.1.0`) mais c'est pour être sûr d'avoir les dernières versions majeures disponibles chaque année
+</aside>
 
 - Tout en haut ajoutez le plugin de sérialisation:
 
@@ -72,7 +76,7 @@ En cas de soucis à ce moment là, vérifiez que:
 
 - Android Studio est à jour ("Check for updates")
 - Le Plugin Kotlin est à jour (`Settings > Plugins > Installed > Kotlin`)
-- votre `kotlin_version` est récente (en haut de `.build.gradle`, à l'heure où j'écris c'est `1.5.31`)
+- votre `kotlin_version` est récente (doit être défini en haut de `<project>/.build.gradle`, à l'heure où j'écris c'est `1.5.31`)
 
 ## Retrofit
 
@@ -118,7 +122,12 @@ object Api {
 }
 ```
 
-### UserInfo
+<aside class="positive">
+
+Ici je vous donne tout ce code de config car ce n'est pas très intéressant à chercher mais prenez quelques minutes pour lire et comprendre ce qu'il fait
+</aside>
+
+## UserInfo
 
 Exemple de json renvoyé par la route `/info`:
 
@@ -144,36 +153,41 @@ data class UserInfo(
 )
 ```
 
-### UserService
+## UserWebService
 
-- Créez l'interface `UserService` pour requêter les infos de l'utilisateur (importez `Response` avec `alt + enter` et choisissez la version `retrofit`):
+- Créez l'interface `UserWebService` pour requêter les infos de l'utilisateur (importez `Response` avec `alt + enter` et choisissez la version `retrofit`):
 
 ```kotlin
-interface UserService {
+interface UserWebService {
   @GET("users/info")
   suspend fun getInfo(): Response<UserInfo>
 }
 ```
 
-- Utilisez retrofit pour créer une implémentation de ce service (grace aux annotations):
+- Utilisez retrofit pour créer une implémentation de ce service:
 
 ```kotlin
 object Api {
   // ...
-  val userService: UserService by lazy {
-    retrofit.create(UserService::class.java)
+  val userWebService by lazy {
+    retrofit.create(UserWebService::class.java)
   }
 }
 ```
 
-### Affichage
+<aside class="positive">
 
-- Dans `fragment_task_list.xml`, ajoutez une `TextView` au dessus de la liste de tâche si vous n'en avez pas
+Ici, Retrofit va créer une implémentation de l'interface `UserWebService` pour nous, en utilisant d'une part les valeurs de base configurées dans `Api` et d'autre part les annotations qui lui donnent le type de requête (ex: `GET`), la route, les types de paramètres, etc.
+</aside>
+
+## Affichage
+
+- Dans le layout qui contient la liste, ajoutez une `TextView` tout en haut (vous devrez probablement régler un peu les contraintes)
 - Overrider la méthode `onResume` pour y récupérer les infos de l'utilisateur, en ajoutant cette ligne, une erreur va s'afficher mais ne paniquez pas, on va s'en occuper:
 
 ```kotlin
 // Ici on ne va pas gérer les cas d'erreur donc on force le crash avec "!!"
-val userInfo = Api.userService.getInfo().body()!!
+val userInfo = Api.userWebService.getInfo().body()!!
 ```
 
 - La méthode `getInfo()` étant déclarée comme `suspend`, vous aurez besoin de la lancer dans un `CouroutineScope` (c'est ce que dit le message d'erreur):
@@ -192,22 +206,27 @@ lifecycleScope.launch {
 userInfoTextView.text = "${userInfo.firstName} ${userInfo.lastName}"
 ```
 
-⚠️ Sur émulateur, vous aurez parfois des crashes étranges:
+<aside class="negative">
+
+⚠️ Sur émulateur, à cette étape il y a parfois des crashes étranges:
 
 - "`...EPERM (operation not permitted)...`": désinstallez l'application de l'émulateur et relancez
 - L'app stoppe direct et sans stacktrace: redémarrer l'émulateur et vérifiez que son wifi est bien connecté
 
+</aside>
+
 ➡️ Lancez l'app et vérifiez que vos infos s'affichent !
 
-**Remarque:**
+<aside class="positive">
 
-Un autre scope est fourni par android: `viewModelScope`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
+**Remarque:** Un autre scope est fourni par android: `viewModelScope`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
+</aside>
 
 ## TaskListFragment
 
-Il est temps de récuperer les tâches depuis le serveur !
+Il est temps de récupérer les tâches depuis le serveur !
 
-- Créer un nouveau service `TaskWebService`
+Créer un nouveau service `TaskWebService`:
 
 ```kotlin
 interface TasksWebService {
@@ -223,17 +242,12 @@ interface TasksWebService {
 
 Le but d'un Repository est d'exposer des data venant d'une ou plusieurs sources de données (ex: DB locale et API distante)
 
-Créer la classe `TasksRepository` avec:
-
-- une propriété `tasksWebService` pour les requêtes avec `Retrofit`
-- une propriété `taskList` *publique* de type `LiveData< List< Task>>`: représente une liste de tâche *Observable* (on peut donc s'*abonner* à ses modifications) non modifiable afin de l'exposer à l'extérieur du repository
-- une propriété `_taskList` *privée* de type `MutableLiveData< List< Task>>` qui représente la même donnée mais modifiable donc utilisable à l'intérieur du repository
-- une méthode publique `refresh` qui requête la liste et met à jour la `LiveData`
+Créer la classe `TasksRepository`:
 
 ```kotlin
 class TasksRepository {
   private val tasksWebService = Api.tasksWebService
-  
+
   // Ces deux variables encapsulent la même donnée:
   // [_taskList] est modifiable mais privée donc inaccessible à l'extérieur de cette classe
   private val _taskList = MutableLiveData<List<Task>>()
@@ -260,7 +274,7 @@ class TasksRepository {
 Dans `TaskListFragment`:
 
 - Ajouter en propriété une instance de `TasksRepository`
-- Dans `onViewCreated()`, "abonnez" le fragment à la  `LiveData` du repository
+- Dans `onViewCreated()`, "abonnez" le fragment à la `LiveData` du repository
 - Mettez à jour la liste et l'`adapter` avec le résultat (importer le `Observer` de la lib `lifecycle`)
 - Dans `onResume()`, utilisez le repository pour rafraîchir la liste de tasks
 

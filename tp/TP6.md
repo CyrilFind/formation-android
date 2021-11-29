@@ -174,7 +174,7 @@ Suivez les mêmes étapes pour remplacer la navigation des TDs précédents avec
 
 - Remplacez le `< FragmentContainerView>` dans `MainActivity` par le `< NavHostFragment>` de `AuthenticationActivity` et supprimmez `AuthenticationActivity`
 - Ajoutez `TaskListFragment` au graphe de navigation
-- Transformez `TaskActivity` en `TaskFragment` en adaptant les `override` et ajoutez le au graphe
+- Transformez `FormActivity` en `FormFragment` en adaptant les `override` et ajoutez le au graphe
 - Faites pareil pour `UserInfoActivity`
 - La destination de départ doit être la task list et rediriger vers l'authent quand il n'y a pas d'utilisateur
 - Pour communiquer entre Fragments vous pouvez utiliser:
