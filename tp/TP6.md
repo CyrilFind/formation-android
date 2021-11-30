@@ -2,12 +2,12 @@
 
 ## Ajout des dépendances
 
-Dans le fichier `app/build.gradle`, ajouter :
+Dans le fichier `app/build.gradle`, ajouter si elle n'y sont pas les dépendances suivantes:
 
 ```groovy
-implementation "androidx.core:core-ktx:1.1.0"
-implementation "androidx.navigation:navigation-fragment-ktx:2.1.0"
-implementation "androidx.navigation:navigation-ui-ktx:2.1.0"
+implementation 'androidx.core:core-ktx:1.+'
+implementation 'androidx.navigation:navigation-fragment-ktx:2.+'
+implementation 'androidx.navigation:navigation-ui-ktx:2.+'
 ```
 
 ## Nouvelle Activity
@@ -172,7 +172,7 @@ Ajouter un bouton pour se déconnecter qui efface le token dans les `SharedPrefe
 
 Suivez les mêmes étapes pour remplacer la navigation des TDs précédents avec des `Intent` explicites par cette nouvelle navigation:
 
-- Remplacez le `< FragmentContainerView>` dans `MainActivity` par le `< NavHostFragment>` de `AuthenticationActivity` et supprimmez `AuthenticationActivity`
+- Remplacez le `FragmentContainerView` dans `MainActivity` par le `NavHostFragment` de `AuthenticationActivity` et supprimmez `AuthenticationActivity`
 - Ajoutez `TaskListFragment` au graphe de navigation
 - Transformez `FormActivity` en `FormFragment` en adaptant les `override` et ajoutez le au graphe
 - Faites pareil pour `UserInfoActivity`

@@ -134,8 +134,9 @@ private val taskList = listOf("Task 1", "Task 2", "Task 3")
 
 ```kotlin
 // l'IDE va râler ici car on a pas encore implémenté les méthodes nécessaires
-class TaskListAdapter(private val taskList: List<String>) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
+class TaskListAdapter) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 
+  var taskList: List<String>
 
   // on utilise `inner` ici afin d'avoir accès aux propriétés de l'adapter directement
   inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -154,14 +155,15 @@ class TaskListAdapter(private val taskList: List<String>) : RecyclerView.Adapter
     recyclerView.layoutManager = ...
 ```
 
-- Donnez lui un `layoutManager`: `LinearLayoutManager(activity)`
-- Donnez lui un `adapter`: `TaskListAdapter(taskList)` (ne marche pas pour l'instant)
+- Donnez lui un `layoutManager`: `LinearLayoutManager(context)`
+- créez un `adapter` et passez lui la liste actuelle:
 
-<aside class="positive">
+```kotlin
+val adapter = TaskListAdapter() // ne marche pas pour l'instant
+adapter.tasklist = taskList
+```
 
-**Rappel**: l'Adapter gère le recyclage des cellules (`ViewHolder`): il en `inflate` juste assez pour remplir l'écran (coûteux) puis change seulement les données quand on scroll (peu coûteux)
-
-</aside>
+- assignez cet adapter à votre recyclerView
 
 ## Item View
 
@@ -183,6 +185,12 @@ class TaskListAdapter(private val taskList: List<String>) : RecyclerView.Adapter
 ```
 
 ## Implémentation du RecyclerViewAdapter
+
+<aside class="positive">
+
+**Rappel**: l'Adapter gère le recyclage des cellules (`ViewHolder`): il en `inflate` juste assez pour remplir l'écran (coûteux) puis change seulement les données quand on scroll (peu coûteux)
+
+</aside>
 
 Dans le `TaskListAdapter`, implémenter toutes les méthodes requises:
 
@@ -248,14 +256,15 @@ taskList = taskList + newTask
 
 <aside class="negative">
 
-⚠️ pour que votre modification s'affiche, il faut **[notifier l'adapteur](https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#notifyDataSetChanged())** dans cette lambda (aidez vous des suggestions de l'IDE)
+⚠️ pour que votre modification s'affiche, il faut passer la nouvelle liste à votre adapter puis le **[notifier](https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#notifyDataSetChanged())** de cette nouvelle donnée.
+Ce n'est pas idéal: on devrait plutôt utiliser un `ListAdapter`, c'est l'étape suivante
 </aside>
 
 ## ListAdapter
 
 Améliorer l'implémentation de `TasksListAdapter` en héritant de [`ListAdapter`](https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter) au lieu de `RecyclerView.Adapter`
 
-Il faudra notamment: créer un `DiffUtil.ItemCallback<Task>` et le passer au constructeur parent, supprimer la propriété `taskList` et utiliser `currentList` à la place, et vous pourrez supprimer `getItemCount` qui sera déjà implémentée pour vous (cf [slides](../slides/3%20-%20RecyclerView.html#7) pour un squelette d'implémentation)
+Il faudra notamment: créer un `DiffUtil.ItemCallback<Task>` et le passer au constructeur parent, supprimer la propriété `taskList` et utiliser `getItem(position)` à la place, et vous pourrez supprimer `getItemCount` qui sera déjà implémentée pour vous (cf [slides](../slides/3%20-%20RecyclerView.html#7) pour un squelette d'implémentation)
 
 ## ViewBinding
 

@@ -57,8 +57,17 @@ val formLauncher = registerForActivityResult(StartActivityForResult()) { result 
 - Changer l'action du FAB pour qu'il ouvre cette activité avec un `Intent`
 
 ```kotlin
-val intent = Intent(activity, FormActivity::class.java)
+val intent = Intent(context, FormActivity::class.java)
 formLauncher.launch(intent)
+```
+
+## Ajout de tâche complet: FormActivity
+
+Dans le `onCreate` de la nouvelle activité, récupérer une référence au bouton de validation (comme précédemment avec le bouton d'ajout par ex) puis setter son `onClickListener` pour qu'il crée une tâche:
+
+```kotlin
+// Instanciation d'un nouvel objet [Task]
+val newTask = Task(id = UUID.randomUUID().toString(), title = "New Task !")
 ```
 
 <aside class="positive">
@@ -66,17 +75,8 @@ formLauncher.launch(intent)
 Toute Activity a une propriété `intent` déjà définie: ici il aura la valeur que l'on a passée à `formLauncher`, on va utiliser ce même intent pour retourner un résultat
 </aside>
 
-## Ajout de tâche complet: FormActivity
-
-Dans le `onCreate` de la nouvelle activité, récupérer le bouton de validation puis setter son `onClickListener` pour qu'il crée une tâche:
-
-```kotlin
-// Instanciation d'un nouvel objet [Task]
-val newTask = Task(id = UUID.randomUUID().toString(), title = "New Task !")
-```
-
-- Ajouter `newTask` dans `intent`: `intent.putExtra("task", newTask)`: ça ne compilera pas car `Task` ne fait pas partie des types primitifs de base !
-- L'un de ces types est `(java.io.)Serializable`: Faites donc hériter `Task` de `Serializable`, comme c'est une `data class`, il n'y a rien à implémenter !
+- Ajouter `newTask` dans `intent`: `intent.putExtra("task", newTask)`: ça ne compilera pas car `Task` ne fait pas partie des types de base autorisés dans un intent !
+- L'un de ces types est `Serializable`: Faites donc hériter `Task` de `java.io.Serializable`, comme c'est une `data class`, il n'y a rien à implémenter !
 - utilisez `setResult(RESULT_OK, intent)` pour signifier que l'action s'est bien passée (idéalement, on aurait aussi géré des cas d'erreur)
 - utilisez `finish()` pour quitter cette activité, et donc retourner à l'écran précédent
 
@@ -156,7 +156,7 @@ Que se passe-t-il pour votre liste si vous tournez votre téléphone pour passer
 
 - Une façon de régler ce soucis est d'overrider la méthode `onSaveInstanceState`
 - Il faudra utiliser `putSerializable` (un peu comme précédemment avec `putExtra`) pour sauvegarder la liste
-- Puis pour récupérer cette liste,la méthode `getSerializable` dans `onCreateView`, sur le paramètre `savedInstanceState`
+- Puis pour récupérer cette liste, la méthode `getSerializable` dans `onCreateView` ou `onViewCreated`, sur le paramètre `savedInstanceState`
 
 [1]: https://developer.android.com/training/sharing/receive
 [2]: https://developer.android.com/training/sharing/send
@@ -171,4 +171,5 @@ class EditTask : ActivityResultContract<Task, Task>() {
     override fun createIntent(...)
     override fun parseResult(...)
 }
-``` -->
+``` 
+-->

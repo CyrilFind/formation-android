@@ -1,4 +1,4 @@
-# TP 7: Sujets Exploratoires
+# Sujets Exploratoires
 
 ## But
 
