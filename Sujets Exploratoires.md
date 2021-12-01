@@ -1,3 +1,8 @@
+---
+marp: true
+---
+<!-- headingDivider: 2 -->
+
 # Sujets Exploratoires
 
 ## But

@@ -26,6 +26,8 @@ jobs:
         run: go install github.com/googlecodelabs/tools/claat@latest
       - name: Pre Process
         run: python3 ./scripts/pre_codelabs.py
+      - name: Clean previous
+        run: rm -rf codelabs/TP*
       - name: Build codelabs
         run: claat export -o codelabs/ tp/TP*.md
       - name: Post Process
