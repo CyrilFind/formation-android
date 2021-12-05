@@ -1,6 +1,6 @@
-# TP 4: ViewModel
+# TP 4: Refactorisation avec ViewModel
 
-## Refactorisation avec TaskListViewModel
+## Principe
 
 Inclure trop de logique dans le fragment est une mauvaise pratique, on va donc refactoriser notre code pour améliorer notre architecture en s'inspirant de:
 
@@ -12,9 +12,11 @@ Inclure trop de logique dans le fragment est une mauvaise pratique, on va donc r
 
 Pour résumer, on va déplacer la logique de la gestion de la liste hors du Fragment et dans le ViewModel, qui va simplement interroger le Repository
 
+## Instructions
+
 - Créer une classe `TaskListViewModel` qui hérite de `ViewModel` et qui va gérer:
 
-  - Les `LiveData` qui étaient dans le Repository
+  - Les `StateFlow` qui étaient dans le Repository
   - Le `repository` qui sert de source de données
   - Les coroutines avec `viewModelScope`
 
@@ -26,9 +28,11 @@ Pour résumer, on va déplacer la logique de la gestion de la liste hors du Frag
   - Supprimer le `repository` et la `taskList`
   - Observer la valeur de `viewModel.taskList` et mettre à jour la liste de l'`adapter`
 
-- Dans `TasksRepository`, déplacez les `LiveData` dans le `ViewModel`
+- Dans `TasksRepository`, déplacez les `StateFlow` dans le `ViewModel`
 
 - Procéder petit à petit et inspirez vous de ce squelette (NE COPIEZ PAS TOUT!) pour refactoriser votre app (commencez juste par le chargement de la liste):
+
+## Squelette de code
 
 ```kotlin
 // Le Repository récupère les données
@@ -46,11 +50,11 @@ class TasksRepository {
     suspend fun updateTask(task: Task) {...}
 }
 
-// Le ViewModel met à jour la liste de task qui est une LiveData
+// Le ViewModel met à jour la liste de task qui est un StateFlow
 class TaskListViewModel: ViewModel() {
     private val repository = TasksRepository()
-    private val _taskList = MutableLiveData<List<Task>>()
-    public val taskList: LiveData<List<Task>> = _taskList
+    private val _taskList = MutableStateFlow<List<Task>>()
+    public val taskList: StateFlow<List<Task>> = _taskList
 
     fun loadTasks() {
         viewModelScope.launch { ... }
@@ -60,13 +64,13 @@ class TaskListViewModel: ViewModel() {
     fun editTask(task: Task) {...}
 }
 
-// Le Fragment observe la LiveData et met à jour la liste de l'adapter:
+// Le Fragment observe la StateFlow et met à jour la liste de l'adapter:
 class TaskListFragment: Fragment() {
     val adapter = TaskListAdapter()
     // On récupère une instance de ViewModel
     private val viewModel: TasksViewModel by viewModels()
 
-    // On écoute l'objet LiveData du ViewModel ici:
+    // On écoute l'objet StateFlow du ViewModel ici:
     override fun onViewCreated(...) {
         viewModel.taskList.observe(viewLifecycleOwner) { newList ->
             // utliser la liste
@@ -78,6 +82,8 @@ class TaskListFragment: Fragment() {
     }
 }
 ```
+
+## Pour terminer
 
 - Vérifier que ça fonctionne !
 - Permettre la suppression, l'ajout et l'édition des tasks du serveur avec cette archi

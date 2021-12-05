@@ -183,14 +183,14 @@ scope.launch {
 }
 ```
 
-## Mutable Flow
+## StateFlow
 
 Special type of flow used like `LiveData`
 
 ```kotlin
 // repository
-private val _userFlow = MutableFlow<NetworkUser>()
-public val userFlow: Flow<NetworkUser> = _userFlow
+private val _userFlow = MutableStateFlow<NetworkUser>(defaultUser)
+public val userFlow: StateFlow<NetworkUser> = _userFlow
 
 suspend fun refreshUser() {
     _userFlow.value = fetchUser()

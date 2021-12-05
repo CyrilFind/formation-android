@@ -25,7 +25,7 @@ Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, pour 
 
 ## Accéder à l'internet
 
-Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut ajouter la permission dans le fichier `AndroidManifest`, juste après la balise `manifest`
+Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut ajouter la permission dans le fichier `AndroidManifest`, juste au dessus de la balise `application`
 
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
@@ -139,7 +139,7 @@ Exemple de json renvoyé par la route `/info`:
 }
 ```
 
-Créer la `data class` `UserInfo` avec des annotations de KotlinX Serialization pour récupérer ces données:
+Créer la `data class` `UserInfo`:
 
 ```kotlin
 @Serializable
@@ -152,6 +152,11 @@ data class UserInfo(
   val lastName: String
 )
 ```
+
+<aside class="positive">
+
+ Regardez bien les annotations ici (tout ce qui commence par `@`): elle servent à délimiter les éléments à parser pour la lib `KotlinX Serialization`
+</aside>
 
 ## UserWebService
 
@@ -190,9 +195,7 @@ Ici, Retrofit va créer une implémentation de l'interface `UserWebService` pour
 val userInfo = Api.userWebService.getInfo().body()!!
 ```
 
-- La méthode `getInfo()` étant déclarée comme `suspend`, vous aurez besoin de la lancer dans un `CouroutineScope` (c'est ce que dit le message d'erreur):
-
-  on va utiliser directement `lifeCycleScope` qui est un `CouroutineScope` déjà défini et géré par le système dans les `Activity` et `Fragment`
+- La méthode `getInfo()` étant déclarée comme `suspend`, vous aurez besoin de la lancer dans un `CouroutineScope` (c'est ce que dit le message d'erreur): on va utiliser directement `lifeCycleScope` qui est un `CouroutineScope` déjà défini et géré par le système dans les `Activity` et `Fragment`
 
 ```kotlin
 lifecycleScope.launch {
@@ -200,11 +203,18 @@ lifecycleScope.launch {
 }
 ```
 
+<aside class="positive">
+
+**Remarque:** Un autre scope est fourni par android: `viewModelScope`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
+</aside>
+
 - Afficher les données dans votre `TextView`:
 
 ```kotlin
 userInfoTextView.text = "${userInfo.firstName} ${userInfo.lastName}"
 ```
+
+➡️ Lancez l'app et vérifiez que vos infos s'affichent !
 
 <aside class="negative">
 
@@ -213,13 +223,6 @@ userInfoTextView.text = "${userInfo.firstName} ${userInfo.lastName}"
 - "`...EPERM (operation not permitted)...`": désinstallez l'application de l'émulateur et relancez
 - L'app stoppe direct et sans stacktrace: redémarrer l'émulateur et vérifiez que son wifi est bien connecté
 
-</aside>
-
-➡️ Lancez l'app et vérifiez que vos infos s'affichent !
-
-<aside class="positive">
-
-**Remarque:** Un autre scope est fourni par android: `viewModelScope`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
 </aside>
 
 ## TaskListFragment
@@ -236,7 +239,7 @@ interface TasksWebService {
 ```
 
 - Utiliser l'instance de retrofit comme précédemment pour créer une instance de `TasksWebService` dans l'objet `Api`
-- Modifier `Task` pour la rendre lisible par KotlinX Serialization (i.e. faire comme pour `UserInfo`)
+- Modifier `Task` pour la rendre "serializable" par KotlinX Serialization (i.e. inspirez vous de `UserInfo`)
 
 ## TasksRepository
 
