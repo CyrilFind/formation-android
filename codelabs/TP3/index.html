@@ -53,7 +53,7 @@
       </google-codelab-step>
     
       <google-codelab-step label="Accéder à l&#39;internet" duration="0">
-        <p>Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut ajouter la permission dans le fichier <code>AndroidManifest</code>, juste après la balise <code>manifest</code></p>
+        <p>Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut ajouter la permission dans le fichier <code>AndroidManifest</code>, juste au dessus de la balise <code>application</code></p>
 <pre><code language="language-xml" class="language-xml">&lt;uses-permission android:name=&#34;android.permission.INTERNET&#34; /&gt;
 </code></pre>
 
@@ -159,7 +159,7 @@
   &#34;lastname&#34;: &#34;doe&#34;
 }
 </code></pre>
-<p>Créer la <code>data class</code> <code>UserInfo</code> avec des annotations de KotlinX Serialization pour récupérer ces données:</p>
+<p>Créer la <code>data class</code> <code>UserInfo</code>:</p>
 <pre><code language="language-kotlin" class="language-kotlin">@Serializable
 data class UserInfo(
   @SerialName(&#34;email&#34;)
@@ -170,6 +170,8 @@ data class UserInfo(
   val lastName: String
 )
 </code></pre>
+<aside class="special"><p>Regardez bien les annotations ici (tout ce qui commence par <code>@</code>): elle servent à délimiter les éléments à parser pour la lib <code>KotlinX Serialization</code></p>
+</aside>
 
 
       </google-codelab-step>
@@ -208,25 +210,25 @@ data class UserInfo(
 val userInfo = Api.userWebService.getInfo().body()!!
 </code></pre>
 <ul>
-<li>La méthode <code>getInfo()</code> étant déclarée comme <code>suspend</code>, vous aurez besoin de la lancer dans un <code>CouroutineScope</code> (c&#39;est ce que dit le message d&#39;erreur):on va utiliser directement <code>lifeCycleScope</code> qui est un <code>CouroutineScope</code> déjà défini et géré par le système dans les <code>Activity</code> et <code>Fragment</code></li>
+<li>La méthode <code>getInfo()</code> étant déclarée comme <code>suspend</code>, vous aurez besoin de la lancer dans un <code>CouroutineScope</code> (c&#39;est ce que dit le message d&#39;erreur): on va utiliser directement <code>lifeCycleScope</code> qui est un <code>CouroutineScope</code> déjà défini et géré par le système dans les <code>Activity</code> et <code>Fragment</code></li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">lifecycleScope.launch {
   mySuspendMethod()
 }
 </code></pre>
+<aside class="special"><p><strong>Remarque:</strong> Un autre scope est fourni par android: <code>viewModelScope</code>, mais pour l&#39;instant on implémente tout dans les fragments comme des 🐷</p>
+</aside>
 <ul>
 <li>Afficher les données dans votre <code>TextView</code>:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">userInfoTextView.text = &#34;${userInfo.firstName} ${userInfo.lastName}&#34;
 </code></pre>
+<p>➡️ Lancez l&#39;app et vérifiez que vos infos s&#39;affichent !</p>
 <aside class="warning"><p>⚠️ Sur émulateur, à cette étape il y a parfois des crashes étranges:</p>
 <ul>
 <li>&#34;<code>...EPERM (operation not permitted)...</code>&#34;: désinstallez l&#39;application de l&#39;émulateur et relancez</li>
 <li>L&#39;app stoppe direct et sans stacktrace: redémarrer l&#39;émulateur et vérifiez que son wifi est bien connecté</li>
 </ul>
-</aside>
-<p>➡️ Lancez l&#39;app et vérifiez que vos infos s&#39;affichent !</p>
-<aside class="special"><p><strong>Remarque:</strong> Un autre scope est fourni par android: <code>viewModelScope</code>, mais pour l&#39;instant on implémente tout dans les fragments comme des 🐷</p>
 </aside>
 
 
@@ -242,7 +244,7 @@ val userInfo = Api.userWebService.getInfo().body()!!
 </code></pre>
 <ul>
 <li>Utiliser l&#39;instance de retrofit comme précédemment pour créer une instance de <code>TasksWebService</code> dans l&#39;objet <code>Api</code></li>
-<li>Modifier <code>Task</code> pour la rendre lisible par KotlinX Serialization (i.e. faire comme pour <code>UserInfo</code>)</li>
+<li>Modifier <code>Task</code> pour la rendre &#34;serializable&#34; par KotlinX Serialization (i.e. inspirez vous de <code>UserInfo</code>)</li>
 </ul>
 
 

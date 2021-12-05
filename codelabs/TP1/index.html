@@ -148,8 +148,9 @@ implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
 <li>Dans un nouveau fichier <code>TaskListAdapter.kt</code>, créez 2 nouvelles classes: <code>TaskListAdapter</code> et <code>TaskViewHolder</code>:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">// l&#39;IDE va râler ici car on a pas encore implémenté les méthodes nécessaires
-class TaskListAdapter(private val taskList: List&lt;String&gt;) : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&gt;() {
+class TaskListAdapter) : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&gt;() {
 
+  var taskList: List&lt;String&gt;
 
   // on utilise `inner` ici afin d&#39;avoir accès aux propriétés de l&#39;adapter directement
   inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -167,11 +168,15 @@ class TaskListAdapter(private val taskList: List&lt;String&gt;) : RecyclerView.A
     recyclerView.layoutManager = ...
 </code></pre>
 <ul>
-<li>Donnez lui un <code>layoutManager</code>: <code>LinearLayoutManager(activity)</code></li>
-<li>Donnez lui un <code>adapter</code>: <code>TaskListAdapter(taskList)</code> (ne marche pas pour l&#39;instant)</li>
+<li>Donnez lui un <code>layoutManager</code>: <code>LinearLayoutManager(context)</code></li>
+<li>créez un <code>adapter</code> et passez lui la liste actuelle:</li>
 </ul>
-<aside class="special"><p><strong>Rappel</strong>: l&#39;Adapter gère le recyclage des cellules (<code>ViewHolder</code>): il en <code>inflate</code> juste assez pour remplir l&#39;écran (coûteux) puis change seulement les données quand on scroll (peu coûteux)</p>
-</aside>
+<pre><code language="language-kotlin" class="language-kotlin">val adapter = TaskListAdapter() // ne marche pas pour l&#39;instant
+adapter.tasklist = taskList
+</code></pre>
+<ul>
+<li>assignez cet adapter à votre recyclerView</li>
+</ul>
 
 
       </google-codelab-step>
@@ -198,7 +203,9 @@ class TaskListAdapter(private val taskList: List&lt;String&gt;) : RecyclerView.A
       </google-codelab-step>
     
       <google-codelab-step label="Implémentation du RecyclerViewAdapter" duration="0">
-        <p>Dans le <code>TaskListAdapter</code>, implémenter toutes les méthodes requises:</p>
+        <aside class="special"><p><strong>Rappel</strong>: l&#39;Adapter gère le recyclage des cellules (<code>ViewHolder</code>): il en <code>inflate</code> juste assez pour remplir l&#39;écran (coûteux) puis change seulement les données quand on scroll (peu coûteux)</p>
+</aside>
+<p>Dans le <code>TaskListAdapter</code>, implémenter toutes les méthodes requises:</p>
 <p><strong>Astuce</strong>: Pré-remplissez votre adapter en cliquant sur le nom de votre classe (qui doit être pour l&#39;instant soulignée en rouge) et cliquez sur l&#39;ampoule jaune ou tapez <code>Alt</code> + <code>ENTER</code> (sinon, <code>CTRL</code> + <code>O</code> n&#39;importe où dans la classe)</p>
 <ul>
 <li><code>getItemCount</code> doit renvoyer la taille de la liste de tâche à afficher</li>
@@ -260,7 +267,7 @@ class TaskListAdapter(private val taskList: List&lt;String&gt;) : RecyclerView.A
 val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;Task ${taskList.size + 1}&#34;)
 taskList = taskList + newTask
 </code></pre>
-<aside class="warning"><p>⚠️ pour que votre modification s&#39;affiche, il faut <a href="https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#notifyDataSetChanged()" target="_blank"><strong>notifier l&#39;adapteur</strong></a> dans cette lambda (aidez vous des suggestions de l&#39;IDE)</p>
+<aside class="warning"><p>⚠️ pour que votre modification s&#39;affiche, il faut passer la nouvelle liste à votre adapter puis le <a href="https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#notifyDataSetChanged()" target="_blank"><strong>notifier</strong></a> de cette nouvelle donnée. Ce n&#39;est pas idéal: on devrait plutôt utiliser un <code>ListAdapter</code>, c&#39;est l&#39;étape suivante</p>
 </aside>
 
 
@@ -268,7 +275,7 @@ taskList = taskList + newTask
     
       <google-codelab-step label="ListAdapter" duration="0">
         <p>Améliorer l&#39;implémentation de <code>TasksListAdapter</code> en héritant de <a href="https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter" target="_blank"><code>ListAdapter</code></a> au lieu de <code>RecyclerView.Adapter</code></p>
-<p>Il faudra notamment: créer un <code>DiffUtil.ItemCallback<Task></code> et le passer au constructeur parent, supprimer la propriété <code>taskList</code> et utiliser <code>currentList</code> à la place, et vous pourrez supprimer <code>getItemCount</code> qui sera déjà implémentée pour vous (cf <a href="../slides/3%20-%20RecyclerView.html#7" target="_blank">slides</a> pour un squelette d&#39;implémentation)</p>
+<p>Il faudra notamment: créer un <code>DiffUtil.ItemCallback<Task></code> et le passer au constructeur parent, supprimer la propriété <code>taskList</code> et utiliser <code>getItem(position)</code> à la place, et vous pourrez supprimer <code>getItemCount</code> qui sera déjà implémentée pour vous (cf <a href="../slides/3%20-%20RecyclerView.html#7" target="_blank">slides</a> pour un squelette d&#39;implémentation)</p>
 
 
       </google-codelab-step>

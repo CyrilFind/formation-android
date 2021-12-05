@@ -81,23 +81,23 @@ myAdapter.onClickDelete = { task -&gt;
 <ul>
 <li>Changer l&#39;action du FAB pour qu&#39;il ouvre cette activité avec un <code>Intent</code></li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">val intent = Intent(activity, FormActivity::class.java)
+<pre><code language="language-kotlin" class="language-kotlin">val intent = Intent(context, FormActivity::class.java)
 formLauncher.launch(intent)
 </code></pre>
-<aside class="special"><p>Toute Activity a une propriété <code>intent</code> déjà définie: ici il aura la valeur que l&#39;on a passée à <code>formLauncher</code>, on va utiliser ce même intent pour retourner un résultat</p>
-</aside>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Ajout de tâche complet: FormActivity" duration="0">
-        <p>Dans le <code>onCreate</code> de la nouvelle activité, récupérer le bouton de validation puis setter son <code>onClickListener</code> pour qu&#39;il crée une tâche:</p>
+        <p>Dans le <code>onCreate</code> de la nouvelle activité, récupérer une référence au bouton de validation (comme précédemment avec le bouton d&#39;ajout par ex) puis setter son <code>onClickListener</code> pour qu&#39;il crée une tâche:</p>
 <pre><code language="language-kotlin" class="language-kotlin">// Instanciation d&#39;un nouvel objet [Task]
 val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;New Task !&#34;)
 </code></pre>
+<aside class="special"><p>Toute Activity a une propriété <code>intent</code> déjà définie: ici il aura la valeur que l&#39;on a passée à <code>formLauncher</code>, on va utiliser ce même intent pour retourner un résultat</p>
+</aside>
 <ul>
-<li>Ajouter <code>newTask</code> dans <code>intent</code>: <code>intent.putExtra("task", newTask)</code>: ça ne compilera pas car <code>Task</code> ne fait pas partie des types primitifs de base !</li>
-<li>L&#39;un de ces types est <code>(java.io.)Serializable</code>: Faites donc hériter <code>Task</code> de <code>Serializable</code>, comme c&#39;est une <code>data class</code>, il n&#39;y a rien à implémenter !</li>
+<li>Ajouter <code>newTask</code> dans <code>intent</code>: <code>intent.putExtra("task", newTask)</code>: ça ne compilera pas car <code>Task</code> ne fait pas partie des types de base autorisés dans un intent !</li>
+<li>L&#39;un de ces types est <code>Serializable</code>: Faites donc hériter <code>Task</code> de <code>java.io.Serializable</code>, comme c&#39;est une <code>data class</code>, il n&#39;y a rien à implémenter !</li>
 <li>utilisez <code>setResult(RESULT_OK, intent)</code> pour signifier que l&#39;action s&#39;est bien passée (idéalement, on aurait aussi géré des cas d&#39;erreur)</li>
 <li>utilisez <code>finish()</code> pour quitter cette activité, et donc retourner à l&#39;écran précédent</li>
 </ul>
@@ -183,7 +183,7 @@ class TaskListFragment : Fragment {
 <ul>
 <li>Une façon de régler ce soucis est d&#39;overrider la méthode <code>onSaveInstanceState</code></li>
 <li>Il faudra utiliser <code>putSerializable</code> (un peu comme précédemment avec <code>putExtra</code>) pour sauvegarder la liste</li>
-<li>Puis pour récupérer cette liste,la méthode <code>getSerializable</code> dans <code>onCreateView</code>, sur le paramètre <code>savedInstanceState</code></li>
+<li>Puis pour récupérer cette liste, la méthode <code>getSerializable</code> dans <code>onCreateView</code> ou <code>onViewCreated</code>, sur le paramètre <code>savedInstanceState</code></li>
 </ul>
 
 

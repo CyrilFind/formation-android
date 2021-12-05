@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>TP 4: ViewModel</title>
+  <title>TP 4: Refactorisation avec ViewModel</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
@@ -23,11 +23,11 @@
   <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
   <google-codelab codelab-gaid=""
                   id="TP4"
-                  title="TP 4: ViewModel"
+                  title="TP 4: Refactorisation avec ViewModel"
                   environment="web"
                   feedback-link="">
     
-      <google-codelab-step label="Refactorisation avec TaskListViewModel" duration="0">
+      <google-codelab-step label="Principe" duration="0">
         <p>Inclure trop de logique dans le fragment est une mauvaise pratique, on va donc refactoriser notre code pour améliorer notre architecture en s&#39;inspirant de:</p>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel" target="_blank">MVVM: Model-View-ViewModel</a> pour la &#34;Presentation Layer&#34;</li>
@@ -36,9 +36,14 @@
 </ul>
 <p>⚠️ Lisez bien tout le sujet, suivez les étapes et aidez vous du squelette de code plus bas !</p>
 <p>Pour résumer, on va déplacer la logique de la gestion de la liste hors du Fragment et dans le ViewModel, qui va simplement interroger le Repository</p>
-<ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Instructions" duration="0">
+        <ul>
 <li>Créer une classe <code>TaskListViewModel</code> qui hérite de <code>ViewModel</code> et qui va gérer:<ul>
-<li>Les <code>LiveData</code> qui étaient dans le Repository</li>
+<li>Les <code>StateFlow</code> qui étaient dans le Repository</li>
 <li>Le <code>repository</code> qui sert de source de données</li>
 <li>Les coroutines avec <code>viewModelScope</code></li>
 </ul>
@@ -50,10 +55,15 @@
 <li>Observer la valeur de <code>viewModel.taskList</code> et mettre à jour la liste de l&#39;<code>adapter</code></li>
 </ul>
 </li>
-<li>Dans <code>TasksRepository</code>, déplacez les <code>LiveData</code> dans le <code>ViewModel</code></li>
+<li>Dans <code>TasksRepository</code>, déplacez les <code>StateFlow</code> dans le <code>ViewModel</code></li>
 <li>Procéder petit à petit et inspirez vous de ce squelette (NE COPIEZ PAS TOUT!) pour refactoriser votre app (commencez juste par le chargement de la liste):</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">// Le Repository récupère les données
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Squelette de code" duration="0">
+        <pre><code language="language-kotlin" class="language-kotlin">// Le Repository récupère les données
 class TasksRepository {
     // Le web service requête le serveur
     private val webService = Api.tasksWebService
@@ -68,11 +78,11 @@ class TasksRepository {
     suspend fun updateTask(task: Task) {...}
 }
 
-// Le ViewModel met à jour la liste de task qui est une LiveData
+// Le ViewModel met à jour la liste de task qui est un StateFlow
 class TaskListViewModel: ViewModel() {
     private val repository = TasksRepository()
-    private val _taskList = MutableLiveData&lt;List&lt;Task&gt;&gt;()
-    public val taskList: LiveData&lt;List&lt;Task&gt;&gt; = _taskList
+    private val _taskList = MutableStateFlow&lt;List&lt;Task&gt;&gt;()
+    public val taskList: StateFlow&lt;List&lt;Task&gt;&gt; = _taskList
 
     fun loadTasks() {
         viewModelScope.launch { ... }
@@ -82,13 +92,13 @@ class TaskListViewModel: ViewModel() {
     fun editTask(task: Task) {...}
 }
 
-// Le Fragment observe la LiveData et met à jour la liste de l&#39;adapter:
+// Le Fragment observe la StateFlow et met à jour la liste de l&#39;adapter:
 class TaskListFragment: Fragment() {
     val adapter = TaskListAdapter()
     // On récupère une instance de ViewModel
     private val viewModel: TasksViewModel by viewModels()
 
-    // On écoute l&#39;objet LiveData du ViewModel ici:
+    // On écoute l&#39;objet StateFlow du ViewModel ici:
     override fun onViewCreated(...) {
         viewModel.taskList.observe(viewLifecycleOwner) { newList -&gt;
             // utliser la liste
@@ -100,7 +110,12 @@ class TaskListFragment: Fragment() {
     }
 }
 </code></pre>
-<ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Pour terminer" duration="0">
+        <ul>
 <li>Vérifier que ça fonctionne !</li>
 <li>Permettre la suppression, l&#39;ajout et l&#39;édition des tasks du serveur avec cette archi</li>
 </ul>

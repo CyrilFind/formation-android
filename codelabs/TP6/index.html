@@ -28,10 +28,10 @@
                   feedback-link="">
     
       <google-codelab-step label="Ajout des dépendances" duration="0">
-        <p>Dans le fichier <code>app/build.gradle</code>, ajouter :</p>
-<pre><code language="language-groovy" class="language-groovy">implementation &#34;androidx.core:core-ktx:1.1.0&#34;
-implementation &#34;androidx.navigation:navigation-fragment-ktx:2.1.0&#34;
-implementation &#34;androidx.navigation:navigation-ui-ktx:2.1.0&#34;
+        <p>Dans le fichier <code>app/build.gradle</code>, ajouter si elle n&#39;y sont pas les dépendances suivantes:</p>
+<pre><code language="language-groovy" class="language-groovy">implementation &#39;androidx.core:core-ktx:1.+&#39;
+implementation &#39;androidx.navigation:navigation-fragment-ktx:2.+&#39;
+implementation &#39;androidx.navigation:navigation-ui-ktx:2.+&#39;
 </code></pre>
 
 
@@ -203,7 +203,7 @@ suspend fun login(@Body user: LoginForm): Response&lt;LoginResponse&gt;
 <h2 is-upgraded>Ajout et Édition</h2>
 <p>Suivez les mêmes étapes pour remplacer la navigation des TDs précédents avec des <code>Intent</code> explicites par cette nouvelle navigation:</p>
 <ul>
-<li>Remplacez le <code>< FragmentContainerView></code> dans <code>MainActivity</code> par le <code>< NavHostFragment></code> de <code>AuthenticationActivity</code> et supprimmez <code>AuthenticationActivity</code></li>
+<li>Remplacez le <code>FragmentContainerView</code> dans <code>MainActivity</code> par le <code>NavHostFragment</code> de <code>AuthenticationActivity</code> et supprimmez <code>AuthenticationActivity</code></li>
 <li>Ajoutez <code>TaskListFragment</code> au graphe de navigation</li>
 <li>Transformez <code>FormActivity</code> en <code>FormFragment</code> en adaptant les <code>override</code> et ajoutez le au graphe</li>
 <li>Faites pareil pour <code>UserInfoActivity</code></li>
