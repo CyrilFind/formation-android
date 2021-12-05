@@ -251,8 +251,7 @@ val userInfo = Api.userWebService.getInfo().body()!!
       </google-codelab-step>
     
       <google-codelab-step label="TasksRepository" duration="0">
-        <p>Le but d&#39;un Repository est d&#39;exposer des data venant d&#39;une ou plusieurs sources de données (ex: DB locale et API distante)</p>
-<p>Créer la classe <code>TasksRepository</code>, avec une liste de tâches <em>Observable</em> grâce aux type <code>StateFlow</code> et <code>MutableStateFlow</code>:</p>
+        <p>Créer la classe <code>TasksRepository</code>, avec une liste de tâches <em>Observable</em> grâce aux type <code>StateFlow</code> et <code>MutableStateFlow</code>:</p>
 <pre><code language="language-kotlin" class="language-kotlin">class TasksRepository {
   private val tasksWebService = Api.tasksWebService
 
@@ -275,6 +274,8 @@ val userInfo = Api.userWebService.getInfo().body()!!
   }
 }
 </code></pre>
+<aside class="special"><p>Le but d&#39;un Repository est d&#39;exposer des données venant d&#39;une ou plusieurs sources de données (ex: DB locale et API distante)</p>
+</aside>
 
 
       </google-codelab-step>
@@ -326,7 +327,6 @@ suspend fun delete(@...(...) id: String): Response&lt;Unit&gt;
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">suspend fun updateTask(task: Task) {
   // TODO: appel réseau et récupération de la tache:
-  // ...
   val updatedTask = ...
   val oldTask = taskList.value.firstOrNull { it.id == updatedTask.id }
   if (oldTask != null) _taskList.value = taskList.value - oldTask + updatedTask
