@@ -8,9 +8,15 @@ Inclure trop de logique dans le fragment est une mauvaise pratique, on va donc r
 - [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) pour le reste
 - [Android Architecture Components](https://developer.android.com/topic/libraries/architecture) pour nous aider des outils spécifiques Android
 
-⚠️ Lisez bien tout le sujet, suivez les étapes et aidez vous du squelette de code plus bas !
+<aside class="negative">
 
-Pour résumer, on va déplacer la logique de la gestion de la liste hors du Fragment et dans le ViewModel, qui va simplement interroger le Repository
+⚠️ Lisez bien tout le sujet, suivez les étapes et surtout aidez vous du squelette de code plus bas !
+</aside>
+
+<aside class="positive">
+
+Pour résumer, on va déplacer la logique de la gestion de la liste du Fragment vers le ViewModel, qui va pour sa part simplement interroger le Repository et gérer son `StateFlow`.
+</aside>
 
 ## Instructions
 

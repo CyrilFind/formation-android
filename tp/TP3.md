@@ -243,8 +243,6 @@ interface TasksWebService {
 
 ## TasksRepository
 
-Le but d'un Repository est d'exposer des data venant d'une ou plusieurs sources de données (ex: DB locale et API distante)
-
 Créer la classe `TasksRepository`, avec une liste de tâches *Observable* grâce aux type `StateFlow` et `MutableStateFlow`:
 
 ```kotlin
@@ -270,6 +268,11 @@ class TasksRepository {
   }
 }
 ```
+
+<aside class="positive">
+
+Le but d'un Repository est d'exposer des données venant d'une ou plusieurs sources de données (ex: DB locale et API distante)
+</aside>
 
 ## "Collecter" le Flow
 
@@ -318,7 +321,6 @@ suspend fun delete(@...(...) id: String): Response<Unit>
 ```kotlin
 suspend fun updateTask(task: Task) {
   // TODO: appel réseau et récupération de la tache:
-  // ...
   val updatedTask = ...
   val oldTask = taskList.value.firstOrNull { it.id == updatedTask.id }
   if (oldTask != null) _taskList.value = taskList.value - oldTask + updatedTask
