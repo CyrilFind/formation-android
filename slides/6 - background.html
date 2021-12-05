@@ -173,11 +173,11 @@ scope.launch {
 </span></span></foreignObject></svg></code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-heading-divider="2" style="--heading-divider:2;">
-<h2>Mutable Flow</h2>
+<h2>StateFlow</h2>
 <p>Special type of flow used like <code>LiveData</code></p>
 <pre><code class="language-kotlin"><svg data-marp-fitting="svg" data-marp-fitting-code><foreignObject><span data-marp-fitting-svg-content><span data-marp-fitting-svg-content-wrap><span class="hljs-comment">// repository</span>
-<span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> _userFlow = MutableFlow&lt;NetworkUser&gt;()
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">val</span> userFlow: Flow&lt;NetworkUser&gt; = _userFlow
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> _userFlow = MutableStateFlow&lt;NetworkUser&gt;(defaultUser)
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">val</span> userFlow: StateFlow&lt;NetworkUser&gt; = _userFlow
 
 <span class="hljs-keyword">suspend</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">refreshUser</span><span class="hljs-params">()</span></span> {
     _userFlow.value = fetchUser()
