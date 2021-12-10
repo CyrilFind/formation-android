@@ -264,7 +264,28 @@ Ce n'est pas idéal: on devrait plutôt utiliser un `ListAdapter`, c'est l'étap
 
 Améliorer l'implémentation de `TasksListAdapter` en héritant de [`ListAdapter`](https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter) au lieu de `RecyclerView.Adapter`
 
-Il faudra notamment: créer un `DiffUtil.ItemCallback<Task>` et le passer au constructeur parent, supprimer la propriété `taskList` et utiliser `getItem(position)` à la place, et vous pourrez supprimer `getItemCount` qui sera déjà implémentée pour vous (cf [slides](../slides/3%20-%20RecyclerView.html#7) pour un squelette d'implémentation)
+Il faudra notamment: créer un `DiffUtil.ItemCallback<Task>` et le passer au constructeur parent, supprimer la propriété `taskList` et utiliser `getItem(position)` à la place, et vous pourrez supprimer `getItemCount` qui sera déjà implémentée pour vous
+
+Exemple:
+
+```kotlin
+object WordsDiffCallback : DiffUtil.ItemCallback<Word>() {
+   override fun areItemsTheSame(oldItem: Word, newItem: Word) =
+      // are they the same "entity" ? (usually same id)
+   override fun areContentsTheSame(oldItem: Word, newItem: Word) =
+      // do they have the same data ? (content)
+}
+
+class WordListAdapter : ListAdapter<Word, WordListAdapter.WordViewHolder>(WordsDiffCallback) {
+   override fun onCreateViewHolder(...)
+   override fun onBindViewHolder(...)  // use `getItem`
+}
+
+// Usage is simpler:
+val myAdapter = WordListAdapter()
+recyclerView.adapter = myAdapter
+myAdapter.submitList(listOf("word#1", "word #2"))
+```
 
 ## ViewBinding
 

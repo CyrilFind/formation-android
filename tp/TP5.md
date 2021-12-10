@@ -1,21 +1,26 @@
 # TP 5: Images
 
-## Afficher une image distante avec Coil
+## Coil
+
+<aside class="positive">
+
+La lib `Coil` permet d'afficher des images depuis une URL de façon efficace en gérant la taille, le cache, etc... `Picasso` et `Glide` sont les alternatives les plus utilisées.
+</aside>
 
 - Rendez vous sur le [repository de Coil](https://coil-kt.github.io/coil/) et lisez le `ReadMe`
 - Ajouter les dépendances nécessaires à `app/build.gradle`
-- Ajouter une `< ImageView .../>` dans `fragment_tasklist.xml` principal qui affichera l'avatar de l'utilisateur
-- Dans `onResume`, utiliser Coil pour afficher une image en passant une URL de votre choix, par exemple:
+- Ajouter une `ImageView` qui affichera l'avatar de l'utilisateur dans le layout de la liste (à coté de votre `TextView` par ex)
+- Dans `onResume`, récupérez une référence à cette vue puis utilisez Coil pour afficher une image en passant une URL de votre choix, par exemple:
 
 ```kotlin
-image_view.load("https://goo.gl/gEgYUd")
+avatarImageView.load("https://goo.gl/gEgYUd")
 ```
 
-- Trouvez comment utiliser Coil pour afficher l'image sous la forme d'un cercle
+- Trouvez comment l'image sous la forme d'un cercle avec `Coil`
 
-### Nouvelle activité
+## Nouvelle activité
 
-- Créer un nouveau package `userinfo`
+- Créer un nouveau package `user`
 - Créez y une nouvelle activité `UserInfoActivity` et ajoutez la dans le manifest
 - Remplir son layout:
 
@@ -58,32 +63,30 @@ image_view.load("https://goo.gl/gEgYUd")
 
 ```kotlin
 private val requestPermissionLauncher =
-    registerForActivityResult(RequestPermission()) { isGranted: Boolean ->
-        if (isGranted) openCamera()
+    registerForActivityResult(RequestPermission()) { accepted ->
+        if (accepted) openCamera()
         else showExplanationDialog()
     }
 
-private fun requestCameraPermission() =
-    requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-
 private fun askCameraPermissionAndOpenCamera() {
+    val camPermission = Manifest.permission.CAMERA
+    val permissionStatus = checkSelfPermission(this, camPermission)
+    val isAlreadyAccepted = permissionStatus == PackageManager.PERMISSION_GRANTED
     when {
-        ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED -> openCamera()
-        shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> showExplanationDialog()
-        else -> requestCameraPermission()
+        isAlreadyAccepted -> openCamera()
+        shouldShowRequestPermissionRationale(camPermission) -> showExplanationDialog()
+        else -> requestPermissionLauncher.launch(camPermission)
     }
 }
 
 private fun showExplanationDialog() {
-    AlertDialog.Builder(this).apply {
-        setMessage("On a besoin de la caméra sivouplé ! 🥺")
-        setPositiveButton("Bon, ok") { dialogInterface, _ ->
-            dialogInterface.dismiss()
-        }
-        setCancelable(true)
-        show()
-    }
+    AlertDialog.Builder(this)
+        .setMessage("On a besoin de la caméra sivouplé ! 🥺")
+        .setPositiveButton("Bon, ok") { dialog, _ -> dialog.dismiss() }
+        .show()
+}
+
+private fun openCamera() {
 }
 ```
 
@@ -91,7 +94,7 @@ private fun showExplanationDialog() {
 
 ## Ouvrir l'appareil photo
 
-Pour l'ouverture de la caméra, on utilise la nouvelle API:
+Pour l'ouverture de la caméra, on va créer un launcher, comme précédemment, mais avec autre "contrat":
 
 ```kotlin
 // register
@@ -106,6 +109,11 @@ private val takePicture = registerForActivityResult(TakePicturePreview()) { bitm
 // use
 private fun openCamera() = takePicture.launch()
 ```
+
+<aside class="positive">
+
+Ici le système sous jacent va utiliser un `Intent` implicite demandant au système d'ouvrir une app permettant de prendre une photo (en général l'app photo par défaut)
+</aside>
 
 ➡️ Il manque encore une brique !
 
@@ -139,7 +147,8 @@ private fun convert(uri: Uri) =
     lifecycleScope.launch {
         val userInfo = ...getInfos()
         imageView.load(userInfo.avatar) {
-            error(R.drawable.ic_launcher_background) // display something when image request fails
+            // affiche une image en cas d'erreur:
+            error(R.drawable.ic_launcher_background) 
         }
     }
 ```

@@ -105,7 +105,7 @@ val retrofit = Retrofit.Builder()
 
 interface MovieWebService {
   @GET("movies/{user_id}")
-  fun getMovies(@Path("user_id") userId: String): RespoList<Movie>
+  fun getMovies(@Path("user_id") userId: String): Response<List<Movie>>
 }
 
 // Create an object that *implements* MovieWebService

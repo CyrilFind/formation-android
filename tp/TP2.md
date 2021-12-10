@@ -160,16 +160,3 @@ Que se passe-t-il pour votre liste si vous tournez votre téléphone pour passer
 
 [1]: https://developer.android.com/training/sharing/receive
 [2]: https://developer.android.com/training/sharing/send
-[3]: https://developer.android.com/training/basics/intents/result
-[4]: https://developer.android.com/kotlin/parcelize
-
-<!--
-Mais vous pouvez aussi définir un [contrat spécifique](https://developer.android.com/training/basics/intents/result#custom):
-
-```kotlin
-class EditTask : ActivityResultContract<Task, Task>() {
-    override fun createIntent(...)
-    override fun parseResult(...)
-}
-``` 
--->

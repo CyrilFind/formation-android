@@ -59,7 +59,7 @@ class TasksRepository {
 // Le ViewModel met à jour la liste de task qui est un StateFlow
 class TaskListViewModel: ViewModel() {
     private val repository = TasksRepository()
-    private val _taskList = MutableStateFlow<List<Task>>()
+    private val _taskList = MutableStateFlow<List<Task>>(emptyList())
     public val taskList: StateFlow<List<Task>> = _taskList
 
     fun loadTasks() {
@@ -78,8 +78,10 @@ class TaskListFragment: Fragment() {
 
     // On écoute l'objet StateFlow du ViewModel ici:
     override fun onViewCreated(...) {
-        viewModel.taskList.observe(viewLifecycleOwner) { newList ->
-            // utliser la liste
+        lifecycleScope.launch {
+            viewModel.taskList.collect { newList ->
+                // utliser la liste
+            }
         }
     }
 

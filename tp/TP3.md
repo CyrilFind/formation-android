@@ -241,6 +241,10 @@ interface TasksWebService {
 - Utiliser l'instance de retrofit comme précédemment pour créer une instance de `TasksWebService` dans l'objet `Api`
 - Modifier `Task` pour la rendre "serializable" par KotlinX Serialization (i.e. inspirez vous de `UserInfo`)
 
+<aside class="negative">
+⚠️ Ici vous aurez probablement un soucis car on a fait hériter `Task` de `Serializable` mais une des annotations de KotlinX Serialisation s'appelle aussi `Serializable`: pour résoudre, faites hériter explicitement de `java.io.Serializable` à la place
+</aside>
+
 ## TasksRepository
 
 Créer la classe `TasksRepository`, avec une liste de tâches *Observable* grâce aux type `StateFlow` et `MutableStateFlow`:
@@ -251,7 +255,7 @@ class TasksRepository {
 
   // Ces deux variables encapsulent la même donnée:
   // [_taskList] est modifiable mais privée donc inaccessible à l'extérieur de cette classe
-  private val _taskList = MutableStateFlow<List<Task>>(value = emptyList())
+  private val _taskList = MutableStateFlow<List<Task>>(emptyList())
   // [taskList] est publique mais non-modifiable:
   // On pourra seulement l'observer (s'y abonner) depuis d'autres classes
   public val taskList: StateFlow<List<Task>> = _taskList.asStateFlow()
@@ -266,6 +270,9 @@ class TasksRepository {
           if (fetchedTasks != null) _taskList.value = fetchedTasks
       }
   }
+
+  suspend fun createOrUpdate(...)
+  suspend fun delete(...)
 }
 ```
 
@@ -282,6 +289,10 @@ Dans `TaskListFragment`, à l'aide du squelette de code plus bas:
 - Dans `onResume()`, utilisez le repository pour rafraîchir la liste de tasks
 - Dans `onViewCreated()`, "abonnez" le fragment au `StateFlow` du repository et mettez à jour la liste et l'`adapter` dans la lambda de retour
 
+<aside class="negative">
+⚠️ Attention ici au moment de choisir l'import de `.collect` sélectionnez bien celui qui est présenté avec des accolades: `collect {...}`, sinon ça ne compilera pas.
+</aside>
+
 ```kotlin
 private val tasksRepository = TasksRepository()
 
@@ -292,8 +303,9 @@ lifecycleScope.launch {
 
 // Dans onViewCreated()
 lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
-    tasksRepository.taskList.collect {
-          // on met à jour la liste dans l'adapteur
+    tasksRepository.taskList.collect { newList ->
+      // cette lambda est executée à chaque fois que la liste est mise à jour dans le repository
+      // -> ici, on met à jour la liste dans l'adapteur
     }
 }
 ```
@@ -307,7 +319,7 @@ Modifier `TasksWebService` et ajoutez y les routes manquantes:
 suspend fun create(@Body task: Task): Response<Task>
 
 @PATCH("tasks/{id}")
-suspend fun update(@Body task: Task, @Path("id") id: String? = task.id): Response<Task>
+suspend fun update(@Body task: Task, @Path("id") id: String = task.id): Response<Task>
 
 // Inspirez vous d'au dessus et de la doc de l'API pour compléter: 
 @...(...)
@@ -319,10 +331,14 @@ suspend fun delete(@...(...) id: String): Response<Unit>
 - Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l'édition (les autres sont plus simples):
 
 ```kotlin
-suspend fun updateTask(task: Task) {
-  // TODO: appel réseau et récupération de la tache:
-  val updatedTask = ...
+suspend fun createOrUpdateTask(task: Task) {
+  // TODO: appel réseau et récupération de la tache
+  val response = ...
+  // ...
+  val newTask = ...
+  // ...
   val oldTask = taskList.value.firstOrNull { it.id == updatedTask.id }
-  if (oldTask != null) _taskList.value = taskList.value - oldTask + updatedTask
+  if (oldTask != null) _taskList.value = taskList.value - oldTask 
+  _taskList.value = taskList.value + newTask
 }
 ```
