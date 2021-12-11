@@ -75,23 +75,21 @@ class TasksRepository {
         return if (response.isSuccessful) response.body() else null
     }
 
-    suspend fun removeTask(task: Task) {...}
-    suspend fun createTask(task: Task) {...}
-    suspend fun updateTask(task: Task) {...}
+    suspend fun delete(task: Task) {...}
+    suspend fun createOrUpdate(task: Task) {...}
 }
 
 // Le ViewModel met à jour la liste de task qui est un StateFlow
 class TaskListViewModel: ViewModel() {
     private val repository = TasksRepository()
-    private val _taskList = MutableStateFlow&lt;List&lt;Task&gt;&gt;()
+    private val _taskList = MutableStateFlow&lt;List&lt;Task&gt;&gt;(emptyList())
     public val taskList: StateFlow&lt;List&lt;Task&gt;&gt; = _taskList
 
-    fun loadTasks() {
+    fun refresh() {
         viewModelScope.launch { ... }
     }
-    fun deleteTask(task: Task) {...}
-    fun addTask(task: Task) {...}
-    fun editTask(task: Task) {...}
+    fun delete(task: Task) {...}
+    fun addOrEdit(task: Task) {...}
 }
 
 // Le Fragment observe la StateFlow et met à jour la liste de l&#39;adapter:
@@ -102,8 +100,10 @@ class TaskListFragment: Fragment() {
 
     // On écoute l&#39;objet StateFlow du ViewModel ici:
     override fun onViewCreated(...) {
-        viewModel.taskList.observe(viewLifecycleOwner) { newList -&gt;
-            // utliser la liste
+        lifecycleScope.launch {
+            viewModel.taskList.collect { newList -&gt;
+                // utliser la liste
+            }
         }
     }
 

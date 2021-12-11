@@ -246,6 +246,8 @@ val userInfo = Api.userWebService.getInfo().body()!!
 <li>Utiliser l&#39;instance de retrofit comme précédemment pour créer une instance de <code>TasksWebService</code> dans l&#39;objet <code>Api</code></li>
 <li>Modifier <code>Task</code> pour la rendre &#34;serializable&#34; par KotlinX Serialization (i.e. inspirez vous de <code>UserInfo</code>)</li>
 </ul>
+<aside class="warning"><p> ⚠️ Ici vous aurez probablement un soucis car on a fait hériter `Task` de `Serializable` mais une des annotations de KotlinX Serialisation s&#39;appelle aussi `Serializable`: pour résoudre, faites hériter explicitement de `java.io.Serializable` à la place </p>
+</aside>
 
 
       </google-codelab-step>
@@ -257,7 +259,7 @@ val userInfo = Api.userWebService.getInfo().body()!!
 
   // Ces deux variables encapsulent la même donnée:
   // [_taskList] est modifiable mais privée donc inaccessible à l&#39;extérieur de cette classe
-  private val _taskList = MutableStateFlow&lt;List&lt;Task&gt;&gt;(value = emptyList())
+  private val _taskList = MutableStateFlow&lt;List&lt;Task&gt;&gt;(emptyList())
   // [taskList] est publique mais non-modifiable:
   // On pourra seulement l&#39;observer (s&#39;y abonner) depuis d&#39;autres classes
   public val taskList: StateFlow&lt;List&lt;Task&gt;&gt; = _taskList.asStateFlow()
@@ -272,6 +274,9 @@ val userInfo = Api.userWebService.getInfo().body()!!
           if (fetchedTasks != null) _taskList.value = fetchedTasks
       }
   }
+
+  suspend fun createOrUpdate(...)
+  suspend fun delete(...)
 }
 </code></pre>
 <aside class="special"><p>Le but d&#39;un Repository est d&#39;exposer des données venant d&#39;une ou plusieurs sources de données (ex: DB locale et API distante)</p>
@@ -287,6 +292,8 @@ val userInfo = Api.userWebService.getInfo().body()!!
 <li>Dans <code>onResume()</code>, utilisez le repository pour rafraîchir la liste de tasks</li>
 <li>Dans <code>onViewCreated()</code>, &#34;abonnez&#34; le fragment au <code>StateFlow</code> du repository et mettez à jour la liste et l&#39;<code>adapter</code> dans la lambda de retour</li>
 </ul>
+<aside class="warning"><p> ⚠️ Attention ici au moment de choisir l&#39;import de `.collect` sélectionnez bien celui qui est présenté avec des accolades: `collect {...}`, sinon ça ne compilera pas. </p>
+</aside>
 <pre><code language="language-kotlin" class="language-kotlin">private val tasksRepository = TasksRepository()
 
 // Dans onResume()
@@ -296,8 +303,9 @@ lifecycleScope.launch {
 
 // Dans onViewCreated()
 lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
-    tasksRepository.taskList.collect {
-          // on met à jour la liste dans l&#39;adapteur
+    tasksRepository.taskList.collect { newList -&gt;
+      // cette lambda est executée à chaque fois que la liste est mise à jour dans le repository
+      // -&gt; ici, on met à jour la liste dans l&#39;adapteur
     }
 }
 </code></pre>
@@ -311,7 +319,7 @@ lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
 suspend fun create(@Body task: Task): Response&lt;Task&gt;
 
 @PATCH(&#34;tasks/{id}&#34;)
-suspend fun update(@Body task: Task, @Path(&#34;id&#34;) id: String? = task.id): Response&lt;Task&gt;
+suspend fun update(@Body task: Task, @Path(&#34;id&#34;) id: String = task.id): Response&lt;Task&gt;
 
 // Inspirez vous d&#39;au dessus et de la doc de l&#39;API pour compléter: 
 @...(...)
@@ -323,15 +331,22 @@ suspend fun delete(@...(...) id: String): Response&lt;Unit&gt;
     
       <google-codelab-step label="Suppression, Ajout, Édition" duration="0">
         <ul>
-<li>Inspirez vous du fonctionnement de <code>refresh()</code> pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l&#39;édition (les autres sont plus simples):</li>
+<li>Inspirez vous du fonctionnement de <code>refresh()</code> pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l&#39;ajout/édition:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">suspend fun updateTask(task: Task) {
-  // TODO: appel réseau et récupération de la tache:
-  val updatedTask = ...
+<pre><code language="language-kotlin" class="language-kotlin">suspend fun createOrUpdate(task: Task) {
+  // TODO: appel réseau et récupération de la tache
+  val response = ...
+  // ...
+  val newTask = ...
+  // ...
   val oldTask = taskList.value.firstOrNull { it.id == updatedTask.id }
-  if (oldTask != null) _taskList.value = taskList.value - oldTask + updatedTask
+  if (oldTask != null) _taskList.value = taskList.value - oldTask 
+  _taskList.value = taskList.value + newTask
 }
 </code></pre>
+<ul>
+<li>Vous pouvez supprimer la <code>taskList</code> locale dans le Fragment et vérifier que vous avez bien tout remplacé par des appels au repository (et donc au serveur)</li>
+</ul>
 
 
       </google-codelab-step>

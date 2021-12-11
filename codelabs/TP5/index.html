@@ -27,21 +27,27 @@
                   environment="web"
                   feedback-link="">
     
-      <google-codelab-step label="Afficher une image distante avec Coil" duration="0">
-        <ul>
+      <google-codelab-step label="Coil" duration="0">
+        <aside class="special"><p>La lib <code>Coil</code> permet d&#39;afficher des images depuis une URL de façon efficace en gérant la taille, le cache, etc... <code>Picasso</code> et <code>Glide</code> sont les alternatives les plus utilisées.</p>
+</aside>
+<ul>
 <li>Rendez vous sur le <a href="https://coil-kt.github.io/coil/" target="_blank">repository de Coil</a> et lisez le <code>ReadMe</code></li>
 <li>Ajouter les dépendances nécessaires à <code>app/build.gradle</code></li>
-<li>Ajouter une <code>< ImageView .../></code> dans <code>fragment_tasklist.xml</code> principal qui affichera l&#39;avatar de l&#39;utilisateur</li>
-<li>Dans <code>onResume</code>, utiliser Coil pour afficher une image en passant une URL de votre choix, par exemple:</li>
+<li>Ajouter une <code>ImageView</code> qui affichera l&#39;avatar de l&#39;utilisateur dans le layout de la liste (à coté de votre <code>TextView</code> par ex)</li>
+<li>Dans <code>onResume</code>, récupérez une référence à cette vue puis utilisez Coil pour afficher une image en passant une URL de votre choix, par exemple:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">image_view.load(&#34;https://goo.gl/gEgYUd&#34;)
+<pre><code language="language-kotlin" class="language-kotlin">avatarImageView.load(&#34;https://goo.gl/gEgYUd&#34;)
 </code></pre>
 <ul>
-<li>Trouvez comment utiliser Coil pour afficher l&#39;image sous la forme d&#39;un cercle</li>
+<li>Trouvez comment l&#39;image sous la forme d&#39;un cercle avec <code>Coil</code></li>
 </ul>
-<h2 is-upgraded>Nouvelle activité</h2>
-<ul>
-<li>Créer un nouveau package <code>userinfo</code></li>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Nouvelle activité" duration="0">
+        <ul>
+<li>Créer un nouveau package <code>user</code></li>
 <li>Créez y une nouvelle activité <code>UserInfoActivity</code> et ajoutez la dans le manifest</li>
 <li>Remplir son layout:</li>
 </ul>
@@ -85,32 +91,30 @@
 <li>Prenez le temps de lire et comprendre ce pavé 🤔 :</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">private val requestPermissionLauncher =
-    registerForActivityResult(RequestPermission()) { isGranted: Boolean -&gt;
-        if (isGranted) openCamera()
+    registerForActivityResult(RequestPermission()) { accepted -&gt;
+        if (accepted) openCamera()
         else showExplanationDialog()
     }
 
-private fun requestCameraPermission() =
-    requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-
 private fun askCameraPermissionAndOpenCamera() {
+    val camPermission = Manifest.permission.CAMERA
+    val permissionStatus = checkSelfPermission(this, camPermission)
+    val isAlreadyAccepted = permissionStatus == PackageManager.PERMISSION_GRANTED
     when {
-        ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED -&gt; openCamera()
-        shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -&gt; showExplanationDialog()
-        else -&gt; requestCameraPermission()
+        isAlreadyAccepted -&gt; openCamera()
+        shouldShowRequestPermissionRationale(camPermission) -&gt; showExplanationDialog()
+        else -&gt; requestPermissionLauncher.launch(camPermission)
     }
 }
 
 private fun showExplanationDialog() {
-    AlertDialog.Builder(this).apply {
-        setMessage(&#34;On a besoin de la caméra sivouplé ! 🥺&#34;)
-        setPositiveButton(&#34;Bon, ok&#34;) { dialogInterface, _ -&gt;
-            dialogInterface.dismiss()
-        }
-        setCancelable(true)
-        show()
-    }
+    AlertDialog.Builder(this)
+        .setMessage(&#34;On a besoin de la caméra sivouplé ! 🥺&#34;)
+        .setPositiveButton(&#34;Bon, ok&#34;) { dialog, _ -&gt; dialog.dismiss() }
+        .show()
+}
+
+private fun openCamera() {
 }
 </code></pre>
 <p>➡️ C&#39;est normal que le code ne marche pas tout de suite, il manque des choses</p>
@@ -119,7 +123,7 @@ private fun showExplanationDialog() {
       </google-codelab-step>
     
       <google-codelab-step label="Ouvrir l&#39;appareil photo" duration="0">
-        <p>Pour l&#39;ouverture de la caméra, on utilise la nouvelle API:</p>
+        <p>Pour l&#39;ouverture de la caméra, on va créer un launcher, comme précédemment, mais avec autre &#34;contrat&#34;:</p>
 <pre><code language="language-kotlin" class="language-kotlin">// register
 private val takePicture = registerForActivityResult(TakePicturePreview()) { bitmap -&gt;
         val tmpFile = File.createTempFile(&#34;avatar&#34;, &#34;jpeg&#34;)
@@ -132,6 +136,8 @@ private val takePicture = registerForActivityResult(TakePicturePreview()) { bitm
 // use
 private fun openCamera() = takePicture.launch()
 </code></pre>
+<aside class="special"><p>Ici le système sous jacent va utiliser un <code>Intent</code> implicite demandant au système d&#39;ouvrir une app permettant de prendre une photo (en général l&#39;app photo par défaut)</p>
+</aside>
 <p>➡️ Il manque encore une brique !</p>
 
 
@@ -164,7 +170,8 @@ private fun convert(uri: Uri) =
 <pre><code language="language-kotlin" class="language-kotlin">    lifecycleScope.launch {
         val userInfo = ...getInfos()
         imageView.load(userInfo.avatar) {
-            error(R.drawable.ic_launcher_background) // display something when image request fails
+            // affiche une image en cas d&#39;erreur:
+            error(R.drawable.ic_launcher_background) 
         }
     }
 </code></pre>

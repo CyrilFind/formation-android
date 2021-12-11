@@ -275,7 +275,25 @@ taskList = taskList + newTask
     
       <google-codelab-step label="ListAdapter" duration="0">
         <p>Améliorer l&#39;implémentation de <code>TasksListAdapter</code> en héritant de <a href="https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter" target="_blank"><code>ListAdapter</code></a> au lieu de <code>RecyclerView.Adapter</code></p>
-<p>Il faudra notamment: créer un <code>DiffUtil.ItemCallback<Task></code> et le passer au constructeur parent, supprimer la propriété <code>taskList</code> et utiliser <code>getItem(position)</code> à la place, et vous pourrez supprimer <code>getItemCount</code> qui sera déjà implémentée pour vous (cf <a href="../slides/3%20-%20RecyclerView.html#7" target="_blank">slides</a> pour un squelette d&#39;implémentation)</p>
+<p>Il faudra notamment: créer un <code>DiffUtil.ItemCallback<Task></code> et le passer au constructeur parent, supprimer la propriété <code>taskList</code> et utiliser <code>getItem(position)</code> à la place, et vous pourrez supprimer <code>getItemCount</code> qui sera déjà implémentée pour vous</p>
+<p>Exemple:</p>
+<pre><code language="language-kotlin" class="language-kotlin">object WordsDiffCallback : DiffUtil.ItemCallback&lt;Word&gt;() {
+   override fun areItemsTheSame(oldItem: Word, newItem: Word) =
+      // are they the same &#34;entity&#34; ? (usually same id)
+   override fun areContentsTheSame(oldItem: Word, newItem: Word) =
+      // do they have the same data ? (content)
+}
+
+class WordListAdapter : ListAdapter&lt;Word, WordListAdapter.WordViewHolder&gt;(WordsDiffCallback) {
+   override fun onCreateViewHolder(...)
+   override fun onBindViewHolder(...)  // use `getItem`
+}
+
+// Usage is simpler:
+val myAdapter = WordListAdapter()
+recyclerView.adapter = myAdapter
+myAdapter.submitList(listOf(&#34;word#1&#34;, &#34;word #2&#34;))
+</code></pre>
 
 
       </google-codelab-step>
