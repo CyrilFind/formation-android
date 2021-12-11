@@ -51,9 +51,8 @@ class TasksRepository {
         return if (response.isSuccessful) response.body() else null
     }
 
-    suspend fun removeTask(task: Task) {...}
-    suspend fun createTask(task: Task) {...}
-    suspend fun updateTask(task: Task) {...}
+    suspend fun delete(task: Task) {...}
+    suspend fun createOrUpdate(task: Task) {...}
 }
 
 // Le ViewModel met à jour la liste de task qui est un StateFlow
@@ -62,12 +61,11 @@ class TaskListViewModel: ViewModel() {
     private val _taskList = MutableStateFlow<List<Task>>(emptyList())
     public val taskList: StateFlow<List<Task>> = _taskList
 
-    fun loadTasks() {
+    fun refresh() {
         viewModelScope.launch { ... }
     }
-    fun deleteTask(task: Task) {...}
-    fun addTask(task: Task) {...}
-    fun editTask(task: Task) {...}
+    fun delete(task: Task) {...}
+    fun addOrEdit(task: Task) {...}
 }
 
 // Le Fragment observe la StateFlow et met à jour la liste de l'adapter:

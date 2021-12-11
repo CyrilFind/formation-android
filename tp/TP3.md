@@ -327,11 +327,11 @@ suspend fun delete(@...(...) id: String): Response<Unit>
 ```
 
 ## Suppression, Ajout, Édition
+- Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l'ajout/édition:
 
-- Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l'édition (les autres sont plus simples):
 
 ```kotlin
-suspend fun createOrUpdateTask(task: Task) {
+suspend fun createOrUpdate(task: Task) {
   // TODO: appel réseau et récupération de la tache
   val response = ...
   // ...
@@ -342,3 +342,5 @@ suspend fun createOrUpdateTask(task: Task) {
   _taskList.value = taskList.value + newTask
 }
 ```
+
+- Vous pouvez supprimer la `taskList` locale dans le Fragment et vérifier que vous avez bien tout remplacé par des appels au repository (et donc au serveur)
