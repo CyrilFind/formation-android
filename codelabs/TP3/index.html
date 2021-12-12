@@ -97,8 +97,12 @@
 <ul>
 <li>Android Studio est à jour (&#34;Check for updates&#34;)</li>
 <li>Le Plugin Kotlin est à jour (<code>Settings > Plugins > Installed > Kotlin</code>)</li>
-<li>votre <code>kotlin_version</code> est récente (doit être défini en haut de <code><project>/.build.gradle</code>, à l&#39;heure où j&#39;écris c&#39;est <code>1.5.31</code>)</li>
+<li>votre <code>kotlin_version</code> est récente, il doit être défini en haut de <code><project>/.build.gradle</code> comme ceci (si ce n&#39;est pas le cas, ajoutez le):</li>
 </ul>
+<pre><code language="language-groovy" class="language-groovy">ext {
+  kotlin_version = &#34;1.6.0&#34; 
+}
+</code></pre>
 
 
       </google-codelab-step>
@@ -145,7 +149,7 @@
     .build()
 }
 </code></pre>
-<aside class="special"><p>Ici je vous donne tout ce code de config car ce n&#39;est pas très intéressant à chercher mais prenez quelques minutes pour lire et comprendre ce qu&#39;il fait</p>
+<aside class="special"><p>Ici je vous donne tout ce code de config car ce n&#39;est pas très intéressant à chercher mais prenez quelques minutes pour lire et comprendre ce qu&#39;il fait avant de copier-coller!</p>
 </aside>
 
 
@@ -185,6 +189,8 @@ data class UserInfo(
   suspend fun getInfo(): Response&lt;UserInfo&gt;
 }
 </code></pre>
+<aside class="special"><p><code>Response</code> est un type qui &#34;encapsule&#34; une réponse HTTP: on peut y retrouver un code de réponse, un message d&#39;erreur, etc... et un résultat: ici une instance de <code>UserInfo</code></p>
+</aside>
 <ul>
 <li>Utilisez retrofit pour créer une implémentation de ce service:</li>
 </ul>
@@ -216,7 +222,7 @@ val userInfo = Api.userWebService.getInfo().body()!!
   mySuspendMethod()
 }
 </code></pre>
-<aside class="special"><p><strong>Remarque:</strong> Un autre scope est fourni par android: <code>viewModelScope</code>, mais pour l&#39;instant on implémente tout dans les fragments comme des 🐷</p>
+<aside class="special"><p><strong>Remarque:</strong> En général ce scope sert plutôt à ce qui est visuel (ex: lancer une animation) On utilise souvent autre scope: <code>viewModelScope</code> qui est fourni par android dans les <code>ViewModel</code>, mais pour l&#39;instant on implémente tout dans les fragments comme des 🐷</p>
 </aside>
 <ul>
 <li>Afficher les données dans votre <code>TextView</code>:</li>
@@ -244,7 +250,7 @@ val userInfo = Api.userWebService.getInfo().body()!!
 </code></pre>
 <ul>
 <li>Utiliser l&#39;instance de retrofit comme précédemment pour créer une instance de <code>TasksWebService</code> dans l&#39;objet <code>Api</code></li>
-<li>Modifier <code>Task</code> pour la rendre &#34;serializable&#34; par KotlinX Serialization (i.e. inspirez vous de <code>UserInfo</code>)</li>
+<li>Modifier <code>Task</code> pour la rendre &#34;serializable&#34; par KotlinX Serialization (inspirez vous de <code>UserInfo</code>)</li>
 </ul>
 <aside class="warning"><p> ⚠️ Ici vous aurez probablement un soucis car on a fait hériter `Task` de `Serializable` mais une des annotations de KotlinX Serialisation s&#39;appelle aussi `Serializable`: pour résoudre, faites hériter explicitement de `java.io.Serializable` à la place </p>
 </aside>

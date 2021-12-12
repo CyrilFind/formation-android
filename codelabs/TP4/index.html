@@ -70,7 +70,7 @@ class TasksRepository {
     // Le web service requête le serveur
     private val webService = Api.tasksWebService
 
-    suspend fun loadTasks(): List&lt;Task&gt;? {
+    suspend fun refresh(): List&lt;Task&gt;? {
         val response = webService.getTasks()
         return if (response.isSuccessful) response.body() else null
     }
@@ -108,7 +108,7 @@ class TaskListFragment: Fragment() {
     }
 
     override fun onResume(...) {
-        viewModel.loadTasks()
+        viewModel.refresh()
     }
 }
 </code></pre>

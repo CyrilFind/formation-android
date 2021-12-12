@@ -41,7 +41,7 @@ implementation &#39;androidx.navigation:navigation-ui-ktx:2.+&#39;
         <ul>
 <li>Créer une nouvelle Activity : <code>AuthenticationActivity</code></li>
 <li>Ajoutez la dans l&#39;<code>AndroidManifest</code> et déclarez la comme étant le point d&#39;entrée de votre application (ce n&#39;est plus MainActivity)</li>
-<li>Remplacez le layout associé par cette balise <code>< FragmentContainerView...></code>:</li>
+<li>Remplacez le layout associé par cette balise <code>FragmentContainerView</code>:</li>
 </ul>
 <pre><code language="language-xml" class="language-xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;
 &lt;FragmentContainerView
@@ -54,8 +54,9 @@ implementation &#39;androidx.navigation:navigation-ui-ktx:2.+&#39;
     app:defaultNavHost=&#34;true&#34;
     app:navGraph=&#34;@navigation/nav_graph&#34; /&gt;
 </code></pre>
-<p>À partir du graphe de navigation (<code>app:navGraph="@navigation/nav_graph"</code>), le <code>NavHostFragment</code> va gérer la navigation en remplaçant le fragment à chaque changement d&#39;écran.</p>
-<p>Ce fichier de navigation n&#39;est pas encore, nous y reviendrons plus tard.</p>
+<aside class="special"><p> À partir du graphe de navigation (`app:navGraph=&#34;@navigation/nav_graph&#34;`), le `NavHostFragment` va gérer la navigation en remplaçant le fragment à chaque changement d&#39;écran. </p>
+</aside>
+<p>Ce fichier de navigation n&#39;existe pas encore, nous y reviendrons plus tard.</p>
 
 
       </google-codelab-step>
@@ -85,8 +86,8 @@ implementation &#39;androidx.navigation:navigation-ui-ktx:2.+&#39;
     
       <google-codelab-step label="Navigation" duration="0">
         <ul>
-<li>Si le fichier <code>navigation/nav_graph.xml</code> n&#39;existe pas créez le dans le dossier <code>res</code></li>
-<li>Ajouter les 3 fragments précédents</li>
+<li>Si le fichier <code>res/navigation/nav_graph.xml</code> n&#39;existe pas créez le.</li>
+<li>Ajouter les 3 fragments précédents dedans</li>
 <li>Définissez <code>AuthenticationFragment</code> comme <code>Start Destination</code> (avec l&#39;icône maison 🏠)</li>
 <li>Définissez ensuite les enchainements entre les fragments: l&#39;<code>AuthenticationFragment</code> permet d&#39;ouvrir les 2 autres</li>
 <li>Passez en mode <code>Text</code>, vous devriez remarquer 2 actions dans l&#39;<code>AuthenticationFragment</code>: elles vont permettre la navigation dans le code  grace au <code>NavController</code> avec cette syntaxe:</li>
