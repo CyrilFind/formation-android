@@ -32,7 +32,7 @@ Petits exercices pour prendre en main le langage:
 ## Google Codelabs
 
 Faire les tutos de la collection
-[Android Kotlin Fundamentals](https://developer.android.com/courses/kotlin-android-fundamentals/overview) en commençant directement à la [Lesson 2](https://developer.android.com/codelabs/kotlin-android-training-linear-layout#0)
+[Android Kotlin Fundamentals](https://developer.android.com/courses/kotlin-android-fundamentals/overview) en commençant directement à la [Lesson 2](https://developer.android.com/codelabs/kotlin-android-training-linear-layout#0)
 
 <aside class="negative">
 ⚠️ Ne restez pas bloqués sur les pages "Introduction", "Overview" des codelabs, ce sont juste des résumés de ce que vous allez faire.

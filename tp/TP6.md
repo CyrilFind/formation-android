@@ -14,7 +14,7 @@ implementation 'androidx.navigation:navigation-ui-ktx:2.+'
 
 - Créer une nouvelle Activity : `AuthenticationActivity`
 - Ajoutez la dans l'`AndroidManifest` et déclarez la comme étant le point d'entrée de votre application (ce n'est plus MainActivity)
-- Remplacez le layout associé par cette balise `< FragmentContainerView...>`:
+- Remplacez le layout associé par cette balise `FragmentContainerView`:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -29,9 +29,11 @@ implementation 'androidx.navigation:navigation-ui-ktx:2.+'
     app:navGraph="@navigation/nav_graph" />
 ```
 
+<aside class="positive">
 À partir du graphe de navigation (`app:navGraph="@navigation/nav_graph"`), le `NavHostFragment` va gérer la navigation en remplaçant le fragment à chaque changement d'écran.
+</aside>
 
-Ce fichier de navigation n'est pas encore, nous y reviendrons plus tard.
+Ce fichier de navigation n'existe pas encore, nous y reviendrons plus tard.
 
 ## Nouveaux Fragments
 
@@ -49,8 +51,8 @@ Créer 3 nouveaux fragments et leur layout:
 
 ## Navigation
 
-- Si le fichier `navigation/nav_graph.xml` n'existe pas créez le dans le dossier `res`
-- Ajouter les 3 fragments précédents
+- Si le fichier `res/navigation/nav_graph.xml` n'existe pas créez le.
+- Ajouter les 3 fragments précédents dedans
 - Définissez `AuthenticationFragment` comme `Start Destination` (avec l'icône maison 🏠)
 - Définissez ensuite les enchainements entre les fragments: l'`AuthenticationFragment` permet d'ouvrir les 2 autres
 - Passez en mode `Text`, vous devriez remarquer 2 actions dans l'`AuthenticationFragment`: elles vont permettre la navigation dans le code  grace au `NavController` avec cette syntaxe:

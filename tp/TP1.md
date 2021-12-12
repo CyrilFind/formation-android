@@ -18,7 +18,7 @@ implémenter un écran affichant une liste de tâches et permettre de créer des
 
 ## Créer un projet
 
-Vous allez créer un unique projet "fil rouge" que vous mettrez à jour au fur à mesure des TPs:
+Vous allez créer un unique projet "fil rouge" que vous mettrez à jour au fur à mesure des TPs:
 
 - Utilisez l'IDE pour créer un projet `Empty Activity`
 - Donnez lui un nom personnalisé comme `ToDoNicolasAlexandre` (⚠️ pas `TP1` SVP ⚠️)
@@ -109,7 +109,7 @@ vous pouvez aussi utiliser l'IDE pour créer les 2 fichiers à la fois: `Clic dr
 
 </aside>
 
-- Dans `TaskListFragment`, overrider la méthode `onCreateView(...)`: commencez à taper `onCrea...` et utilisez l'auto-completion de l'IDE pour vous aider (vous pouvez supprimer la ligne `super.onCreateView(...)`)
+- Dans `TaskListFragment`, overrider la méthode `onCreateView(...)`: commencez à taper `onCrea...` et utilisez l'auto-completion de l'IDE pour vous aider (vous pouvez supprimer la ligne `super.onCreateView(...)`)
 - Cette méthode vous demande de _retourner_ la `rootView` à afficher: créez la à l'aide de votre nouveau layout comme ceci:
 
 ```kotlin
@@ -198,7 +198,7 @@ Dans le `TaskListAdapter`, implémenter toutes les méthodes requises:
 
 - `getItemCount` doit renvoyer la taille de la liste de tâche à afficher
 - `onCreateViewHolder` doit retourner un nouveau `TaskViewHolder`
-  en générant un `itemView`, à partir du layout `item_task.xml`:
+  en générant un `itemView`, à partir du layout `item_task.xml`:
 
 ```kotlin
 val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
@@ -229,8 +229,8 @@ private var taskList = listOf(
 ## Ajout du FAB
 
 - Changez la root view de `fragment_task_list.xml` en ConstraintLayout en faisant un clic droit dessus en mode design
-- Ouvrez le volet "Resource Manager" à gauche, cliquez sur le "+" en haut à gauche puis "Vector Asset" puis double cliquez sur le clipart du logo android et trouvez une icone "+" (en tapant "add") puis "finish" pour ajouter une icone à vos resource
-- Ajouter un Floating Action Button (FAB) en bas à droite de ce layout et utilisez l'icone créée
+- Ouvrez le volet "Resource Manager" à gauche, cliquez sur le "+" en haut à gauche puis "Vector Asset" puis double cliquez sur le clipart du logo android et trouvez une icone "+" (en tapant "add") puis "finish" pour ajouter une icone à vos resource
+- Ajouter un Floating Action Button (FAB) en bas à droite de ce layout et utilisez l'icone créée
 - Par défaut l'icône est noire mais vous pourrez utiliser l'attribut `app:tint` du bouton pour la rendre blanche (tapez "white" et laissez l'IDE compléter)
 - Donnez des contraintes en bas et à droite de ce bouton
 
@@ -246,7 +246,7 @@ en cliquant sur l'icône "baguette magique 🪄".
 
 ## Ajout de tâche rapide
 
-Utilisez `.setOnClickListener {}` sur le FAB pour ajouter une tâche à votre liste:
+Utilisez `.setOnClickListener {}` sur le FAB pour ajouter une tâche à votre liste:
 
 ```kotlin
 // Instanciation d'un objet task avec des données préremplies:

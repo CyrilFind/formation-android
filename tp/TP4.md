@@ -32,7 +32,7 @@ Pour résumer, on va déplacer la logique de la gestion de la liste du Fragment 
 
   - Récupérer le `viewModel` grâce à `by viewModels()`
   - Supprimer le `repository` et la `taskList`
-  - Observer la valeur de `viewModel.taskList` et mettre à jour la liste de l'`adapter`
+  - Observer la valeur de `viewModel.taskList` et mettre à jour la liste de l'`adapter`
 
 - Dans `TasksRepository`, déplacez les `StateFlow` dans le `ViewModel`
 
@@ -46,7 +46,7 @@ class TasksRepository {
     // Le web service requête le serveur
     private val webService = Api.tasksWebService
 
-    suspend fun loadTasks(): List<Task>? {
+    suspend fun refresh(): List<Task>? {
         val response = webService.getTasks()
         return if (response.isSuccessful) response.body() else null
     }
@@ -84,7 +84,7 @@ class TaskListFragment: Fragment() {
     }
 
     override fun onResume(...) {
-        viewModel.loadTasks()
+        viewModel.refresh()
     }
 }
 ```

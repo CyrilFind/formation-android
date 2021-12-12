@@ -157,7 +157,7 @@ private fun convert(uri: Uri) =
 
 Actuellement, la qualité d'image récupérée de l'appareil photo est faible (car passée dans le code en bitmap)
 
-Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l'image dans un fichier...mais c'est un peu compliqué:
+Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l'image dans un fichier...mais c'est un peu compliqué:
 
 Vous devrez pour ça ajouter un `FileProvider` dans `AndroidManifest.xml`:
 

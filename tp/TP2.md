@@ -14,7 +14,7 @@ Dans le layout de vos item, ajouter un `ImageButton` qui servira à supprimer la
 
 </aside>
 
-Aidez vous des lignes de code plus bas pour réaliser un "Click Listener" à l'aide d'une lambda en suivant ces étapes:
+Aidez vous des lignes de code plus bas pour réaliser un "Click Listener" à l'aide d'une lambda en suivant ces étapes:
 
 - Dans l'adapter, ajouter une propriété `onClickDelete` de type lambda qui prends en arguments une `Task` et ne renvoie rien: `(Task) -> Unit` et l'initier à `{}` (elle ne fait rien par défaut)
 - Utilisez cette lambda dans le `onClickListener` du bouton supprimer
@@ -82,7 +82,7 @@ Toute Activity a une propriété `intent` déjà définie: ici il aura la valeur
 
 ## Ajout de tâche complet: Résultat
 
-Dans la lambda de retour de `formLauncher` récupérer cette task et l'ajouter à la liste:
+Dans la lambda de retour de `formLauncher` récupérer cette task et l'ajouter à la liste:
 
 ```kotlin
 val task = result.data?.getSerializableExtra("task") as? Task

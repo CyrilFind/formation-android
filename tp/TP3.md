@@ -76,7 +76,13 @@ En cas de soucis à ce moment là, vérifiez que:
 
 - Android Studio est à jour ("Check for updates")
 - Le Plugin Kotlin est à jour (`Settings > Plugins > Installed > Kotlin`)
-- votre `kotlin_version` est récente (doit être défini en haut de `<project>/.build.gradle`, à l'heure où j'écris c'est `1.5.31`)
+- votre `kotlin_version` est récente, il doit être défini en haut de `<project>/.build.gradle` comme ceci (si ce n'est pas le cas, ajoutez le):
+
+```groovy
+ext {
+  kotlin_version = "1.6.0" 
+}
+```
 
 ## Retrofit
 
@@ -86,7 +92,7 @@ En cas de soucis à ce moment là, vérifiez que:
 ```kotlin
 object Api {
 
-  // constantes qui serviront à faire les requêtes
+  // constantes qui serviront à faire les requêtes
   private const val BASE_URL = "https://android-tasks-api.herokuapp.com/api/"
   private const val TOKEN = "COPIEZ_VOTRE_TOKEN_ICI"
 
@@ -124,7 +130,7 @@ object Api {
 
 <aside class="positive">
 
-Ici je vous donne tout ce code de config car ce n'est pas très intéressant à chercher mais prenez quelques minutes pour lire et comprendre ce qu'il fait
+Ici je vous donne tout ce code de config car ce n'est pas très intéressant à chercher mais prenez quelques minutes pour lire et comprendre ce qu'il fait avant de copier-coller!
 </aside>
 
 ## UserInfo
@@ -169,6 +175,11 @@ interface UserWebService {
 }
 ```
 
+<aside class="positive">
+
+`Response` est un type qui "encapsule" une réponse HTTP: on peut y retrouver un code de réponse, un message d'erreur, etc... et un résultat: ici une instance de `UserInfo`
+</aside>
+
 - Utilisez retrofit pour créer une implémentation de ce service:
 
 ```kotlin
@@ -205,7 +216,8 @@ lifecycleScope.launch {
 
 <aside class="positive">
 
-**Remarque:** Un autre scope est fourni par android: `viewModelScope`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
+**Remarque:** En général ce scope sert plutôt à ce qui est visuel (ex: lancer une animation)
+On utilise souvent autre scope: `viewModelScope` qui est fourni par android dans les `ViewModel`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
 </aside>
 
 - Afficher les données dans votre `TextView`:
@@ -239,7 +251,7 @@ interface TasksWebService {
 ```
 
 - Utiliser l'instance de retrofit comme précédemment pour créer une instance de `TasksWebService` dans l'objet `Api`
-- Modifier `Task` pour la rendre "serializable" par KotlinX Serialization (i.e. inspirez vous de `UserInfo`)
+- Modifier `Task` pour la rendre "serializable" par KotlinX Serialization (inspirez vous de `UserInfo`)
 
 <aside class="negative">
 ⚠️ Ici vous aurez probablement un soucis car on a fait hériter `Task` de `Serializable` mais une des annotations de KotlinX Serialisation s'appelle aussi `Serializable`: pour résoudre, faites hériter explicitement de `java.io.Serializable` à la place
@@ -327,8 +339,8 @@ suspend fun delete(@...(...) id: String): Response<Unit>
 ```
 
 ## Suppression, Ajout, Édition
-- Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l'ajout/édition:
 
+- Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l'ajout/édition:
 
 ```kotlin
 suspend fun createOrUpdate(task: Task) {
