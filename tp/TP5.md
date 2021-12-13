@@ -70,7 +70,7 @@ avatarImageView.load("https://goo.gl/gEgYUd")
 
 private fun launchCameraWithPermission() {
     val camPermission = Manifest.permission.CAMERA
-    val permissionStatus = checkSelfPermission(requireContext(), camPermission)
+    val permissionStatus = checkSelfPermission(context, camPermission)
     val isAlreadyAccepted = permissionStatus == PackageManager.PERMISSION_GRANTED
     val isExplanationNeeded = shouldShowRequestPermissionRationale(camPermission)
     when {
@@ -82,7 +82,7 @@ private fun launchCameraWithPermission() {
 
 private fun showExplanation() {
     // ici on construit une pop-up système (Dialog) pour expliquer la nécessité de la demande de permission
-    AlertDialog.Builder(requireContext())
+    AlertDialog.Builder(context)
         .setMessage("🥺 On a besoin de la caméra, vraiment! 👉👈")
         .setPositiveButton("Bon, ok") { _, _ -> /* ouvrir les paramètres de l'app */ }
         .setNegativeButton("Nope") { dialog, _ -> dialog.dismiss() }
@@ -93,7 +93,7 @@ private fun launchAppSettings() {
     // Cet intent permet d'ouvrir les paramètres de l'app (pour modifier les permissions déjà refusées par ex)
     val intent = Intent(
         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-        Uri.fromParts("package", requireContext().packageName, null)
+        Uri.fromParts("package", context.packageName, null)
     )
     // ici pas besoin de vérifier avant car on vise un écran système:
     startActivity(intent)
@@ -153,7 +153,7 @@ private fun convert(uri: Uri): MultipartBody.Part {
     return MultipartBody.Part.createFormData(
         name = "avatar",
         filename = "temp.jpeg",
-        body = requireContext().contentResolver.openInputStream(uri)!!.readBytes().toRequestBody()
+        body = context.contentResolver.openInputStream(uri)!!.readBytes().toRequestBody()
     )
 }
 ```
