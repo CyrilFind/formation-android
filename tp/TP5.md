@@ -1,4 +1,4 @@
-# TP 5: Images
+# TP 5: Images, Permissions, Stockage
 
 ## Coil
 
@@ -59,38 +59,55 @@ avatarImageView.load("https://goo.gl/gEgYUd")
 - `AndroidManifest`: ajouter la permission `android.permission.CAMERA`
 - `UserInfoActivity` : Dans `onCreate()`, ajouter un `onClickListener` à `take_picture_button` qui appele la méthode `askCameraPermissionAndOpenCamera()`
 
-- Prenez le temps de lire et comprendre ce pavé 🤔 :
+- Lisez, utilisez et complétez ce pavé de code:
 
 ```kotlin
-private val requestPermissionLauncher =
-    registerForActivityResult(RequestPermission()) { accepted ->
-        if (accepted) openCamera()
-        else showExplanationDialog()
-    }
+ private val cameraPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { accepted ->
+            if (accepted) // lancer l'action souhaitée
+            else // afficher une explication
+        }
 
-private fun askCameraPermissionAndOpenCamera() {
+private fun launchCameraWithPermission() {
     val camPermission = Manifest.permission.CAMERA
-    val permissionStatus = checkSelfPermission(this, camPermission)
+    val permissionStatus = checkSelfPermission(requireContext(), camPermission)
     val isAlreadyAccepted = permissionStatus == PackageManager.PERMISSION_GRANTED
+    val isExplanationNeeded = shouldShowRequestPermissionRationale(camPermission)
     when {
-        isAlreadyAccepted -> openCamera()
-        shouldShowRequestPermissionRationale(camPermission) -> showExplanationDialog()
-        else -> requestPermissionLauncher.launch(camPermission)
+        isAlreadyAccepted -> // lancer l'action souhaitée
+        isExplanationNeeded -> // afficher une explication
+        else -> // lancer la demande de permission
     }
 }
 
-private fun showExplanationDialog() {
-    AlertDialog.Builder(this)
-        .setMessage("On a besoin de la caméra sivouplé ! 🥺")
-        .setPositiveButton("Bon, ok") { dialog, _ -> dialog.dismiss() }
+private fun showExplanation() {
+    // ici on construit une pop-up système (Dialog) pour expliquer la nécessité de la demande de permission
+    AlertDialog.Builder(requireContext())
+        .setMessage("🥺 On a besoin de la caméra, vraiment! 👉👈")
+        .setPositiveButton("Bon, ok") { _, _ -> /* ouvrir les paramètres de l'app */ }
+        .setNegativeButton("Nope") { dialog, _ -> dialog.dismiss() }
         .show()
 }
 
-private fun openCamera() {
+private fun launchAppSettings() {
+    // Cet intent permet d'ouvrir les paramètres de l'app (pour modifier les permissions déjà refusées par ex)
+    val intent = Intent(
+        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+        Uri.fromParts("package", requireContext().packageName, null)
+    )
+    // ici pas besoin de vérifier avant car on vise un écran système:
+    startActivity(intent)
 }
-```
 
-➡️ C'est normal que le code ne marche pas tout de suite, il manque des choses
+private fun handleImage(imageUri: Uri) {
+    // afficher l'image dans l'ImageView
+}
+
+private fun launchCamera() {
+    // à compléter à l'étape suivante
+}
+
+```
 
 ## Ouvrir l'appareil photo
 
@@ -98,7 +115,7 @@ Pour l'ouverture de la caméra, on va créer un launcher, comme précédemment, 
 
 ```kotlin
 // register
-private val takePicture = registerForActivityResult(TakePicturePreview()) { bitmap ->
+private val cameraLauncher = registerForActivityResult(TakePicturePreview()) { bitmap ->
         val tmpFile = File.createTempFile("avatar", "jpeg")
         tmpFile.outputStream().use {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
@@ -107,7 +124,9 @@ private val takePicture = registerForActivityResult(TakePicturePreview()) { bitm
     }
 
 // use
-private fun openCamera() = takePicture.launch()
+private fun launchCamera() { 
+    cameraLauncher.launch()
+}
 ```
 
 <aside class="positive">
@@ -130,82 +149,71 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response<UserInfo>
 - Ajouter une fonction pour convertir l'image en `MultipartBody.Part` afin de pouvoir l'envoyer en HTTP:
 
 ```kotlin
-// convert
-private fun convert(uri: Uri) =
-    MultipartBody.Part.createFormData(
+private fun convert(uri: Uri): MultipartBody.Part {
+    return MultipartBody.Part.createFormData(
         name = "avatar",
         filename = "temp.jpeg",
-        body = contentResolver.openInputStream(uri)!!.readBytes().toRequestBody()
+        body = requireContext().contentResolver.openInputStream(uri)!!.readBytes().toRequestBody()
     )
+}
 ```
 
-- Ajoutez une méthode `handleImage` qui utilise `updateAvatar` avec `convert`
-- Modifier la `data class UserInfo` pour ajouter un champ `avatar: String` (avec une valeur par défaut): c'est une URL qui sera renvoyée depuis le serveur
-- Enfin au chargement de l'activité, afficher l'avatar renvoyé depuis le serveur:
+- Dans `handleImage`, envoyez l'image au serveur avec `updateAvatar` et `convert`
+- Modifiez `UserInfo` pour ajouter un champ `val avatar: String?`: c'est une URL qui sera renvoyée depuis le serveur
+- Enfin, au chargement de l'activité, afficher l'avatar renvoyé depuis le serveur:
 
 ```kotlin
-    lifecycleScope.launch {
-        val userInfo = ...getInfos()
-        imageView.load(userInfo.avatar) {
-            // affiche une image en cas d'erreur:
-            error(R.drawable.ic_launcher_background) 
-        }
+lifecycleScope.launch {
+    val userInfo = ...getInfos()...
+    imageView.load(userInfo.avatar) {
+        // affiche une image par défaut en cas d'erreur:
+        error(R.drawable.ic_launcher_background) 
     }
+}
 ```
 
 ## Accéder aux fichiers locaux
 
 Actuellement, la qualité d'image récupérée de l'appareil photo est faible (car passée dans le code en bitmap)
 
-Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l'image dans un fichier...mais c'est un peu compliqué:
+Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l'image dans un fichier... mais c'est un peu compliqué alors on va [MediaStore](https://google.github.io/modernstorage/mediastore/) de la lib modernstorage (par Google)
 
-Vous devrez pour ça ajouter un `FileProvider` dans `AndroidManifest.xml`:
-
-```xml
-<provider
-    android:name="androidx.core.content.FileProvider"
-    android:authorities="${applicationId}.fileprovider"
-    android:exported="false"
-    android:grantUriPermissions="true">
-    <meta-data
-        android:name="android.support.FILE_PROVIDER_PATHS"
-        android:resource="@xml/file_paths" />
-</provider>
+```groovy
+implementation "com.google.modernstorage:modernstorage-mediastore:1.0.+"
 ```
 
-Créez `app/src/main/res/xml/file_paths.xml`:
+Dans votre nouvelle Activity:
 
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<paths >
-    <external-path name="external_files" path="."/>
-</paths>
+```kotlin
+val mediaStore by lazy { MediaStoreRepository(context) }
 ```
 
 - Vous pourrez ensuite utiliser:
 
 ```kotlin
-// create a temp file and get a uri for it
-private val photoUri by lazy {
-    FileProvider.getUriForFile(
-        this,
-        BuildConfig.APPLICATION_ID +".fileprovider",
-        File.createTempFile("avatar", ".jpeg", externalCacheDir)
+// créer une uri pour sauvegarder l'image, dans onViewCreated
+private lateinit var photoUri: Uri
 
-    )
+lifecycleScope.launchWhenStarted {
+    photoUri = mediaStore.createMediaUri(
+        filename = "picture.jpg",
+        type = FileType.IMAGE,
+        location = SharedPrimary
+    ).getOrThrow()
 }
 
 // register
-private val takePicture = registerForActivityResult(TakePicture()) { success ->
-    if (success) handleImage(photoUri)
-    else Toast.makeText(this, "Erreur ! 😢", Toast.LENGTH_LONG).show()
-}
+private val cameraLauncher =
+    registerForActivityResult(TakePicture()) { accepted ->
+        if (accepted) handleImage()
+        else Snackbar.make(requireView(), "Échec!", Snackbar.LENGTH_LONG)
+    }
 
 // use
-private fun openCamera() = takePicture.launch(photoUri)
+private fun launchCamera() { 
+    cameraLauncher.launch(photoUri)
+}
 ```
-
-- Ajouter dans le manifest la permission `android.permission.READ_EXTERNAL_STORAGE`
 
 ## Uploader une image stockée
 
@@ -213,16 +221,15 @@ Permettez à l'utilisateur d'uploader une image enregistrée sur son téléphone
 
 ```kotlin
 // register
-private val pickInGallery =
-    registerForActivityResult(GetContent()) { ... }
+private val galleryLauncher = registerForActivityResult(GetContent()) {...}
 
 // use
-pickInGallery.launch("image/*")
+galleryLauncher.launch("image/*")
 ```
 
 ## Édition infos utilisateurs
 
-- Comme précedemment, refactorisez en utilisant un `UserInfoViewModel` et un `UserInfoRepository`
+- Comme précédemment, re-factorisez en utilisant un `UserInfoViewModel` et un `UserInfoRepository`
 - Dans `UserInfoActivity`, permettre d'éditer et d'afficher les informations (nom, prénom, email) en respectant cette architecture
 - Vous aurez besoin d'ajouter ça à `UserWebService`:
 

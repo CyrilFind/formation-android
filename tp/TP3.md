@@ -79,9 +79,11 @@ En cas de soucis à ce moment là, vérifiez que:
 - votre `kotlin_version` est récente, il doit être défini en haut de `<project>/.build.gradle` comme ceci (si ce n'est pas le cas, ajoutez le):
 
 ```groovy
-ext {
-  kotlin_version = "1.6.0" 
-}
+buildscript {
+    ext {
+        kotlin_version = "1.6.0"
+    }
+// ...
 ```
 
 ## Retrofit
