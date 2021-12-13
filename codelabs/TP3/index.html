@@ -99,9 +99,11 @@
 <li>Le Plugin Kotlin est à jour (<code>Settings > Plugins > Installed > Kotlin</code>)</li>
 <li>votre <code>kotlin_version</code> est récente, il doit être défini en haut de <code><project>/.build.gradle</code> comme ceci (si ce n&#39;est pas le cas, ajoutez le):</li>
 </ul>
-<pre><code language="language-groovy" class="language-groovy">ext {
-  kotlin_version = &#34;1.6.0&#34; 
-}
+<pre><code language="language-groovy" class="language-groovy">buildscript {
+    ext {
+        kotlin_version = &#34;1.6.0&#34;
+    }
+// ...
 </code></pre>
 
 
