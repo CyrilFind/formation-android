@@ -48,11 +48,15 @@ class TasksRepository {
 
     suspend fun refresh(): List<Task>? {
         val response = webService.getTasks()
-        return if (response.isSuccessful) response.body() else null
+        if (!response.isSuccessful) {
+            Log.e("TasksRepository", "Error while fetching tasks: ${response.message()}")
+            return null
+        }
+        return response.body()
     }
 
-    suspend fun delete(task: Task) {...}
-    suspend fun createOrUpdate(task: Task) {...}
+    suspend fun delete(task: Task) : Boolean {}
+    suspend fun createOrUpdate(task: Task) : Task? {}
 }
 
 // Le ViewModel met à jour la liste de task qui est un StateFlow
@@ -93,3 +97,5 @@ class TaskListFragment: Fragment() {
 
 - Vérifier que ça fonctionne !
 - Permettre la suppression, l'ajout et l'édition des tasks du serveur avec cette archi
+
+<!-- garder le repo pareil, passer le flow au VM (+ faire un orderBy ?, ServiceLocator pour virer les activityForResult -->

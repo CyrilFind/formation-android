@@ -57,8 +57,6 @@ avatarImageView.load("https://goo.gl/gEgYUd")
 ## Demander la Permission
 
 - `AndroidManifest`: ajouter la permission `android.permission.CAMERA`
-- `UserInfoActivity` : Dans `onCreate()`, ajouter un `onClickListener` à `take_picture_button` qui appele la méthode `askCameraPermissionAndOpenCamera()`
-
 - Lisez, utilisez et complétez ce pavé de code:
 
 ```kotlin
@@ -70,7 +68,7 @@ avatarImageView.load("https://goo.gl/gEgYUd")
 
 private fun launchCameraWithPermission() {
     val camPermission = Manifest.permission.CAMERA
-    val permissionStatus = checkSelfPermission(context, camPermission)
+    val permissionStatus = checkSelfPermission(camPermission)
     val isAlreadyAccepted = permissionStatus == PackageManager.PERMISSION_GRANTED
     val isExplanationNeeded = shouldShowRequestPermissionRationale(camPermission)
     when {
@@ -82,7 +80,7 @@ private fun launchCameraWithPermission() {
 
 private fun showExplanation() {
     // ici on construit une pop-up système (Dialog) pour expliquer la nécessité de la demande de permission
-    AlertDialog.Builder(context)
+    AlertDialog.Builder(this)
         .setMessage("🥺 On a besoin de la caméra, vraiment! 👉👈")
         .setPositiveButton("Bon, ok") { _, _ -> /* ouvrir les paramètres de l'app */ }
         .setNegativeButton("Nope") { dialog, _ -> dialog.dismiss() }
@@ -93,7 +91,7 @@ private fun launchAppSettings() {
     // Cet intent permet d'ouvrir les paramètres de l'app (pour modifier les permissions déjà refusées par ex)
     val intent = Intent(
         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-        Uri.fromParts("package", context.packageName, null)
+        Uri.fromParts("package", packageName, null)
     )
     // ici pas besoin de vérifier avant car on vise un écran système:
     startActivity(intent)
@@ -106,8 +104,9 @@ private fun handleImage(imageUri: Uri) {
 private fun launchCamera() {
     // à compléter à l'étape suivante
 }
-
 ```
+
+Dans `onCreate()`, faire en sorte que le bouton correspondant ouvre la caméra (en demandant la permission)
 
 ## Ouvrir l'appareil photo
 
@@ -153,7 +152,7 @@ private fun convert(uri: Uri): MultipartBody.Part {
     return MultipartBody.Part.createFormData(
         name = "avatar",
         filename = "temp.jpeg",
-        body = context.contentResolver.openInputStream(uri)!!.readBytes().toRequestBody()
+        body = contentResolver.openInputStream(uri)!!.readBytes().toRequestBody()
     )
 }
 ```
@@ -185,7 +184,7 @@ implementation "com.google.modernstorage:modernstorage-mediastore:1.0.+"
 Dans votre nouvelle Activity:
 
 ```kotlin
-val mediaStore by lazy { MediaStoreRepository(context) }
+val mediaStore by lazy { MediaStoreRepository(this) }
 ```
 
 - Vous pourrez ensuite utiliser:
@@ -196,7 +195,7 @@ private lateinit var photoUri: Uri
 
 lifecycleScope.launchWhenStarted {
     photoUri = mediaStore.createMediaUri(
-        filename = "picture.jpg",
+        filename = "picture-${UUID.randomUUID()}.jpg",
         type = FileType.IMAGE,
         location = SharedPrimary
     ).getOrThrow()
