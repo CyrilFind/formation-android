@@ -343,13 +343,16 @@ suspend fun delete(@...(...) id: String): Response&lt;Unit&gt;
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">suspend fun createOrUpdate(task: Task) {
   // TODO: appel réseau et récupération de la tache
-  val response = ...
-  // ...
-  val newTask = ...
-  // ...
-  val oldTask = taskList.value.firstOrNull { it.id == updatedTask.id }
-  if (oldTask != null) _taskList.value = taskList.value - oldTask 
-  _taskList.value = taskList.value + newTask
+  val oldTask = taskList.value.firstOrNull { it.id == task.id }
+  val response = when {
+      oldTask != null -&gt; // update
+      else -&gt; // create
+  }
+  if (response.isSuccessful) {
+      val updatedTask = response.body()!!
+      if (oldTask != null) _taskList.value = taskList.value - oldTask
+      _taskList.value = taskList.value + updatedTask
+  }
 }
 </code></pre>
 <ul>
