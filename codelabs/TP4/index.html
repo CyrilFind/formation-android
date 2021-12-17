@@ -72,11 +72,15 @@ class TasksRepository {
 
     suspend fun refresh(): List&lt;Task&gt;? {
         val response = webService.getTasks()
-        return if (response.isSuccessful) response.body() else null
+        if (!response.isSuccessful) {
+            Log.e(&#34;TasksRepository&#34;, &#34;Error while fetching tasks: ${response.message()}&#34;)
+            return null
+        }
+        return response.body()
     }
 
-    suspend fun delete(task: Task) {...}
-    suspend fun createOrUpdate(task: Task) {...}
+    suspend fun delete(task: Task) : Boolean {}
+    suspend fun createOrUpdate(task: Task) : Task? {}
 }
 
 // Le ViewModel met à jour la liste de task qui est un StateFlow

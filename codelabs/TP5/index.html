@@ -87,7 +87,6 @@
       <google-codelab-step label="Demander la Permission" duration="0">
         <ul>
 <li><code>AndroidManifest</code>: ajouter la permission <code>android.permission.CAMERA</code></li>
-<li><code>UserInfoActivity</code> : Dans <code>onCreate()</code>, ajouter un <code>onClickListener</code> à <code>take_picture_button</code> qui appele la méthode <code>askCameraPermissionAndOpenCamera()</code></li>
 <li>Lisez, utilisez et complétez ce pavé de code:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin"> private val cameraPermissionLauncher =
@@ -98,7 +97,7 @@
 
 private fun launchCameraWithPermission() {
     val camPermission = Manifest.permission.CAMERA
-    val permissionStatus = checkSelfPermission(requireContext(), camPermission)
+    val permissionStatus = checkSelfPermission(camPermission)
     val isAlreadyAccepted = permissionStatus == PackageManager.PERMISSION_GRANTED
     val isExplanationNeeded = shouldShowRequestPermissionRationale(camPermission)
     when {
@@ -110,7 +109,7 @@ private fun launchCameraWithPermission() {
 
 private fun showExplanation() {
     // ici on construit une pop-up système (Dialog) pour expliquer la nécessité de la demande de permission
-    AlertDialog.Builder(requireContext())
+    AlertDialog.Builder(this)
         .setMessage(&#34;🥺 On a besoin de la caméra, vraiment! 👉👈&#34;)
         .setPositiveButton(&#34;Bon, ok&#34;) { _, _ -&gt; /* ouvrir les paramètres de l&#39;app */ }
         .setNegativeButton(&#34;Nope&#34;) { dialog, _ -&gt; dialog.dismiss() }
@@ -121,7 +120,7 @@ private fun launchAppSettings() {
     // Cet intent permet d&#39;ouvrir les paramètres de l&#39;app (pour modifier les permissions déjà refusées par ex)
     val intent = Intent(
         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-        Uri.fromParts(&#34;package&#34;, requireContext().packageName, null)
+        Uri.fromParts(&#34;package&#34;, packageName, null)
     )
     // ici pas besoin de vérifier avant car on vise un écran système:
     startActivity(intent)
@@ -134,8 +133,8 @@ private fun handleImage(imageUri: Uri) {
 private fun launchCamera() {
     // à compléter à l&#39;étape suivante
 }
-
 </code></pre>
+<p>Dans <code>onCreate()</code>, faire en sorte que le bouton correspondant ouvre la caméra (en demandant la permission)</p>
 
 
       </google-codelab-step>
@@ -178,7 +177,7 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response&lt;UserInfo
     return MultipartBody.Part.createFormData(
         name = &#34;avatar&#34;,
         filename = &#34;temp.jpeg&#34;,
-        body = requireContext().contentResolver.openInputStream(uri)!!.readBytes().toRequestBody()
+        body = contentResolver.openInputStream(uri)!!.readBytes().toRequestBody()
     )
 }
 </code></pre>
@@ -205,7 +204,7 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response&lt;UserInfo
 <pre><code language="language-groovy" class="language-groovy">implementation &#34;com.google.modernstorage:modernstorage-mediastore:1.0.+&#34;
 </code></pre>
 <p>Dans votre nouvelle Activity:</p>
-<pre><code language="language-kotlin" class="language-kotlin">val mediaStore by lazy { MediaStoreRepository(context) }
+<pre><code language="language-kotlin" class="language-kotlin">val mediaStore by lazy { MediaStoreRepository(this) }
 </code></pre>
 <ul>
 <li>Vous pourrez ensuite utiliser:</li>
@@ -215,7 +214,7 @@ private lateinit var photoUri: Uri
 
 lifecycleScope.launchWhenStarted {
     photoUri = mediaStore.createMediaUri(
-        filename = &#34;picture.jpg&#34;,
+        filename = &#34;picture-${UUID.randomUUID()}.jpg&#34;,
         type = FileType.IMAGE,
         location = SharedPrimary
     ).getOrThrow()
