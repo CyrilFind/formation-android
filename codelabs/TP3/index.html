@@ -66,24 +66,23 @@
 <li>Dans <code>dependencies {...}</code>, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l&#39;IDE vous le propose):</li>
 </ul>
 <pre><code language="language-groovy" class="language-groovy">  // Retrofit
-  implementation &#39;com.squareup.retrofit2:retrofit:2.+&#39;
-  implementation &#39;com.squareup.okhttp3:logging-interceptor:5.+&#39;
+  implementation &#39;com.squareup.retrofit2:retrofit:2.9.0&#39;
+  implementation &#39;com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3&#39;
 
   // KotlinX Serialization
-  implementation &#34;org.jetbrains.kotlinx:kotlinx-serialization-json:1.+&#34;
-  implementation &#39;com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.+&#39;
+  implementation &#39;org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2&#39;
+  implementation &#39;com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0&#39;
 
   // Coroutines
-  implementation &#34;org.jetbrains.kotlinx:kotlinx-coroutines-core:1.+&#34;
-  implementation &#34;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.+&#34;
+  implementation &#39;org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0&#39;
+  implementation &#39;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0&#39;
 
   // Lifecycle
-  implementation &#34;androidx.lifecycle:lifecycle-extensions:2.+&#34;
-  implementation &#34;androidx.lifecycle:lifecycle-runtime-ktx:2.+&#34;
-  implementation &#34;androidx.lifecycle:lifecycle-viewmodel-ktx:2.+&#34;
+  implementation &#39;androidx.lifecycle:lifecycle-extensions:2.2.0&#39;
+  implementation &#39;androidx.lifecycle:lifecycle-runtime-ktx:2.4.0&#39;
+  implementation &#39;androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0&#39;
+  implementation &#39;androidx.legacy:legacy-support-v4:1.0.0&#39;
 </code></pre>
-<aside class="warning"><p>L&#39;IDE va râler, et à raison, car on devrait utiliser des versions spécifiques (ex: <code>2.1.0</code>) mais c&#39;est pour être sûr d&#39;avoir les dernières versions majeures disponibles chaque année</p>
-</aside>
 <ul>
 <li>Tout en haut ajoutez le plugin de sérialisation:</li>
 </ul>

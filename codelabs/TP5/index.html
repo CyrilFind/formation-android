@@ -200,7 +200,7 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response&lt;UserInfo
     
       <google-codelab-step label="Accéder aux fichiers locaux" duration="0">
         <p>Actuellement, la qualité d&#39;image récupérée de l&#39;appareil photo est faible (car passée dans le code en bitmap)</p>
-<p>Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l&#39;image dans un fichier... mais c&#39;est un peu compliqué alors on va <a href="https://google.github.io/modernstorage/mediastore/" target="_blank">MediaStore</a> de la lib modernstorage (par Google)</p>
+<p>Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l&#39;image dans un fichier... mais c&#39;est un peu compliqué alors on va utiliser <a href="https://google.github.io/modernstorage/mediastore/" target="_blank">MediaStore</a> de la lib <code>modernstorage</code> (faite par Google)</p>
 <pre><code language="language-groovy" class="language-groovy">implementation &#34;com.google.modernstorage:modernstorage-mediastore:1.0.+&#34;
 </code></pre>
 <p>Dans votre nouvelle Activity:</p>
