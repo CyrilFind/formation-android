@@ -5,9 +5,9 @@
 Dans le fichier `app/build.gradle`, ajouter si elle n'y sont pas les dépendances suivantes:
 
 ```groovy
-implementation 'androidx.core:core-ktx:1.+'
-implementation 'androidx.navigation:navigation-fragment-ktx:2.+'
-implementation 'androidx.navigation:navigation-ui-ktx:2.+'
+  implementation 'androidx.core:core-ktx:1.8.0-alpha02'
+  implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0-rc01'
+  implementation 'androidx.navigation:navigation-ui-ktx:2.4.0-rc01'
 ```
 
 ## Nouvelle Activity

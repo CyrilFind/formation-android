@@ -175,7 +175,7 @@ lifecycleScope.launch {
 
 Actuellement, la qualité d'image récupérée de l'appareil photo est faible (car passée dans le code en bitmap)
 
-Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l'image dans un fichier... mais c'est un peu compliqué alors on va [MediaStore](https://google.github.io/modernstorage/mediastore/) de la lib modernstorage (par Google)
+Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l'image dans un fichier... mais c'est un peu compliqué alors on va utiliser [MediaStore](https://google.github.io/modernstorage/mediastore/) de la lib `modernstorage` (faite par Google)
 
 ```groovy
 implementation "com.google.modernstorage:modernstorage-mediastore:1.0.+"

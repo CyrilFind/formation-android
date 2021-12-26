@@ -39,27 +39,23 @@ Dans le fichier `app/build.gradle`:
 
 ```groovy
   // Retrofit
-  implementation 'com.squareup.retrofit2:retrofit:2.+'
-  implementation 'com.squareup.okhttp3:logging-interceptor:5.+'
+  implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+  implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3'
 
   // KotlinX Serialization
-  implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.+"
-  implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.+'
+  implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2'
+  implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
 
   // Coroutines
-  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.+"
-  implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.+"
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
 
   // Lifecycle
-  implementation "androidx.lifecycle:lifecycle-extensions:2.+"
-  implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.+"
-  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.+"
+  implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+  implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
+  implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+  implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 ```
-
-<aside class="negative">
-
-L'IDE va râler, et à raison, car on devrait utiliser des versions spécifiques (ex: `2.1.0`) mais c'est pour être sûr d'avoir les dernières versions majeures disponibles chaque année
-</aside>
 
 - Tout en haut ajoutez le plugin de sérialisation:
 
