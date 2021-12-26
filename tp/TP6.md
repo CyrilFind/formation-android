@@ -44,7 +44,7 @@ Créer 3 nouveaux fragments et leurs layouts (manuellement ou avec l'IDE):
     app:navGraph="@navigation/nav_graph" />
 ```
 
-L'IDE va vous proposer (en rouge) de créer `res/navigation/nav_graph.xml` qui n'existe pas encore: c'est un graphe de navigation qui servira à définir les fragments à insérer dans cette balise.
+Créer `res/navigation/nav_graph.xml` qui n'existe pas encore (manuellement ou en suivant la suggestion de l'IDE): c'est un graphe de navigation qui servira à définir les fragments à insérer dans cette balise.
 
 ## Navigation
 
@@ -66,10 +66,10 @@ findNavController().navigate(R.id.action_authenticationFragment_to_loginFragment
 - Créer la `data class LoginResponse` qui contient un token de type `String`
 - Ajouter un nouveau call réseau dans `UserWebService`:
 
-```kotlin
-@POST("users/login")
-suspend fun login(@Body user: LoginForm): Response<LoginResponse>
-```
+  ```kotlin
+  @POST("users/login")
+  suspend fun login(@Body user: LoginForm): Response<LoginResponse>
+  ```
 
 - Dans `LoginFragment` cliquer sur "Log in", doit:
 
@@ -99,11 +99,12 @@ suspend fun login(@Body user: LoginForm): Response<LoginResponse>
 
 Le but est de remplacer le `TOKEN` en dur par celui stocké et le récupéré depuis les `SharedPreference`
 
-Une bonne pratique serait ici l'[injection de dépendance](https://en.wikipedia.org/wiki/Dependency_injection) mais pour faire simple nous allons utiliser `Api` avec un `Context` initialisé au lancement de l'app (nécessaire pour utiliser `SharedPreference`)
+Une bonne pratique serait ici l'[injection de dépendance](https://en.wikipedia.org/wiki/Dependency_injection) mais pour faire simple nous allons ajouter à `Api` un `Context` initialisé au lancement de l'app (nécessaire pour utiliser `SharedPreference`):
 
 ```kotlin
 object Api {
   // ...
+
   lateinit var appContext: Context
 
   fun setUpContext(context: Context) {
@@ -112,7 +113,7 @@ object Api {
 }
 ```
 
-- Créer une classe `App`
+- Créer une classe `App`:
 
 ```kotlin
 class App: Application() {
@@ -123,12 +124,13 @@ class App: Application() {
 }
 ```
 
-- Dans l'`AndroidManifest`, ajoutez l'attribut name avec votre classe `App`:
+- Dans `AndroidManifest`, on spécifie la classe à utiliser dorénavant:
 
 ```xml
-    <application
-        android:name=".App"
-    ... />
+<application
+  android:name=".App"
+  <!-- ... -->
+/>
 ```
 
 - Dans l'api, supprimez `TOKEN` pour utiliser le token stocké:
@@ -149,10 +151,10 @@ Ajouter un bouton pour se déconnecter qui efface le token dans les `SharedPrefe
 
 ## Redirection
 
-En réalité, utiliser `AuthenticationFragment` comme destination de départ n'est pas une bonne pratique: car lorsque le user relance son application, il faut lui afficher directement la liste des tâches:
+En réalité, utiliser `AuthenticationActivity` comme point de départ n'est pas une bonne pratique car lorsque le user relance son application, il faut lui afficher directement la liste des tâches:
 
-- remettez donc `MainActivity` comme destination de départ dans le Manifest
-- naviguez vers l'authentification si il n'y a pas de token sauvegardé
+- remettez donc `MainActivity` comme activité principale le Manifest
+- naviguez tout de suite vers l'authentification si il n'y a pas de token sauvegardé
 - fermez l'authentification quand le token est sauvegardé
 
 ## Ajout et Édition
@@ -163,7 +165,4 @@ Suivez les mêmes étapes pour remplacer la navigation des TDs précédents avec
 - Ajoutez `TaskListFragment` au graphe de navigation
 - Transformez `FormActivity` en `FormFragment` en adaptant les `override` et ajoutez le au graphe
 - Faites pareil pour `UserInfoActivity`
-- Pour communiquer entre Fragments vous pouvez utiliser:
-  - un `Bundle` passé en 2nd argument de `navigate()` et récupéré de l'autre côté avec `requireArguments()`
-  - les `savedStateHandle` ([exemple](https://stackoverflow.com/a/62320979/3466492))
-  - en faisant `by activityViewModels()` ou `by navGraphViewModels(R.id.nav_graph)` au lieu de `by viewModels()` vous pouvez partager une instance unique d'un ViewModel au sein des Fragments d'une même Activity ce qui évite des allers-retours de données entre fragments
+- Pour communiquer entre Fragments vous pouvez utiliser les `savedStateHandle` ([exemple](https://stackoverflow.com/a/62320979/3466492))
