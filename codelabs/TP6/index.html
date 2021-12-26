@@ -78,7 +78,7 @@
     app:defaultNavHost=&#34;true&#34;
     app:navGraph=&#34;@navigation/nav_graph&#34; /&gt;
 </code></pre>
-<p>L&#39;IDE va vous proposer (en rouge) de créer <code>res/navigation/nav_graph.xml</code> qui n&#39;existe pas encore: c&#39;est un graphe de navigation qui servira à définir les fragments à insérer dans cette balise.</p>
+<p>Créer <code>res/navigation/nav_graph.xml</code> qui n&#39;existe pas encore (manuellement ou en suivant la suggestion de l&#39;IDE): c&#39;est un graphe de navigation qui servira à définir les fragments à insérer dans cette balise.</p>
 
 
       </google-codelab-step>
@@ -104,12 +104,10 @@
         <ul>
 <li>Créer la <code>data class LoginForm</code> qui contient un email et un password de type <code>String</code></li>
 <li>Créer la <code>data class LoginResponse</code> qui contient un token de type <code>String</code></li>
-<li>Ajouter un nouveau call réseau dans <code>UserWebService</code>:</li>
-</ul>
-<pre><code language="language-kotlin" class="language-kotlin">@POST(&#34;users/login&#34;)
+<li>Ajouter un nouveau call réseau dans <code>UserWebService</code>:<pre><code language="language-kotlin" class="language-kotlin">@POST(&#34;users/login&#34;)
 suspend fun login(@Body user: LoginForm): Response&lt;LoginResponse&gt;
 </code></pre>
-<ul>
+</li>
 <li>Dans <code>LoginFragment</code> cliquer sur &#34;Log in&#34;, doit:<ul>
 <li>Vérifier que les champs sont remplis</li>
 <li>Créer une instance de <code>LoginForm</code></li>
@@ -138,9 +136,10 @@ PreferenceManager.getDefaultSharedPreferences(context).edit {
     
       <google-codelab-step label="Refacto de l&#39;API" duration="0">
         <p>Le but est de remplacer le <code>TOKEN</code> en dur par celui stocké et le récupéré depuis les <code>SharedPreference</code></p>
-<p>Une bonne pratique serait ici l&#39;<a href="https://en.wikipedia.org/wiki/Dependency_injection" target="_blank">injection de dépendance</a> mais pour faire simple nous allons utiliser <code>Api</code> avec un <code>Context</code> initialisé au lancement de l&#39;app (nécessaire pour utiliser <code>SharedPreference</code>)</p>
+<p>Une bonne pratique serait ici l&#39;<a href="https://en.wikipedia.org/wiki/Dependency_injection" target="_blank">injection de dépendance</a> mais pour faire simple nous allons ajouter à <code>Api</code> un <code>Context</code> initialisé au lancement de l&#39;app (nécessaire pour utiliser <code>SharedPreference</code>):</p>
 <pre><code language="language-kotlin" class="language-kotlin">object Api {
   // ...
+
   lateinit var appContext: Context
 
   fun setUpContext(context: Context) {
@@ -149,7 +148,7 @@ PreferenceManager.getDefaultSharedPreferences(context).edit {
 }
 </code></pre>
 <ul>
-<li>Créer une classe <code>App</code></li>
+<li>Créer une classe <code>App</code>:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">class App: Application() {
     override fun onCreate() {
@@ -159,11 +158,12 @@ PreferenceManager.getDefaultSharedPreferences(context).edit {
 }
 </code></pre>
 <ul>
-<li>Dans l&#39;<code>AndroidManifest</code>, ajoutez l&#39;attribut name avec votre classe <code>App</code>:</li>
+<li>Dans <code>AndroidManifest</code>, on spécifie la classe à utiliser dorénavant:</li>
 </ul>
-<pre><code language="language-xml" class="language-xml">    &lt;application
-        android:name=&#34;.App&#34;
-    ... /&gt;
+<pre><code language="language-xml" class="language-xml">&lt;application
+  android:name=&#34;.App&#34;
+  &lt;!-- ... --&gt;
+/&gt;
 </code></pre>
 <ul>
 <li>Dans l&#39;api, supprimez <code>TOKEN</code> pour utiliser le token stocké:</li>
@@ -190,10 +190,10 @@ PreferenceManager.getDefaultSharedPreferences(context).edit {
       </google-codelab-step>
     
       <google-codelab-step label="Redirection" duration="0">
-        <p>En réalité, utiliser <code>AuthenticationFragment</code> comme destination de départ n&#39;est pas une bonne pratique: car lorsque le user relance son application, il faut lui afficher directement la liste des tâches:</p>
+        <p>En réalité, utiliser <code>AuthenticationActivity</code> comme point de départ n&#39;est pas une bonne pratique car lorsque le user relance son application, il faut lui afficher directement la liste des tâches:</p>
 <ul>
-<li>remettez donc <code>MainActivity</code> comme destination de départ dans le Manifest</li>
-<li>naviguez vers l&#39;authentification si il n&#39;y a pas de token sauvegardé</li>
+<li>remettez donc <code>MainActivity</code> comme activité principale le Manifest</li>
+<li>naviguez tout de suite vers l&#39;authentification si il n&#39;y a pas de token sauvegardé</li>
 <li>fermez l&#39;authentification quand le token est sauvegardé</li>
 </ul>
 
@@ -207,12 +207,7 @@ PreferenceManager.getDefaultSharedPreferences(context).edit {
 <li>Ajoutez <code>TaskListFragment</code> au graphe de navigation</li>
 <li>Transformez <code>FormActivity</code> en <code>FormFragment</code> en adaptant les <code>override</code> et ajoutez le au graphe</li>
 <li>Faites pareil pour <code>UserInfoActivity</code></li>
-<li>Pour communiquer entre Fragments vous pouvez utiliser: <ul>
-<li>un <code>Bundle</code> passé en 2nd argument de <code>navigate()</code> et récupéré de l&#39;autre côté avec <code>requireArguments()</code></li>
-<li>les <code>savedStateHandle</code> (<a href="https://stackoverflow.com/a/62320979/3466492" target="_blank">exemple</a>)</li>
-<li>en faisant <code>by activityViewModels()</code> ou <code>by navGraphViewModels(R.id.nav_graph)</code> au lieu de <code>by viewModels()</code> vous pouvez partager une instance unique d&#39;un ViewModel au sein des Fragments d&#39;une même Activity ce qui évite des allers-retours de données entre fragments</li>
-</ul>
-</li>
+<li>Pour communiquer entre Fragments vous pouvez utiliser les <code>savedStateHandle</code> (<a href="https://stackoverflow.com/a/62320979/3466492" target="_blank">exemple</a>)</li>
 </ul>
 
 
