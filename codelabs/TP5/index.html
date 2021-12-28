@@ -209,27 +209,29 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response&lt;UserInfo
 <ul>
 <li>Vous pourrez ensuite utiliser:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">// créer une uri pour sauvegarder l&#39;image, dans onViewCreated
+<pre><code language="language-kotlin" class="language-kotlin">// créer un launcher pour la caméra
+private val cameraLauncher =
+    registerForActivityResult(TakePicture()) { accepted -&gt;
+        val view = // n&#39;importe quelle vue (ex: un bouton, binding.root, window.decorView, ...)
+        if (accepted) handleImage()
+        else Snackbar.make(view, &#34;Échec!&#34;, Snackbar.LENGTH_LONG).show() 
+    }
+
+// utiliser
+private fun launchCamera() { 
+    cameraLauncher.launch(photoUri)
+}
+
+// stocker une uri pour sauvegarder l&#39;image:
 private lateinit var photoUri: Uri
 
+// initialiser l&#39;uri dans onCreate:
 lifecycleScope.launchWhenStarted {
     photoUri = mediaStore.createMediaUri(
         filename = &#34;picture-${UUID.randomUUID()}.jpg&#34;,
         type = FileType.IMAGE,
         location = SharedPrimary
     ).getOrThrow()
-}
-
-// register
-private val cameraLauncher =
-    registerForActivityResult(TakePicture()) { accepted -&gt;
-        if (accepted) handleImage()
-        else Snackbar.make(requireView(), &#34;Échec!&#34;, Snackbar.LENGTH_LONG)
-    }
-
-// use
-private fun launchCamera() { 
-    cameraLauncher.launch(photoUri)
 }
 </code></pre>
 
