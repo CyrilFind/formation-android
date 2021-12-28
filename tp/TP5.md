@@ -190,27 +190,29 @@ val mediaStore by lazy { MediaStoreRepository(this) }
 - Vous pourrez ensuite utiliser:
 
 ```kotlin
-// créer une uri pour sauvegarder l'image, dans onViewCreated
+// créer un launcher pour la caméra
+private val cameraLauncher =
+    registerForActivityResult(TakePicture()) { accepted ->
+        val view = // n'importe quelle vue (ex: un bouton, binding.root, window.decorView, ...)
+        if (accepted) handleImage()
+        else Snackbar.make(view, "Échec!", Snackbar.LENGTH_LONG).show() 
+    }
+
+// utiliser
+private fun launchCamera() { 
+    cameraLauncher.launch(photoUri)
+}
+
+// stocker une uri pour sauvegarder l'image:
 private lateinit var photoUri: Uri
 
+// initialiser l'uri dans onCreate:
 lifecycleScope.launchWhenStarted {
     photoUri = mediaStore.createMediaUri(
         filename = "picture-${UUID.randomUUID()}.jpg",
         type = FileType.IMAGE,
         location = SharedPrimary
     ).getOrThrow()
-}
-
-// register
-private val cameraLauncher =
-    registerForActivityResult(TakePicture()) { accepted ->
-        if (accepted) handleImage()
-        else Snackbar.make(requireView(), "Échec!", Snackbar.LENGTH_LONG)
-    }
-
-// use
-private fun launchCamera() { 
-    cameraLauncher.launch(photoUri)
 }
 ```
 
