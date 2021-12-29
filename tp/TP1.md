@@ -134,9 +134,9 @@ private val taskList = listOf("Task 1", "Task 2", "Task 3")
 
 ```kotlin
 // l'IDE va râler ici car on a pas encore implémenté les méthodes nécessaires
-class TaskListAdapter) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
+class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 
-  var taskList: List<String>
+  var currentList: List<String>
 
   // on utilise `inner` ici afin d'avoir accès aux propriétés de l'adapter directement
   inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -160,7 +160,7 @@ class TaskListAdapter) : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() 
 
 ```kotlin
 val adapter = TaskListAdapter() // ne marche pas pour l'instant
-adapter.tasklist = taskList
+adapter.currentList = taskList
 ```
 
 - assignez cet adapter à votre recyclerView
@@ -264,7 +264,7 @@ Ce n'est pas idéal: on devrait plutôt utiliser un `ListAdapter`, c'est l'étap
 
 Améliorer l'implémentation de `TasksListAdapter` en héritant de [`ListAdapter`](https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter) au lieu de `RecyclerView.Adapter`
 
-Il faudra notamment: créer un `DiffUtil.ItemCallback<Task>` et le passer au constructeur parent, supprimer la propriété `taskList` et utiliser `getItem(position)` à la place, et vous pourrez supprimer `getItemCount` qui sera déjà implémentée pour vous
+Il faudra notamment: créer un `DiffUtil.ItemCallback<Task>` et le passer au constructeur parent, supprimer `getItemCount` qui sera déjà implémentée pour vous et supprimer la propriété `currentList` et utiliser `getItem(position)` à la place
 
 Exemple:
 
