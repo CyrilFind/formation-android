@@ -148,9 +148,9 @@ implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
 <li>Dans un nouveau fichier <code>TaskListAdapter.kt</code>, créez 2 nouvelles classes: <code>TaskListAdapter</code> et <code>TaskViewHolder</code>:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">// l&#39;IDE va râler ici car on a pas encore implémenté les méthodes nécessaires
-class TaskListAdapter) : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&gt;() {
+class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&gt;() {
 
-  var taskList: List&lt;String&gt;
+  var currentList: List&lt;String&gt;
 
   // on utilise `inner` ici afin d&#39;avoir accès aux propriétés de l&#39;adapter directement
   inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -172,7 +172,7 @@ class TaskListAdapter) : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&
 <li>créez un <code>adapter</code> et passez lui la liste actuelle:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val adapter = TaskListAdapter() // ne marche pas pour l&#39;instant
-adapter.tasklist = taskList
+adapter.currentList = taskList
 </code></pre>
 <ul>
 <li>assignez cet adapter à votre recyclerView</li>
@@ -275,7 +275,7 @@ taskList = taskList + newTask
     
       <google-codelab-step label="ListAdapter" duration="0">
         <p>Améliorer l&#39;implémentation de <code>TasksListAdapter</code> en héritant de <a href="https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter" target="_blank"><code>ListAdapter</code></a> au lieu de <code>RecyclerView.Adapter</code></p>
-<p>Il faudra notamment: créer un <code>DiffUtil.ItemCallback<Task></code> et le passer au constructeur parent, supprimer la propriété <code>taskList</code> et utiliser <code>getItem(position)</code> à la place, et vous pourrez supprimer <code>getItemCount</code> qui sera déjà implémentée pour vous</p>
+<p>Il faudra notamment: créer un <code>DiffUtil.ItemCallback<Task></code> et le passer au constructeur parent, supprimer <code>getItemCount</code> qui sera déjà implémentée pour vous et supprimer la propriété <code>currentList</code> et utiliser <code>getItem(position)</code> à la place</p>
 <p>Exemple:</p>
 <pre><code language="language-kotlin" class="language-kotlin">object WordsDiffCallback : DiffUtil.ItemCallback&lt;Word&gt;() {
    override fun areItemsTheSame(oldItem: Word, newItem: Word) =
