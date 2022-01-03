@@ -32,9 +32,3 @@ Afin de connaître les fondamentaux du développement Android et notamment:
 - [scrcpy](https://github.com/Genymobile/scrcpy)
 
 contact: <cyrilfind@gmail.com>
-
----
-
-## Résolution de problèmes
-
-- Signature Licence: aller dans SDK Manager (petit cube en haut à droite) > SDK Tools > cocher le premier élément (il y a un "-") et tout valider et accepter

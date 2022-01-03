@@ -5,6 +5,7 @@
 <aside class="positive">
 
 La lib `Coil` permet d'afficher des images depuis une URL de façon efficace en gérant la taille, le cache, etc... `Picasso` et `Glide` sont les alternatives les plus utilisées.
+
 </aside>
 
 - Rendez vous sur le [repository de Coil](https://coil-kt.github.io/coil/) et lisez le `ReadMe`
@@ -61,7 +62,7 @@ avatarImageView.load("https://goo.gl/gEgYUd")
 
 ```kotlin
  private val cameraPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { accepted ->
+        registerForActivityResult(RequestPermission()) { accepted ->
             if (accepted) // lancer l'action souhaitée
             else // afficher une explication
         }
@@ -123,7 +124,7 @@ private val cameraLauncher = registerForActivityResult(TakePicturePreview()) { b
     }
 
 // use
-private fun launchCamera() { 
+private fun launchCamera() {
     cameraLauncher.launch()
 }
 ```
@@ -131,6 +132,7 @@ private fun launchCamera() {
 <aside class="positive">
 
 Ici le système sous jacent va utiliser un `Intent` implicite demandant au système d'ouvrir une app permettant de prendre une photo (en général l'app photo par défaut)
+
 </aside>
 
 ➡️ Il manque encore une brique !
@@ -166,7 +168,7 @@ lifecycleScope.launch {
     val userInfo = ...getInfos()...
     imageView.load(userInfo.avatar) {
         // affiche une image par défaut en cas d'erreur:
-        error(R.drawable.ic_launcher_background) 
+        error(R.drawable.ic_launcher_background)
     }
 }
 ```
@@ -195,25 +197,41 @@ private val cameraLauncher =
     registerForActivityResult(TakePicture()) { accepted ->
         val view = // n'importe quelle vue (ex: un bouton, binding.root, window.decorView, ...)
         if (accepted) handleImage()
-        else Snackbar.make(view, "Échec!", Snackbar.LENGTH_LONG).show() 
+        else Snackbar.make(view, "Échec!", Snackbar.LENGTH_LONG).show()
     }
 
+
 // utiliser
-private fun launchCamera() { 
-    cameraLauncher.launch(photoUri)
-}
-
-// stocker une uri pour sauvegarder l'image:
 private lateinit var photoUri: Uri
-
-// initialiser l'uri dans onCreate:
-lifecycleScope.launchWhenStarted {
-    photoUri = mediaStore.createMediaUri(
-        filename = "picture-${UUID.randomUUID()}.jpg",
-        type = FileType.IMAGE,
-        location = SharedPrimary
-    ).getOrThrow()
+private fun launchCamera() {
+    lifecycleScope.launch {
+        photoUri = mediaStore.createMediaUri(
+            filename = "picture-${UUID.randomUUID()}.jpg",
+            type = FileType.IMAGE,
+            location = SharedPrimary
+        ).getOrThrow()
+        cameraLauncher.launch(photoUri)
+    }
 }
+```
+
+Afin de gérer Android 9 et antérieurs, il faut également avoir la permission `android.permission.WRITE_EXTERNAL_STORAGE`: ajouter la dans `AndroidManifest.xml` et adaptez le launcher avec `RequestMultiplePermissions`:
+
+```kotlin
+ private val permissionAndCameraLauncher = registerForActivityResult(RequestMultiplePermissions()) { results ->
+     // pour simplifier on ne fait rien ici, il faudra que le user re-clique sur le bouton
+ }
+
+ private fun launchCameraWithPermission() {
+        // ...
+        val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        when {
+            mediaStore.canWriteSharedEntries() && isAlreadyAccepted ->  ...
+            // ... 
+            else -> permissionAndCameraLauncher.launch(arrayOf(camPermission, storagePermission))
+        }
+    }
+
 ```
 
 ## Uploader une image stockée
