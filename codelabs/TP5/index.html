@@ -90,7 +90,7 @@
 <li>Lisez, utilisez et complétez ce pavé de code:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin"> private val cameraPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { accepted -&gt;
+        registerForActivityResult(RequestPermission()) { accepted -&gt;
             if (accepted) // lancer l&#39;action souhaitée
             else // afficher une explication
         }
@@ -151,7 +151,7 @@ private val cameraLauncher = registerForActivityResult(TakePicturePreview()) { b
     }
 
 // use
-private fun launchCamera() { 
+private fun launchCamera() {
     cameraLauncher.launch()
 }
 </code></pre>
@@ -190,7 +190,7 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response&lt;UserInfo
     val userInfo = ...getInfos()...
     imageView.load(userInfo.avatar) {
         // affiche une image par défaut en cas d&#39;erreur:
-        error(R.drawable.ic_launcher_background) 
+        error(R.drawable.ic_launcher_background)
     }
 }
 </code></pre>
@@ -214,25 +214,38 @@ private val cameraLauncher =
     registerForActivityResult(TakePicture()) { accepted -&gt;
         val view = // n&#39;importe quelle vue (ex: un bouton, binding.root, window.decorView, ...)
         if (accepted) handleImage()
-        else Snackbar.make(view, &#34;Échec!&#34;, Snackbar.LENGTH_LONG).show() 
+        else Snackbar.make(view, &#34;Échec!&#34;, Snackbar.LENGTH_LONG).show()
     }
 
+
 // utiliser
-private fun launchCamera() { 
-    cameraLauncher.launch(photoUri)
-}
-
-// stocker une uri pour sauvegarder l&#39;image:
 private lateinit var photoUri: Uri
-
-// initialiser l&#39;uri dans onCreate:
-lifecycleScope.launchWhenStarted {
-    photoUri = mediaStore.createMediaUri(
-        filename = &#34;picture-${UUID.randomUUID()}.jpg&#34;,
-        type = FileType.IMAGE,
-        location = SharedPrimary
-    ).getOrThrow()
+private fun launchCamera() {
+    lifecycleScope.launch {
+        photoUri = mediaStore.createMediaUri(
+            filename = &#34;picture-${UUID.randomUUID()}.jpg&#34;,
+            type = FileType.IMAGE,
+            location = SharedPrimary
+        ).getOrThrow()
+        cameraLauncher.launch(photoUri)
+    }
 }
+</code></pre>
+<p>Afin de gérer Android 9 et antérieurs, il faut également avoir la permission <code>android.permission.WRITE_EXTERNAL_STORAGE</code>: ajouter la dans <code>AndroidManifest.xml</code> et adaptez le launcher avec <code>RequestMultiplePermissions</code>:</p>
+<pre><code language="language-kotlin" class="language-kotlin"> private val permissionAndCameraLauncher = registerForActivityResult(RequestMultiplePermissions()) { results -&gt;
+     // pour simplifier on ne fait rien ici, il faudra que le user re-clique sur le bouton
+ }
+
+ private fun launchCameraWithPermission() {
+        // ...
+        val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        when {
+            mediaStore.canWriteSharedEntries() &amp;&amp; isAlreadyAccepted -&gt;  ...
+            // ... 
+            else -&gt; permissionAndCameraLauncher.launch(arrayOf(camPermission, storagePermission))
+        }
+    }
+
 </code></pre>
 
 
