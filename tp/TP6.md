@@ -33,9 +33,7 @@ Créer 3 nouveaux fragments et leurs layouts (manuellement ou avec l'IDE):
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<FragmentContainerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<fragment
     android:id="@+id/nav_host_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -133,10 +131,10 @@ class App: Application() {
 />
 ```
 
-- Dans l'api, supprimez `TOKEN` pour utiliser le token stocké:
+- Dans `Api`, utilisez `by lazy {}` pour `retrofit` et supprimez `TOKEN` pour utiliser le token stocké:
 
 ```kotlin
-PreferenceManager.getDefaultSharedPreferences(context).getString(SHARED_PREF_TOKEN_KEY, "")
+fun getToken() = PreferenceManager.getDefaultSharedPreferences(appContext).getString(SHARED_PREF_TOKEN_KEY, "")
 ```
 
 - Tout devrait fonctionner ! 🙌

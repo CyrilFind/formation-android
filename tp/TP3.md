@@ -116,17 +116,20 @@ object Api {
       jsonSerializer.asConverterFactory("application/json".toMediaType())
 
   // permettra d'implémenter les services que nous allons créer:
-  private val retrofit = Retrofit.Builder()
-    .baseUrl(BASE_URL)
-    .client(okHttpClient)
-    .addConverterFactory(converterFactory)
-    .build()
+  private val retrofit by lazy {
+    Retrofit.Builder()
+      .baseUrl(BASE_URL)
+      .client(okHttpClient)
+      .addConverterFactory(converterFactory)
+      .build()
+    }
 }
 ```
 
 <aside class="positive">
 
 Ici je vous donne tout ce code de config car ce n'est pas très intéressant à chercher mais prenez quelques minutes pour lire et comprendre ce qu'il fait avant de copier-coller!
+
 </aside>
 
 ## UserInfo
@@ -157,7 +160,8 @@ data class UserInfo(
 
 <aside class="positive">
 
- Regardez bien les annotations ici (tout ce qui commence par `@`): elle servent à délimiter les éléments à parser pour la lib `KotlinX Serialization`
+Regardez bien les annotations ici (tout ce qui commence par `@`): elle servent à délimiter les éléments à parser pour la lib `KotlinX Serialization`
+
 </aside>
 
 ## UserWebService
@@ -174,6 +178,7 @@ interface UserWebService {
 <aside class="positive">
 
 `Response` est un type qui "encapsule" une réponse HTTP: on peut y retrouver un code de réponse, un message d'erreur, etc... et un résultat: ici une instance de `UserInfo`
+
 </aside>
 
 - Utilisez retrofit pour créer une implémentation de ce service:
@@ -190,6 +195,7 @@ object Api {
 <aside class="positive">
 
 Ici, Retrofit va créer une implémentation de l'interface `UserWebService` pour nous, en utilisant d'une part les valeurs de base configurées dans `Api` et d'autre part les annotations qui lui donnent le type de requête (ex: `GET`), la route, les types de paramètres, etc.
+
 </aside>
 
 ## Affichage
@@ -214,6 +220,7 @@ lifecycleScope.launch {
 
 **Remarque:** En général ce scope sert plutôt à ce qui est visuel (ex: lancer une animation)
 On utilise souvent autre scope: `viewModelScope` qui est fourni par android dans les `ViewModel`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
+
 </aside>
 
 - Afficher les données dans votre `TextView`:
@@ -255,7 +262,7 @@ interface TasksWebService {
 
 ## TasksRepository
 
-Créer la classe `TasksRepository`, avec une liste de tâches *Observable* grâce aux type `StateFlow` et `MutableStateFlow`:
+Créer la classe `TasksRepository`, avec une liste de tâches _Observable_ grâce aux type `StateFlow` et `MutableStateFlow`:
 
 ```kotlin
 class TasksRepository {
@@ -287,6 +294,7 @@ class TasksRepository {
 <aside class="positive">
 
 Le but d'un Repository est d'exposer des données venant d'une ou plusieurs sources de données (ex: DB locale et API distante)
+
 </aside>
 
 ## "Collecter" le Flow
@@ -329,7 +337,7 @@ suspend fun create(@Body task: Task): Response<Task>
 @PATCH("tasks/{id}")
 suspend fun update(@Body task: Task, @Path("id") id: String = task.id): Response<Task>
 
-// Inspirez vous d'au dessus et de la doc de l'API pour compléter: 
+// Inspirez vous d'au dessus et de la doc de l'API pour compléter:
 @...(...)
 suspend fun delete(@...(...) id: String): Response<Unit>
 ```

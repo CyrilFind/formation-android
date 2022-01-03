@@ -58,7 +58,8 @@ class TasksRepository {
     }
 
     suspend fun delete(task: Task) : Boolean {}
-    suspend fun createOrUpdate(task: Task) : Task? {}
+    suspend fun create(task: Task) : Task? {}
+    suspend fun update(task: Task) : Task? {}
 }
 
 // Le ViewModel met à jour la liste de task qui est un StateFlow
