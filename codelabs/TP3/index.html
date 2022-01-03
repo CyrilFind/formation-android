@@ -141,11 +141,13 @@
       jsonSerializer.asConverterFactory(&#34;application/json&#34;.toMediaType())
 
   // permettra d&#39;implémenter les services que nous allons créer:
-  private val retrofit = Retrofit.Builder()
-    .baseUrl(BASE_URL)
-    .client(okHttpClient)
-    .addConverterFactory(converterFactory)
-    .build()
+  private val retrofit by lazy {
+    Retrofit.Builder()
+      .baseUrl(BASE_URL)
+      .client(okHttpClient)
+      .addConverterFactory(converterFactory)
+      .build()
+    }
 }
 </code></pre>
 <aside class="special"><p>Ici je vous donne tout ce code de config car ce n&#39;est pas très intéressant à chercher mais prenez quelques minutes pour lire et comprendre ce qu&#39;il fait avant de copier-coller!</p>
@@ -326,7 +328,7 @@ suspend fun create(@Body task: Task): Response&lt;Task&gt;
 @PATCH(&#34;tasks/{id}&#34;)
 suspend fun update(@Body task: Task, @Path(&#34;id&#34;) id: String = task.id): Response&lt;Task&gt;
 
-// Inspirez vous d&#39;au dessus et de la doc de l&#39;API pour compléter: 
+// Inspirez vous d&#39;au dessus et de la doc de l&#39;API pour compléter:
 @...(...)
 suspend fun delete(@...(...) id: String): Response&lt;Unit&gt;
 </code></pre>

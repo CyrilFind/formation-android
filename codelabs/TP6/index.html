@@ -68,9 +68,7 @@
 <li>Remplacez le layout associé:</li>
 </ul>
 <pre><code language="language-xml" class="language-xml">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;
-&lt;FragmentContainerView
-    xmlns:android=&#34;http://schemas.android.com/apk/res/android&#34;
-    xmlns:app=&#34;http://schemas.android.com/apk/res-auto&#34;
+&lt;fragment
     android:id=&#34;@+id/nav_host_fragment&#34;
     android:layout_width=&#34;match_parent&#34;
     android:layout_height=&#34;match_parent&#34;
@@ -166,9 +164,9 @@ PreferenceManager.getDefaultSharedPreferences(context).edit {
 /&gt;
 </code></pre>
 <ul>
-<li>Dans l&#39;api, supprimez <code>TOKEN</code> pour utiliser le token stocké:</li>
+<li>Dans <code>Api</code>, utilisez <code>by lazy {}</code> pour <code>retrofit</code> et supprimez <code>TOKEN</code> pour utiliser le token stocké:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">PreferenceManager.getDefaultSharedPreferences(context).getString(SHARED_PREF_TOKEN_KEY, &#34;&#34;)
+<pre><code language="language-kotlin" class="language-kotlin">fun getToken() = PreferenceManager.getDefaultSharedPreferences(appContext).getString(SHARED_PREF_TOKEN_KEY, &#34;&#34;)
 </code></pre>
 <ul>
 <li>Tout devrait fonctionner ! 🙌</li>
