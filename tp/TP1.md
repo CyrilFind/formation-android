@@ -18,16 +18,15 @@ implémenter un écran affichant une liste de tâches et permettre de créer des
 
 ## Créer un projet
 
-Vous allez créer un unique projet "fil rouge" que vous mettrez à jour au fur à mesure des TPs:
+Vous allez créer un unique projet "fil rouge que vous mettrez à jour au fur à mesure des TPs:
 
-- Utilisez l'IDE pour créer un projet `Empty Activity`
-- Donnez lui un nom personnalisé comme `ToDoNicolasAlexandre` (⚠️ pas `TP1` SVP ⚠️)
-- Choisissez un package name (ex: `com.nicoalex.todo`)
-- Language `Kotlin`
+- Créer un nouveau projet avec une `Empty Activity`
+- Donnez lui un nom personnalisé comme `Todo NicolasAlexandre` (⚠️ pas `TP1` SVP ⚠️)
+- Choisissez un package name unique de ce genre: `com.nicoalex.todo`
+- Language: `Kotlin`
 - Minimum API Level: API 23, Android 6.0 (Marshmallow)
 - Initialisez un projet git et faites un commit initial
-- Committez régulièrement: à chaque fois que vous avez quelque chose qui compile et qui fonctionne.
-- Faites au minimum un commit à la fin de chaque TP
+- Faites des commits régulièrement: à chaque fois que vous avez quelque chose qui compile et qui fonctionne au mieux, à la fin de chaque TP au minimum.
 
 ## Ajout de Dépendances
 
@@ -55,12 +54,12 @@ android {
 
     // ...
     compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_1_8
     }
   }
 }
@@ -68,13 +67,23 @@ android {
 
 ## Gestion des fichiers
 
-Les fichiers source Java ou Kotlin sont rangés en "packages" (noté en haut de chaque classe: `package com.nicoalex.todo.nomdupackage`) qui sont aussi répliqués en tant que dossiers dans le filesystem
+📁 Les fichiers source Java ou Kotlin sont rangés en "packages" (noté en haut de chaque classe: `package com.nicoalex.todo.nomdupackage`) qui sont aussi répliqués en tant que dossiers dans le filesystem
 
-Dans le volet "Projet" (à gauche d'Android Studio), vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est "Android", mais il peut parfois être pratique de passer en "Project Files" par ex pour voir l'arborescence réelle.
+<aside class="positive">
 
-Créez un nouveau package `tasklist` dans votre package source de base:
+Dans le volet "Projet" à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est "Android" qui affiche facilement le Manifest, les fichiers source (`com.nicoalex.todo`), et les fichier resources (`res`), etc... mais il peut parfois être pratique de passer en "Project Files" par ex pour voir l'arborescence réelle.
 
-`app > java > com.nicoalex.todo > clic droit > New > package > "tasklist"`
+</aside>
+
+<aside class="negative">
+
+Ne faites pas attention aux packages surlignés en verts, qui contiennent le code des tests uniquement.
+
+</aside>
+
+- Créez un nouveau package `tasklist` à l'intérieur votre package source de base (pas à côté !),  :
+
+`app > java > com.nicoalex.todo  > clic droit > New > package > "tasklist"`
 
 Vous y mettrez tous les fichiers source (Kotlin) concernant la liste de tâches
 
@@ -86,7 +95,7 @@ Dans `activity_main.xml`, remplacez la balise `TextView` par celle ci (à adapte
 
 ```xml
  <androidx.fragment.app.FragmentContainerView
-    android:name="com.nicoalex.todo.TaskListFragment"
+    android:name="com.nicoalex.todo.tasklist.TaskListFragment"
     android:id="@+id/fragment_tasklist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -105,11 +114,12 @@ class TaskListFragment : Fragment() {}
 
 <aside class="positive">
 
-vous pouvez aussi utiliser l'IDE pour créer les 2 fichiers à la fois: `Clic droit sur le package > New > Fragment > Fragment (Blank)`
+vous pouvez aussi utiliser Android Studio pour créer les 2 fichiers à la fois: `Clic droit sur le package > New > Fragment > Fragment (Blank)`
 
 </aside>
 
 - Dans `TaskListFragment`, overrider la méthode `onCreateView(...)`: commencez à taper `onCrea...` et utilisez l'auto-completion de l'IDE pour vous aider (vous pouvez supprimer la ligne `super.onCreateView(...)`)
+
 - Cette méthode vous demande de _retourner_ la `rootView` à afficher: créez la à l'aide de votre nouveau layout comme ceci:
 
 ```kotlin
@@ -117,18 +127,23 @@ val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 ```
 
 <aside class="negative">
-⚠️ Si vous exécutez du code *avant* cette ligne `inflate`, il va crasher ou ne rien faire car votre vue n'existera pas encore
+
+⚠️ Si vous exécutez du code _avant_ cette ligne `inflate`, il va crasher ou ne rien faire car votre vue n'existera pas encore
+
 </aside>
 
-- Pour commencer, la liste des tâches sera simplement une liste de `String` que vous pouvez ajouter en propriété de votre classe `TaskListFragment`:
+<aside class="positive">
+
+`R` est un raccourci signifiant "Resource": c'est une classe générée automatiquement à partir des dossiers et fichiers créés dans `res` qui s'utilise comme ceci: `R.string.app_name`, `R.drawable.app_icon`, etc... afin de récupérer des `int` qui servent d'`id` à ces ressources et que l'on utilise dans les fonctions du framework Android (`getString`, `getDrawable`, etc...)
+</aside>
+
+- Pour l'instant, la liste des tâches sera simplement une liste de `String` locale, ajoutez la en tant que propriété de votre classe `TaskListFragment`:
 
 ```kotlin
-private val taskList = listOf("Task 1", "Task 2", "Task 3")
+private var taskList = listOf("Task 1", "Task 2", "Task 3")
 ```
 
-## RecyclerView et Adapter
-
-- Dans le layout associé à `TaskListFragment`, placez une balise `RecyclerView` (vous pouvez taper `< Recyc...>` et vous aider de l'IDE ou bien utilisez le mode visuel):
+## Adapter
 
 - Dans un nouveau fichier `TaskListAdapter.kt`, créez 2 nouvelles classes: `TaskListAdapter` et `TaskViewHolder`:
 
@@ -136,7 +151,7 @@ private val taskList = listOf("Task 1", "Task 2", "Task 3")
 // l'IDE va râler ici car on a pas encore implémenté les méthodes nécessaires
 class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 
-  var currentList: List<String>
+  var currentList: List<String> = emptyList()
 
   // on utilise `inner` ici afin d'avoir accès aux propriétés de l'adapter directement
   inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -148,26 +163,31 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 
 ```
 
-- Dans `TaskListFragment`, overridez `onViewCreated` pour y récupérer la `RecyclerView` du layout en utilisant un `findViewById`:
-
-```kotlin
-    val recyclerView = view.findViewById<RecyclerView>(R.id.id_de_votre_recycler_view)
-    recyclerView.layoutManager = ...
-```
-
-- Donnez lui un `layoutManager`: `LinearLayoutManager(context)`
-- créez un `adapter` et passez lui la liste actuelle:
+- Créez une instance de votre nouvelle classe `TaskListAdapter` et passez lui la liste actuelle:
 
 ```kotlin
 val adapter = TaskListAdapter() // ne marche pas pour l'instant
 adapter.currentList = taskList
 ```
 
-- assignez cet adapter à votre recyclerView
+## RecyclerView
+
+- Dans le layout associé à `TaskListFragment`, placez une balise `RecyclerView` (vous pouvez taper `<Recyc...` et vous aider de l'auto-complétion ou bien utilisez le mode visuel)
+
+- Dans `TaskListFragment`, overridez `onViewCreated` pour y récupérer une référence à la `RecyclerView` du layout en utilisant `findViewById`:
+
+```kotlin
+val recyclerView = view.findViewById<RecyclerView>(R.id.id_de_votre_recycler_view)
+recyclerView.layoutManager = ...
+```
+
+- Donnez lui un `layoutManager`: `LinearLayoutManager(context)`
+
+- assignez l'adapter créé précédemment à votre recyclerView
 
 ## Item View
 
-- Créer le layout `item_task.xml` correspondant à une cellule (et donc lié à `TaskViewHolder`)
+- Créer un layout `item_task.xml` qui servira à afficher chaque cellule de la liste (et donc lié à `TaskViewHolder`)
 
 ```xml
 <LinearLayout
@@ -188,11 +208,11 @@ adapter.currentList = taskList
 
 <aside class="positive">
 
-**Rappel**: l'Adapter gère le recyclage des cellules (`ViewHolder`): il en `inflate` juste assez pour remplir l'écran (coûteux) puis change seulement les données quand on scroll (peu coûteux)
+**Rappel**: l'Adapter gère le recyclage des cellules (`ViewHolder`): il `inflate` un nombre suffisant de "coquilles vides" pour remplir l'écran (car c'est coûteux) puis injecte seulement les données dedans quand on scroll (peu coûteux)
 
 </aside>
 
-Dans le `TaskListAdapter`, implémenter toutes les méthodes requises:
+Dans `TaskListAdapter`, implémenter toutes les méthodes requises:
 
 **Astuce**: Pré-remplissez votre adapter en cliquant sur le nom de votre classe (qui doit être pour l'instant soulignée en rouge) et cliquez sur l'ampoule jaune ou tapez `Alt` + `ENTER` (sinon, `CTRL` + `O` n'importe où dans la classe)
 
@@ -228,25 +248,25 @@ private var taskList = listOf(
 
 ## Ajout du FAB
 
-- Changez la root view de `fragment_task_list.xml` en ConstraintLayout en faisant un clic droit dessus en mode design
-- Ouvrez le volet "Resource Manager" à gauche, cliquez sur le "+" en haut à gauche puis "Vector Asset" puis double cliquez sur le clipart du logo android et trouvez une icone "+" (en tapant "add") puis "finish" pour ajouter une icone à vos resource
-- Ajouter un Floating Action Button (FAB) en bas à droite de ce layout et utilisez l'icone créée
-- Par défaut l'icône est noire mais vous pourrez utiliser l'attribut `app:tint` du bouton pour la rendre blanche (tapez "white" et laissez l'IDE compléter)
-- Donnez des contraintes en bas et à droite de ce bouton
+- Changez la root view de `fragment_task_list.xml` en `ConstraintLayout` en faisant un clic droit dessus en mode design
+- Ouvrez le volet `Resource Manager` à gauche, cliquez sur le `+` en haut à gauche puis `Vector Asset` puis double cliquez sur l'image du logo android et trouvez une icône `+` (en tapant `add`) puis `finish` pour ajouter une icône à vos resource
+- Ajouter un `Floating Action Button` (FAB) en bas à droite de ce layout et utilisez l'icone créée
+- Par défaut l'icône est noire mais vous pourrez utiliser l'attribut `app:tint` du bouton pour la rendre blanche (tapez `white` et laissez l'IDE compléter)
+- Donnez des contraintes en bas et à droite à ce bouton
 
 <aside class="positive">
 
-Vous pouvez configurer les contraintes à la main ou les faire deviner à l'IDE:
+Vous pouvez configurer les contraintesde plusieurs façons:
 
-- quand vous déplacez le bouton (attendez de voir apparaître des lignes pointillées) avec l'icône "Aimant 🧲" activée.
-- en fonction du placement actuel de vos vues dans l'outil visuel
-en cliquant sur l'icône "baguette magique 🪄".
+- soit manuellement,
+- soit en activant l'icône "Aimant 🧲": déplacez le bouton, attendez de voir apparaître des lignes pointillées et relâchez le .
+- soit en plaçant la vue dans l'outil visuel puis en cliquant sur l'icône "baguette magique 🪄" qui va essayer de "deviner" les contraintes qu'il faut automatiquement (ça ne marche pas toujours bien)
 
 </aside>
 
 ## Ajout de tâche rapide
 
-Utilisez `.setOnClickListener {}` sur le FAB pour ajouter une tâche à votre liste:
+Utilisez `.setOnClickListener {}` sur le FAB pour ajouter une tâche à votre liste à chaque fois qu'on clique dessus:
 
 ```kotlin
 // Instanciation d'un objet task avec des données préremplies:
@@ -256,37 +276,42 @@ taskList = taskList + newTask
 
 <aside class="negative">
 
-⚠️ pour que votre modification s'affiche, il faut passer la nouvelle liste à votre adapter puis le **[notifier](https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#notifyDataSetChanged())** de cette nouvelle donnée.
-Ce n'est pas idéal: on devrait plutôt utiliser un `ListAdapter`, c'est l'étape suivante
+⚠️ Votre modification de liste ne va pas s'afficher directement, il faut:
+
+- passer la nouvelle liste à votre adapter
+- puis le **[notifier](https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#notifyDataSetChanged())** que la donnée a changé
+
 </aside>
+
+Cette façon de "notifier" manuellement n'est pas idéale, il existe en fait une sous-classe de `RecyclerView.Adapter` qui permet de gérer cela automatiquement: `ListAdapter`
 
 ## ListAdapter
 
 Améliorer l'implémentation de `TasksListAdapter` en héritant de [`ListAdapter`](https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter) au lieu de `RecyclerView.Adapter`
 
-Il faudra notamment: créer un `DiffUtil.ItemCallback<Task>` et le passer au constructeur parent, supprimer `getItemCount` qui sera déjà implémentée pour vous et supprimer la propriété `currentList` et utiliser `getItem(position)` à la place
+Il faudra notamment: créer un `DiffUtil.ItemCallback<Task>` et le passer au constructeur parent, supprimer `getItemCount` et la propriété `currentList` car ils existent déjà dans `ListAdapter`
 
 Exemple:
 
 ```kotlin
-object WordsDiffCallback : DiffUtil.ItemCallback<Word>() {
-   override fun areItemsTheSame(oldItem: Word, newItem: Word) =
+object ItemsDiffCallback : DiffUtil.ItemCallback<Item>() {
+   override fun areItemsTheSame(oldItem: Item, newItem: Item) =
       // are they the same "entity" ? (usually same id)
-   override fun areContentsTheSame(oldItem: Word, newItem: Word) =
+   override fun areContentsTheSame(oldItem: Item, newItem: Item) =
       // do they have the same data ? (content)
 }
 
-class WordListAdapter : ListAdapter<Word, WordListAdapter.WordViewHolder>(WordsDiffCallback) {
+class ItemListAdapter : ListAdapter<Item, ItemListAdapter.ItemViewHolder>(ItemsDiffCallback) {
    override fun onCreateViewHolder(...)
    override fun onBindViewHolder(...)  // use `getItem`
 }
 
 // Usage is simpler:
-val myAdapter = WordListAdapter()
-recyclerView.adapter = myAdapter
-myAdapter.submitList(listOf("word#1", "word #2"))
+val adapter = ItemListAdapter()
+recyclerView.adapter = adapter
+adapter.submitList(listOf("Item#1", "Item #2"))
 ```
 
 ## ViewBinding
 
-Utiliser le [`ViewBinding`](https://developer.android.com/topic/libraries/view-binding) pour `inflate` les différents layouts et supprimer les `findViewByIds` (cf [slides](../slides/2%20-%20UI.html#9) pour un squelette d'implémentation)
+Utiliser le [`ViewBinding`](https://developer.android.com/topic/libraries/view-binding) pour `inflate` les différents layouts et supprimer les `findViewByIds` (cf [slides](../../slides/2%20-%20UI.html#9) pour un squelette d'implémentation)

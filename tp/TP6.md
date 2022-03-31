@@ -91,7 +91,7 @@ findNavController().navigate(R.id.action_authenticationFragment_to_loginFragment
   }
   ```
 
-  - puis afficher la liste de tâches
+  - puis naviguer vers la liste de tâches
 
 ## Refacto de l'API
 
