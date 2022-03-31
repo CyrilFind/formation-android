@@ -42,16 +42,15 @@
       </google-codelab-step>
     
       <google-codelab-step label="Créer un projet" duration="0">
-        <p>Vous allez créer un unique projet &#34;fil rouge&#34; que vous mettrez à jour au fur à mesure des TPs:</p>
+        <p>Vous allez créer un unique projet &#34;fil rouge que vous mettrez à jour au fur à mesure des TPs:</p>
 <ul>
-<li>Utilisez l&#39;IDE pour créer un projet <code>Empty Activity</code></li>
-<li>Donnez lui un nom personnalisé comme <code>ToDoNicolasAlexandre</code> (⚠️ pas <code>TP1</code> SVP ⚠️)</li>
-<li>Choisissez un package name (ex: <code>com.nicoalex.todo</code>)</li>
-<li>Language <code>Kotlin</code></li>
+<li>Créer un nouveau projet avec une <code>Empty Activity</code></li>
+<li>Donnez lui un nom personnalisé comme <code>Todo NicolasAlexandre</code> (⚠️ pas <code>TP1</code> SVP ⚠️)</li>
+<li>Choisissez un package name unique de ce genre: <code>com.nicoalex.todo</code></li>
+<li>Language: <code>Kotlin</code></li>
 <li>Minimum API Level: API 23, Android 6.0 (Marshmallow)</li>
 <li>Initialisez un projet git et faites un commit initial</li>
-<li>Committez régulièrement: à chaque fois que vous avez quelque chose qui compile et qui fonctionne.</li>
-<li>Faites au minimum un commit à la fin de chaque TP</li>
+<li>Faites des commits régulièrement: à chaque fois que vous avez quelque chose qui compile et qui fonctionne au mieux, à la fin de chaque TP au minimum.</li>
 </ul>
 
 
@@ -76,12 +75,12 @@ implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
 
     // ...
     compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = &#34;1.8&#34;
+        jvmTarget = JavaVersion.VERSION_1_8
     }
   }
 }
@@ -91,10 +90,15 @@ implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
       </google-codelab-step>
     
       <google-codelab-step label="Gestion des fichiers" duration="0">
-        <p>Les fichiers source Java ou Kotlin sont rangés en &#34;packages&#34; (noté en haut de chaque classe: <code>package com.nicoalex.todo.nomdupackage</code>) qui sont aussi répliqués en tant que dossiers dans le filesystem</p>
-<p>Dans le volet &#34;Projet&#34; (à gauche d&#39;Android Studio), vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est &#34;Android&#34;, mais il peut parfois être pratique de passer en &#34;Project Files&#34; par ex pour voir l&#39;arborescence réelle.</p>
-<p>Créez un nouveau package <code>tasklist</code> dans votre package source de base:</p>
-<p><code>app > java > com.nicoalex.todo > clic droit > New > package > "tasklist"</code></p>
+        <p>📁 Les fichiers source Java ou Kotlin sont rangés en &#34;packages&#34; (noté en haut de chaque classe: <code>package com.nicoalex.todo.nomdupackage</code>) qui sont aussi répliqués en tant que dossiers dans le filesystem</p>
+<aside class="special"><p>Dans le volet &#34;Projet&#34; à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est &#34;Android&#34; qui affiche facilement le Manifest, les fichiers source (<code>com.nicoalex.todo</code>), et les fichier resources (<code>res</code>), etc... mais il peut parfois être pratique de passer en &#34;Project Files&#34; par ex pour voir l&#39;arborescence réelle.</p>
+</aside>
+<aside class="warning"><p>Ne faites pas attention aux packages surlignés en verts, qui contiennent le code des tests uniquement.</p>
+</aside>
+<ul>
+<li>Créez un nouveau package <code>tasklist</code> à l&#39;intérieur votre package source de base (pas à côté !),  :</li>
+</ul>
+<p><code>app > java > com.nicoalex.todo  > clic droit > New > package > "tasklist"</code></p>
 <p>Vous y mettrez tous les fichiers source (Kotlin) concernant la liste de tâches</p>
 
 
@@ -104,7 +108,7 @@ implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
         <p>Cette activity va servir de conteneur de fragments:</p>
 <p>Dans <code>activity_main.xml</code>, remplacez la balise <code>TextView</code> par celle ci (à adapter):</p>
 <pre><code language="language-xml" class="language-xml"> &lt;androidx.fragment.app.FragmentContainerView
-    android:name=&#34;com.nicoalex.todo.TaskListFragment&#34;
+    android:name=&#34;com.nicoalex.todo.tasklist.TaskListFragment&#34;
     android:id=&#34;@+id/fragment_tasklist&#34;
     android:layout_width=&#34;match_parent&#34;
     android:layout_height=&#34;match_parent&#34;
@@ -123,7 +127,7 @@ implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
 <ul>
 <li>Créer le layout associé <code>fragment_task_list.xml</code> dans <code>res/layout</code></li>
 </ul>
-<aside class="special"><p>vous pouvez aussi utiliser l&#39;IDE pour créer les 2 fichiers à la fois: <code>Clic droit sur le package > New > Fragment > Fragment (Blank)</code></p>
+<aside class="special"><p>vous pouvez aussi utiliser Android Studio pour créer les 2 fichiers à la fois: <code>Clic droit sur le package > New > Fragment > Fragment (Blank)</code></p>
 </aside>
 <ul>
 <li>Dans <code>TaskListFragment</code>, overrider la méthode <code>onCreateView(...)</code>: commencez à taper <code>onCrea...</code> et utilisez l&#39;auto-completion de l&#39;IDE pour vous aider (vous pouvez supprimer la ligne <code>super.onCreateView(...)</code>)</li>
@@ -131,26 +135,27 @@ implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 </code></pre>
-<aside class="warning"><p> ⚠️ Si vous exécutez du code *avant* cette ligne `inflate`, il va crasher ou ne rien faire car votre vue n&#39;existera pas encore </p>
+<aside class="warning"><p>⚠️ Si vous exécutez du code <em>avant</em> cette ligne <code>inflate</code>, il va crasher ou ne rien faire car votre vue n&#39;existera pas encore</p>
+</aside>
+<aside class="special"><p><code>R</code> est un raccourci signifiant &#34;Resource&#34;: c&#39;est une classe générée automatiquement à partir des dossiers et fichiers créés dans <code>res</code> qui s&#39;utilise comme ceci: <code>R.string.app_name</code>, <code>R.drawable.app_icon</code>, etc... afin de récupérer des <code>int</code> qui servent d&#39;<code>id</code> à ces ressources et que l&#39;on utilise dans les fonctions du framework Android (<code>getString</code>, <code>getDrawable</code>, etc...)</p>
 </aside>
 <ul>
-<li>Pour commencer, la liste des tâches sera simplement une liste de <code>String</code> que vous pouvez ajouter en propriété de votre classe <code>TaskListFragment</code>:</li>
+<li>Pour l&#39;instant, la liste des tâches sera simplement une liste de <code>String</code> locale, ajoutez la en tant que propriété de votre classe <code>TaskListFragment</code>:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">private val taskList = listOf(&#34;Task 1&#34;, &#34;Task 2&#34;, &#34;Task 3&#34;)
+<pre><code language="language-kotlin" class="language-kotlin">private var taskList = listOf(&#34;Task 1&#34;, &#34;Task 2&#34;, &#34;Task 3&#34;)
 </code></pre>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="RecyclerView et Adapter" duration="0">
+      <google-codelab-step label="Adapter" duration="0">
         <ul>
-<li>Dans le layout associé à <code>TaskListFragment</code>, placez une balise <code>RecyclerView</code> (vous pouvez taper <code>< Recyc...></code> et vous aider de l&#39;IDE ou bien utilisez le mode visuel):</li>
 <li>Dans un nouveau fichier <code>TaskListAdapter.kt</code>, créez 2 nouvelles classes: <code>TaskListAdapter</code> et <code>TaskViewHolder</code>:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">// l&#39;IDE va râler ici car on a pas encore implémenté les méthodes nécessaires
 class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&gt;() {
 
-  var currentList: List&lt;String&gt;
+  var currentList: List&lt;String&gt; = emptyList()
 
   // on utilise `inner` ici afin d&#39;avoir accès aux propriétés de l&#39;adapter directement
   inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -162,20 +167,26 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
 
 </code></pre>
 <ul>
-<li>Dans <code>TaskListFragment</code>, overridez <code>onViewCreated</code> pour y récupérer la <code>RecyclerView</code> du layout en utilisant un <code>findViewById</code>:</li>
-</ul>
-<pre><code language="language-kotlin" class="language-kotlin">    val recyclerView = view.findViewById&lt;RecyclerView&gt;(R.id.id_de_votre_recycler_view)
-    recyclerView.layoutManager = ...
-</code></pre>
-<ul>
-<li>Donnez lui un <code>layoutManager</code>: <code>LinearLayoutManager(context)</code></li>
-<li>créez un <code>adapter</code> et passez lui la liste actuelle:</li>
+<li>Créez une instance de votre nouvelle classe <code>TaskListAdapter</code> et passez lui la liste actuelle:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val adapter = TaskListAdapter() // ne marche pas pour l&#39;instant
 adapter.currentList = taskList
 </code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="RecyclerView" duration="0">
+        <ul>
+<li>Dans le layout associé à <code>TaskListFragment</code>, placez une balise <code>RecyclerView</code> (vous pouvez taper <code><Recyc...</code> et vous aider de l&#39;auto-complétion ou bien utilisez le mode visuel)</li>
+<li>Dans <code>TaskListFragment</code>, overridez <code>onViewCreated</code> pour y récupérer une référence à la <code>RecyclerView</code> du layout en utilisant <code>findViewById</code>:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">val recyclerView = view.findViewById&lt;RecyclerView&gt;(R.id.id_de_votre_recycler_view)
+recyclerView.layoutManager = ...
+</code></pre>
 <ul>
-<li>assignez cet adapter à votre recyclerView</li>
+<li>Donnez lui un <code>layoutManager</code>: <code>LinearLayoutManager(context)</code></li>
+<li>assignez l&#39;adapter créé précédemment à votre recyclerView</li>
 </ul>
 
 
@@ -183,7 +194,7 @@ adapter.currentList = taskList
     
       <google-codelab-step label="Item View" duration="0">
         <ul>
-<li>Créer le layout <code>item_task.xml</code> correspondant à une cellule (et donc lié à <code>TaskViewHolder</code>)</li>
+<li>Créer un layout <code>item_task.xml</code> qui servira à afficher chaque cellule de la liste (et donc lié à <code>TaskViewHolder</code>)</li>
 </ul>
 <pre><code language="language-xml" class="language-xml">&lt;LinearLayout
   xmlns:android=&#34;http://schemas.android.com/apk/res/android&#34;
@@ -203,9 +214,9 @@ adapter.currentList = taskList
       </google-codelab-step>
     
       <google-codelab-step label="Implémentation du RecyclerViewAdapter" duration="0">
-        <aside class="special"><p><strong>Rappel</strong>: l&#39;Adapter gère le recyclage des cellules (<code>ViewHolder</code>): il en <code>inflate</code> juste assez pour remplir l&#39;écran (coûteux) puis change seulement les données quand on scroll (peu coûteux)</p>
+        <aside class="special"><p><strong>Rappel</strong>: l&#39;Adapter gère le recyclage des cellules (<code>ViewHolder</code>): il <code>inflate</code> un nombre suffisant de &#34;coquilles vides&#34; pour remplir l&#39;écran (car c&#39;est coûteux) puis injecte seulement les données dedans quand on scroll (peu coûteux)</p>
 </aside>
-<p>Dans le <code>TaskListAdapter</code>, implémenter toutes les méthodes requises:</p>
+<p>Dans <code>TaskListAdapter</code>, implémenter toutes les méthodes requises:</p>
 <p><strong>Astuce</strong>: Pré-remplissez votre adapter en cliquant sur le nom de votre classe (qui doit être pour l&#39;instant soulignée en rouge) et cliquez sur l&#39;ampoule jaune ou tapez <code>Alt</code> + <code>ENTER</code> (sinon, <code>CTRL</code> + <code>O</code> n&#39;importe où dans la classe)</p>
 <ul>
 <li><code>getItemCount</code> doit renvoyer la taille de la liste de tâche à afficher</li>
@@ -245,16 +256,17 @@ adapter.currentList = taskList
     
       <google-codelab-step label="Ajout du FAB" duration="0">
         <ul>
-<li>Changez la root view de <code>fragment_task_list.xml</code> en ConstraintLayout en faisant un clic droit dessus en mode design</li>
-<li>Ouvrez le volet &#34;Resource Manager&#34; à gauche, cliquez sur le &#34;+&#34; en haut à gauche puis &#34;Vector Asset&#34; puis double cliquez sur le clipart du logo android et trouvez une icone &#34;+&#34; (en tapant &#34;add&#34;) puis &#34;finish&#34; pour ajouter une icone à vos resource</li>
-<li>Ajouter un Floating Action Button (FAB) en bas à droite de ce layout et utilisez l&#39;icone créée</li>
-<li>Par défaut l&#39;icône est noire mais vous pourrez utiliser l&#39;attribut <code>app:tint</code> du bouton pour la rendre blanche (tapez &#34;white&#34; et laissez l&#39;IDE compléter)</li>
-<li>Donnez des contraintes en bas et à droite de ce bouton</li>
+<li>Changez la root view de <code>fragment_task_list.xml</code> en <code>ConstraintLayout</code> en faisant un clic droit dessus en mode design</li>
+<li>Ouvrez le volet <code>Resource Manager</code> à gauche, cliquez sur le <code>+</code> en haut à gauche puis <code>Vector Asset</code> puis double cliquez sur l&#39;image du logo android et trouvez une icône <code>+</code> (en tapant <code>add</code>) puis <code>finish</code> pour ajouter une icône à vos resource</li>
+<li>Ajouter un <code>Floating Action Button</code> (FAB) en bas à droite de ce layout et utilisez l&#39;icone créée</li>
+<li>Par défaut l&#39;icône est noire mais vous pourrez utiliser l&#39;attribut <code>app:tint</code> du bouton pour la rendre blanche (tapez <code>white</code> et laissez l&#39;IDE compléter)</li>
+<li>Donnez des contraintes en bas et à droite à ce bouton</li>
 </ul>
-<aside class="special"><p>Vous pouvez configurer les contraintes à la main ou les faire deviner à l&#39;IDE:</p>
+<aside class="special"><p>Vous pouvez configurer les contraintesde plusieurs façons:</p>
 <ul>
-<li>quand vous déplacez le bouton (attendez de voir apparaître des lignes pointillées) avec l&#39;icône &#34;Aimant 🧲&#34; activée.</li>
-<li>en fonction du placement actuel de vos vues dans l&#39;outil visuel en cliquant sur l&#39;icône &#34;baguette magique 🪄&#34;.</li>
+<li>soit manuellement,</li>
+<li>soit en activant l&#39;icône &#34;Aimant 🧲&#34;: déplacez le bouton, attendez de voir apparaître des lignes pointillées et relâchez le .</li>
+<li>soit en plaçant la vue dans l&#39;outil visuel puis en cliquant sur l&#39;icône &#34;baguette magique 🪄&#34; qui va essayer de &#34;deviner&#34; les contraintes qu&#39;il faut automatiquement (ça ne marche pas toujours bien)</li>
 </ul>
 </aside>
 
@@ -262,44 +274,49 @@ adapter.currentList = taskList
       </google-codelab-step>
     
       <google-codelab-step label="Ajout de tâche rapide" duration="0">
-        <p>Utilisez <code>.setOnClickListener {}</code> sur le FAB pour ajouter une tâche à votre liste:</p>
+        <p>Utilisez <code>.setOnClickListener {}</code> sur le FAB pour ajouter une tâche à votre liste à chaque fois qu&#39;on clique dessus:</p>
 <pre><code language="language-kotlin" class="language-kotlin">// Instanciation d&#39;un objet task avec des données préremplies:
 val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;Task ${taskList.size + 1}&#34;)
 taskList = taskList + newTask
 </code></pre>
-<aside class="warning"><p>⚠️ pour que votre modification s&#39;affiche, il faut passer la nouvelle liste à votre adapter puis le <a href="https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#notifyDataSetChanged()" target="_blank"><strong>notifier</strong></a> de cette nouvelle donnée. Ce n&#39;est pas idéal: on devrait plutôt utiliser un <code>ListAdapter</code>, c&#39;est l&#39;étape suivante</p>
+<aside class="warning"><p>⚠️ Votre modification de liste ne va pas s&#39;afficher directement, il faut:</p>
+<ul>
+<li>passer la nouvelle liste à votre adapter</li>
+<li>puis le <a href="https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#notifyDataSetChanged()" target="_blank"><strong>notifier</strong></a> que la donnée a changé</li>
+</ul>
 </aside>
+<p>Cette façon de &#34;notifier&#34; manuellement n&#39;est pas idéale, il existe en fait une sous-classe de <code>RecyclerView.Adapter</code> qui permet de gérer cela automatiquement: <code>ListAdapter</code></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="ListAdapter" duration="0">
         <p>Améliorer l&#39;implémentation de <code>TasksListAdapter</code> en héritant de <a href="https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter" target="_blank"><code>ListAdapter</code></a> au lieu de <code>RecyclerView.Adapter</code></p>
-<p>Il faudra notamment: créer un <code>DiffUtil.ItemCallback<Task></code> et le passer au constructeur parent, supprimer <code>getItemCount</code> qui sera déjà implémentée pour vous et supprimer la propriété <code>currentList</code> et utiliser <code>getItem(position)</code> à la place</p>
+<p>Il faudra notamment: créer un <code>DiffUtil.ItemCallback<Task></code> et le passer au constructeur parent, supprimer <code>getItemCount</code> et la propriété <code>currentList</code> car ils existent déjà dans <code>ListAdapter</code></p>
 <p>Exemple:</p>
-<pre><code language="language-kotlin" class="language-kotlin">object WordsDiffCallback : DiffUtil.ItemCallback&lt;Word&gt;() {
-   override fun areItemsTheSame(oldItem: Word, newItem: Word) =
+<pre><code language="language-kotlin" class="language-kotlin">object ItemsDiffCallback : DiffUtil.ItemCallback&lt;Item&gt;() {
+   override fun areItemsTheSame(oldItem: Item, newItem: Item) =
       // are they the same &#34;entity&#34; ? (usually same id)
-   override fun areContentsTheSame(oldItem: Word, newItem: Word) =
+   override fun areContentsTheSame(oldItem: Item, newItem: Item) =
       // do they have the same data ? (content)
 }
 
-class WordListAdapter : ListAdapter&lt;Word, WordListAdapter.WordViewHolder&gt;(WordsDiffCallback) {
+class ItemListAdapter : ListAdapter&lt;Item, ItemListAdapter.ItemViewHolder&gt;(ItemsDiffCallback) {
    override fun onCreateViewHolder(...)
    override fun onBindViewHolder(...)  // use `getItem`
 }
 
 // Usage is simpler:
-val myAdapter = WordListAdapter()
-recyclerView.adapter = myAdapter
-myAdapter.submitList(listOf(&#34;word#1&#34;, &#34;word #2&#34;))
+val adapter = ItemListAdapter()
+recyclerView.adapter = adapter
+adapter.submitList(listOf(&#34;Item#1&#34;, &#34;Item #2&#34;))
 </code></pre>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="ViewBinding" duration="0">
-        <p>Utiliser le <a href="https://developer.android.com/topic/libraries/view-binding" target="_blank"><code>ViewBinding</code></a> pour <code>inflate</code> les différents layouts et supprimer les <code>findViewByIds</code> (cf <a href="../slides/2%20-%20UI.html#9" target="_blank">slides</a> pour un squelette d&#39;implémentation)</p>
+        <p>Utiliser le <a href="https://developer.android.com/topic/libraries/view-binding" target="_blank"><code>ViewBinding</code></a> pour <code>inflate</code> les différents layouts et supprimer les <code>findViewByIds</code> (cf <a href="../../slides/2%20-%20UI.html#9" target="_blank">slides</a> pour un squelette d&#39;implémentation)</p>
 
 
       </google-codelab-step>

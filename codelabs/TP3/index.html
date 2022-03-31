@@ -114,38 +114,33 @@
 <li>Créer un <code>object Api</code> (ses membres et méthodes seront donc <code>static</code>):</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">object Api {
-  private const val BASE_URL = &#34;https://android-tasks-api.herokuapp.com/api/&#34;
   private const val TOKEN = &#34;COPIEZ_VOTRE_TOKEN_ICI&#34;
 
-  // client HTTP
-  private val okHttpClient by lazy {
-    OkHttpClient.Builder()
-      .addInterceptor { chain -&gt;
-        // intercepteur qui ajoute le `header` d&#39;authentification avec votre token:
-        val newRequest = chain.request().newBuilder()
-          .addHeader(&#34;Authorization&#34;, &#34;Bearer $TOKEN&#34;)
-          .build()
-        chain.proceed(newRequest)
-      }
-      .build()
-  }
-
-  // sérializeur JSON: transforme le JSON en objets kotlin et inversement
-  private val jsonSerializer = Json {
-      ignoreUnknownKeys = true
-      coerceInputValues = true
-  }
-
-  // instance de convertisseur qui parse le JSON renvoyé par le serveur:
-  private val converterFactory =
-      jsonSerializer.asConverterFactory(&#34;application/json&#34;.toMediaType())
-
-  // permettra d&#39;implémenter les services que nous allons créer:
   private val retrofit by lazy {
+    // client HTTP
+    val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .addInterceptor { chain -&gt;
+          // intercepteur qui ajoute le `header` d&#39;authentification avec votre token:
+          val newRequest = chain.request().newBuilder()
+            .addHeader(&#34;Authorization&#34;, &#34;Bearer $TOKEN&#34;)
+            .build()
+          chain.proceed(newRequest)
+        }
+        .build()
+    }
+
+    // transforme le JSON en objets kotlin et inversement
+    val jsonSerializer = Json {
+        ignoreUnknownKeys = true
+        coerceInputValues = true
+    }
+
+    // instance retrofit pour implémenter les webServices:
     Retrofit.Builder()
-      .baseUrl(BASE_URL)
+      .baseUrl(&#34;https://android-tasks-api.herokuapp.com/api/&#34;)
       .client(okHttpClient)
-      .addConverterFactory(converterFactory)
+      .addConverterFactory(jsonSerializer.asConverterFactory(&#34;application/json&#34;.toMediaType()))
       .build()
     }
 }
@@ -195,9 +190,8 @@ data class UserInfo(
 <ul>
 <li>Utilisez retrofit pour créer une implémentation de ce service:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">object Api {
-  // ...
-  val userWebService by lazy {
+<pre><code language="language-kotlin" class="language-kotlin">object Api { // ...
+  val userWebService : UserWebService by lazy {
     retrofit.create(UserWebService::class.java)
   }
 }
