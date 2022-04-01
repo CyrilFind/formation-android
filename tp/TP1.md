@@ -160,28 +160,31 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
     }
   }
 }
-
 ```
 
-- Créez une instance de votre nouvelle classe `TaskListAdapter` et passez lui la liste actuelle:
+- Créez une instance de votre nouvelle classe `TaskListAdapter` en propriété de votre fragment (comme `taskList`):
 
 ```kotlin
-val adapter = TaskListAdapter() // ne marche pas pour l'instant
+private val adapter = TaskListAdapter()
+```
+
+- passez lui la liste actuelle dans `onCreateView`:
+
+```kotlin
 adapter.currentList = taskList
 ```
 
 ## RecyclerView
 
 - Dans le layout associé à `TaskListFragment`, placez une balise `RecyclerView` (vous pouvez taper `<Recyc...` et vous aider de l'auto-complétion ou bien utilisez le mode visuel)
+- ajoutez lui l'attribut `app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"` qui lui dit de s'afficher comme une liste (verticale par défaut)
+- ajoutez lui un `id`: soit en mode visuel soit en vous aidant de l'auto-complétion `android:id="@+id/....`
 
 - Dans `TaskListFragment`, overridez `onViewCreated` pour y récupérer une référence à la `RecyclerView` du layout en utilisant `findViewById`:
 
 ```kotlin
 val recyclerView = view.findViewById<RecyclerView>(R.id.id_de_votre_recycler_view)
-recyclerView.layoutManager = ...
 ```
-
-- Donnez lui un `layoutManager`: `LinearLayoutManager(context)`
 
 - assignez l'adapter créé précédemment à votre recyclerView
 
