@@ -98,8 +98,7 @@ Dans `activity_main.xml`, remplacez la balise `TextView` par celle ci (à adapte
     android:name="com.nicoalex.todo.tasklist.TaskListFragment"
     android:id="@+id/fragment_tasklist"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    />
+    android:layout_height="match_parent" />
 ```
 
 ## TaskListFragment
@@ -143,7 +142,7 @@ val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 private var taskList = listOf("Task 1", "Task 2", "Task 3")
 ```
 
-## Adapter
+## TaskListAdapter: création
 
 - Dans un nouveau fichier `TaskListAdapter.kt`, créez 2 nouvelles classes: `TaskListAdapter` et `TaskViewHolder`:
 
@@ -177,7 +176,12 @@ adapter.currentList = taskList
 ## RecyclerView
 
 - Dans le layout associé à `TaskListFragment`, placez une balise `RecyclerView` (vous pouvez taper `<Recyc...` et vous aider de l'auto-complétion ou bien utilisez le mode visuel)
-- ajoutez lui l'attribut `app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"` qui lui dit de s'afficher comme une liste (verticale par défaut)
+- ajoutez lui l'attribut `layoutManager` qui lui dit de s'afficher comme une liste (verticale par défaut):
+
+```kotlin
+`app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"`
+```
+
 - ajoutez lui un `id`: soit en mode visuel soit en vous aidant de l'auto-complétion `android:id="@+id/....`
 
 - Dans `TaskListFragment`, overridez `onViewCreated` pour y récupérer une référence à la `RecyclerView` du layout en utilisant `findViewById`:
@@ -186,7 +190,7 @@ adapter.currentList = taskList
 val recyclerView = view.findViewById<RecyclerView>(R.id.id_de_votre_recycler_view)
 ```
 
-- assignez l'adapter créé précédemment à votre recyclerView
+- Pour fonctionner, `recyclerView` a une propriété `adapter` qui doit être initialisée avec l'adapter que vous avez créé (elle est nulle par défaut)
 
 ## Item View
 
@@ -207,7 +211,7 @@ val recyclerView = view.findViewById<RecyclerView>(R.id.id_de_votre_recycler_vie
 </LinearLayout>
 ```
 
-## Implémentation du RecyclerViewAdapter
+## TaskListAdapter: implémentation
 
 <aside class="positive">
 
