@@ -111,8 +111,7 @@ implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
     android:name=&#34;com.nicoalex.todo.tasklist.TaskListFragment&#34;
     android:id=&#34;@+id/fragment_tasklist&#34;
     android:layout_width=&#34;match_parent&#34;
-    android:layout_height=&#34;match_parent&#34;
-    /&gt;
+    android:layout_height=&#34;match_parent&#34; /&gt;
 </code></pre>
 
 
@@ -148,7 +147,7 @@ implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
 
       </google-codelab-step>
     
-      <google-codelab-step label="Adapter" duration="0">
+      <google-codelab-step label="TaskListAdapter: création" duration="0">
         <ul>
 <li>Dans un nouveau fichier <code>TaskListAdapter.kt</code>, créez 2 nouvelles classes: <code>TaskListAdapter</code> et <code>TaskViewHolder</code>:</li>
 </ul>
@@ -182,14 +181,18 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
       <google-codelab-step label="RecyclerView" duration="0">
         <ul>
 <li>Dans le layout associé à <code>TaskListFragment</code>, placez une balise <code>RecyclerView</code> (vous pouvez taper <code><Recyc...</code> et vous aider de l&#39;auto-complétion ou bien utilisez le mode visuel)</li>
-<li>ajoutez lui l&#39;attribut <code>app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"</code> qui lui dit de s&#39;afficher comme une liste (verticale par défaut)</li>
+<li>ajoutez lui l&#39;attribut <code>layoutManager</code> qui lui dit de s&#39;afficher comme une liste (verticale par défaut):</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">`app:layoutManager=&#34;androidx.recyclerview.widget.LinearLayoutManager&#34;`
+</code></pre>
+<ul>
 <li>ajoutez lui un <code>id</code>: soit en mode visuel soit en vous aidant de l&#39;auto-complétion <code>android:id="@+id/....</code></li>
 <li>Dans <code>TaskListFragment</code>, overridez <code>onViewCreated</code> pour y récupérer une référence à la <code>RecyclerView</code> du layout en utilisant <code>findViewById</code>:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val recyclerView = view.findViewById&lt;RecyclerView&gt;(R.id.id_de_votre_recycler_view)
 </code></pre>
 <ul>
-<li>assignez l&#39;adapter créé précédemment à votre recyclerView</li>
+<li>Pour fonctionner, <code>recyclerView</code> a une propriété <code>adapter</code> qui doit être initialisée avec l&#39;adapter que vous avez créé (elle est nulle par défaut)</li>
 </ul>
 
 
@@ -216,7 +219,7 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
 
       </google-codelab-step>
     
-      <google-codelab-step label="Implémentation du RecyclerViewAdapter" duration="0">
+      <google-codelab-step label="TaskListAdapter: implémentation" duration="0">
         <aside class="special"><p><strong>Rappel</strong>: l&#39;Adapter gère le recyclage des cellules (<code>ViewHolder</code>): il <code>inflate</code> un nombre suffisant de &#34;coquilles vides&#34; pour remplir l&#39;écran (car c&#39;est coûteux) puis injecte seulement les données dedans quand on scroll (peu coûteux)</p>
 </aside>
 <p>Dans <code>TaskListAdapter</code>, implémenter toutes les méthodes requises:</p>
