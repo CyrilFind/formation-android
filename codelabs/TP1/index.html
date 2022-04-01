@@ -164,13 +164,16 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
     }
   }
 }
-
 </code></pre>
 <ul>
-<li>Créez une instance de votre nouvelle classe <code>TaskListAdapter</code> et passez lui la liste actuelle:</li>
+<li>Créez une instance de votre nouvelle classe <code>TaskListAdapter</code> en propriété de votre fragment (comme <code>taskList</code>):</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">val adapter = TaskListAdapter() // ne marche pas pour l&#39;instant
-adapter.currentList = taskList
+<pre><code language="language-kotlin" class="language-kotlin">private val adapter = TaskListAdapter()
+</code></pre>
+<ul>
+<li>passez lui la liste actuelle dans <code>onCreateView</code>:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">adapter.currentList = taskList
 </code></pre>
 
 
@@ -179,13 +182,13 @@ adapter.currentList = taskList
       <google-codelab-step label="RecyclerView" duration="0">
         <ul>
 <li>Dans le layout associé à <code>TaskListFragment</code>, placez une balise <code>RecyclerView</code> (vous pouvez taper <code><Recyc...</code> et vous aider de l&#39;auto-complétion ou bien utilisez le mode visuel)</li>
+<li>ajoutez lui l&#39;attribut <code>app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"</code> qui lui dit de s&#39;afficher comme une liste (verticale par défaut)</li>
+<li>ajoutez lui un <code>id</code>: soit en mode visuel soit en vous aidant de l&#39;auto-complétion <code>android:id="@+id/....</code></li>
 <li>Dans <code>TaskListFragment</code>, overridez <code>onViewCreated</code> pour y récupérer une référence à la <code>RecyclerView</code> du layout en utilisant <code>findViewById</code>:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val recyclerView = view.findViewById&lt;RecyclerView&gt;(R.id.id_de_votre_recycler_view)
-recyclerView.layoutManager = ...
 </code></pre>
 <ul>
-<li>Donnez lui un <code>layoutManager</code>: <code>LinearLayoutManager(context)</code></li>
 <li>assignez l&#39;adapter créé précédemment à votre recyclerView</li>
 </ul>
 
