@@ -1,9 +1,21 @@
 ---
 marp: true
 ---
+
 <!-- headingDivider: 2 -->
 
 # UI Framework: Activities, Fragments, Lifecycle, Views
+
+## Activity
+
+![bg left:25% 85%](../assets/bottomnav.png)
+
+- Contrôle une "page" qui prends généralement tout l’écran
+- Son rôle est de créer, afficher, manipuler les `View` pour permettre à l'utilisateur d'interagir
+- Obéit à un "Lifecycle"
+- Peut contenir des `Fragment`
+- Souvent une "Single Activity" dans laquelle on navigue en intervertissant des `Fragment`
+- ⚠️ Éviter la tendance à mettre trop de logique dans l'Activity
 
 ## Context
 
@@ -14,46 +26,29 @@ Objet très présent sur Android:
 - Accède aux resources et aux classes spécifiques à l'application
 - Permet de lancer des `Activity`
 - Diffuse et reçoit des `Intents`
-
-## Activity
-
-![bg left:30% 50%](../assets/bottomnav.png)
-
-- Hérite de `Context`
-- Permet d'afficher les données dans le layout
-- Contrôle l’interaction entre le layout et l’utilisateur
-- Représente une "page" qui  prends généralement tout l’écran
-- Peut démarrer d’autres Activity dans la même app ou d’autres
-- Obéit à un "Lifecycle"
-- Les Activity peuvent être hiérarchisée dans le manifest (pour la navigation)
-- Peut contenir des `Fragments` (sorte de "SubActivity")
-- ⚠️ Éviter la tendance à mettre trop de logique dans l'Activity
+- `Activity` hérite de `Context` donc peut faire tout ça également
 
 ## Layouts
 
+Fichier XML décrivant un écran (ou une partie)
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    ...
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        ... >
-
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto" >
+    <androidx.cardview.widget.CardView >
+        <TextView ... />
         <ImageView ... />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+        <EditText ... />
+        <Button ... />
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-- Fichier XML décrivant un écran (ou une partie)
-- ViewGroup: View contenant d’autres Views, avec diverses règles d’affichage: LinearLayout, RelativeLayout, ConstraintLayout, Stack, ...
-- View: Élément graphique de l’interface: Text, Image, Button
-
-## ViewGroups
-
-![view groups](../assets/layouts.png)
-
 ## Views
+
+ Élément graphique de l’interface: Text, Image, Button, ...
 
 ```xml
 <TextView
@@ -71,6 +66,12 @@ Objet très présent sur Android:
   android:visibility="invisible" // visible, invisible or gone
 />
 ```
+
+## ViewGroups
+
+View contenant d’autres Views, avec diverses règles d’affichage:
+
+![viewgroups](../assets/layouts.png)
 
 ## Inflating Layout in Activity
 
@@ -97,6 +98,7 @@ class MainFragment : Fragment() {
 ```kotlin
 // traditional
 val loginTextView: TextView = findViewById(R.id.textView_login)
+val loginTextView = findViewById<TextView>(R.id.textView_login)
 
 // ButterKnife
 @BindView(R.id.textView_login) val loginTextView: TextView
@@ -107,7 +109,7 @@ binding.textViewLogin
 
 ## ViewBinding
 
-Ajouter:
+Dans `app/build.gradle`:
 
 ```gradle
 android {
@@ -117,20 +119,18 @@ android {
 }
 ```
 
-Activity:
+Usage:
 
 ```kotlin
-private lateinit var binding: ActivityMainBinding
+// Dans `onCreate` ou `onCreateView`:
+val binding = ActivityMainBinding.inflate(layoutInflater)
+val rootView = binding.root
 
-override fun onCreate(...) {
-    super.onCreate(...)
-    binding = ActivityMainBinding.inflate(layoutInflater)
-    setContentView(binding.root)
-    binding.textViewLogin.setOnCLickListener { ... }
-}
+// pour manipuler les vues:
+binding.textViewLogin.setOnCLickListener { ... }
 ```
 
-Fragments: [Documentation](https://developer.android.com/topic/libraries/view-binding#fragments)
+[Documentation](https://developer.android.com/topic/libraries/view-binding#fragments)
 
 ## Declare main activity in manifest
 
@@ -220,7 +220,7 @@ class LoginViewController: UIViewController {
   - Nib (`init(nibName:bundle:)`)
   - `loadView`, `viewDidLoad`, ...
 - rotation: `viewWillTransition`
-- state restauration:  `restorationIdentifiers` on VC and Views
+- state restauration: `restorationIdentifiers` on VC and Views
 
 ## Jetpack Compose: Layouts
 

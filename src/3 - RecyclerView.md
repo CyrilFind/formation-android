@@ -7,7 +7,7 @@ marp: true
 
 ## Fonctionnement
 
-![bg right](../assets/recyclerview.png)
+![bg right 70%](../assets/recyclerview.png)
 
 Conteneur scrollable pour afficher une grande quantité de donnée de façon efficace:
 
@@ -41,7 +41,7 @@ Conteneur scrollable pour afficher une grande quantité de donnée de façon eff
 ## RecyclerView Adapter: implementation
 
 ```kotlin
-class WordListAdapter(val wordList: Word) : RecyclerView.Adapter<WordListAdapter.WordViewHolder>() {
+class WordListAdapter(val wordList: List<Word>) : RecyclerView.Adapter<WordListAdapter.WordViewHolder>() {
    override fun getItemCount(): Int {
       // return the number of elements in the list
    }

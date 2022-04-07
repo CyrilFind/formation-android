@@ -257,8 +257,7 @@ private var taskList = listOf(
 
 - Changez la root view de `fragment_task_list.xml` en `ConstraintLayout` en faisant un clic droit dessus en mode design
 - Ouvrez le volet `Resource Manager` à gauche, cliquez sur le `+` en haut à gauche puis `Vector Asset` puis double cliquez sur l'image du logo android et trouvez une icône `+` (en tapant `add`) puis `finish` pour ajouter une icône à vos resource
-- Ajouter un `Floating Action Button` (FAB) en bas à droite de ce layout et utilisez l'icone créée
-- Par défaut l'icône est noire mais vous pourrez utiliser l'attribut `app:tint` du bouton pour la rendre blanche (tapez `white` et laissez l'IDE compléter)
+- Ajouter un `Floating Action Button` (FAB) en bas à droite de ce layout et utilisez l'icône créée
 - Donnez des contraintes en bas et à droite à ce bouton
 
 <aside class="positive">
@@ -302,15 +301,18 @@ Exemple:
 
 ```kotlin
 object ItemsDiffCallback : DiffUtil.ItemCallback<Item>() {
-   override fun areItemsTheSame(oldItem: Item, newItem: Item) =
-      // are they the same "entity" ? (usually same id)
-   override fun areContentsTheSame(oldItem: Item, newItem: Item) =
-      // do they have the same data ? (content)
+   override fun areItemsTheSame(oldItem: Item, newItem: Item) : Boolean {
+      return // comparison: are they the same "entity" ? (usually same id)
+   }
+      
+   override fun areContentsTheSame(oldItem: Item, newItem: Item) : Boolean {
+      return // comparison: are they the same "content" ? (simplified for data class)
+   }
 }
 
 class ItemListAdapter : ListAdapter<Item, ItemListAdapter.ItemViewHolder>(ItemsDiffCallback) {
    override fun onCreateViewHolder(...)
-   override fun onBindViewHolder(...)  // use `getItem`
+   override fun onBindViewHolder(...)
 }
 
 // Usage is simpler:

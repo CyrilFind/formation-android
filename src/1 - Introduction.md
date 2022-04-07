@@ -22,35 +22,39 @@ val myInt: Int = 1
 val myInt = 1
 
 val myString: String = "coucou"
-val myInt = "coucou"
+val myString = "coucou"
+
+val myUser: User = User()
+val myUser = User()
 ```
 
 ## Mutabilité
 
 ```kotlin
 // valeur donnée à la compilation qui ne peut pas changer:
-const val MY_CONSTANT = 0 
+const val MY_CONSTANT = 42 
 
-// valeur est donnée à l'execution qui ne peut pas changer:
-val myImmutableVariable = 0 
+// valeur donnée à l'execution qui ne peut pas changer ensuite:
+val myImmutableVariable = MY_CONSTANT + 8
 
 // valeur qui peut changer:
 var myMutableVariable = 0 
+myMutableVariable = 1
 ```
 
 ## Nullabilité
 
 ```kotlin
-val nullable: MyClass? = null
+val user: User? = getCurrentUser()
 
-// Éxécute une méthode SI l'instance est non nulle (retourne null sinon)
-nullable?.toString() // soft unwrap
+// soft unwrap: exécute ou retourne null si l'instance est null
+user?.name // soft unwrap
     
-// Éxécute une méthode OU crash si l'instance est nulle
-nullable!!.toString() // force unwrap
+// force unwrap: exécute OU crash si l'instance est nulle:
+user!!.toString()
 
-// 
-nullable ?: "default" // coalesce operator
+// elvis operator: éxécute la partie à droite si la partie à gauche est null:
+user?.name ?: "no user" // coalesce operator
 ```
 
 ⚠️ Pour l'interopérabilité avec Java il faut une annotation `@Nullable`
@@ -58,23 +62,23 @@ nullable ?: "default" // coalesce operator
 ## Smart casts
 
 ```kotlin
-var nullable: MyClass?
+var user: User?
 
-nullable?.myMethod()
+user?.connect()
 
-if (nullable != null) { nullable.myMethod() }
+if (nullable != null) { nullable.connect() }
 ```
 
 ## When statements
 
-Un `switch-case` sous stéroïdes
+Un `switch-case` en plus puissant:
 
 ```kotlin
 val primeNumbers = listOf(1, 3, 5, 7, 11, 13, 17)
 
 val x: Any? = 13
 
-val result = when (x) {
+val result = when(x) {
     null -> "x is null" // ❌ -> smart casté comme Any
     !is Int -> "x is not an int" // ❌ -> smart casté comme Int
     in 1..10 -> "x is between 1 and 10" // ❌
@@ -89,22 +93,34 @@ print(result)
 ## Functions
 
 ```kotlin
-fun functionName(firstArgumentName: FirstArgumentType, secondArgumentName: SecondArgumentType) : ReturnType {
+fun functionName(
+  firstArgumentName: FirstArgumentType, 
+  secondArgumentName: SecondArgumentType
+) : ReturnType {
   val result: ReturnType
   // ...
   return result
 }
 
-// short syntax:
+// short syntax: le 
 fun add(first: Int, second: Int) = first + second
 ```
 
-## Final class
+## Classes
 
 ```kotlin
-class MyFinalClass {...} // classes are final by default
+// classes are final by default
+class Student( // declaration and constructor 
+  name: String, // constructor argument
+  public val subjects: List<Subject>, // public property
+) : User(name) { // parent constructor
+    private val secret = "something hidden" // private property
 
-open class MyHeritableClass {...} // open makes them non-final
+    init { ... }
+} 
+
+// open makes them non-final
+open class User(val name: String) {} 
 ```
 
 ## Object
@@ -112,13 +128,12 @@ open class MyHeritableClass {...} // open makes them non-final
 Permet de créer facilement un Singleton
 
 ``` kotlin
-object MySingleton { 
-  
-  val myUtilFunction() { ... }
+object Analytics { 
+  fun trackLoginEvent() { ... }
 }
 
 // à utiliser comme une classe `static` Java:
-MySingleton.myUtilFunction() 
+Analytics.trackLoginEvent() 
 ```
 
 ## Companion object
@@ -126,15 +141,14 @@ MySingleton.myUtilFunction()
 Permet d'avoir l'équivalent des membres `static` en Java:
 
 ``` kotlin
-class MyClass {
-  
+class Math {
+
   companion object {
-    
-    const val MY_CONSTANT = 1
+    const val PI = 3.14159265359
   }
 }
 
-MyClass.MY_CONSTANT // interop java: MyClass.Companion.MY_CONSTANT
+Math.PI // interop java: MyClass.Companion.MY_CONSTANT
 ```
 
 ## Data class
@@ -176,11 +190,11 @@ sealed class Result {
 ``` kotlin
 fun String.capitalize(): String { 
   this.chars().mapIndexed { char, index -> 
-    if (index == 1) char.toUpperCase() else char 
+    if (index == 0) char.toUpperCase() else char 
   } 
 }
 
-"blabla".capitalize() // ➡️ "albalb"
+"blabla".capitalize() // ➡️ "Blabla"
 ```
 
 ## Delegates
@@ -191,24 +205,24 @@ class DraggableButton(
   dragListener: DragListener
 ) : ClickListener by clickListener, DragListener by dragListener
 
-val lazyString: String by lazy { "my lazy string" }
+val lazyUser: User by lazy { getCurrentUser() }
 ```
 
 ## Lambdas
 
-Blocs d'éxecution qui se manipulent en tant que variables:
+Blocs d'execution qui se manipulent en tant que variables:
 
 ```kotlin
 val add: (Int, Int) -> Int = { a, b -> a + b }
 
-val result = add(1, 2) // result == 3
+val three = add(1, 2)
 
-fun listOperation(number: Int, list: List<Int>, operation: (Int, Int) -> Int): List<Int> {
-    list.forEach { element -> operation(number, element) }
-}
+fun operation(number: Int, operation: (Int, Int) -> Int) {
+    operation(number, number)
+ }
 
-listOperation(1, listOf(2, 4, 6, 8), add) // 3, 5, 7, 9
-listOperation(1, listOf(2, 4, 6, 8)) { a, b -> a - b } // 1, 3, 5, 7
+operation(4, add) // 8
+operation(3) { a, b -> a - b } // 0
 
 // Lambda for SAM
 button.setOnClickListener { view -> ... }
@@ -234,16 +248,28 @@ Petits exercices pour prendre en main le langage:
 ![bg left:30% 50%](../assets/android.png)
 
 - Nombreux utilisateurs
-- Devices très variables
+- Devices très différents
 - Versions d’OS anciennes
 - Puissance limitée
 - Phone, Tablet, TV, Watch, Auto, Chrome OS, Fuschia OS
-- Language : Kotlin et Java
-- IDE : Android Studio (resources, émulateur, Logcat, ...)
+- Dev natif en Kotlin et Java
+
+## Android Studio
+
+![bg left:30% 100%](../assets/android_studio.svg)
+
+- IDE dédié développé par Jetbrains (IntelliJ)
+- Navigation projet
+- Terminal
+- Logcat
+- Émulateurs
+- SDK Manager
+- Refactoring
+- RAM 🔥
 
 ## Éléments d'une app Android
 
-![bg left:30% 100%](../assets/android_studio.svg)
+![bg left:30% 50%](../assets/android.png)
 
 - Scripts Gradle
 - AndroidManifest.xml
@@ -265,9 +291,10 @@ Petits exercices pour prendre en main le langage:
 
 ![bg left:30% 80%](../assets/xcode.png)
 
+- Beaucoup d'utilisateurs aux US
+- Plus de 💰 dépensés
 - Moins de devices différents
 - OS mis à jour plus rapidement
-- Plus de 💰 dépensés
 - Swift (interop Objective-C)
 - XCode 💩
 
@@ -276,11 +303,9 @@ Petits exercices pour prendre en main le langage:
 ![bg left:30% 80%](../assets/compose.svg)
 
 - Permet de coder une seule fois
-- On perd souvent les possibilités spécifiques ou récentes des OS (effet "PPCD")
-- On perd parfois aussi en performances ou en UX
-- Programmation à base "Components" à la React
-- Xamarin, ReactNative, NativeScript, Ionic
-- Google et Apple s’en inspirent et poussent maintenant beaucoup à utiliser:
-  - Dart: Flutter (iOS, Android, Desktop, Web)
-  - Swift: SwiftUI (iOS only)
-  - Kotlin: Jetpack Compose sur Android, Desktop, Web et même iOS (non-officiel)
+- Souvent à base de "Components" (à la React)
+- Désavantage: performances, UX, possibilités spécifiques ou récentes des OS
+- Xamarin, ReactNative, NativeScript, Ionic, ...
+- Dart: Flutter (iOS, Android, Desktop, Web) par Google
+- Swift: SwiftUI (iOS only) par Apple
+- Kotlin: Jetpack Compose sur Android, Desktop, Web et même iOS (non-officiel) par JetBrains et Google
