@@ -161,7 +161,9 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 }
 ```
 
-- Créez une instance de votre nouvelle classe `TaskListAdapter` en propriété de votre fragment (comme `taskList`):
+## TaskListAdapter: utilisation
+
+- Dans `TaskListFragment`, créez une instance de votre nouvelle classe `TaskListAdapter` en propriété de votre fragment (comme `taskList`):
 
 ```kotlin
 private val adapter = TaskListAdapter()
