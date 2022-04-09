@@ -161,6 +161,10 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 }
 ```
 
+<aside class="negative">
+⚠️ C'est normal que l'IDE nous signale un problème ici, on le règlera plus tard
+</aside>
+
 ## TaskListAdapter: utilisation
 
 - Dans `TaskListFragment`, créez une instance de votre nouvelle classe `TaskListAdapter` en propriété de votre fragment (comme `taskList`):
@@ -177,11 +181,11 @@ adapter.currentList = taskList
 
 ## RecyclerView
 
-- Dans le layout associé à `TaskListFragment`, placez une balise `RecyclerView` (vous pouvez taper `<Recyc...` et vous aider de l'auto-complétion ou bien utilisez le mode visuel)
+- Dans le layout associé à `TaskListFragment`, placez une balise `RecyclerView` (vous pouvez taper `< Recyc...` et vous aider de l'auto-complétion ou bien utilisez le mode visuel)
 - ajoutez lui l'attribut `layoutManager` qui lui dit de s'afficher comme une liste (verticale par défaut):
 
-```kotlin
-`app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"`
+```xml
+app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 ```
 
 - ajoutez lui un `id`: soit en mode visuel soit en vous aidant de l'auto-complétion `android:id="@+id/....`

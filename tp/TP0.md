@@ -13,8 +13,8 @@ Prenez en main l'IDE: vous pouvez aller dans les paramètres (`File > Settings` 
 
 Quelques suggestions:
 
-- Personnalisez les raccourcis clavier (ex: [mon setup](https://github.com/CyrilFind/intellij-settings-repository/blob/master/keymaps/cyrilfind.xml) [mais c'est pas simple à importer](https://www.jetbrains.com/help/idea/configuring-keyboard-and-mouse-shortcuts.html#custom_keymap_location))
-- Personnalisez la coloration syntaxique (par ex avec un plugin comme plugin "Rainglow Color Schemes" ou en important mon thème [Darculai](https://github.com/CyrilFind/intellij-settings-repository/blob/master/keymaps/cyrilfind.xml))
+- Personnalisez la coloration syntaxique (par ex avec un plugin comme plugin "Rainglow Color Schemes" ou en important mon thème [Darculai](https://github.com/CyrilFind/intellij-settings-repository/blob/master/colors/Darculai%20_cyrilfind_.icls) dans `Settings > Editor > Color Scheme > ⚙ > Import Scheme`)
+- Personnalisez les raccourcis clavier (ex: [mon setup](https://github.com/CyrilFind/intellij-settings-repository/blob/master/keymaps/cyrilfind.xml) mais [c'est pas simple à importer](https://www.jetbrains.com/help/idea/configuring-keyboard-and-mouse-shortcuts.html#custom_keymap_location))
 - Activez les imports automatiques: `Editor > General > Auto Import > Kotlin > cocher "Add unambiguous import on the fly" et "Optimize imports on the fly..."`
 - Activer les "type hints" afin de voir les types des variables que Kotlin "devine"
 
