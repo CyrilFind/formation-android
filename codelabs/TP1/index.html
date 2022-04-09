@@ -164,8 +164,15 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
   }
 }
 </code></pre>
-<ul>
-<li>Créez une instance de votre nouvelle classe <code>TaskListAdapter</code> en propriété de votre fragment (comme <code>taskList</code>):</li>
+<aside class="warning"><p> ⚠️ C&#39;est normal que l&#39;IDE nous signale un problème ici, on le règlera plus tard </p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="TaskListAdapter: utilisation" duration="0">
+        <ul>
+<li>Dans <code>TaskListFragment</code>, créez une instance de votre nouvelle classe <code>TaskListAdapter</code> en propriété de votre fragment (comme <code>taskList</code>):</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">private val adapter = TaskListAdapter()
 </code></pre>
@@ -180,10 +187,10 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
     
       <google-codelab-step label="RecyclerView" duration="0">
         <ul>
-<li>Dans le layout associé à <code>TaskListFragment</code>, placez une balise <code>RecyclerView</code> (vous pouvez taper <code><Recyc...</code> et vous aider de l&#39;auto-complétion ou bien utilisez le mode visuel)</li>
+<li>Dans le layout associé à <code>TaskListFragment</code>, placez une balise <code>RecyclerView</code> (vous pouvez taper <code>< Recyc...</code> et vous aider de l&#39;auto-complétion ou bien utilisez le mode visuel)</li>
 <li>ajoutez lui l&#39;attribut <code>layoutManager</code> qui lui dit de s&#39;afficher comme une liste (verticale par défaut):</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">`app:layoutManager=&#34;androidx.recyclerview.widget.LinearLayoutManager&#34;`
+<pre><code language="language-xml" class="language-xml">app:layoutManager=&#34;androidx.recyclerview.widget.LinearLayoutManager&#34;
 </code></pre>
 <ul>
 <li>ajoutez lui un <code>id</code>: soit en mode visuel soit en vous aidant de l&#39;auto-complétion <code>android:id="@+id/....</code></li>
@@ -264,8 +271,7 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
         <ul>
 <li>Changez la root view de <code>fragment_task_list.xml</code> en <code>ConstraintLayout</code> en faisant un clic droit dessus en mode design</li>
 <li>Ouvrez le volet <code>Resource Manager</code> à gauche, cliquez sur le <code>+</code> en haut à gauche puis <code>Vector Asset</code> puis double cliquez sur l&#39;image du logo android et trouvez une icône <code>+</code> (en tapant <code>add</code>) puis <code>finish</code> pour ajouter une icône à vos resource</li>
-<li>Ajouter un <code>Floating Action Button</code> (FAB) en bas à droite de ce layout et utilisez l&#39;icone créée</li>
-<li>Par défaut l&#39;icône est noire mais vous pourrez utiliser l&#39;attribut <code>app:tint</code> du bouton pour la rendre blanche (tapez <code>white</code> et laissez l&#39;IDE compléter)</li>
+<li>Ajouter un <code>Floating Action Button</code> (FAB) en bas à droite de ce layout et utilisez l&#39;icône créée</li>
 <li>Donnez des contraintes en bas et à droite à ce bouton</li>
 </ul>
 <aside class="special"><p>Vous pouvez configurer les contraintesde plusieurs façons:</p>
@@ -301,15 +307,18 @@ taskList = taskList + newTask
 <p>Il faudra notamment: créer un <code>DiffUtil.ItemCallback<Task></code> et le passer au constructeur parent, supprimer <code>getItemCount</code> et la propriété <code>currentList</code> car ils existent déjà dans <code>ListAdapter</code></p>
 <p>Exemple:</p>
 <pre><code language="language-kotlin" class="language-kotlin">object ItemsDiffCallback : DiffUtil.ItemCallback&lt;Item&gt;() {
-   override fun areItemsTheSame(oldItem: Item, newItem: Item) =
-      // are they the same &#34;entity&#34; ? (usually same id)
-   override fun areContentsTheSame(oldItem: Item, newItem: Item) =
-      // do they have the same data ? (content)
+   override fun areItemsTheSame(oldItem: Item, newItem: Item) : Boolean {
+      return // comparison: are they the same &#34;entity&#34; ? (usually same id)
+   }
+      
+   override fun areContentsTheSame(oldItem: Item, newItem: Item) : Boolean {
+      return // comparison: are they the same &#34;content&#34; ? (simplified for data class)
+   }
 }
 
 class ItemListAdapter : ListAdapter&lt;Item, ItemListAdapter.ItemViewHolder&gt;(ItemsDiffCallback) {
    override fun onCreateViewHolder(...)
-   override fun onBindViewHolder(...)  // use `getItem`
+   override fun onBindViewHolder(...)
 }
 
 // Usage is simpler:
