@@ -254,29 +254,29 @@ interface TasksWebService {
 ⚠️ Ici vous aurez probablement un soucis car on a fait hériter `Task` de `Serializable` mais une des annotations de KotlinX Serialisation s'appelle aussi `Serializable`: pour résoudre, faites hériter explicitement de `java.io.Serializable` à la place
 </aside>
 
-## TasksRepository
+## TasksListViewModel
 
-Créer la classe `TasksRepository`, avec une liste de tâches _Observable_ grâce aux type `StateFlow` et `MutableStateFlow`:
+Créer la classe `TasksListViewModel`, avec une liste de tâches _Observable_ grâce aux type `StateFlow` et `MutableStateFlow`:
 
 ```kotlin
-class TasksRepository {
+class TasksListViewModel : ViewModel() {
   private val tasksWebService = Api.tasksWebService
 
-  // Ces deux variables encapsulent la même donnée:
-  // [_taskList] est modifiable mais privée donc inaccessible à l'extérieur de cette classe
-  private val _taskList = MutableStateFlow<List<Task>>(emptyList())
-  // [taskList] est publique mais non-modifiable:
-  // On pourra seulement l'observer (s'y abonner) depuis d'autres classes
-  public val taskList: StateFlow<List<Task>> = _taskList.asStateFlow()
+  // privée mais modifiable à l'intérieur du VM: 
+  private val _tasksStateFlow = MutableStateFlow<List<Task>>(emptyList())
+  // même donnée mais publique et non-modifiable à l'extérieur afin de pouvoir seulement s'y abonner:
+  public val tasksStateFlow: StateFlow<List<Task>> = _tasksStateFlow.asStateFlow()
 
   suspend fun refresh() {
-      // Call HTTP (opération longue):
-      val tasksResponse = tasksWebService.getTasks()
-      // À la ligne suivante, on a reçu la réponse de l'API:
-      if (tasksResponse.isSuccessful) {
-          val fetchedTasks = tasksResponse.body()
-          // on modifie la valeur encapsulée, ce qui va notifier ses Observers et donc déclencher leur callback
-          if (fetchedTasks != null) _taskList.value = fetchedTasks
+      viewModelScope.launch {
+          // Call HTTP (opération longue):
+          val tasksResponse = tasksWebService.getTasks()
+          // À la ligne suivante, on a reçu la réponse de l'API:
+          if (tasksResponse.isSuccessful) {
+              val fetchedTasks = tasksResponse.body()
+              // on modifie la valeur encapsulée, ce qui va notifier ses Observers et donc déclencher leur callback
+              if (fetchedTasks != null) _tasksStateFlow.value = fetchedTasks
+          }
       }
   }
 
@@ -286,35 +286,31 @@ class TasksRepository {
 ```
 
 <aside class="positive">
-
-Le but d'un Repository est d'exposer des données venant d'une ou plusieurs sources de données (ex: DB locale et API distante)
-
+`ViewModel` est une classe du framework Android qui permet de gérer les données d'une vue, et dont on peut facilement créer et récupérer une instance en général associée à une `Activity` ou `Fragment`
 </aside>
 
 ## "Collecter" le Flow
 
 Dans `TaskListFragment`, à l'aide du squelette de code plus bas:
 
-- Ajouter en propriété une instance de `TasksRepository`
-- Dans `onResume()`, utilisez le repository pour rafraîchir la liste de tasks
-- Dans `onViewCreated()`, "abonnez" le fragment au `StateFlow` du repository et mettez à jour la liste et l'`adapter` dans la lambda de retour
+- Ajouter en propriété une instance de `TaskListViewModel`
+- Dans `onResume()`, utilisez ce VM pour rafraîchir la liste de tasks
+- Dans `onViewCreated()`, "abonnez" le fragment aux changements du `StateFlow` du VM et mettez à jour la liste et l'`adapter` dans la lambda de retour
 
 <aside class="negative">
 ⚠️ Attention ici au moment de choisir l'import de `.collect` sélectionnez bien celui qui est présenté avec des accolades: `collect {...}`, sinon ça ne compilera pas.
 </aside>
 
 ```kotlin
-private val tasksRepository = TasksRepository()
+private val viewModel: TaskListViewModel by viewModels()
 
 // Dans onResume()
-lifecycleScope.launch {
-  tasksRepository.refresh() // on demande de rafraîchir les données sans attendre le retour directement
-}
+viewModel.refresh() // on demande de rafraîchir les données sans attendre le retour directement
 
 // Dans onViewCreated()
 lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
-    tasksRepository.taskList.collect { newList ->
-      // cette lambda est executée à chaque fois que la liste est mise à jour dans le repository
+    viewModel.tasksStateFlow.collect { newList ->
+      // cette lambda est executée à chaque fois que la liste est mise à jour dans le VM
       // -> ici, on met à jour la liste dans l'adapteur
     }
 }
@@ -338,22 +334,24 @@ suspend fun delete(@...(...) id: String): Response<Unit>
 
 ## Suppression, Ajout, Édition
 
-- Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le Repository, par ex pour l'ajout/édition:
+- Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le VM, par ex pour l'ajout/édition:
 
 ```kotlin
 suspend fun createOrUpdate(task: Task) {
-  // TODO: appel réseau et récupération de la tache
-  val oldTask = taskList.value.firstOrNull { it.id == task.id }
-  val response = when {
-      oldTask != null -> // update
-      else -> // create
-  }
-  if (response.isSuccessful) {
-      val updatedTask = response.body()!!
-      if (oldTask != null) _taskList.value = taskList.value - oldTask
-      _taskList.value = taskList.value + updatedTask
-  }
+    viewModelScope.launch {
+      // TODO: appel réseau et récupération de la tache
+      val oldTask = _tasksStateFlow.value.firstOrNull { it.id == task.id }
+      val response = when {
+          oldTask != null -> // update
+          else -> // create
+      }
+      if (response.isSuccessful) {
+          val updatedTask = response.body()!!
+          if (oldTask != null) _tasksStateFlow.value = _tasksStateFlow.value - oldTask
+          _tasksStateFlow.value = _tasksStateFlow.value + updatedTask
+      }
+    }
 }
 ```
 
-- Vous pouvez supprimer la `taskList` locale dans le Fragment et vérifier que vous avez bien tout remplacé par des appels au repository (et donc au serveur)
+- Vous pouvez supprimer la `taskList` locale dans le Fragment et vérifier que vous avez bien tout remplacé par des appels au VM (et donc au serveur)

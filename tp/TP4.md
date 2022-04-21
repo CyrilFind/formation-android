@@ -1,104 +1,258 @@
-# TP 4: Refactorisation avec ViewModel
+# TP 5: Images, Permissions, Stockage
 
-## Principe
-
-Inclure trop de logique dans le fragment est une mauvaise pratique, on va donc refactoriser notre code pour améliorer notre architecture en s'inspirant de:
-
-- [MVVM: Model-View-ViewModel](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) pour la "Presentation Layer"
-- [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) pour le reste
-- [Android Architecture Components](https://developer.android.com/topic/libraries/architecture) pour nous aider des outils spécifiques Android
-
-<aside class="negative">
-
-⚠️ Lisez bien tout le sujet, suivez les étapes et surtout aidez vous du squelette de code plus bas !
-</aside>
+## Coil
 
 <aside class="positive">
 
-Pour résumer, on va déplacer la logique de la gestion de la liste du Fragment vers le ViewModel, qui va pour sa part simplement interroger le Repository et gérer son `StateFlow`.
+La lib `Coil` permet d'afficher des images depuis une URL de façon efficace en gérant la taille, le cache, etc... `Picasso` et `Glide` sont les alternatives les plus utilisées.
+
 </aside>
 
-## Instructions
-
-- Créer une classe `TaskListViewModel` qui hérite de `ViewModel` et qui va gérer:
-
-  - Les `StateFlow` qui étaient dans le Repository
-  - Le `repository` qui sert de source de données
-  - Les coroutines avec `viewModelScope`
-
-- Dans `TaskListAdapter`: Si vous ne l'avez pas fait à ce stade, transformez votre `RecyclerView.Adapter` pour hériter de `ListAdapter` (cf fin du TP 1)
-
-- Dans `TaskListFragment`:
-
-  - Récupérer le `viewModel` grâce à `by viewModels()`
-  - Supprimer le `repository` et la `taskList`
-  - Observer la valeur de `viewModel.taskList` et mettre à jour la liste de l'`adapter`
-
-- Dans `TasksRepository`, déplacez les `StateFlow` dans le `ViewModel`
-
-- Procéder petit à petit et inspirez vous de ce squelette (NE COPIEZ PAS TOUT!) pour refactoriser votre app (commencez juste par le chargement de la liste):
-
-## Squelette de code
+- Rendez vous sur le [repository de Coil](https://coil-kt.github.io/coil/) et lisez le `ReadMe`
+- Ajouter les dépendances nécessaires à `app/build.gradle`
+- Ajouter une `ImageView` qui affichera l'avatar de l'utilisateur dans le layout de la liste (à coté de votre `TextView` par ex)
+- Dans `onResume`, récupérez une référence à cette vue puis utilisez Coil pour afficher une image en passant une URL de votre choix, par exemple:
 
 ```kotlin
-// Le Repository récupère les données
-class TasksRepository {
-    // Le web service requête le serveur
-    private val webService = Api.tasksWebService
+avatarImageView.load("https://goo.gl/gEgYUd")
+```
 
-    suspend fun refresh(): List<Task>? {
-        val response = webService.getTasks()
-        if (!response.isSuccessful) {
-            Log.e("TasksRepository", "Error while fetching tasks: $response")
-            return null
-        } else {
-            Log.e("TasksRepository", "Error: ${response.message()}")
+- Trouvez comment l'image sous la forme d'un cercle avec `Coil`
+
+## Nouvelle activité
+
+- Créer un nouveau package `user`
+- Créez y une nouvelle activité `UserInfoActivity` et ajoutez la dans le manifest
+- Remplir son layout:
+
+```xml
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/upload_image_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choisir une Image" />
+
+    <Button
+        android:id="@+id/take_picture_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Prendre une photo" />
+</LinearLayout>
+```
+
+- Lancer cette `Activity` quand on clique sur l'`ImageView` que vous venez de remplir avec `Coil`
+
+## Demander la Permission
+
+- `AndroidManifest`: ajouter la permission `android.permission.CAMERA`
+- Lisez, utilisez et complétez ce pavé de code:
+
+```kotlin
+ private val cameraPermissionLauncher =
+        registerForActivityResult(RequestPermission()) { accepted ->
+            if (accepted) // lancer l'action souhaitée
+            else // afficher une explication
         }
-        return response.body()
-    }
 
-    suspend fun delete(task: Task) : Boolean {}
-    suspend fun create(task: Task) : Task? {}
-    suspend fun update(task: Task) : Task? {}
+private fun launchCameraWithPermission() {
+    val camPermission = Manifest.permission.CAMERA
+    val permissionStatus = checkSelfPermission(camPermission)
+    val isAlreadyAccepted = permissionStatus == PackageManager.PERMISSION_GRANTED
+    val isExplanationNeeded = shouldShowRequestPermissionRationale(camPermission)
+    when {
+        isAlreadyAccepted -> // lancer l'action souhaitée
+        isExplanationNeeded -> // afficher une explication
+        else -> // lancer la demande de permission
+    }
 }
 
-// Le ViewModel met à jour la liste de task qui est un StateFlow
-class TaskListViewModel: ViewModel() {
-    private val repository = TasksRepository()
-    private val _taskList = MutableStateFlow<List<Task>>(emptyList())
-    public val taskList: StateFlow<List<Task>> = _taskList
-
-    fun refresh() {
-        viewModelScope.launch { ... }
-    }
-    fun delete(task: Task) {...}
-    fun addOrEdit(task: Task) {...}
+private fun showExplanation() {
+    // ici on construit une pop-up système (Dialog) pour expliquer la nécessité de la demande de permission
+    AlertDialog.Builder(this)
+        .setMessage("🥺 On a besoin de la caméra, vraiment! 👉👈")
+        .setPositiveButton("Bon, ok") { _, _ -> /* ouvrir les paramètres de l'app */ }
+        .setNegativeButton("Nope") { dialog, _ -> dialog.dismiss() }
+        .show()
 }
 
-// Le Fragment observe la StateFlow et met à jour la liste de l'adapter:
-class TaskListFragment: Fragment() {
-    val adapter = TaskListAdapter()
-    // On récupère une instance de ViewModel
-    private val viewModel: TasksViewModel by viewModels()
+private fun launchAppSettings() {
+    // Cet intent permet d'ouvrir les paramètres de l'app (pour modifier les permissions déjà refusées par ex)
+    val intent = Intent(
+        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+        Uri.fromParts("package", packageName, null)
+    )
+    // ici pas besoin de vérifier avant car on vise un écran système:
+    startActivity(intent)
+}
 
-    // On écoute l'objet StateFlow du ViewModel ici:
-    override fun onViewCreated(...) {
-        lifecycleScope.launch {
-            viewModel.taskList.collect { newList ->
-                // utliser la liste
-            }
+private fun handleImage(imageUri: Uri) {
+    // afficher l'image dans l'ImageView
+}
+
+private fun launchCamera() {
+    // à compléter à l'étape suivante
+}
+```
+
+Dans `onCreate()`, faire en sorte que le bouton correspondant ouvre la caméra (en demandant la permission)
+
+## Ouvrir l'appareil photo
+
+Pour l'ouverture de la caméra, on va créer un launcher, comme précédemment, mais avec autre "contrat":
+
+```kotlin
+// register
+private val cameraLauncher = registerForActivityResult(TakePicturePreview()) { bitmap ->
+        val tmpFile = File.createTempFile("avatar", "jpeg")
+        tmpFile.outputStream().use {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
         }
+        handleImage(tmpFile.toUri())
     }
 
-    override fun onResume(...) {
-        viewModel.refresh()
+// use
+private fun launchCamera() {
+    cameraLauncher.launch()
+}
+```
+
+<aside class="positive">
+
+Ici le système sous jacent va utiliser un `Intent` implicite demandant au système d'ouvrir une app permettant de prendre une photo (en général l'app photo par défaut)
+
+</aside>
+
+➡️ Il manque encore une brique !
+
+## Uploader l'image capturée
+
+- Dans l'interface `UserWebService`, ajouter une nouvelle fonction
+
+```kotlin
+@Multipart
+@PATCH("users/update_avatar")
+suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response<UserInfo>
+```
+
+- Ajouter une fonction pour convertir l'image en `MultipartBody.Part` afin de pouvoir l'envoyer en HTTP:
+
+```kotlin
+private fun convert(uri: Uri): MultipartBody.Part {
+    return MultipartBody.Part.createFormData(
+        name = "avatar",
+        filename = "temp.jpeg",
+        body = contentResolver.openInputStream(uri)!!.readBytes().toRequestBody()
+    )
+}
+```
+
+- Dans `handleImage`, envoyez l'image au serveur avec `updateAvatar` et `convert`
+- Modifiez `UserInfo` pour ajouter un champ `val avatar: String?`: c'est une URL qui sera renvoyée depuis le serveur
+- Enfin, au chargement de l'activité, afficher l'avatar renvoyé depuis le serveur:
+
+```kotlin
+lifecycleScope.launch {
+    val userInfo = ...getInfos()...
+    imageView.load(userInfo.avatar) {
+        // affiche une image par défaut en cas d'erreur:
+        error(R.drawable.ic_launcher_background)
     }
 }
 ```
 
-## Pour terminer
+## Accéder aux fichiers locaux
 
-- Vérifier que ça fonctionne !
-- Permettre la suppression, l'ajout et l'édition des tasks du serveur avec cette archi
+Actuellement, la qualité d'image récupérée de l'appareil photo est faible (car passée dans le code en bitmap)
 
-<!-- garder le repo pareil, passer le flow au VM (+ faire un orderBy ?, ServiceLocator pour virer les activityForResult -->
+Améliorer cette qualité en changeant le fonctionnement pour enregistrer directement l'image dans un fichier... mais c'est un peu compliqué alors on va utiliser [MediaStore](https://google.github.io/modernstorage/mediastore/) de la lib `modernstorage` (faite par Google)
+
+```groovy
+implementation "com.google.modernstorage:modernstorage-mediastore:1.0.0-alpha06"
+```
+
+Dans votre nouvelle Activity:
+
+```kotlin
+val mediaStore by lazy { MediaStoreRepository(this) }
+```
+
+- Vous pourrez ensuite utiliser:
+
+```kotlin
+// créer un launcher pour la caméra
+private val cameraLauncher =
+    registerForActivityResult(TakePicture()) { accepted ->
+        val view = // n'importe quelle vue (ex: un bouton, binding.root, window.decorView, ...)
+        if (accepted) handleImage()
+        else Snackbar.make(view, "Échec!", Snackbar.LENGTH_LONG).show()
+    }
+
+
+// utiliser
+private lateinit var photoUri: Uri
+private fun launchCamera() {
+    lifecycleScope.launch {
+        photoUri = mediaStore.createMediaUri(
+            filename = "picture-${UUID.randomUUID()}.jpg",
+            type = FileType.IMAGE,
+            location = SharedPrimary
+        ).getOrThrow()
+        cameraLauncher.launch(photoUri)
+    }
+}
+```
+
+Afin de gérer Android 9 et antérieurs, il faut également avoir la permission `android.permission.WRITE_EXTERNAL_STORAGE`: ajouter la dans `AndroidManifest.xml` et adaptez le launcher avec `RequestMultiplePermissions`:
+
+```kotlin
+ private val permissionAndCameraLauncher = registerForActivityResult(RequestMultiplePermissions()) { results ->
+     // pour simplifier on ne fait rien ici, il faudra que le user re-clique sur le bouton
+ }
+
+ private fun launchCameraWithPermission() {
+        // ...
+        val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        when {
+            mediaStore.canWriteSharedEntries() && isAlreadyAccepted ->  ...
+            // ... 
+            else -> permissionAndCameraLauncher.launch(arrayOf(camPermission, storagePermission))
+        }
+    }
+
+```
+
+## Uploader une image stockée
+
+Permettez à l'utilisateur d'uploader une image enregistrée sur son téléphone
+
+```kotlin
+// register
+private val galleryLauncher = registerForActivityResult(GetContent()) {...}
+
+// use
+galleryLauncher.launch("image/*")
+```
+
+## Édition infos utilisateurs
+
+- Comme précédemment, re-factorisez en utilisant un `UserInfoViewModel` et un `UserInfoRepository`
+- Dans `UserInfoActivity`, permettre d'éditer et d'afficher les informations (nom, prénom, email) en respectant cette architecture
+- Vous aurez besoin d'ajouter ça à `UserWebService`:
+
+```kotlin
+@PATCH("users")
+suspend fun update(@Body user: UserInfo): Response<UserInfo>
+```
