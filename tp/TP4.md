@@ -1,4 +1,4 @@
-# TP 5: Images, Permissions, Stockage
+# TP 4: Images, Permissions, Stockage
 
 ## Coil
 
@@ -286,7 +286,7 @@ private val openCamera = registerForActivityResult(TakePicture()) { accepted ->
 
 private val requestCamera =
     registerForActivityResult(ActivityResultContracts.RequestPermission()) { accepted ->
-        // create and store uri:
+        // créer et stocker l'uri:
         photoUri = fileSystem.createMediaStoreUri(
             filename = "picture-${UUID.randomUUID()}.jpg",
             collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -296,7 +296,7 @@ private val requestCamera =
     }
 
 val requestWriteAccess = registerForActivityResult(RequestAccess()) { accepted ->
-    // launch camera permission request
+    // utiliser le code précédent de `launchCameraWithPermissions`
 }
 
 fun launchCameraWithPermissions() {
@@ -323,7 +323,7 @@ private fun Uri.toRequestBody(): MultipartBody.Part {
 
 ## Édition infos utilisateurs
 
-- Comme précédemment, re-factorisez en utilisant un `UserInfoViewModel`
+- Comme précédemment, re-factorisez cette Activity en utilisant un `UserInfoViewModel`
 - Dans `UserInfoActivity`, permettre d'éditer et d'afficher les informations (nom, prénom, email) en respectant cette architecture
 - Vous aurez besoin d'ajouter ça à `UserWebService`:
 
