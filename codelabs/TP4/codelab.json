@@ -1,0 +1,17 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2022-04-24T21:41:52Z",
+  "id": "TP4",
+  "duration": 0,
+  "title": "TP 5: Images, Permissions, Stockage",
+  "summary": "",
+  "source": "tp/TP4.md",
+  "theme": "",
+  "status": null,
+  "category": null,
+  "tags": [],
+  "url": "TP4"
+}

@@ -1,0 +1,17 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2022-04-24T21:41:52Z",
+  "id": "TP0",
+  "duration": 0,
+  "title": "TP 0 - Introduction",
+  "summary": "",
+  "source": "tp/TP0.md",
+  "theme": "",
+  "status": null,
+  "category": null,
+  "tags": [],
+  "url": "TP0"
+}

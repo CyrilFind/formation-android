@@ -1,0 +1,17 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2022-04-24T21:41:52Z",
+  "id": "TPY",
+  "duration": 0,
+  "title": "TP 6: SignUp/Login et Navigation",
+  "summary": "",
+  "source": "tp/TPY.md",
+  "theme": "",
+  "status": null,
+  "category": null,
+  "tags": [],
+  "url": "TPY"
+}
