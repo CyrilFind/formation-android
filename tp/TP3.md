@@ -213,7 +213,7 @@ lifecycleScope.launch {
 <aside class="positive">
 
 **Remarque:** En général ce scope sert plutôt à ce qui est visuel (ex: lancer une animation)
-On utilise souvent autre scope: `viewModelScope` qui est fourni par android dans les `ViewModel`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
+On utilisera ensuite un autre scope: `viewModelScope` qui est fourni par android dans les `ViewModel`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
 
 </aside>
 
@@ -251,16 +251,20 @@ interface TasksWebService {
 - Modifier `Task` pour la rendre "serializable" par KotlinX Serialization (inspirez vous de `UserInfo`)
 
 <aside class="negative">
-⚠️ Ici vous aurez probablement un soucis car on a fait hériter `Task` de `Serializable` mais une des annotations de KotlinX Serialisation s'appelle aussi `Serializable`: pour résoudre, faites hériter explicitement de `java.io.Serializable` à la place
+⚠️ Ici vous aurez probablement un soucis car on a fait hériter `Task` de `Serializable` mais une des annotations de KotlinX Serialisation s'appelle aussi `Serializable`: pour résoudre ce conflit, faites hériter explicitement de `java.io.Serializable` à la place
 </aside>
 
 ## TasksListViewModel
+
+<aside class="positive">
+`ViewModel` est une classe du framework Android qui permet de gérer les données d'une vue, et dont on peut facilement créer et récupérer une instance, en général chacune associée à une `Activity` ou un `Fragment`
+</aside>
 
 Créer la classe `TasksListViewModel`, avec une liste de tâches _Observable_ grâce aux type `StateFlow` et `MutableStateFlow`:
 
 ```kotlin
 class TasksListViewModel : ViewModel() {
-  private val tasksWebService = Api.tasksWebService
+  private val webService = Api.tasksWebService
 
   // privée mais modifiable à l'intérieur du VM: 
   private val _tasksStateFlow = MutableStateFlow<List<Task>>(emptyList())
@@ -269,25 +273,18 @@ class TasksListViewModel : ViewModel() {
 
   suspend fun refresh() {
       viewModelScope.launch {
-          // Call HTTP (opération longue):
-          val tasksResponse = tasksWebService.getTasks()
-          // À la ligne suivante, on a reçu la réponse de l'API:
-          if (tasksResponse.isSuccessful) {
-              val fetchedTasks = tasksResponse.body()
-              // on modifie la valeur encapsulée, ce qui va notifier ses Observers et donc déclencher leur callback
-              if (fetchedTasks != null) _tasksStateFlow.value = fetchedTasks
-          }
+          val tasksResponse = webService.getTasks() // Call HTTP (opération longue)
+          if (tasksResponse.isSuccessful) ?: return  // à cette ligne, on a reçu la réponse de l'API
+          val fetchedTasks = tasksResponse.body()!!
+          _tasksStateFlow.value = fetchedTasks // on modifie le flow, ce qui déclenche ses observers
       }
   }
 
-  suspend fun createOrUpdate(...)
+  suspend fun create(...)
+  suspend fun update(...)
   suspend fun delete(...)
 }
 ```
-
-<aside class="positive">
-`ViewModel` est une classe du framework Android qui permet de gérer les données d'une vue, et dont on peut facilement créer et récupérer une instance en général associée à une `Activity` ou `Fragment`
-</aside>
 
 ## "Collecter" le Flow
 
@@ -298,7 +295,7 @@ Dans `TaskListFragment`, à l'aide du squelette de code plus bas:
 - Dans `onViewCreated()`, "abonnez" le fragment aux changements du `StateFlow` du VM et mettez à jour la liste et l'`adapter` dans la lambda de retour
 
 <aside class="negative">
-⚠️ Attention ici au moment de choisir l'import de `.collect` sélectionnez bien celui qui est présenté avec des accolades: `collect {...}`, sinon ça ne compilera pas.
+⚠️ Attention ici au moment de choisir l'import de `.collect` sélectionnez bien celui qui est présenté avec des accolades: `collect {...}`
 </aside>
 
 ```kotlin
@@ -311,7 +308,7 @@ viewModel.refresh() // on demande de rafraîchir les données sans attendre le r
 lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
     viewModel.tasksStateFlow.collect { newList ->
       // cette lambda est executée à chaque fois que la liste est mise à jour dans le VM
-      // -> ici, on met à jour la liste dans l'adapteur
+      // -> ici, on met à jour la liste dans l'adapter
     }
 }
 ```
@@ -334,22 +331,16 @@ suspend fun delete(@...(...) id: String): Response<Unit>
 
 ## Suppression, Ajout, Édition
 
-- Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le VM, par ex pour l'ajout/édition:
+- Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le VM, par ex pour l'édition:
 
 ```kotlin
-suspend fun createOrUpdate(task: Task) {
+suspend fun update(task: Task) {
     viewModelScope.launch {
-      // TODO: appel réseau et récupération de la tache
-      val oldTask = _tasksStateFlow.value.firstOrNull { it.id == task.id }
-      val response = when {
-          oldTask != null -> // update
-          else -> // create
-      }
-      if (response.isSuccessful) {
-          val updatedTask = response.body()!!
-          if (oldTask != null) _tasksStateFlow.value = _tasksStateFlow.value - oldTask
-          _tasksStateFlow.value = _tasksStateFlow.value + updatedTask
-      }
+      val response = ... // TODO: appel réseau
+      if (!response.isSuccessful) return
+
+      val updatedTask = response.body()!!
+      _tasksStateFlow.value = _tasksStateFlow.value - task + updatedTask
     }
 }
 ```

@@ -46,10 +46,16 @@ myAdapter.onClickDelete = { task ->
 
 ## Ajout de tâche complet: Launcher
 
-- Créez un "launcher" à la racine de la classe `TaskListFragment` qui permettra de lancer votre nouvelle activité et d'utiliser son résultat:
+<aside class="positive">
+Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent explicite](), et afin de récupérer un résultat de celle ci, nous allons utiliser un ["launcher"](https://developer.android.com/training/basics/intents/result#register) avec le "contrat" générique[StartActivityForResult](https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts.StartActivityForResult)
+
+**remarque**: Auparavant, il fallait utiliser `startActivityForResult(intent)` et `override fun onActivityResult(...)` avec un request code, etc.
+</aside>
+
+- Créez un "launcher" en propriété de la classe `TaskListFragment` qui permettra de lancer votre nouvelle activité et d'utiliser son résultat:
 
 ```kotlin
-val formLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+val createTask = registerForActivityResult(StartActivityForResult()) { result ->
   // ici on récupérera le résultat pour le traiter
 }
 ```
@@ -58,7 +64,7 @@ val formLauncher = registerForActivityResult(StartActivityForResult()) { result 
 
 ```kotlin
 val intent = Intent(context, FormActivity::class.java)
-formLauncher.launch(intent)
+createTask.launch(intent)
 ```
 
 ## Ajout de tâche complet: FormActivity
@@ -72,7 +78,7 @@ val newTask = Task(id = UUID.randomUUID().toString(), title = "New Task !")
 
 <aside class="positive">
 
-Toute Activity a une propriété `intent` déjà définie: ici il aura la valeur que l'on a passée à `formLauncher`, on va utiliser ce même intent pour retourner un résultat
+Toute Activity a une propriété `intent` déjà définie: ici il aura la valeur que l'on a passée à `createTask`, on va utiliser ce même intent pour retourner un résultat
 </aside>
 
 - Ajouter `newTask` dans `intent`: `intent.putExtra("task", newTask)`: ça ne compilera pas car `Task` ne fait pas partie des types de base autorisés dans un intent !
@@ -82,7 +88,7 @@ Toute Activity a une propriété `intent` déjà définie: ici il aura la valeur
 
 ## Ajout de tâche complet: Résultat
 
-Dans la lambda de retour de `formLauncher` récupérer cette task et l'ajouter à la liste:
+Dans la lambda de retour de `createTask` récupérer cette task et l'ajouter à la liste:
 
 ```kotlin
 val task = result.data?.getSerializableExtra("task") as? Task
@@ -93,13 +99,12 @@ val task = result.data?.getSerializableExtra("task") as? Task
 
 ## Édition d'une tâche
 
-- Ajouter une bouton permettant d'éditer chaque tâche en ouvrant l'activité `FormActivity` pré-remplie avec les informations de la tâche
-- Pour transmettre des infos d'une activité à l'autre, vous pouvez utiliser la méthode `putExtra` (depuis `TaskListFragment` cette fois)
-- Inspirez vous de l'implémentation du bouton supprimer et du bouton ajouter
+Inspirez vous de ce que vous avez fait pour le bouton "supprimer" et le bouton "ajouter" pour créer un bouton "éditer" permettant de modifier chaque tâche en ouvrant l'activité `FormActivity` pré-remplie avec les informations de la tâche en question:
 
-Vous pouvez ensuite récupérer dans le `onCreate` de l'activité les infos que vous avez passées:
-
-- récupérez la tâche passée avec un `getSerializableExtra` comme précédemment (avec `intent` au lieu de `result`): elle est nullable (`Task?`) donc vous saurez que si elle est `null` vous êtes dans le cas "Ajout", sinon vous êtes dans l'édition
+- Créez un autre launcher
+- Utilisez `putExtra` pour transmettre des infos de la Task à éditer (depuis `TaskListFragment` cette fois)
+- Récupérez ces infos dans le `onCreate` de `FormActivity` avec `getSerializableExtra` comme précédemment (avec `intent` au lieu de `result`)
+- La `Task` récupérée est `nullable` vous êtes dans le cas "Ajout", sinon vous êtes dans l'édition
 - utilisez la pour préremplir les `EditText` avec `setText()` (quand la task est `null`, ça remplira avec `""` donc pas de soucis)
 - Utilisez l'opérateur `?:` pour réutiliser l'id précédent dans le cas de l'édition, et en créer un sinon:
 
@@ -109,16 +114,7 @@ val id = task?.id ?: UUID.randomUUID().toString()
 
 (Vous pouvez également utiliser cet opérateur pour préremplir les `EditText` avec les valeurs par défaut dans le cas de l'ajout afin de faciliter vos tests)
 
-Au retour dans `formLauncher`:
-
-- essayez de trouver la tache concernée et la supprimer dans la liste si elle y est déjà:
-
-```kotlin
-val oldTask = tasks.firstOrNull { it.id == newTask.id }
-if (oldTask != null) tasks = tasks - oldTask
-```
-
-- La suite du code reste la même: on ajoute la tâche, qu'elle soit nouvelle ou modifiée.
+- Au retour dans votre launcher, mettez à jour la liste: `taskList = taskList.map { if (it.id == newTask.id) newTask else it }`
 - Vérifier que les infos éditées s'affichent bien à notre retour sur l'activité principale.
 
 ## Interface et délégation
@@ -129,6 +125,7 @@ Mettez à jour votre code pour utiliser cette méthode:
 ```kotlin
 interface TaskListListener {
   fun onClickDelete(task: Task)
+  fun onClickEdit(task: Task)
 }
 
 class TaskListAdapter(val listener: TaskListListener) : ... {
@@ -138,12 +135,11 @@ class TaskListAdapter(val listener: TaskListListener) : ... {
 class TaskListFragment : Fragment {
   val adapterListener : TaskListListener = object : TaskListListener {
     override onClickDelete(task: Task) {...}
+    override onClickEdit(task: Task) {...}
   }
   val adapter = TaskListAdapter(adapterListener)
 }
 ```
-
-Prenez exemple sur ceci pour remplacer toutes vos lambdas.
 
 ## Partager
 
