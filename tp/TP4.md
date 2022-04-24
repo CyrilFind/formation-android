@@ -147,7 +147,9 @@ private fun Bitmap.toRequestBody(): MultipartBody.Part {
 - Modifiez `UserInfo` pour ajouter un champ `val avatar: String?` qui correspond à l'URL du serveur à laquelle l'image est stockée
 
 <aside class="negative">
+
 ⚠️ Attention c'est un tout petit serveur qui va automatiquement supprimer les images stockées automatiquement donc ne vous inquiétez pas si l'image ne s'affiche plus après un certain temps
+
 </aside>
 
 - Enfin, au chargement de l'activité, afficher l'avatar renvoyé depuis le serveur:
@@ -271,7 +273,7 @@ Et il faut également demander la permission d'accéder aux fichiers (en écritu
 
 </aside>
 
-- ajoutez `WRITE_EXTERNAL_STORAGE` au manifest
+- ajoutez [`WRITE_EXTERNAL_STORAGE`](https://developer.android.com/training/data-storage/shared/media#scoped_storage_enabled) au manifest
 
 - aidez vous de la [documentation](https://google.github.io/modernstorage/storage/), de ce que vous avez fait précédemment, et de ce squelette:
 

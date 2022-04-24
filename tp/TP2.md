@@ -35,21 +35,24 @@ myAdapter.onClickDelete = { task ->
 
 ## Création de FormActivity
 
-- Créer un package `form`
-- Créez y avec l'IDE la nouvelle `FormActivity` (`Clic droit sur le package > New > Activity > Empty Activity`)
+- Créez un package `form` dans votre package principal
+- Créez y avec l'IDE une nouvelle ACtivity: `FormActivity` (`Clic droit sur le package > New > Activity > Empty Activity`)
 - Dans le layout correspondant, créez 2 `EditText`, pour le titre et la description et un bouton pour valider
 
 <aside class="negative">
 
 ⚠️ Si vous créez l'Activity "à la main", n'oubliez pas de la déclarer dans le manifest !
+
 </aside>
 
 ## Ajout de tâche complet: Launcher
 
 <aside class="positive">
-Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent explicite](), et afin de récupérer un résultat de celle ci, nous allons utiliser un ["launcher"](https://developer.android.com/training/basics/intents/result#register) avec le "contrat" générique[StartActivityForResult](https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts.StartActivityForResult)
+
+Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent explicite](https://developer.android.com/guide/components/intents-filters#Types), et afin de récupérer un résultat de celle ci, nous allons utiliser un ["launcher"](https://developer.android.com/training/basics/intents/result#register) avec le "contrat" générique[StartActivityForResult](https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts.StartActivityForResult)
 
 **remarque**: Auparavant, il fallait utiliser `startActivityForResult(intent)` et `override fun onActivityResult(...)` avec un request code, etc.
+
 </aside>
 
 - Créez un "launcher" en propriété de la classe `TaskListFragment` qui permettra de lancer votre nouvelle activité et d'utiliser son résultat:
@@ -60,7 +63,7 @@ val createTask = registerForActivityResult(StartActivityForResult()) { result ->
 }
 ```
 
-- Changer l'action du FAB pour qu'il ouvre cette activité avec un `Intent`
+- Changer l'action du bouton d'ajout pour qu'il ouvre cette activité avec un `Intent`
 
 ```kotlin
 val intent = Intent(context, FormActivity::class.java)
@@ -79,6 +82,7 @@ val newTask = Task(id = UUID.randomUUID().toString(), title = "New Task !")
 <aside class="positive">
 
 Toute Activity a une propriété `intent` déjà définie: ici il aura la valeur que l'on a passée à `createTask`, on va utiliser ce même intent pour retourner un résultat
+
 </aside>
 
 - Ajouter `newTask` dans `intent`: `intent.putExtra("task", newTask)`: ça ne compilera pas car `Task` ne fait pas partie des types de base autorisés dans un intent !

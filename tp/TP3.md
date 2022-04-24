@@ -103,7 +103,6 @@ object Api {
           chain.proceed(newRequest)
         }
         .build()
-    }
 
     // transforme le JSON en objets kotlin et inversement
     val jsonSerializer = Json {
@@ -118,6 +117,7 @@ object Api {
       .addConverterFactory(jsonSerializer.asConverterFactory("application/json".toMediaType()))
       .build()
     }
+  }
 }
 ```
 
@@ -179,7 +179,8 @@ interface UserWebService {
 - Utilisez retrofit pour créer une implémentation de ce service:
 
 ```kotlin
-object Api { // ...
+object Api { 
+  // ...
   val userWebService : UserWebService by lazy {
     retrofit.create(UserWebService::class.java)
   }
@@ -251,13 +252,19 @@ interface TasksWebService {
 - Modifier `Task` pour la rendre "serializable" par KotlinX Serialization (inspirez vous de `UserInfo`)
 
 <aside class="negative">
+
 ⚠️ Ici vous aurez probablement un soucis car on a fait hériter `Task` de `Serializable` mais une des annotations de KotlinX Serialisation s'appelle aussi `Serializable`: pour résoudre ce conflit, faites hériter explicitement de `java.io.Serializable` à la place
+
 </aside>
 
 ## TasksListViewModel
 
 <aside class="positive">
+
 `ViewModel` est une classe du framework Android qui permet de gérer les données d'une vue, et dont on peut facilement créer et récupérer une instance, en général chacune associée à une `Activity` ou un `Fragment`
+
+On va donc y déplacer une partie de la logique: dans l'idéal l'`Activity` ou le `Fragment` doit seulement s'occuper de passer les évènements (comme les clics) au VM
+
 </aside>
 
 Créer la classe `TasksListViewModel`, avec une liste de tâches _Observable_ grâce aux type `StateFlow` et `MutableStateFlow`:
@@ -295,7 +302,9 @@ Dans `TaskListFragment`, à l'aide du squelette de code plus bas:
 - Dans `onViewCreated()`, "abonnez" le fragment aux changements du `StateFlow` du VM et mettez à jour la liste et l'`adapter` dans la lambda de retour
 
 <aside class="negative">
+
 ⚠️ Attention ici au moment de choisir l'import de `.collect` sélectionnez bien celui qui est présenté avec des accolades: `collect {...}`
+
 </aside>
 
 ```kotlin

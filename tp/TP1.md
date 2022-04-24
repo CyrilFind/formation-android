@@ -162,7 +162,9 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 ```
 
 <aside class="negative">
+
 ⚠️ C'est normal que l'IDE nous signale un problème ici, on le règlera plus tard
+
 </aside>
 
 ## TaskListAdapter: utilisation
