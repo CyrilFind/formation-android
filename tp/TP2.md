@@ -105,18 +105,17 @@ val task = result.data?.getSerializableExtra("task") as? Task
 
 Inspirez vous de ce que vous avez fait pour le bouton "supprimer" et le bouton "ajouter" pour créer un bouton "éditer" permettant de modifier chaque tâche en ouvrant l'activité `FormActivity` pré-remplie avec les informations de la tâche en question:
 
-- Créez un autre launcher
-- Utilisez `putExtra` pour transmettre des infos de la Task à éditer (depuis `TaskListFragment` cette fois)
-- Récupérez ces infos dans le `onCreate` de `FormActivity` avec `getSerializableExtra` comme précédemment (avec `intent` au lieu de `result`)
-- La `Task` récupérée est `nullable` vous êtes dans le cas "Ajout", sinon vous êtes dans l'édition
+- Créez un autre launcher dans le fragment
+- Créez une autre lambda dans l'adapter
+- Utilisez dans celle ci `putExtra` pour transmettre la `Task` à éditer (depuis `TaskListFragment` cette fois)
+- Récupérez la `Task` dans le `onCreate` de `FormActivity` avec `getSerializableExtra` comme précédemment (avec `intent` à la place de `result.data`)
+- La `Task` récupérée est `nullable`: c'est utile car elle sera `null` quand vous êtes dans le cas "Ajout", et sinon, elle aura une vraie valeur car vous êtes dans le cas "Édition"
 - utilisez la pour préremplir les `EditText` avec `setText()` (quand la task est `null`, ça remplira avec `""` donc pas de soucis)
 - Utilisez l'opérateur `?:` pour réutiliser l'id précédent dans le cas de l'édition, et en créer un sinon:
 
 ```kotlin
 val id = task?.id ?: UUID.randomUUID().toString()
 ```
-
-(Vous pouvez également utiliser cet opérateur pour préremplir les `EditText` avec les valeurs par défaut dans le cas de l'ajout afin de faciliter vos tests)
 
 - Au retour dans votre launcher, mettez à jour la liste: `taskList = taskList.map { if (it.id == newTask.id) newTask else it }`
 - Vérifier que les infos éditées s'affichent bien à notre retour sur l'activité principale.

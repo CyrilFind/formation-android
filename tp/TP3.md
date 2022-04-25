@@ -54,7 +54,6 @@ Dans le fichier `app/build.gradle`:
   implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
   implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
   implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
-  implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 ```
 
 - Tout en haut ajoutez le plugin de sérialisation:
@@ -280,8 +279,10 @@ class TasksListViewModel : ViewModel() {
 
   suspend fun refresh() {
       viewModelScope.launch {
-          val tasksResponse = webService.getTasks() // Call HTTP (opération longue)
-          if (tasksResponse.isSuccessful) ?: return  // à cette ligne, on a reçu la réponse de l'API
+          val response = webService.getTasks() // Call HTTP (opération longue)
+          if (response.isSuccessful) { // à cette ligne, on a reçu la réponse de l'API
+            Log.e("Network", "Error: ${response.message()}")
+          }
           val fetchedTasks = tasksResponse.body()!!
           _tasksStateFlow.value = fetchedTasks // on modifie le flow, ce qui déclenche ses observers
       }

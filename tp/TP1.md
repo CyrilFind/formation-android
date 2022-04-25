@@ -240,7 +240,7 @@ val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_task, p
 ```
 
 - `onBindViewHolder` doit insérer la donnée dans la cellule (`TaskViewHolder`) en fonction de sa `position` dans la liste en utilisant la méthode `bind()` que vous avez créée dans `TaskViewHolder` (elle ne fait rien pour l'instant)
-- Implémentez maintenant `bind()` qui doit récupérer une référence à la `TextView` dans `item_task.xml` et y insérer le texte récupéré en argument
+- Implémentez maintenant `bind()` qui doit récupérer une référence à la `TextView` dans `item_task.xml` et y insérer le texte récupéré en argument (pour être plus propre, déplacez cette référence en tant que propriété de votre `TaskViewHolder`)
 - Lancez l'app: vous devez voir 3 tâches s'afficher 👏
 
 ## Ajout de la data class Task
@@ -263,14 +263,14 @@ private var taskList = listOf(
 
 ## Ajout du FAB
 
-- Changez la root view de `fragment_task_list.xml` en `ConstraintLayout` en faisant un clic droit dessus en mode design
+- Changez la root view de `fragment_task_list.xml` en `ConstraintLayout` (si ce n'est pas déjà fait) en faisant un clic droit dessus en mode design
 - Ouvrez le volet `Resource Manager` à gauche, cliquez sur le `+` en haut à gauche puis `Vector Asset` puis double cliquez sur l'image du logo android et trouvez une icône `+` (en tapant `add`) puis `finish` pour ajouter une icône à vos resource
 - Ajouter un `Floating Action Button` (FAB) en bas à droite de ce layout et utilisez l'icône créée
 - Donnez des contraintes en bas et à droite à ce bouton
 
 <aside class="positive">
 
-Vous pouvez configurer les contraintesde plusieurs façons:
+Vous pouvez configurer les contraintes de plusieurs façons:
 
 - soit manuellement,
 - soit en activant l'icône "Aimant 🧲": déplacez le bouton, attendez de voir apparaître des lignes pointillées et relâchez le .
