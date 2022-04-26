@@ -295,6 +295,8 @@ taskList = taskList + newTask
 - passer la nouvelle liste à votre adapter
 - puis le **[notifier](https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#notifyDataSetChanged())** que la donnée a changé
 
+➡ créez une méthode `refreshAdapter` qui va faire les deux actions ci-dessus afin de rendre cela réutilisable
+
 </aside>
 
 Cette façon de "notifier" manuellement n'est pas idéale, il existe en fait une sous-classe de `RecyclerView.Adapter` qui permet de gérer cela automatiquement: `ListAdapter`

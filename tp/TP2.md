@@ -92,11 +92,19 @@ Toute Activity a une propriété `intent` déjà définie: ici il aura la valeur
 
 ## Ajout de tâche complet: Résultat
 
-Dans la lambda de retour de `createTask` récupérer cette task et l'ajouter à la liste:
+- Dans la lambda de retour de `createTask` récupérer cette task et l'ajouter à la liste:
 
 ```kotlin
-val task = result.data?.getSerializableExtra("task") as? Task
+val task = result.data?.getSerializableExtra("task") as Task?
 ```
+
+<aside class="negative">
+
+La syntaxe `as Task` permet de **"caster"** un objet récupéré en tant que `Task`: c'est à dire qu'on force l'objet à être considéré de type `Task`, qui est (depuis l'étape précédente) un sous-type de `Serializable` (retourné par `getSerializableExtra`)
+
+ici on utilise `as Task?` (on pourrait utiliser `as? Task`) pour récupérer un **nullable** et éviter d'avoir une exception si le cast ne fonctionne pas en retournant `null` à la place
+
+</aside>
 
 - Faites en sorte que la nouvelle tache s'affiche dans la liste directement
 

@@ -33,7 +33,7 @@ Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut
 
 ## Ajout des dépendances
 
-Dans le fichier `app/build.gradle`:
+Dans le fichier `app/build.gradle` (celui du module):
 
 - Dans `dependencies {...}`, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l'IDE vous le propose):
 
@@ -71,7 +71,7 @@ En cas de soucis à ce moment là, vérifiez que:
 
 - Android Studio est à jour ("Check for updates")
 - Le Plugin Kotlin est à jour (`Settings > Plugins > Installed > Kotlin`)
-- votre `kotlin_version` est récente, il doit être défini en haut de `<project>/.build.gradle` comme ceci (si ce n'est pas le cas, ajoutez le):
+- votre `kotlin_version` est récente, il doit être défini en haut de `PROJECT_DIR/build.gradle` (celui du projet) comme ceci (si ce n'est pas le cas, ajoutez le):
 
 ```groovy
 buildscript {
@@ -84,7 +84,7 @@ buildscript {
 ## Retrofit
 
 - Créer un package `network` qui contiendra les classes en rapport avec les échanges réseaux
-- Créer un `object Api` (ses membres et méthodes seront donc `static`):
+- Créer un `Api` (ses membres et méthodes seront donc `static`):
 
 ```kotlin
 object Api {
@@ -122,7 +122,17 @@ object Api {
 
 <aside class="positive">
 
-Ici je vous donne tout ce code de config car ce n'est pas très intéressant à chercher mais prenez quelques minutes pour lire et comprendre ce qu'il fait avant de copier-coller!
+Ici je vous donne tout ce code de config car ce n'est pas très intéressant à chercher mais prenez quelques minutes pour lire et comprendre ce qu'il fait avant de copier-coller:
+
+- on crée un client HTTP (avec [OkHttp](https://square.github.io/okhttp/))
+- on crée un JSON serializer (avec [KotlinX Serialization](https://github.com/Kotlin/kotlinx.serialization))
+- on crée une instance de [Retrofit](https://square.github.io/retrofit/) que l'on configure avec les éléments ci dessus (en adaptant le Serializer en `ConverterFactory`)
+
+</aside>
+
+<aside class="negative">
+
+la syntaxe `val retrofit by lazy { ... }` permet d'initialiser la variable `retrofit` automatiquement la première fois qu'elle sera utilisée (en executant la lambda qui suit le mot `lazy`)
 
 </aside>
 
@@ -288,9 +298,10 @@ class TasksListViewModel : ViewModel() {
       }
   }
 
-  suspend fun create(...)
-  suspend fun update(...)
-  suspend fun delete(...)
+  // à compléter plus tard:
+  suspend fun create(task: Task) {}
+  suspend fun update(task: Task) {}
+  suspend fun delete(task: Task) {}
 }
 ```
 
@@ -347,7 +358,10 @@ suspend fun delete(@...(...) id: String): Response<Unit>
 suspend fun update(task: Task) {
     viewModelScope.launch {
       val response = ... // TODO: appel réseau
-      if (!response.isSuccessful) return
+      if (!response.isSuccessful) {
+        Log.e("Network", "Error: ${response.raw()}")
+        return@launch
+      }
 
       val updatedTask = response.body()!!
       _tasksStateFlow.value = _tasksStateFlow.value - task + updatedTask
@@ -355,4 +369,4 @@ suspend fun update(task: Task) {
 }
 ```
 
-- Vous pouvez supprimer la `taskList` locale dans le Fragment et vérifier que vous avez bien tout remplacé par des appels au VM (et donc au serveur)
+- Supprimez la `taskList` locale dans le Fragment et vérifier que vous avez bien tout remplacé par des appels au VM (et donc au serveur), il ne doit rester plus qu'un seul endroit où vous mettez à jour l'adapter: dans le `.collect { }`

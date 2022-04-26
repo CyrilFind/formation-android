@@ -73,9 +73,13 @@ private val getPhoto = registerForActivityResult(TakePicturePreview()) { bitmap 
 }
 ```
 
-- et utilisez le dans le click listener du bouton correspondant: `getPhoto.launch()`
+- ajoutez un click listener au bouton correspondant pour y utiliser ce launcher: `getPhoto.launch()`
+
+<aside class="negative">
 
 ➡️ Si vous testez, ça ne va pas fonctionner tout de suite, car on a pas demandé la **permission** d'accéder à la caméra !
+
+</aside>
 
 ## Permissions: Caméra
 
@@ -143,8 +147,8 @@ private fun Bitmap.toRequestBody(): MultipartBody.Part {
 }
 ```
 
-- Dans `getPhoto`, envoyez l'image au serveur avec `updateAvatar` et `toRequestBody`
-- Modifiez `UserInfo` pour ajouter un champ `val avatar: String?` qui correspond à l'URL du serveur à laquelle l'image est stockée
+- Dans la cacllback de `getPhoto`, envoyez l'image au serveur avec `updateAvatar` et en convertissant `bitmap` avec `toRequestBody`
+- Modifiez `UserInfo` pour ajouter un champ `val avatar: String?` afin de pouvoir recevoir l'URL à laquelle l'image sera stockée sur le serveur
 
 <aside class="negative">
 
@@ -200,7 +204,7 @@ private fun showMessage(message: String) {
     Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
         .setAction("Open Settings") {
             val intent = Intent(
-                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                ACTION_APPLICATION_DETAILS_SETTINGS,
                 Uri.fromParts("package", packageName, null)
             )
             startActivity(intent)
@@ -257,10 +261,26 @@ fun openGallery() {
 
 ```kotlin
 // register
-private val galleryLauncher = registerForActivityResult(GetContent()) {...}
+private val galleryLauncher = registerForActivityResult(GetContent()) { uri ->
+    // au retour de la galerie on fera quasiment pareil qu'au retour de la caméra mais avec une URI àla place du bitmap
+}
 
 // use
 galleryLauncher.launch("image/*")
+```
+
+- Gérez le retour de l'uri, quasiment comme la caméra, vous aurez besoin d'une variante de l'extension précédente pour l'URI:
+
+```kotlin
+private fun Uri.toRequestBody(): MultipartBody.Part {
+    val fileInputStream = contentResolver.openInputStream(this)!!
+    val fileBody = fileInputStream.readBytes().toRequestBody()
+    return MultipartBody.Part.createFormData(
+        name = "avatar",
+        filename = "temp.jpeg",
+        body = fileBody
+    )
+}
 ```
 
 ## Amélioration de la caméra
@@ -278,12 +298,12 @@ Et il faut également demander la permission d'accéder aux fichiers (en écritu
 - aidez vous de la [documentation](https://google.github.io/modernstorage/storage/), de ce que vous avez fait précédemment, et de ce squelette:
 
 ```kotlin
-private val fileSystem by lazy { AndroidFileSystem(requireContext()) } // pour interagir avec le stockage
+private val fileSystem by lazy { AndroidFileSystem(this) } // pour interagir avec le stockage
 
 private lateinit var photoUri: Uri // on stockera l'uri dans cette variable
 
-private val openCamera = registerForActivityResult(TakePicture()) { accepted ->
-    // afficher et uploader l'image enregistrée à `photoUri`
+private val getPhoto = registerForActivityResult(TakePicture()) { success ->
+    // afficher et uploader l'image enregistrée dans `photoUri`
 }
 
 private val requestCamera =
@@ -308,17 +328,6 @@ fun launchCameraWithPermissions() {
             types = listOf(StoragePermissions.FileType.Image),
             createdBy = StoragePermissions.CreatedBy.Self
         )
-    )
-}
-
-// à la place de l'extension précédente:
-private fun Uri.toRequestBody(): MultipartBody.Part {
-    val fileInputStream = requireContext().contentResolver.openInputStream(this)!!
-    val fileBody = fileInputStream.readBytes().toRequestBody()
-    return MultipartBody.Part.createFormData(
-        name = "avatar",
-        filename = "temp.jpeg",
-        body = fileBody
     )
 }
 ```
