@@ -99,7 +99,14 @@ val task = result.data?.getSerializableExtra("task") as? Task
 ```
 
 - Faites en sorte que la nouvelle tache s'affiche dans la liste directement
-- Maintenant, récupérez les valeurs entrées pour les donner à la création de votre tâche (vous devrez faire un `toString()` car les `EditText` ne renvoient pas directement des `String`)
+
+<aside class="negative">
+
+Pour l'instant notre Task est créée avec des données "en dur", on va changer ça et récupérer les valeurs entrées par l'utilisateur dans les `EditText`, qui ont pour cela une propriété `text` qui est de type un peu particulier `Editable` mais vous utiliserez `toString()` dessus
+
+</aside>
+
+- Dans `FormActivity`, récupérez donc des références aux `EditText`, puis les valeurs entrées dedans, puis insérer les à la création `newTask`
 
 ## Édition d'une tâche
 

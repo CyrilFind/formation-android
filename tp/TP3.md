@@ -283,7 +283,7 @@ class TasksListViewModel : ViewModel() {
           if (response.isSuccessful) { // à cette ligne, on a reçu la réponse de l'API
             Log.e("Network", "Error: ${response.message()}")
           }
-          val fetchedTasks = tasksResponse.body()!!
+          val fetchedTasks = response.body()!!
           _tasksStateFlow.value = fetchedTasks // on modifie le flow, ce qui déclenche ses observers
       }
   }

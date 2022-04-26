@@ -102,7 +102,7 @@ Pour cela, il faut ajouter [ajouter des balises dans le manifest](https://develo
 
 ```kotlin
 private fun showMessage(message: String) {
-    Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
+    Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show()
 }
 ```
 
@@ -197,11 +197,11 @@ Par ex, si l'utilisateur refuse trop de fois la permission, la popup système ne
 
 ```kotlin
 private fun showMessage(message: String) {
-    Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
+    Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
         .setAction("Open Settings") {
             val intent = Intent(
                 Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                Uri.fromParts("package", requireActivity().packageName, null)
+                Uri.fromParts("package", packageName, null)
             )
             startActivity(intent)
         }
