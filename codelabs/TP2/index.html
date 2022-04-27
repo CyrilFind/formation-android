@@ -60,8 +60,8 @@ myAdapter.onClickDelete = { task -&gt;
     
       <google-codelab-step label="Création de FormActivity" duration="0">
         <ul>
-<li>Créer un package <code>form</code></li>
-<li>Créez y avec l&#39;IDE la nouvelle <code>FormActivity</code> (<code>Clic droit sur le package > New > Activity > Empty Activity</code>)</li>
+<li>Créez un package <code>form</code> dans votre package principal</li>
+<li>Créez y avec l&#39;IDE une nouvelle ACtivity: <code>FormActivity</code> (<code>Clic droit sur le package > New > Activity > Empty Activity</code>)</li>
 <li>Dans le layout correspondant, créez 2 <code>EditText</code>, pour le titre et la description et un bouton pour valider</li>
 </ul>
 <aside class="warning"><p>⚠️ Si vous créez l&#39;Activity &#34;à la main&#34;, n&#39;oubliez pas de la déclarer dans le manifest !</p>
@@ -71,7 +71,7 @@ myAdapter.onClickDelete = { task -&gt;
       </google-codelab-step>
     
       <google-codelab-step label="Ajout de tâche complet: Launcher" duration="0">
-        <aside class="special"><p> Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent explicite](), et afin de récupérer un résultat de celle ci, nous allons utiliser un [&#34;launcher&#34;](https://developer.android.com/training/basics/intents/result#register) avec le &#34;contrat&#34; générique[StartActivityForResult](https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts.StartActivityForResult) </p>
+        <aside class="special"><p>Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un <a href="https://developer.android.com/guide/components/intents-filters#Types" target="_blank">Intent explicite</a>, et afin de récupérer un résultat de celle ci, nous allons utiliser un <a href="https://developer.android.com/training/basics/intents/result#register" target="_blank">&#34;launcher&#34;</a> avec le &#34;contrat&#34; générique<a href="https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts.StartActivityForResult" target="_blank">StartActivityForResult</a></p>
 <p><strong>remarque</strong>: Auparavant, il fallait utiliser <code>startActivityForResult(intent)</code> et <code>override fun onActivityResult(...)</code> avec un request code, etc.</p>
 </aside>
 <ul>
@@ -82,7 +82,7 @@ myAdapter.onClickDelete = { task -&gt;
 }
 </code></pre>
 <ul>
-<li>Changer l&#39;action du FAB pour qu&#39;il ouvre cette activité avec un <code>Intent</code></li>
+<li>Changer l&#39;action du bouton d&#39;ajout pour qu&#39;il ouvre cette activité avec un <code>Intent</code></li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val intent = Intent(context, FormActivity::class.java)
 createTask.launch(intent)
@@ -109,12 +109,21 @@ val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;New Task !&#3
       </google-codelab-step>
     
       <google-codelab-step label="Ajout de tâche complet: Résultat" duration="0">
-        <p>Dans la lambda de retour de <code>createTask</code> récupérer cette task et l&#39;ajouter à la liste:</p>
-<pre><code language="language-kotlin" class="language-kotlin">val task = result.data?.getSerializableExtra(&#34;task&#34;) as? Task
+        <ul>
+<li>Dans la lambda de retour de <code>createTask</code> récupérer cette task et l&#39;ajouter à la liste:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">val task = result.data?.getSerializableExtra(&#34;task&#34;) as Task?
 </code></pre>
+<aside class="warning"><p>La syntaxe <code>as Task</code> permet de <strong>&#34;caster&#34;</strong> un objet récupéré en tant que <code>Task</code>: c&#39;est à dire qu&#39;on force l&#39;objet à être considéré de type <code>Task</code>, qui est (depuis l&#39;étape précédente) un sous-type de <code>Serializable</code> (retourné par <code>getSerializableExtra</code>)</p>
+<p>ici on utilise <code>as Task?</code> (on pourrait utiliser <code>as? Task</code>) pour récupérer un <strong>nullable</strong> et éviter d&#39;avoir une exception si le cast ne fonctionne pas en retournant <code>null</code> à la place</p>
+</aside>
 <ul>
 <li>Faites en sorte que la nouvelle tache s&#39;affiche dans la liste directement</li>
-<li>Maintenant, récupérez les valeurs entrées pour les donner à la création de votre tâche (vous devrez faire un <code>toString()</code> car les <code>EditText</code> ne renvoient pas directement des <code>String</code>)</li>
+</ul>
+<aside class="warning"><p>Pour l&#39;instant notre Task est créée avec des données &#34;en dur&#34;, on va changer ça et récupérer les valeurs entrées par l&#39;utilisateur dans les <code>EditText</code>, qui ont pour cela une propriété <code>text</code> qui est de type un peu particulier <code>Editable</code> mais vous utiliserez <code>toString()</code> dessus</p>
+</aside>
+<ul>
+<li>Dans <code>FormActivity</code>, récupérez donc des références aux <code>EditText</code>, puis les valeurs entrées dedans, puis insérer les à la création <code>newTask</code></li>
 </ul>
 
 
@@ -123,16 +132,16 @@ val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;New Task !&#3
       <google-codelab-step label="Édition d&#39;une tâche" duration="0">
         <p>Inspirez vous de ce que vous avez fait pour le bouton &#34;supprimer&#34; et le bouton &#34;ajouter&#34; pour créer un bouton &#34;éditer&#34; permettant de modifier chaque tâche en ouvrant l&#39;activité <code>FormActivity</code> pré-remplie avec les informations de la tâche en question:</p>
 <ul>
-<li>Créez un autre launcher</li>
-<li>Utilisez <code>putExtra</code> pour transmettre des infos de la Task à éditer (depuis <code>TaskListFragment</code> cette fois)</li>
-<li>Récupérez ces infos dans le <code>onCreate</code> de <code>FormActivity</code> avec <code>getSerializableExtra</code> comme précédemment (avec <code>intent</code> au lieu de <code>result</code>)</li>
-<li>La <code>Task</code> récupérée est <code>nullable</code> vous êtes dans le cas &#34;Ajout&#34;, sinon vous êtes dans l&#39;édition</li>
+<li>Créez un autre launcher dans le fragment</li>
+<li>Créez une autre lambda dans l&#39;adapter</li>
+<li>Utilisez dans celle ci <code>putExtra</code> pour transmettre la <code>Task</code> à éditer (depuis <code>TaskListFragment</code> cette fois)</li>
+<li>Récupérez la <code>Task</code> dans le <code>onCreate</code> de <code>FormActivity</code> avec <code>getSerializableExtra</code> comme précédemment (avec <code>intent</code> à la place de <code>result.data</code>)</li>
+<li>La <code>Task</code> récupérée est <code>nullable</code>: c&#39;est utile car elle sera <code>null</code> quand vous êtes dans le cas &#34;Ajout&#34;, et sinon, elle aura une vraie valeur car vous êtes dans le cas &#34;Édition&#34;</li>
 <li>utilisez la pour préremplir les <code>EditText</code> avec <code>setText()</code> (quand la task est <code>null</code>, ça remplira avec <code>""</code> donc pas de soucis)</li>
 <li>Utilisez l&#39;opérateur <code>?:</code> pour réutiliser l&#39;id précédent dans le cas de l&#39;édition, et en créer un sinon:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val id = task?.id ?: UUID.randomUUID().toString()
 </code></pre>
-<p>(Vous pouvez également utiliser cet opérateur pour préremplir les <code>EditText</code> avec les valeurs par défaut dans le cas de l&#39;ajout afin de faciliter vos tests)</p>
 <ul>
 <li>Au retour dans votre launcher, mettez à jour la liste: <code>taskList = taskList.map { if (it.id == newTask.id) newTask else it }</code></li>
 <li>Vérifier que les infos éditées s&#39;affichent bien à notre retour sur l&#39;activité principale.</li>

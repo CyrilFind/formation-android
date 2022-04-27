@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>TP 5: Images, Permissions, Stockage</title>
+  <title>TP 4: Images, Permissions, Stockage</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
@@ -23,7 +23,7 @@
   <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
   <google-codelab codelab-gaid=""
                   id="TP4"
-                  title="TP 5: Images, Permissions, Stockage"
+                  title="TP 4: Images, Permissions, Stockage"
                   environment="web"
                   feedback-link="">
     
@@ -96,9 +96,10 @@
 }
 </code></pre>
 <ul>
-<li>et utilisez le dans le click listener du bouton correspondant: <code>getPhoto.launch()</code></li>
+<li>ajoutez un click listener au bouton correspondant pour y utiliser ce launcher: <code>getPhoto.launch()</code></li>
 </ul>
-<p>➡️ Si vous testez, ça ne va pas fonctionner tout de suite, car on a pas demandé la <strong>permission</strong> d&#39;accéder à la caméra !</p>
+<aside class="warning"><p>➡️ Si vous testez, ça ne va pas fonctionner tout de suite, car on a pas demandé la <strong>permission</strong> d&#39;accéder à la caméra !</p>
+</aside>
 
 
       </google-codelab-step>
@@ -121,7 +122,7 @@
 <li>Afin d&#39;afficher des explications à l&#39;utilisateur on utilisera cette méthode:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">private fun showMessage(message: String) {
-    Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
+    Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show()
 }
 </code></pre>
 <ul>
@@ -163,10 +164,10 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response&lt;UserInfo
 }
 </code></pre>
 <ul>
-<li>Dans <code>getPhoto</code>, envoyez l&#39;image au serveur avec <code>updateAvatar</code> et <code>toRequestBody</code></li>
-<li>Modifiez <code>UserInfo</code> pour ajouter un champ <code>val avatar: String?</code> qui correspond à l&#39;URL du serveur à laquelle l&#39;image est stockée</li>
+<li>Dans la cacllback de <code>getPhoto</code>, envoyez l&#39;image au serveur avec <code>updateAvatar</code> et en convertissant <code>bitmap</code> avec <code>toRequestBody</code></li>
+<li>Modifiez <code>UserInfo</code> pour ajouter un champ <code>val avatar: String?</code> afin de pouvoir recevoir l&#39;URL à laquelle l&#39;image sera stockée sur le serveur</li>
 </ul>
-<aside class="warning"><p> ⚠️ Attention c&#39;est un tout petit serveur qui va automatiquement supprimer les images stockées automatiquement donc ne vous inquiétez pas si l&#39;image ne s&#39;affiche plus après un certain temps </p>
+<aside class="warning"><p>⚠️ Attention c&#39;est un tout petit serveur qui va automatiquement supprimer les images stockées automatiquement donc ne vous inquiétez pas si l&#39;image ne s&#39;affiche plus après un certain temps</p>
 </aside>
 <ul>
 <li>Enfin, au chargement de l&#39;activité, afficher l&#39;avatar renvoyé depuis le serveur:</li>
@@ -206,11 +207,11 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response&lt;UserInfo
 <li>Modifiez votre code pour permettre à l&#39;utilisateur d&#39;ouvrir les paramètres système liés à votre app:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">private fun showMessage(message: String) {
-    Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
+    Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
         .setAction(&#34;Open Settings&#34;) {
             val intent = Intent(
-                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                Uri.fromParts(&#34;package&#34;, requireActivity().packageName, null)
+                ACTION_APPLICATION_DETAILS_SETTINGS,
+                Uri.fromParts(&#34;package&#34;, packageName, null)
             )
             startActivity(intent)
         }
@@ -258,59 +259,18 @@ fun openGallery() {
 <li>Pour ouvrir le sélecteur de fichiers:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">// register
-private val galleryLauncher = registerForActivityResult(GetContent()) {...}
+private val galleryLauncher = registerForActivityResult(GetContent()) { uri -&gt;
+    // au retour de la galerie on fera quasiment pareil qu&#39;au retour de la caméra mais avec une URI àla place du bitmap
+}
 
 // use
 galleryLauncher.launch(&#34;image/*&#34;)
 </code></pre>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Amélioration de la caméra" duration="0">
-        <aside class="special"><p>Actuellement, la qualité d&#39;image récupérée de l&#39;appareil photo est très faible (car passée en <code>Bitmap</code>), pour changer cela il faut utiliser le contrat <code>TakePicture</code> qui retourne directement une <code>Uri</code></p>
-<p>Et il faut également demander la permission d&#39;accéder aux fichiers (en écriture !)</p>
-</aside>
 <ul>
-<li>ajoutez <code>WRITE_EXTERNAL_STORAGE</code> au manifest</li>
-<li>aidez vous de la <a href="https://google.github.io/modernstorage/storage/" target="_blank">documentation</a>, de ce que vous avez fait précédemment, et de ce squelette:</li>
+<li>Gérez le retour de l&#39;uri, quasiment comme la caméra, vous aurez besoin d&#39;une variante de l&#39;extension précédente pour l&#39;URI:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">private val fileSystem by lazy { AndroidFileSystem(requireContext()) } // pour interagir avec le stockage
-
-private lateinit var photoUri: Uri // on stockera l&#39;uri dans cette variable
-
-private val openCamera = registerForActivityResult(TakePicture()) { accepted -&gt;
-    // afficher et uploader l&#39;image enregistrée à `photoUri`
-}
-
-private val requestCamera =
-    registerForActivityResult(ActivityResultContracts.RequestPermission()) { accepted -&gt;
-        // create and store uri:
-        photoUri = fileSystem.createMediaStoreUri(
-            filename = &#34;picture-${UUID.randomUUID()}.jpg&#34;,
-            collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            directory = &#34;Todo&#34;,
-        )!!
-        openCamera.launch(photoUri)
-    }
-
-val requestWriteAccess = registerForActivityResult(RequestAccess()) { accepted -&gt;
-    // launch camera permission request
-}
-
-fun launchCameraWithPermissions() {
-    requestWriteAccess.launch(
-        RequestAccess.Args(
-            action = Action.READ_AND_WRITE,
-            types = listOf(StoragePermissions.FileType.Image),
-            createdBy = StoragePermissions.CreatedBy.Self
-        )
-    )
-}
-
-// à la place de l&#39;extension précédente:
-private fun Uri.toRequestBody(): MultipartBody.Part {
-    val fileInputStream = requireContext().contentResolver.openInputStream(this)!!
+<pre><code language="language-kotlin" class="language-kotlin">private fun Uri.toRequestBody(): MultipartBody.Part {
+    val fileInputStream = contentResolver.openInputStream(this)!!
     val fileBody = fileInputStream.readBytes().toRequestBody()
     return MultipartBody.Part.createFormData(
         name = &#34;avatar&#34;,
@@ -323,9 +283,54 @@ private fun Uri.toRequestBody(): MultipartBody.Part {
 
       </google-codelab-step>
     
+      <google-codelab-step label="Amélioration de la caméra" duration="0">
+        <aside class="special"><p>Actuellement, la qualité d&#39;image récupérée de l&#39;appareil photo est très faible (car passée en <code>Bitmap</code>), pour changer cela il faut utiliser le contrat <code>TakePicture</code> qui retourne directement une <code>Uri</code></p>
+<p>Et il faut également demander la permission d&#39;accéder aux fichiers (en écriture !)</p>
+</aside>
+<ul>
+<li>ajoutez <a href="https://developer.android.com/training/data-storage/shared/media#scoped_storage_enabled" target="_blank"><code>WRITE_EXTERNAL_STORAGE</code></a> au manifest</li>
+<li>aidez vous de la <a href="https://google.github.io/modernstorage/storage/" target="_blank">documentation</a>, de ce que vous avez fait précédemment, et de ce squelette:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">private val fileSystem by lazy { AndroidFileSystem(this) } // pour interagir avec le stockage
+
+private lateinit var photoUri: Uri // on stockera l&#39;uri dans cette variable
+
+private val getPhoto = registerForActivityResult(TakePicture()) { success -&gt;
+    // afficher et uploader l&#39;image enregistrée dans `photoUri`
+}
+
+private val requestCamera =
+    registerForActivityResult(ActivityResultContracts.RequestPermission()) { accepted -&gt;
+        // créer et stocker l&#39;uri:
+        photoUri = fileSystem.createMediaStoreUri(
+            filename = &#34;picture-${UUID.randomUUID()}.jpg&#34;,
+            collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            directory = &#34;Todo&#34;,
+        )!!
+        openCamera.launch(photoUri)
+    }
+
+val requestWriteAccess = registerForActivityResult(RequestAccess()) { accepted -&gt;
+    // utiliser le code précédent de `launchCameraWithPermissions`
+}
+
+fun launchCameraWithPermissions() {
+    requestWriteAccess.launch(
+        RequestAccess.Args(
+            action = Action.READ_AND_WRITE,
+            types = listOf(StoragePermissions.FileType.Image),
+            createdBy = StoragePermissions.CreatedBy.Self
+        )
+    )
+}
+</code></pre>
+
+
+      </google-codelab-step>
+    
       <google-codelab-step label="Édition infos utilisateurs" duration="0">
         <ul>
-<li>Comme précédemment, re-factorisez en utilisant un <code>UserInfoViewModel</code></li>
+<li>Comme précédemment, re-factorisez cette Activity en utilisant un <code>UserInfoViewModel</code></li>
 <li>Dans <code>UserInfoActivity</code>, permettre d&#39;éditer et d&#39;afficher les informations (nom, prénom, email) en respectant cette architecture</li>
 <li>Vous aurez besoin d&#39;ajouter ça à <code>UserWebService</code>:</li>
 </ul>

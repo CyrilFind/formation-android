@@ -164,7 +164,7 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
   }
 }
 </code></pre>
-<aside class="warning"><p> ⚠️ C&#39;est normal que l&#39;IDE nous signale un problème ici, on le règlera plus tard </p>
+<aside class="warning"><p>⚠️ C&#39;est normal que l&#39;IDE nous signale un problème ici, on le règlera plus tard</p>
 </aside>
 
 
@@ -239,7 +239,7 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
 </code></pre>
 <ul>
 <li><code>onBindViewHolder</code> doit insérer la donnée dans la cellule (<code>TaskViewHolder</code>) en fonction de sa <code>position</code> dans la liste en utilisant la méthode <code>bind()</code> que vous avez créée dans <code>TaskViewHolder</code> (elle ne fait rien pour l&#39;instant)</li>
-<li>Implémentez maintenant <code>bind()</code> qui doit récupérer une référence à la <code>TextView</code> dans <code>item_task.xml</code> et y insérer le texte récupéré en argument</li>
+<li>Implémentez maintenant <code>bind()</code> qui doit récupérer une référence à la <code>TextView</code> dans <code>item_task.xml</code> et y insérer le texte récupéré en argument (pour être plus propre, déplacez cette référence en tant que propriété de votre <code>TaskViewHolder</code>)</li>
 <li>Lancez l&#39;app: vous devez voir 3 tâches s&#39;afficher 👏</li>
 </ul>
 
@@ -269,12 +269,12 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
     
       <google-codelab-step label="Ajout du FAB" duration="0">
         <ul>
-<li>Changez la root view de <code>fragment_task_list.xml</code> en <code>ConstraintLayout</code> en faisant un clic droit dessus en mode design</li>
+<li>Changez la root view de <code>fragment_task_list.xml</code> en <code>ConstraintLayout</code> (si ce n&#39;est pas déjà fait) en faisant un clic droit dessus en mode design</li>
 <li>Ouvrez le volet <code>Resource Manager</code> à gauche, cliquez sur le <code>+</code> en haut à gauche puis <code>Vector Asset</code> puis double cliquez sur l&#39;image du logo android et trouvez une icône <code>+</code> (en tapant <code>add</code>) puis <code>finish</code> pour ajouter une icône à vos resource</li>
 <li>Ajouter un <code>Floating Action Button</code> (FAB) en bas à droite de ce layout et utilisez l&#39;icône créée</li>
 <li>Donnez des contraintes en bas et à droite à ce bouton</li>
 </ul>
-<aside class="special"><p>Vous pouvez configurer les contraintesde plusieurs façons:</p>
+<aside class="special"><p>Vous pouvez configurer les contraintes de plusieurs façons:</p>
 <ul>
 <li>soit manuellement,</li>
 <li>soit en activant l&#39;icône &#34;Aimant 🧲&#34;: déplacez le bouton, attendez de voir apparaître des lignes pointillées et relâchez le .</li>
@@ -296,6 +296,7 @@ taskList = taskList + newTask
 <li>passer la nouvelle liste à votre adapter</li>
 <li>puis le <a href="https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#notifyDataSetChanged()" target="_blank"><strong>notifier</strong></a> que la donnée a changé</li>
 </ul>
+<p>➡ créez une méthode <code>refreshAdapter</code> qui va faire les deux actions ci-dessus afin de rendre cela réutilisable</p>
 </aside>
 <p>Cette façon de &#34;notifier&#34; manuellement n&#39;est pas idéale, il existe en fait une sous-classe de <code>RecyclerView.Adapter</code> qui permet de gérer cela automatiquement: <code>ListAdapter</code></p>
 

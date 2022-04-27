@@ -61,7 +61,7 @@
       </google-codelab-step>
     
       <google-codelab-step label="Ajout des dépendances" duration="0">
-        <p>Dans le fichier <code>app/build.gradle</code>:</p>
+        <p>Dans le fichier <code>app/build.gradle</code> (celui du module):</p>
 <ul>
 <li>Dans <code>dependencies {...}</code>, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l&#39;IDE vous le propose):</li>
 </ul>
@@ -81,7 +81,6 @@
   implementation &#39;androidx.lifecycle:lifecycle-extensions:2.2.0&#39;
   implementation &#39;androidx.lifecycle:lifecycle-runtime-ktx:2.4.0&#39;
   implementation &#39;androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0&#39;
-  implementation &#39;androidx.legacy:legacy-support-v4:1.0.0&#39;
 </code></pre>
 <ul>
 <li>Tout en haut ajoutez le plugin de sérialisation:</li>
@@ -96,7 +95,7 @@
 <ul>
 <li>Android Studio est à jour (&#34;Check for updates&#34;)</li>
 <li>Le Plugin Kotlin est à jour (<code>Settings > Plugins > Installed > Kotlin</code>)</li>
-<li>votre <code>kotlin_version</code> est récente, il doit être défini en haut de <code><project>/.build.gradle</code> comme ceci (si ce n&#39;est pas le cas, ajoutez le):</li>
+<li>votre <code>kotlin_version</code> est récente, il doit être défini en haut de <code>PROJECT_DIR/build.gradle</code> (celui du projet) comme ceci (si ce n&#39;est pas le cas, ajoutez le):</li>
 </ul>
 <pre><code language="language-groovy" class="language-groovy">buildscript {
     ext {
@@ -111,7 +110,7 @@
       <google-codelab-step label="Retrofit" duration="0">
         <ul>
 <li>Créer un package <code>network</code> qui contiendra les classes en rapport avec les échanges réseaux</li>
-<li>Créer un <code>object Api</code> (ses membres et méthodes seront donc <code>static</code>):</li>
+<li>Créer un <code>Api</code> (ses membres et méthodes seront donc <code>static</code>):</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">object Api {
   private const val TOKEN = &#34;COPIEZ_VOTRE_TOKEN_ICI&#34;
@@ -128,7 +127,6 @@
           chain.proceed(newRequest)
         }
         .build()
-    }
 
     // transforme le JSON en objets kotlin et inversement
     val jsonSerializer = Json {
@@ -143,9 +141,17 @@
       .addConverterFactory(jsonSerializer.asConverterFactory(&#34;application/json&#34;.toMediaType()))
       .build()
     }
+  }
 }
 </code></pre>
-<aside class="special"><p>Ici je vous donne tout ce code de config car ce n&#39;est pas très intéressant à chercher mais prenez quelques minutes pour lire et comprendre ce qu&#39;il fait avant de copier-coller!</p>
+<aside class="special"><p>Ici je vous donne tout ce code de config car ce n&#39;est pas très intéressant à chercher mais prenez quelques minutes pour lire et comprendre ce qu&#39;il fait avant de copier-coller:</p>
+<ul>
+<li>on crée un client HTTP (avec <a href="https://square.github.io/okhttp/" target="_blank">OkHttp</a>)</li>
+<li>on crée un JSON serializer (avec <a href="https://github.com/Kotlin/kotlinx.serialization" target="_blank">KotlinX Serialization</a>)</li>
+<li>on crée une instance de <a href="https://square.github.io/retrofit/" target="_blank">Retrofit</a> que l&#39;on configure avec les éléments ci dessus (en adaptant le Serializer en <code>ConverterFactory</code>)</li>
+</ul>
+</aside>
+<aside class="warning"><p>la syntaxe <code>val retrofit by lazy { ... }</code> permet d&#39;initialiser la variable <code>retrofit</code> automatiquement la première fois qu&#39;elle sera utilisée (en executant la lambda qui suit le mot <code>lazy</code>)</p>
 </aside>
 
 
@@ -190,7 +196,8 @@ data class UserInfo(
 <ul>
 <li>Utilisez retrofit pour créer une implémentation de ce service:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">object Api { // ...
+<pre><code language="language-kotlin" class="language-kotlin">object Api { 
+  // ...
   val userWebService : UserWebService by lazy {
     retrofit.create(UserWebService::class.java)
   }
@@ -247,14 +254,15 @@ val userInfo = Api.userWebService.getInfo().body()!!
 <li>Utiliser l&#39;instance de retrofit comme précédemment pour créer une instance de <code>TasksWebService</code> dans l&#39;objet <code>Api</code></li>
 <li>Modifier <code>Task</code> pour la rendre &#34;serializable&#34; par KotlinX Serialization (inspirez vous de <code>UserInfo</code>)</li>
 </ul>
-<aside class="warning"><p> ⚠️ Ici vous aurez probablement un soucis car on a fait hériter `Task` de `Serializable` mais une des annotations de KotlinX Serialisation s&#39;appelle aussi `Serializable`: pour résoudre ce conflit, faites hériter explicitement de `java.io.Serializable` à la place </p>
+<aside class="warning"><p>⚠️ Ici vous aurez probablement un soucis car on a fait hériter <code>Task</code> de <code>Serializable</code> mais une des annotations de KotlinX Serialisation s&#39;appelle aussi <code>Serializable</code>: pour résoudre ce conflit, faites hériter explicitement de <code>java.io.Serializable</code> à la place</p>
 </aside>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="TasksListViewModel" duration="0">
-        <aside class="special"><p> `ViewModel` est une classe du framework Android qui permet de gérer les données d&#39;une vue, et dont on peut facilement créer et récupérer une instance, en général chacune associée à une `Activity` ou un `Fragment` </p>
+        <aside class="special"><p><code>ViewModel</code> est une classe du framework Android qui permet de gérer les données d&#39;une vue, et dont on peut facilement créer et récupérer une instance, en général chacune associée à une <code>Activity</code> ou un <code>Fragment</code></p>
+<p>On va donc y déplacer une partie de la logique: dans l&#39;idéal l&#39;<code>Activity</code> ou le <code>Fragment</code> doit seulement s&#39;occuper de passer les évènements (comme les clics) au VM</p>
 </aside>
 <p>Créer la classe <code>TasksListViewModel</code>, avec une liste de tâches <em>Observable</em> grâce aux type <code>StateFlow</code> et <code>MutableStateFlow</code>:</p>
 <pre><code language="language-kotlin" class="language-kotlin">class TasksListViewModel : ViewModel() {
@@ -267,16 +275,19 @@ val userInfo = Api.userWebService.getInfo().body()!!
 
   suspend fun refresh() {
       viewModelScope.launch {
-          val tasksResponse = webService.getTasks() // Call HTTP (opération longue)
-          if (tasksResponse.isSuccessful) ?: return  // à cette ligne, on a reçu la réponse de l&#39;API
-          val fetchedTasks = tasksResponse.body()!!
+          val response = webService.getTasks() // Call HTTP (opération longue)
+          if (response.isSuccessful) { // à cette ligne, on a reçu la réponse de l&#39;API
+            Log.e(&#34;Network&#34;, &#34;Error: ${response.message()}&#34;)
+          }
+          val fetchedTasks = response.body()!!
           _tasksStateFlow.value = fetchedTasks // on modifie le flow, ce qui déclenche ses observers
       }
   }
 
-  suspend fun create(...)
-  suspend fun update(...)
-  suspend fun delete(...)
+  // à compléter plus tard:
+  suspend fun create(task: Task) {}
+  suspend fun update(task: Task) {}
+  suspend fun delete(task: Task) {}
 }
 </code></pre>
 
@@ -290,7 +301,7 @@ val userInfo = Api.userWebService.getInfo().body()!!
 <li>Dans <code>onResume()</code>, utilisez ce VM pour rafraîchir la liste de tasks</li>
 <li>Dans <code>onViewCreated()</code>, &#34;abonnez&#34; le fragment aux changements du <code>StateFlow</code> du VM et mettez à jour la liste et l&#39;<code>adapter</code> dans la lambda de retour</li>
 </ul>
-<aside class="warning"><p> ⚠️ Attention ici au moment de choisir l&#39;import de `.collect` sélectionnez bien celui qui est présenté avec des accolades: `collect {...}` </p>
+<aside class="warning"><p>⚠️ Attention ici au moment de choisir l&#39;import de <code>.collect</code> sélectionnez bien celui qui est présenté avec des accolades: <code>collect {...}</code></p>
 </aside>
 <pre><code language="language-kotlin" class="language-kotlin">private val viewModel: TaskListViewModel by viewModels()
 
@@ -332,7 +343,10 @@ suspend fun delete(@...(...) id: String): Response&lt;Unit&gt;
 <pre><code language="language-kotlin" class="language-kotlin">suspend fun update(task: Task) {
     viewModelScope.launch {
       val response = ... // TODO: appel réseau
-      if (!response.isSuccessful) return
+      if (!response.isSuccessful) {
+        Log.e(&#34;Network&#34;, &#34;Error: ${response.raw()}&#34;)
+        return@launch
+      }
 
       val updatedTask = response.body()!!
       _tasksStateFlow.value = _tasksStateFlow.value - task + updatedTask
@@ -340,7 +354,7 @@ suspend fun delete(@...(...) id: String): Response&lt;Unit&gt;
 }
 </code></pre>
 <ul>
-<li>Vous pouvez supprimer la <code>taskList</code> locale dans le Fragment et vérifier que vous avez bien tout remplacé par des appels au VM (et donc au serveur)</li>
+<li>Supprimez la <code>taskList</code> locale dans le Fragment et vérifier que vous avez bien tout remplacé par des appels au VM (et donc au serveur), il ne doit rester plus qu&#39;un seul endroit où vous mettez à jour l&#39;adapter: dans le <code>.collect { }</code></li>
 </ul>
 
 
