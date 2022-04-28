@@ -280,7 +280,7 @@ Vous pouvez configurer les contraintes de plusieurs façons:
 
 ## Ajout de tâche rapide
 
-Utilisez `.setOnClickListener {}` sur le FAB pour ajouter une tâche à votre liste à chaque fois qu'on clique dessus:
+Utilisez `.setOnClickListener {}` sur le bouton d'ajout pour ajouter une tâche à votre liste à chaque fois qu'on clique dessus:
 
 ```kotlin
 // Instanciation d'un objet task avec des données préremplies:

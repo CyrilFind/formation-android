@@ -59,11 +59,11 @@ Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent e
 
 ```kotlin
 val createTask = registerForActivityResult(StartActivityForResult()) { result ->
-  // ici on récupérera le résultat pour le traiter
+  // dans cette callback on récupèrera la task et on l'ajoutera à la liste
 }
 ```
 
-- Changer l'action du bouton d'ajout pour qu'il ouvre cette activité avec un `Intent`
+- Remplacez l'action du bouton d'ajout pour qu'il ouvre cette activité avec un `Intent`
 
 ```kotlin
 val intent = Intent(context, FormActivity::class.java)
@@ -92,11 +92,13 @@ Toute Activity a une propriété `intent` déjà définie: ici il aura la valeur
 
 ## Ajout de tâche complet: Résultat
 
-- Dans la lambda de retour de `createTask` récupérer cette task et l'ajouter à la liste:
+- Dans la lambda de retour de `createTask` récupérer cette task:
 
 ```kotlin
 val task = result.data?.getSerializableExtra("task") as Task?
 ```
+
+- et ajoutez la à la liste, comme vous le faisiez avec le bouton d'ajout précédemment
 
 <aside class="negative">
 

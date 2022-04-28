@@ -71,14 +71,14 @@ En cas de soucis à ce moment là, vérifiez que:
 
 - Android Studio est à jour ("Check for updates")
 - Le Plugin Kotlin est à jour (`Settings > Plugins > Installed > Kotlin`)
-- votre `kotlin_version` est récente, il doit être défini en haut de `PROJECT_DIR/build.gradle` (celui du projet) comme ceci (si ce n'est pas le cas, ajoutez le):
+- votre `kotlin_version` est récente, il doit être défini en haut de `PROJECT_DIR/build.gradle` (celui du projet) comme ceci (si ce n'est pas le cas, ajoutez le tout en haut):
 
 ```groovy
 buildscript {
     ext {
         kotlin_version = "1.6.0"
     }
-// ...
+}
 ```
 
 ## Retrofit
