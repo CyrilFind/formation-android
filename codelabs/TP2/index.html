@@ -78,11 +78,11 @@ myAdapter.onClickDelete = { task -&gt;
 <li>Créez un &#34;launcher&#34; en propriété de la classe <code>TaskListFragment</code> qui permettra de lancer votre nouvelle activité et d&#39;utiliser son résultat:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val createTask = registerForActivityResult(StartActivityForResult()) { result -&gt;
-  // ici on récupérera le résultat pour le traiter
+  // dans cette callback on récupèrera la task et on l&#39;ajoutera à la liste
 }
 </code></pre>
 <ul>
-<li>Changer l&#39;action du bouton d&#39;ajout pour qu&#39;il ouvre cette activité avec un <code>Intent</code></li>
+<li>Remplacez l&#39;action du bouton d&#39;ajout pour qu&#39;il ouvre cette activité avec un <code>Intent</code></li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val intent = Intent(context, FormActivity::class.java)
 createTask.launch(intent)
@@ -110,10 +110,13 @@ val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;New Task !&#3
     
       <google-codelab-step label="Ajout de tâche complet: Résultat" duration="0">
         <ul>
-<li>Dans la lambda de retour de <code>createTask</code> récupérer cette task et l&#39;ajouter à la liste:</li>
+<li>Dans la lambda de retour de <code>createTask</code> récupérer cette task:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val task = result.data?.getSerializableExtra(&#34;task&#34;) as Task?
 </code></pre>
+<ul>
+<li>et ajoutez la à la liste, comme vous le faisiez avec le bouton d&#39;ajout précédemment</li>
+</ul>
 <aside class="warning"><p>La syntaxe <code>as Task</code> permet de <strong>&#34;caster&#34;</strong> un objet récupéré en tant que <code>Task</code>: c&#39;est à dire qu&#39;on force l&#39;objet à être considéré de type <code>Task</code>, qui est (depuis l&#39;étape précédente) un sous-type de <code>Serializable</code> (retourné par <code>getSerializableExtra</code>)</p>
 <p>ici on utilise <code>as Task?</code> (on pourrait utiliser <code>as? Task</code>) pour récupérer un <strong>nullable</strong> et éviter d&#39;avoir une exception si le cast ne fonctionne pas en retournant <code>null</code> à la place</p>
 </aside>

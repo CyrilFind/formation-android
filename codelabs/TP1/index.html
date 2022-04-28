@@ -286,7 +286,7 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
       </google-codelab-step>
     
       <google-codelab-step label="Ajout de tâche rapide" duration="0">
-        <p>Utilisez <code>.setOnClickListener {}</code> sur le FAB pour ajouter une tâche à votre liste à chaque fois qu&#39;on clique dessus:</p>
+        <p>Utilisez <code>.setOnClickListener {}</code> sur le bouton d&#39;ajout pour ajouter une tâche à votre liste à chaque fois qu&#39;on clique dessus:</p>
 <pre><code language="language-kotlin" class="language-kotlin">// Instanciation d&#39;un objet task avec des données préremplies:
 val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;Task ${taskList.size + 1}&#34;)
 taskList = taskList + newTask
