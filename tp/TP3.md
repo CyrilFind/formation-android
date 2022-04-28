@@ -286,7 +286,7 @@ class TasksListViewModel : ViewModel() {
   // même donnée mais publique et non-modifiable à l'extérieur afin de pouvoir seulement s'y abonner:
   public val tasksStateFlow: StateFlow<List<Task>> = _tasksStateFlow.asStateFlow()
 
-  suspend fun refresh() {
+  fun refresh() {
       viewModelScope.launch {
           val response = webService.getTasks() // Call HTTP (opération longue)
           if (response.isSuccessful) { // à cette ligne, on a reçu la réponse de l'API
@@ -298,9 +298,9 @@ class TasksListViewModel : ViewModel() {
   }
 
   // à compléter plus tard:
-  suspend fun create(task: Task) {}
-  suspend fun update(task: Task) {}
-  suspend fun delete(task: Task) {}
+  fun create(task: Task) {}
+  fun update(task: Task) {}
+  fun delete(task: Task) {}
 }
 ```
 
@@ -354,7 +354,7 @@ suspend fun delete(@...(...) id: String): Response<Unit>
 - Inspirez vous du fonctionnement de `refresh()` pour ajouter toutes les autres actions avec le serveur dans le VM, par ex pour l'édition:
 
 ```kotlin
-suspend fun update(task: Task) {
+fun update(task: Task) {
     viewModelScope.launch {
       val response = ... // TODO: appel réseau
       if (!response.isSuccessful) {
