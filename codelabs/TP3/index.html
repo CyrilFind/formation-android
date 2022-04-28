@@ -272,7 +272,7 @@ val userInfo = Api.userWebService.getInfo().body()!!
   // même donnée mais publique et non-modifiable à l&#39;extérieur afin de pouvoir seulement s&#39;y abonner:
   public val tasksStateFlow: StateFlow&lt;List&lt;Task&gt;&gt; = _tasksStateFlow.asStateFlow()
 
-  suspend fun refresh() {
+  fun refresh() {
       viewModelScope.launch {
           val response = webService.getTasks() // Call HTTP (opération longue)
           if (response.isSuccessful) { // à cette ligne, on a reçu la réponse de l&#39;API
@@ -284,9 +284,9 @@ val userInfo = Api.userWebService.getInfo().body()!!
   }
 
   // à compléter plus tard:
-  suspend fun create(task: Task) {}
-  suspend fun update(task: Task) {}
-  suspend fun delete(task: Task) {}
+  fun create(task: Task) {}
+  fun update(task: Task) {}
+  fun delete(task: Task) {}
 }
 </code></pre>
 
@@ -339,7 +339,7 @@ suspend fun delete(@...(...) id: String): Response&lt;Unit&gt;
         <ul>
 <li>Inspirez vous du fonctionnement de <code>refresh()</code> pour ajouter toutes les autres actions avec le serveur dans le VM, par ex pour l&#39;édition:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">suspend fun update(task: Task) {
+<pre><code language="language-kotlin" class="language-kotlin">fun update(task: Task) {
     viewModelScope.launch {
       val response = ... // TODO: appel réseau
       if (!response.isSuccessful) {
