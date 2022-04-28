@@ -116,7 +116,6 @@ object Api {
       .addConverterFactory(jsonSerializer.asConverterFactory("application/json".toMediaType()))
       .build()
     }
-  }
 }
 ```
 
