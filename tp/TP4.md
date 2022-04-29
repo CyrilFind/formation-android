@@ -34,7 +34,7 @@ avatarImageView.load("https://goo.gl/gEgYUd")
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     <ImageView
-        android:id="@+id/image_view"
+        android:id="@+id/avatar_image_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:srcCompat="@tools:sample/avatars" />

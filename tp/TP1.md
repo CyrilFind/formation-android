@@ -40,15 +40,15 @@ implementation 'androidx.fragment:fragment-ktx:1.4.0'
 implementation 'androidx.activity:activity-ktx:1.4.0'
 ```
 
-Vérifiez que le block `android{}` ressemble à ceci:
+Vérifiez que le block `android{}` contient les bon numéros de version:
 
 ```groovy
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32 
     defaultConfig {
         applicationId "com.nicoalex.kodo"
         minSdkVersion 23
-        targetSdkVersion 31
+        targetSdkVersion 32
         // ...
     }
 
