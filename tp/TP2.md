@@ -134,7 +134,7 @@ Inspirez vous de ce que vous avez fait pour le bouton "supprimer" et le bouton "
 val id = task?.id ?: UUID.randomUUID().toString()
 ```
 
-- Au retour dans votre launcher, mettez à jour la liste: `taskList = taskList.map { if (it.id == newTask.id) newTask else it }`
+- Au retour dans votre launcher, mettez à jour la liste: `taskList = taskList.map { if (it.id == task.id) task else it }`
 - Vérifier que les infos éditées s'affichent bien à notre retour sur l'activité principale.
 
 ## Interface et délégation

@@ -61,25 +61,14 @@ Dans le fichier `app/build.gradle` (celui du module):
 ```groovy
 plugins {
     // ...
-    id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlin_version"
+    id 'org.jetbrains.kotlin.plugin.serialization' version "1.6.20"
 }
 ```
 
 Après tout cela vous pouvez cliquer sur "Sync Now" pour que l'IDE synchronise le projet.
 
-En cas de soucis à ce moment là, vérifiez que:
-
-- Android Studio est à jour ("Check for updates")
-- Le Plugin Kotlin est à jour (`Settings > Plugins > Installed > Kotlin`)
-- votre `kotlin_version` est récente, il doit être défini en haut de `PROJECT_DIR/build.gradle` (celui du projet) comme ceci (si ce n'est pas le cas, ajoutez le tout en haut):
-
-```groovy
-buildscript {
-    ext {
-        kotlin_version = "1.6.0"
-    }
-}
-```
+En cas de soucis à ce moment là, vérifiez que Android Studio est à jour ("Check for updates")
+et que le Plugin Kotlin est à jour (`Settings > Plugins > Installed > Kotli
 
 ## Retrofit
 
@@ -275,25 +264,24 @@ On va donc y déplacer une partie de la logique: dans l'idéal l'`Activity` ou l
 
 </aside>
 
-Créer la classe `TasksListViewModel`, avec une liste de tâches _Observable_ grâce aux type `StateFlow` et `MutableStateFlow`:
+Créer la classe `TasksListViewModel`, avec une liste de tâches _Observable_ grâce au `MutableStateFlow`:
 
 ```kotlin
 class TasksListViewModel : ViewModel() {
   private val webService = Api.tasksWebService
 
-  // privée mais modifiable à l'intérieur du VM: 
-  private val _tasksStateFlow = MutableStateFlow<List<Task>>(emptyList())
-  // même donnée mais publique et non-modifiable à l'extérieur afin de pouvoir seulement s'y abonner:
-  public val tasksStateFlow: StateFlow<List<Task>> = _tasksStateFlow.asStateFlow()
+  // propri `
+  public val tasksStateFlow = MutableStateFlow<List<Task>>(emptyList())
 
   fun refresh() {
       viewModelScope.launch {
           val response = webService.getTasks() // Call HTTP (opération longue)
-          if (response.isSuccessful) { // à cette ligne, on a reçu la réponse de l'API
+          if (!response.isSuccessful) { // à cette ligne, on a reçu la réponse de l'API
             Log.e("Network", "Error: ${response.message()}")
+            return@launch
           }
           val fetchedTasks = response.body()!!
-          _tasksStateFlow.value = fetchedTasks // on modifie le flow, ce qui déclenche ses observers
+          tasksStateFlow.value = fetchedTasks // on modifie le flow, ce qui déclenche ses observers
       }
   }
 
@@ -363,7 +351,7 @@ fun update(task: Task) {
       }
 
       val updatedTask = response.body()!!
-      _tasksStateFlow.value = _tasksStateFlow.value - task + updatedTask
+      tasksStateFlow.value = tasksStateFlow.value.map { if (it.id == updatedTask.id) updatedTask else it }
     }
 }
 ```

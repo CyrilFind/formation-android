@@ -147,7 +147,7 @@ private fun Bitmap.toRequestBody(): MultipartBody.Part {
 }
 ```
 
-- Dans la cacllback de `getPhoto`, envoyez l'image au serveur avec `updateAvatar` et en convertissant `bitmap` avec `toRequestBody`
+- Dans la callback de `getPhoto`, envoyez l'image au serveur avec `updateAvatar` et en convertissant `bitmap` avec `toRequestBody`
 - Modifiez `UserInfo` pour ajouter un champ `val avatar: String?` afin de pouvoir recevoir l'URL à laquelle l'image sera stockée sur le serveur
 
 <aside class="negative">
@@ -156,11 +156,11 @@ private fun Bitmap.toRequestBody(): MultipartBody.Part {
 
 </aside>
 
-- Enfin, au chargement de l'activité, afficher l'avatar renvoyé depuis le serveur:
+- Enfin, dans les `onResume` de `TaskListFragment` et `UserInfoActivity`, afficher l'avatar renvoyé depuis le serveur:
 
 ```kotlin
 lifecycleScope.launch {
-    val userInfo = ...getInfos()...
+    val userInfo = ...
     imageView.load(userInfo.avatar) {
         error(R.drawable.ic_launcher_background) // affiche une image par défaut en cas d'erreur:
     }
@@ -249,7 +249,7 @@ val requestReadAccess = registerForActivityResult(RequestAccess()) { hasAccess -
 fun openGallery() {
     requestReadAccess.launch(
         RequestAccess.Args(
-            action = Action.READ,
+            action = StoragePermissons.Action.READ,
             types = listOf(StoragePermissions.FileType.Image),
             createdBy = StoragePermissions.CreatedBy.AllApps
         )
@@ -324,9 +324,9 @@ val requestWriteAccess = registerForActivityResult(RequestAccess()) { accepted -
 fun launchCameraWithPermissions() {
     requestWriteAccess.launch(
         RequestAccess.Args(
-            action = Action.READ_AND_WRITE,
+            action = StoragePermissions.Action.READ_AND_WRITE,
             types = listOf(StoragePermissions.FileType.Image),
-            createdBy = StoragePermissions.CreatedBy.Self
+            createdBy = StoragePermissions.CreatedBy.AllApps
         )
     )
 }
