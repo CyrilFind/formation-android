@@ -18,7 +18,7 @@ Un intent peut être "lancé" par une application ou par le système
 
 ## Explicit / Implicit
 
-![bg right 95%](../assets/intents_explicit_implicit.png)
+![height:250px](../assets/intents_explicit_implicit.png)
 
 ```kotlin
 val explicitIntent = Intent(context, MyActivity::class.java)
@@ -36,14 +36,6 @@ createPdfIntent.addCategory(CATEGORY_OPENABLE)
 
 // use:
 startActivity(intent)
-
-// To use later (ex: in Notifications)
-val pendingIntent = PendingIntent.getActivity(
-    context, 
-    REQUEST_CODE, 
-    intent, 
-    FLAG_UPDATE_CURRENT) // Parcelable
-pendingIntent.send()
 ```
 
 ## Send / Receive data
@@ -58,18 +50,12 @@ intent.data = Uri.fromFile(File("/file_path/file.jpg")) // File URI
 intent.putExtra("level_key", 42)
 intent.putExtra("food_key", arrayOf("Rice", "Beans", "Fruit"))
 
-val bundle = Bundle() // Use bundle to prepare a lot of data
-bundle.putFloat("percent_key", 55f)
-intent.putExtras(bundle)
-
 startActivity(intent)
 
 // Receiving data in SecondActivity
 val uri = intent.data
 val level = intent.getIntExtra("level_key", 0) // default to 0
 val food = intent.getStringArrayExtra("food_key")
-val bundle = intent.extras
-val percent = bundle.getFloat("percent_key")
 ```
 
 ## Intent Filters
