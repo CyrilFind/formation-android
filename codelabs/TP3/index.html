@@ -87,22 +87,11 @@
 </ul>
 <pre><code language="language-groovy" class="language-groovy">plugins {
     // ...
-    id &#39;org.jetbrains.kotlin.plugin.serialization&#39; version &#34;$kotlin_version&#34;
+    id &#39;org.jetbrains.kotlin.plugin.serialization&#39; version &#34;1.6.20&#34;
 }
 </code></pre>
 <p>Après tout cela vous pouvez cliquer sur &#34;Sync Now&#34; pour que l&#39;IDE synchronise le projet.</p>
-<p>En cas de soucis à ce moment là, vérifiez que:</p>
-<ul>
-<li>Android Studio est à jour (&#34;Check for updates&#34;)</li>
-<li>Le Plugin Kotlin est à jour (<code>Settings > Plugins > Installed > Kotlin</code>)</li>
-<li>votre <code>kotlin_version</code> est récente, il doit être défini en haut de <code>PROJECT_DIR/build.gradle</code> (celui du projet) comme ceci (si ce n&#39;est pas le cas, ajoutez le tout en haut):</li>
-</ul>
-<pre><code language="language-groovy" class="language-groovy">buildscript {
-    ext {
-        kotlin_version = &#34;1.6.0&#34;
-    }
-}
-</code></pre>
+<p>En cas de soucis à ce moment là, vérifiez que Android Studio est à jour (&#34;Check for updates&#34;) et que le Plugin Kotlin est à jour (`Settings &gt; Plugins &gt; Installed &gt; Kotli</p>
 
 
       </google-codelab-step>
@@ -263,23 +252,22 @@ val userInfo = Api.userWebService.getInfo().body()!!
         <aside class="special"><p><code>ViewModel</code> est une classe du framework Android qui permet de gérer les données d&#39;une vue, et dont on peut facilement créer et récupérer une instance, en général chacune associée à une <code>Activity</code> ou un <code>Fragment</code></p>
 <p>On va donc y déplacer une partie de la logique: dans l&#39;idéal l&#39;<code>Activity</code> ou le <code>Fragment</code> doit seulement s&#39;occuper de passer les évènements (comme les clics) au VM</p>
 </aside>
-<p>Créer la classe <code>TasksListViewModel</code>, avec une liste de tâches <em>Observable</em> grâce aux type <code>StateFlow</code> et <code>MutableStateFlow</code>:</p>
+<p>Créer la classe <code>TasksListViewModel</code>, avec une liste de tâches <em>Observable</em> grâce au <code>MutableStateFlow</code>:</p>
 <pre><code language="language-kotlin" class="language-kotlin">class TasksListViewModel : ViewModel() {
   private val webService = Api.tasksWebService
 
-  // privée mais modifiable à l&#39;intérieur du VM: 
-  private val _tasksStateFlow = MutableStateFlow&lt;List&lt;Task&gt;&gt;(emptyList())
-  // même donnée mais publique et non-modifiable à l&#39;extérieur afin de pouvoir seulement s&#39;y abonner:
-  public val tasksStateFlow: StateFlow&lt;List&lt;Task&gt;&gt; = _tasksStateFlow.asStateFlow()
+  // propri `
+  public val tasksStateFlow = MutableStateFlow&lt;List&lt;Task&gt;&gt;(emptyList())
 
   fun refresh() {
       viewModelScope.launch {
           val response = webService.getTasks() // Call HTTP (opération longue)
-          if (response.isSuccessful) { // à cette ligne, on a reçu la réponse de l&#39;API
+          if (!response.isSuccessful) { // à cette ligne, on a reçu la réponse de l&#39;API
             Log.e(&#34;Network&#34;, &#34;Error: ${response.message()}&#34;)
+            return@launch
           }
           val fetchedTasks = response.body()!!
-          _tasksStateFlow.value = fetchedTasks // on modifie le flow, ce qui déclenche ses observers
+          tasksStateFlow.value = fetchedTasks // on modifie le flow, ce qui déclenche ses observers
       }
   }
 
@@ -348,7 +336,7 @@ suspend fun delete(@...(...) id: String): Response&lt;Unit&gt;
       }
 
       val updatedTask = response.body()!!
-      _tasksStateFlow.value = _tasksStateFlow.value - task + updatedTask
+      tasksStateFlow.value = tasksStateFlow.value.map { if (it.id == updatedTask.id) updatedTask else it }
     }
 }
 </code></pre>

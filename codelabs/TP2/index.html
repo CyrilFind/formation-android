@@ -146,7 +146,7 @@ val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;New Task !&#3
 <pre><code language="language-kotlin" class="language-kotlin">val id = task?.id ?: UUID.randomUUID().toString()
 </code></pre>
 <ul>
-<li>Au retour dans votre launcher, mettez à jour la liste: <code>taskList = taskList.map { if (it.id == newTask.id) newTask else it }</code></li>
+<li>Au retour dans votre launcher, mettez à jour la liste: <code>taskList = taskList.map { if (it.id == task.id) task else it }</code></li>
 <li>Vérifier que les infos éditées s&#39;affichent bien à notre retour sur l&#39;activité principale.</li>
 </ul>
 

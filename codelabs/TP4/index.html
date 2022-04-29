@@ -164,16 +164,16 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response&lt;UserInfo
 }
 </code></pre>
 <ul>
-<li>Dans la cacllback de <code>getPhoto</code>, envoyez l&#39;image au serveur avec <code>updateAvatar</code> et en convertissant <code>bitmap</code> avec <code>toRequestBody</code></li>
+<li>Dans la callback de <code>getPhoto</code>, envoyez l&#39;image au serveur avec <code>updateAvatar</code> et en convertissant <code>bitmap</code> avec <code>toRequestBody</code></li>
 <li>Modifiez <code>UserInfo</code> pour ajouter un champ <code>val avatar: String?</code> afin de pouvoir recevoir l&#39;URL à laquelle l&#39;image sera stockée sur le serveur</li>
 </ul>
 <aside class="warning"><p>⚠️ Attention c&#39;est un tout petit serveur qui va automatiquement supprimer les images stockées automatiquement donc ne vous inquiétez pas si l&#39;image ne s&#39;affiche plus après un certain temps</p>
 </aside>
 <ul>
-<li>Enfin, au chargement de l&#39;activité, afficher l&#39;avatar renvoyé depuis le serveur:</li>
+<li>Enfin, dans les <code>onResume</code> de <code>TaskListFragment</code> et <code>UserInfoActivity</code>, afficher l&#39;avatar renvoyé depuis le serveur:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">lifecycleScope.launch {
-    val userInfo = ...getInfos()...
+    val userInfo = ...
     imageView.load(userInfo.avatar) {
         error(R.drawable.ic_launcher_background) // affiche une image par défaut en cas d&#39;erreur:
     }
@@ -248,7 +248,7 @@ val requestReadAccess = registerForActivityResult(RequestAccess()) { hasAccess -
 fun openGallery() {
     requestReadAccess.launch(
         RequestAccess.Args(
-            action = Action.READ,
+            action = StoragePermissons.Action.READ,
             types = listOf(StoragePermissions.FileType.Image),
             createdBy = StoragePermissions.CreatedBy.AllApps
         )
@@ -317,9 +317,9 @@ val requestWriteAccess = registerForActivityResult(RequestAccess()) { accepted -
 fun launchCameraWithPermissions() {
     requestWriteAccess.launch(
         RequestAccess.Args(
-            action = Action.READ_AND_WRITE,
+            action = StoragePermissions.Action.READ_AND_WRITE,
             types = listOf(StoragePermissions.FileType.Image),
-            createdBy = StoragePermissions.CreatedBy.Self
+            createdBy = StoragePermissions.CreatedBy.AllApps
         )
     )
 }
