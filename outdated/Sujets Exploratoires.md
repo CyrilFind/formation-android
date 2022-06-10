@@ -1,8 +1,3 @@
----
-marp: true
----
-<!-- headingDivider: 2 -->
-
 # Sujets Exploratoires
 
 ## But
@@ -185,7 +180,6 @@ Implémenter un cache des données serveur avec `Room`:
 <!--
 style
 sqdelight
-
 -->
 
 **Documentation:**

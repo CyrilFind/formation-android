@@ -124,47 +124,28 @@ lifecycleScope.launchWhenStarted { /* launches when fragment is in started state
 Design pattern that allows decoupling actions and data consumption by decoupling the *observable* (or subject) from the *observers* (or listeners):
 
 ```kotlin
-val observable: Observable<Data>
+val observable = Observable<Data>(initialData)
 
-observable.notify(data)
+observable.notify(newData)
 
 observable.observe { data -> /* use the value */ }
 ```
 
-## LiveData
-
-example of Observable on Android:
-
-```kotlin
-// in a ViewModel
-private val _userLiveData = MutableLiveData<User>(default)
-public val userLiveData: LiveData<User> = _userLiveData
-
-fun refreshUser() {
-    viewLifecycleScope.launch {
-        _userLiveData.value = fetchUser()
-    }
-}
-
-// in a fragment or activity
-viewModel.userLiveData.observe(viewLifecycleOwner) { user ->
-    userNameTextView.text = user.userName
-}
-```
-
 ## Reactive Streams
 
-Represent data as a async sequence that can be Observed
+Represent data as an async sequence that can be *observed* : (pseudo-code)
 
 ```kotlin
-val stream = Stream.of("red", "white", "blue")
-    .map(String::toUpperCase)
-    .subscribeOn(Schedulers.newParallel("sub"))
-    .publishOn(Schedulers.newParallel("pub"), 2)
+val stream = Stream(null)
 
-stream.subscribe { value ->
-    log(value)
+listOf("red", "white", "blue").forEach { color ->
+    stream.send(color)
+    wait(1000)
 }
+
+stream.filterNotNull()
+      .map { it.toUpperCase() }
+      .receiveEach { value -> log(value) }
 ```
 
 Streams can be "hot" or "cold" (analogy: Radio // CD)
@@ -185,25 +166,27 @@ scope.launch {
 
 ## StateFlow
 
-Special type of flow used like `LiveData`
+Special type of flow that always has a value:
 
 ```kotlin
-// repository
-private val _userFlow = MutableStateFlow<NetworkUser>(defaultUser)
-public val userFlow: StateFlow<NetworkUser> = _userFlow
+
+// create and modify in ViewModel:
+val userFlow = MutableStateFlow<NetworkUser?>(null)
 
 suspend fun refreshUser() {
-    _userFlow.value = fetchUser()
+    userFlow.value = repository.fetchUser()
 }
 
-val adaptedUserFlow : Flow<User> = repository.userFlow
-    .map { ... }
-    .onEach { ... }
-}
-
-someScope.launch {
-    adaptedUserFlow.collect {
-        // ...
+// react in Activity/Fragment:
+lifecycleScope.launch {
+    userFlow.filterNotNull().collect { user -> 
+    nameTextView.text = user.name 
     }
 }
+
+// or in Compose:
+val user by userFlow.collectAsState()
+
+Text(user.name)
+
 ```
