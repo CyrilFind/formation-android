@@ -13,7 +13,7 @@ Afin de connaître les fondamentaux du développement Android et notamment:
 - Passer des données entre `Fragment` et `Activity`
 - Interroger une API distante avec `Retrofit`
 - Utiliser des `Coroutines`
-- Architecturer avec `LiveData`, `ViewModel` et `Repository`
+- Architecturer avec `Flow`, `ViewModel` et `Repository`
 - Manipuler des images
 - Demander des permissions
 - Utiliser `Navigation Component`
