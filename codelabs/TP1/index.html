@@ -29,7 +29,7 @@
     
       <google-codelab-step label="Objectif" duration="0">
         <p>implémenter un écran affichant une liste de tâches et permettre de créer des nouvelles tâches.</p>
-<aside class="warning"><p>⚠️ Lisez toutes les questions: souvent vous bloquez simplement parce que vous n&#39;avez pas encore regardé l&#39;étape suivante ou le sujet dans son ensemble.</p>
+<aside class="warning"><p> ⚠️ Lisez toutes les questions: souvent vous bloquez simplement parce que vous n&#39;avez pas encore regardé l&#39;étape suivante ou le sujet dans son ensemble. </p>
 </aside>
 <p>🚀 Aidez vous de l&#39;IDE: Android Studio fait beaucoup de travail pour vous donc utilisez l&#39;autocompletion et les raccourcis:</p>
 <ul>
@@ -48,7 +48,7 @@
 <li>Donnez lui un nom personnalisé comme <code>Todo NicolasAlexandre</code> (⚠️ pas <code>TP1</code> SVP ⚠️)</li>
 <li>Choisissez un package name unique de ce genre: <code>com.nicoalex.todo</code></li>
 <li>Language: <code>Kotlin</code></li>
-<li>Minimum API Level: API 23, Android 6.0 (Marshmallow)</li>
+<li>Minimum API Level: laissez la valeur proposée par défaut</li>
 <li>Initialisez un projet git et faites un commit initial</li>
 <li>Faites des commits régulièrement: à chaque fois que vous avez quelque chose qui compile et qui fonctionne au mieux, à la fin de chaque TP au minimum.</li>
 </ul>
@@ -63,37 +63,15 @@
 implementation &#39;androidx.fragment:fragment-ktx:1.4.0&#39;
 implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
 </code></pre>
-<p>Vérifiez que le block <code>android{}</code> contient les bon numéros de version:</p>
-<pre><code language="language-groovy" class="language-groovy">android {
-    compileSdkVersion 32 
-    defaultConfig {
-        applicationId &#34;com.nicoalex.kodo&#34;
-        minSdkVersion 23
-        targetSdkVersion 32
-        // ...
-    }
-
-    // ...
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
-    }
-  }
-}
-</code></pre>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Gestion des fichiers" duration="0">
         <p>📁 Les fichiers source Java ou Kotlin sont rangés en &#34;packages&#34; (noté en haut de chaque classe: <code>package com.nicoalex.todo.nomdupackage</code>) qui sont aussi répliqués en tant que dossiers dans le filesystem</p>
-<aside class="special"><p>Dans le volet &#34;Projet&#34; à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est &#34;Android&#34; qui affiche facilement le Manifest, les fichiers source (<code>com.nicoalex.todo</code>), et les fichier resources (<code>res</code>), etc... mais il peut parfois être pratique de passer en &#34;Project Files&#34; par ex pour voir l&#39;arborescence réelle.</p>
+<aside class="special"><p> Dans le volet &#34;Projet&#34; à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est &#34;Android&#34; qui affiche facilement le Manifest, les fichiers source (`com.nicoalex.todo`), et les fichier resources (`res`), etc... mais il peut parfois être pratique de passer en &#34;Project Files&#34; par ex pour voir l&#39;arborescence réelle. </p>
 </aside>
-<aside class="warning"><p>Ne faites pas attention aux packages surlignés en verts, qui contiennent le code des tests uniquement.</p>
+<aside class="warning"><p> Ne faites pas attention aux packages surlignés en verts, qui contiennent le code des tests uniquement. </p>
 </aside>
 <ul>
 <li>Créez un nouveau package <code>tasklist</code> à l&#39;intérieur votre package source de base (pas à côté !),  :</li>

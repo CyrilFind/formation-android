@@ -27,45 +27,71 @@
                   environment="web"
                   feedback-link="">
     
-      <google-codelab-step label="Préparation" duration="0">
-        <p>Si possible, avant le 1er cours:</p>
+      <google-codelab-step label="Mise en place" duration="0">
+        <p>Avant le premier cours, vérifiez que votre poste de travail est opérationnel (<a href="https://developer.android.com/courses/pathways/android-basics-kotlin-two" target="_blank">tuto</a>):</p>
 <ul>
-<li>Si vous possédez un device Android physique et un bon cable, passez le en mode développeur et prenez le avec vous en cours, ce sera beaucoup plus simple.</li>
-<li>Sinon, créez un émulateur: choisissez un device avec le triangle de google play services puis une version d&#39;OS Android (pour éviter des problèmes, ne choisissez pas la toute dernière)</li>
-<li>Créez un projet vide (choisissez Android 6.0 en api minimale) et essayez de le lancer</li>
-<li>N&#39;hésitez pas à me contacter en avance si vous avez un soucis</li>
+<li>Installez Android Studio (<a href="https://developer.android.com/codelabs/basic-android-kotlin-training-install-android-studio?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-two%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-install-android-studio#0" target="_blank">tuto</a>)</li>
+<li>Créez un projet vide (laissez l&#39;api minimale proposée) et essayez de le lancer: (<a href="https://developer.android.com/codelabs/basic-android-kotlin-training-first-template-project?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-two%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-first-template-project#0" target="_blank">tuto</a>)</li>
+<li>Si vous avez un appareil Android physique et un cable qui fonctionne, passez le en mode développeur (en tapant 7 fois sur le numéro de build dans les paramètres) et prenez le avec vous en cours, ce sera beaucoup plus simple. (<a href="https://developer.android.com/codelabs/basic-android-kotlin-training-run-on-mobile-device?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-two%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-run-on-mobile-device#0" target="_blank">tuto</a>)</li>
+<li>Sinon, créez un émulateur: choisissez un device avec le triangle de google play services puis une version d&#39;OS Android (pour éviter des problèmes, ne choisissez pas la toute dernière, mais l&#39;avant dernière par ex). Si vous êtes sous Windows, vous aurez peut être des paramètres BIOS à changer pour la virtualisation.</li>
 </ul>
-<p>Prenez en main l&#39;IDE: vous pouvez aller dans les paramètres (<code>File > Settings</code> ou <code>Android Studio > Preferences</code>) et utilisez la fonction recherche pour adapter l&#39;IDE à vos habitudes.</p>
-<p>Quelques suggestions:</p>
+<aside class="special"><p> N&#39;hésitez pas à me contacter en avance si vous avez un soucis </p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Paramètrage" duration="0">
+        <p>Prenez en main l&#39;IDE: vous pouvez aller dans les paramètres (<code>File > Settings</code> ou <code>Android Studio > Preferences</code>) et personnalisez l&#39;IDE, je vous conseille notamment ceci:</p>
 <ul>
-<li>Personnalisez la coloration syntaxique (par ex avec un plugin comme plugin &#34;Rainglow Color Schemes&#34; ou en important mon thème <a href="https://github.com/CyrilFind/intellij-settings-repository/blob/master/colors/Darculai%20_cyrilfind_.icls" target="_blank">Darculai</a> dans <code>Settings > Editor > Color Scheme > ⚙ > Import Scheme</code>)</li>
-<li>Personnalisez les raccourcis clavier (ex: <a href="https://github.com/CyrilFind/intellij-settings-repository/blob/master/keymaps/cyrilfind.xml" target="_blank">mon setup</a> mais <a href="https://www.jetbrains.com/help/idea/configuring-keyboard-and-mouse-shortcuts.html#custom_keymap_location" target="_blank">c&#39;est pas simple à importer</a>)</li>
+<li>Activer tous dans <code>Editor > Inlay Hints</code></li>
 <li>Activez les imports automatiques: <code>Editor > General > Auto Import > Kotlin > cocher "Add unambiguous import on the fly" et "Optimize imports on the fly..."</code></li>
-<li>Activer les &#34;type hints&#34; afin de voir les types des variables que Kotlin &#34;devine&#34;</li>
+<li>Personnalisez la coloration syntaxique (ex: le plugin &#34;Rainglow Color Schemes&#34;, mon thème <a href="https://raw.githubusercontent.com/CyrilFind/intellij-settings-repository/master/colors/Darculai%20_cyrilfind_.icls" target="_blank">Darculai</a> dans <code>Settings > Editor > Color Scheme > ⚙ > Import Scheme</code>)</li>
+<li>Personnalisez les raccourcis clavier (ex: <a href="https://raw.githubusercontent.com/CyrilFind/intellij-settings-repository/master/keymaps/cyrilfind.xml" target="_blank">mon setup</a>)</li>
 </ul>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Kotlin Koans" duration="0">
-        <p>Petits exercices pour prendre en main le langage:</p>
-<ul>
-<li>Soit en ligne: <a href="http://try.kotl.in/koans" target="_blank">try.kotl.in/koans</a></li>
-<li>Soit dans l&#39;IDE (pour avoir l&#39;autocompletion) :<ul>
-<li>installer le plugin Edutools: <code>Plugins > Marketplace > Edutools > Install</code></li>
-<li>accepter de redémarrer</li>
-<li>Démarrer le cours: <code>My Courses > Start New Course > Marketplace > Kotlin Koans > Start</code></li>
-</ul>
-</li>
-</ul>
+        <p>Petits exercices pour prendre en main le langage: <a href="http://try.kotl.in/koans" target="_blank">try.kotl.in/koans</a></p>
+<p>Si vous voulez aller plus loin sur Kotlin : <a href="https://developer.android.com/courses/kotlin-bootcamp/overview" target="_blank">Kotlin Bootcamp</a></p>
+<aside class="warning"><p> ⚠️ Ne restez pas trop longtemps à cette étape, si on est déjà passé à la suivante, faites de même! </p>
+</aside>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Google Codelabs" duration="0">
-        <p>Faire les tutos de la collection <a href="https://developer.android.com/courses/kotlin-android-fundamentals/overview" target="_blank">Android Kotlin Fundamentals</a> en commençant directement à la <a href="https://developer.android.com/codelabs/kotlin-android-training-linear-layout#0" target="_blank">Lesson 2</a></p>
-<aside class="warning"><p> ⚠️ Ne restez pas bloqués sur les pages &#34;Introduction&#34;, &#34;Overview&#34; des codelabs, ce sont juste des résumés de ce que vous allez faire. </p>
+        <p>Pour commencer, on va se baser sur les <a href="https://developer.android.com/courses/android-basics-kotlin/course" target="_blank">Codelabs Google</a> mais tout n&#39;est pas indispensable:</p>
+<ul>
+<li>Commencez directement par celui ci: <a href="https://developer.android.com/codelabs/basic-android-kotlin-training-xml-layouts?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-unit-2-pathway-1%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-xml-layouts#0" target="_blank">Create XML layouts for Android</a></li>
+<li>Puis continuer par les codelabs suivants: <a href="https://developer.android.com/courses/pathways/android-basics-kotlin-unit-2-pathway-2" target="_blank">Part 2</a></li>
+</ul>
+<aside class="warning"><p> ⚠️ Ne perdez pas de temps sur les pages &#34;Introduction&#34;, &#34;Overview&#34;, ... des codelabs, ce sont juste des résumés de ce que vous allez faire. </p>
 </aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Projet" duration="0">
+        <p>Pendant les prochains TP, vous allez créer un projet en binôme que vous complèterez au fur à mesure.</p>
+<p>C&#39;est une simple Todo app, mais vous pouvez choisir un autre sujet qui vous intéresse plus, mais dans tous les cas il faudra que le résultat final respecte certaines specifications:</p>
+<ul>
+<li>Une liste scrollable d&#39;éléments (avec <code>RecyclerView</code>)</li>
+<li>Intéragis avec une API distante (avec <code>Retrofit</code>, <code>kotlinXcoroutines</code> et <code>kotlinXserialization</code>)</li>
+<li>Afficher des images (avec <code>Coil</code>)</li>
+<li>Naviguer entre plusieurs écrans en échangeant des infos (<code>Intent</code>, Navigation Component, Activity Result)</li>
+<li>Respecter une architecture minimale (avec <code>ViewModel</code>)</li>
+<li>Demander une ou plusieurs permissions</li>
+</ul>
+<p>Quelques idées d&#39;applications:</p>
+<ul>
+<li>Affichage d&#39;horaires de trains</li>
+<li>Client Twitch, Twitter, etc</li>
+<li>Traqueur de films, séries, jeux, etc</li>
+<li>Jeux à UI simple: Quiz, Memory, etc</li>
+</ul>
 
 
       </google-codelab-step>
