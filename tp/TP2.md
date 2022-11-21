@@ -36,7 +36,7 @@ myAdapter.onClickDelete = { task ->
 ## Création de FormActivity
 
 - Créez un package `form` dans votre package principal
-- Créez y avec l'IDE une nouvelle ACtivity: `FormActivity` (`Clic droit sur le package > New > Activity > Empty Activity`)
+- Créez y avec l'IDE une nouvelle Activity: `FormActivity` (`Clic droit sur le package > New > Activity > Empty Activity`)
 - Dans le layout correspondant, créez 2 `EditText`, pour le titre et la description et un bouton pour valider
 
 <aside class="negative">

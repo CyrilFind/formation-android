@@ -10,13 +10,13 @@ Afin de connaître les fondamentaux du développement Android et notamment:
 - Prendre en main Android Studio et le Layout Editor
 - Interagir avec des `View`
 - Implémenter une `RecyclerView`
-- Passer des données entre `Fragment` et `Activity`
+- Naviguer et passer des données entre `Fragment` et `Activity`
 - Interroger une API distante avec `Retrofit`
 - Utiliser des `Coroutines`
 - Architecturer avec `Flow`, `ViewModel` et `Repository`
 - Manipuler des images
 - Demander des permissions
-- Utiliser `Navigation Component`
+- stocker des données
 - Évoquer les équivalences avec iOS
 
 ### Références

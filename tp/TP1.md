@@ -5,9 +5,7 @@
 implémenter un écran affichant une liste de tâches et permettre de créer des nouvelles tâches.
 
 <aside class="negative">
-
 ⚠️ Lisez toutes les questions: souvent vous bloquez simplement parce que vous n'avez pas encore regardé l'étape suivante ou le sujet dans son ensemble.
-
 </aside>
 
 🚀 Aidez vous de l'IDE: Android Studio fait beaucoup de travail pour vous donc utilisez l'autocompletion et les raccourcis:
@@ -24,7 +22,7 @@ Vous allez créer un unique projet "fil rouge que vous mettrez à jour au fur à
 - Donnez lui un nom personnalisé comme `Todo NicolasAlexandre` (⚠️ pas `TP1` SVP ⚠️)
 - Choisissez un package name unique de ce genre: `com.nicoalex.todo`
 - Language: `Kotlin`
-- Minimum API Level: API 23, Android 6.0 (Marshmallow)
+- Minimum API Level: laissez la valeur proposée par défaut
 - Initialisez un projet git et faites un commit initial
 - Faites des commits régulièrement: à chaque fois que vous avez quelque chose qui compile et qui fonctionne au mieux, à la fin de chaque TP au minimum.
 
@@ -40,45 +38,16 @@ implementation 'androidx.fragment:fragment-ktx:1.4.0'
 implementation 'androidx.activity:activity-ktx:1.4.0'
 ```
 
-Vérifiez que le block `android{}` contient les bon numéros de version:
-
-```groovy
-android {
-    compileSdkVersion 32 
-    defaultConfig {
-        applicationId "com.nicoalex.kodo"
-        minSdkVersion 23
-        targetSdkVersion 32
-        // ...
-    }
-
-    // ...
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
-    }
-  }
-}
-```
-
 ## Gestion des fichiers
 
 📁 Les fichiers source Java ou Kotlin sont rangés en "packages" (noté en haut de chaque classe: `package com.nicoalex.todo.nomdupackage`) qui sont aussi répliqués en tant que dossiers dans le filesystem
 
 <aside class="positive">
-
 Dans le volet "Projet" à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est "Android" qui affiche facilement le Manifest, les fichiers source (`com.nicoalex.todo`), et les fichier resources (`res`), etc... mais il peut parfois être pratique de passer en "Project Files" par ex pour voir l'arborescence réelle.
-
 </aside>
 
 <aside class="negative">
-
 Ne faites pas attention aux packages surlignés en verts, qui contiennent le code des tests uniquement.
-
 </aside>
 
 - Créez un nouveau package `tasklist` à l'intérieur votre package source de base (pas à côté !),  :
