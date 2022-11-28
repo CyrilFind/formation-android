@@ -58,20 +58,70 @@ myAdapter.onClickDelete = { task -&gt;
 
       </google-codelab-step>
     
-      <google-codelab-step label="Création de FormActivity" duration="0">
-        <ul>
-<li>Créez un package <code>form</code> dans votre package principal</li>
-<li>Créez y avec l&#39;IDE une nouvelle Activity: <code>FormActivity</code> (<code>Clic droit sur le package > New > Activity > Empty Activity</code>)</li>
-<li>Dans le layout correspondant, créez 2 <code>EditText</code>, pour le titre et la description et un bouton pour valider</li>
-</ul>
-<aside class="warning"><p>⚠️ Si vous créez l&#39;Activity &#34;à la main&#34;, n&#39;oubliez pas de la déclarer dans le manifest !</p>
+      <google-codelab-step label="Compose: DetailActivity" duration="0">
+        <aside class="special"><p> Cet écran étant assez simple, on va en profiter pour s&#39;initer à Jetpack Compose, qui remplace le système XML utilisé jusqu&#39;ici </p>
 </aside>
+<ul>
+<li>Créez un package <code>detail</code> dans votre package principal</li>
+<li>Créez-y avec l&#39;IDE une nouvelle Activity: <code>DetailActivity</code>: <code>Clic droit sur le package > New > Activity > Gallery... > Empty Compose Activity</code></li>
+<li>Normalement, l&#39;IDE devrait automatiquement compléter <code>app/build.gradle</code> pour configurer Compose, et ressembler à ceci:</li>
+</ul>
+<pre><code language="language-groovy" class="language-groovy">android {
+ // ...
+ buildFeatures {
+        // ...
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion &#39;1.3.2&#39;
+    }
+  // ...
+} 
+dependencies {
+  // ...
+
+  implementation platform(&#39;androidx.compose:compose-bom:2022.10.00&#39;)
+  implementation &#39;androidx.activity:activity-compose:1.6.1&#39;
+  implementation &#39;androidx.compose.ui:ui&#39;
+  implementation &#39;androidx.compose.ui:ui-graphics&#39;
+  implementation &#39;androidx.compose.ui:ui-tooling-preview&#39;
+  implementation &#39;androidx.compose.material3:material3&#39;
+  androidTestImplementation &#39;androidx.compose.ui:ui-test-junit4&#39;
+  debugImplementation &#39;androidx.compose.ui:ui-tooling&#39;
+  debugImplementation &#39;androidx.compose.ui:ui-test-manifest&#39;
+}
+</code></pre>
+<aside class="special"><p> Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent explicite](https://developer.android.com/guide/components/intents-filters#Types): </p>
+<pre><code language="language-kotlin" class="language-kotlin">val intent = Intent(context, DetailActivity::class.java)
+</code></pre>
+</aside>
+<ul>
+<li>Faire en sorte de lancer la nouvelle Activity depuis le bouton + de la première activity</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">startActivity(this, intent)
+</code></pre>
+<ul>
+<li>Renommez <code>Greeting</code> en <code>Detail</code> et <code>GreetingPreview</code> en <code>DetailPreview</code></li>
+</ul>
+<aside class="special"><p> Compose étant assez récent, ça ne marche pas toujours parfaitement, mais en théorie, si vous affichez le volet de Preview (&#34;Split&#34;), il affiche ce qui est dans `DetailPreview` sans avoir à relancer l&#39;app à chaque fois </p>
+</aside>
+<ul>
+<li>Changez le texte affiché dans le component <code>Text(...)</code> par un titre: <code>"Task Detail"</code></li>
+<li>Ajoutez lui un <code>style</code> : <code>MaterialTheme.typography.h1</code></li>
+<li>Ajoutez deux autres <code>Text()</code> avec comme contenu <code>"title"</code> et <code>"description"</code></li>
+<li>Mettez les 3 <code>Text</code> dans une <code>Column {}</code>: c&#39;est l&#39;équivalent d&#39;un <code>LinearLayout</code> vertical</li>
+<li>Ajoutez un <code>modifier</code> à votre <code>Column</code> pour ajouter un padding de <code>16.dp</code></li>
+<li>Ajoutez un <code>verticalArrangment</code> à votre <code>Column</code> pour espacer ses enfants de <code>16.dp</code> (<code>Arrangement.spacedBy(...)</code>)</li>
+<li>Ajoutez un <code>Button</code> de validation dans la <code>Column</code></li>
+<li>Personalisez un peu l&#39;UI si vous le souhaitez</li>
+<li>Vérifiez que vous naviguez bien vers l&#39;écran en cliquant sur + et qu&#39;il s&#39;affiche correctement</li>
+</ul>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Ajout de tâche complet: Launcher" duration="0">
-        <aside class="special"><p>Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un <a href="https://developer.android.com/guide/components/intents-filters#Types" target="_blank">Intent explicite</a>, et afin de récupérer un résultat de celle ci, nous allons utiliser un <a href="https://developer.android.com/training/basics/intents/result#register" target="_blank">&#34;launcher&#34;</a> avec le &#34;contrat&#34; générique<a href="https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts.StartActivityForResult" target="_blank">StartActivityForResult</a></p>
+        <aside class="special"><p>Afin de récupérer un résultat de cette nouvelle Activity, nous allons utiliser un <a href="https://developer.android.com/training/basics/intents/result#register" target="_blank">&#34;launcher&#34;</a> avec le &#34;contrat&#34; générique<a href="https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts.StartActivityForResult" target="_blank">StartActivityForResult</a></p>
 <p><strong>remarque</strong>: Auparavant, il fallait utiliser <code>startActivityForResult(intent)</code> et <code>override fun onActivityResult(...)</code> avec un request code, etc.</p>
 </aside>
 <ul>
@@ -84,21 +134,20 @@ myAdapter.onClickDelete = { task -&gt;
 <ul>
 <li>Remplacez l&#39;action du bouton d&#39;ajout pour qu&#39;il ouvre cette activité avec un <code>Intent</code></li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">val intent = Intent(context, FormActivity::class.java)
-createTask.launch(intent)
+<pre><code language="language-kotlin" class="language-kotlin">createTask.launch(intent)
 </code></pre>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Ajout de tâche complet: FormActivity" duration="0">
-        <p>Dans le <code>onCreate</code> de la nouvelle activité, récupérer une référence au bouton de validation (comme précédemment avec le bouton d&#39;ajout par ex) puis setter son <code>onClickListener</code> pour qu&#39;il crée une tâche:</p>
-<pre><code language="language-kotlin" class="language-kotlin">// Instanciation d&#39;un nouvel objet [Task]
-val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;New Task !&#34;)
+      <google-codelab-step label="Ajout de tâche complet: DetailActivity" duration="0">
+        <p>Dans le <code>onCreate</code> de la nouvelle activité, dans le <code>onClick</code> de votre bouton de validation, créez une nouvelle instance de <code>Task</code>:</p>
+<pre><code language="language-kotlin" class="language-kotlin">val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;New Task !&#34;)
 </code></pre>
 <aside class="special"><p>Toute Activity a une propriété <code>intent</code> déjà définie: ici il aura la valeur que l&#39;on a passée à <code>createTask</code>, on va utiliser ce même intent pour retourner un résultat</p>
 </aside>
 <ul>
+<li>Changez le contenu de vos 2 <code>Text</code> pour qu&#39;ils affichent le <code>title</code> et la <code>description</code> de votre <code>Task</code> (la description sera vide pour l&#39;instant)</li>
 <li>Ajouter <code>newTask</code> dans <code>intent</code>: <code>intent.putExtra("task", newTask)</code>: ça ne compilera pas car <code>Task</code> ne fait pas partie des types de base autorisés dans un intent !</li>
 <li>L&#39;un de ces types est <code>Serializable</code>: Faites donc hériter <code>Task</code> de <code>java.io.Serializable</code>, comme c&#39;est une <code>data class</code>, il n&#39;y a rien à implémenter !</li>
 <li>utilisez <code>setResult(RESULT_OK, intent)</code> pour signifier que l&#39;action s&#39;est bien passée (idéalement, on aurait aussi géré des cas d&#39;erreur)</li>
@@ -123,24 +172,29 @@ val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;New Task !&#3
 <ul>
 <li>Faites en sorte que la nouvelle tache s&#39;affiche dans la liste directement</li>
 </ul>
-<aside class="warning"><p>Pour l&#39;instant notre Task est créée avec des données &#34;en dur&#34;, on va changer ça et récupérer les valeurs entrées par l&#39;utilisateur dans les <code>EditText</code>, qui ont pour cela une propriété <code>text</code> qui est de type un peu particulier <code>Editable</code> mais vous utiliserez <code>toString()</code> dessus</p>
+<aside class="warning"><p> Pour l&#39;instant notre Task est créée avec des données &#34;en dur&#34;, on va changer ça et récupérer les valeurs entrées par l&#39;utilisateur </p>
 </aside>
 <ul>
-<li>Dans <code>FormActivity</code>, récupérez donc des références aux <code>EditText</code>, puis les valeurs entrées dedans, puis insérer les à la création <code>newTask</code></li>
+<li>Dans <code>DetailActivity</code>, changez les <code>Text</code> en <code>OutlinedTextField</code>, on va mettre à jour dynamiquement la Task affichée:</li>
 </ul>
+<aside class="special"><p> Une fonction `@Composable` peut être *recomposée* (en gros: ré-exécutée) à tout moment donc on ne peut pas utiliser de variables simples car elles seraient remises à leur valeur de départ, on utilise donc `remember`: </p>
+<pre><code language="language-kotlin" class="language-kotlin">val task by remember { mutableStateOf(Task(...)) } // faire les imports suggérés par l&#39;IDE
+</code></pre>
+<p>Notez qu&#39;on utilise également un <code>mutableStateOf</code> avec <code>by</code> qui permet à Compose de réagir automatiquement aux changements de valeurs</p>
+</aside>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Édition d&#39;une tâche" duration="0">
-        <p>Inspirez vous de ce que vous avez fait pour le bouton &#34;supprimer&#34; et le bouton &#34;ajouter&#34; pour créer un bouton &#34;éditer&#34; permettant de modifier chaque tâche en ouvrant l&#39;activité <code>FormActivity</code> pré-remplie avec les informations de la tâche en question:</p>
+        <p>Inspirez vous de ce que vous avez fait pour le bouton &#34;supprimer&#34; et le bouton &#34;ajouter&#34; pour créer un bouton &#34;éditer&#34; permettant de modifier chaque tâche en ouvrant l&#39;activité <code>DetailActivity</code> pré-remplie avec les informations de la tâche en question:</p>
 <ul>
 <li>Créez un autre launcher dans le fragment</li>
 <li>Créez une autre lambda dans l&#39;adapter</li>
 <li>Utilisez dans celle ci <code>putExtra</code> pour transmettre la <code>Task</code> à éditer (depuis <code>TaskListFragment</code> cette fois)</li>
-<li>Récupérez la <code>Task</code> dans le <code>onCreate</code> de <code>FormActivity</code> avec <code>getSerializableExtra</code> comme précédemment (avec <code>intent</code> à la place de <code>result.data</code>)</li>
+<li>Récupérez la <code>Task</code> dans le <code>onCreate</code> de <code>DetailActivity</code> avec <code>getSerializableExtra</code> comme précédemment (avec <code>intent</code> à la place de <code>result.data</code>)</li>
 <li>La <code>Task</code> récupérée est <code>nullable</code>: c&#39;est utile car elle sera <code>null</code> quand vous êtes dans le cas &#34;Ajout&#34;, et sinon, elle aura une vraie valeur car vous êtes dans le cas &#34;Édition&#34;</li>
-<li>utilisez la pour préremplir les <code>EditText</code> avec <code>setText()</code> (quand la task est <code>null</code>, ça remplira avec <code>""</code> donc pas de soucis)</li>
+<li>utilisez la pour préremplir les `OutlinedTextField</li>
 <li>Utilisez l&#39;opérateur <code>?:</code> pour réutiliser l&#39;id précédent dans le cas de l&#39;édition, et en créer un sinon:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val id = task?.id ?: UUID.randomUUID().toString()

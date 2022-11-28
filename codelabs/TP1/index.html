@@ -60,8 +60,8 @@
         <p>Dans <code>./build.gradle</code> (celui du <em>projet</em>), vérifiez que <code>kotlin_version</code> est récent (ex: <code>1.5.31</code>)</p>
 <p>Dans <code>app/build.gradle</code> (celui du <em>module </em><code>app</code>), ajouter les libs suivante dans <code>dependencies{}</code>:</p>
 <pre><code language="language-groovy" class="language-groovy">implementation &#34;androidx.recyclerview:recyclerview:1.2.1&#34;
-implementation &#39;androidx.fragment:fragment-ktx:1.4.0&#39;
-implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
+implementation &#34;androidx.fragment:fragment-ktx:1.5.4&#34;
+implementation &#34;androidx.activity:activity-ktx:1.6.1&#34;
 </code></pre>
 
 
@@ -74,9 +74,9 @@ implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
 <aside class="warning"><p> Ne faites pas attention aux packages surlignés en verts, qui contiennent le code des tests uniquement. </p>
 </aside>
 <ul>
-<li>Créez un nouveau package <code>tasklist</code> à l&#39;intérieur votre package source de base (pas à côté !),  :</li>
+<li>Créez un nouveau package <code>list</code> à l&#39;intérieur votre package source de base (pas à côté !),  :</li>
 </ul>
-<p><code>app > java > com.nicoalex.todo  > clic droit > New > package > "tasklist"</code></p>
+<p><code>app > java > com.nicoalex.todo  > clic droit > New > package > "list"</code></p>
 <p>Vous y mettrez tous les fichiers source (Kotlin) concernant la liste de tâches</p>
 
 
@@ -86,7 +86,7 @@ implementation &#39;androidx.activity:activity-ktx:1.4.0&#39;
         <p>Cette activity va servir de conteneur de fragments:</p>
 <p>Dans <code>activity_main.xml</code>, remplacez la balise <code>TextView</code> par celle ci (à adapter):</p>
 <pre><code language="language-xml" class="language-xml"> &lt;androidx.fragment.app.FragmentContainerView
-    android:name=&#34;com.nicoalex.todo.tasklist.TaskListFragment&#34;
+    android:name=&#34;com.nicoalex.todo.list.TaskListFragment&#34;
     android:id=&#34;@+id/fragment_tasklist&#34;
     android:layout_width=&#34;match_parent&#34;
     android:layout_height=&#34;match_parent&#34; /&gt;
@@ -142,7 +142,7 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
   }
 }
 </code></pre>
-<aside class="warning"><p>⚠️ C&#39;est normal que l&#39;IDE nous signale un problème ici, on le règlera plus tard</p>
+<aside class="warning"><p> ⚠️ C&#39;est normal que l&#39;IDE nous signale un problème ici, on le règlera plus tard </p>
 </aside>
 
 
@@ -170,6 +170,8 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
 </ul>
 <pre><code language="language-xml" class="language-xml">app:layoutManager=&#34;androidx.recyclerview.widget.LinearLayoutManager&#34;
 </code></pre>
+<aside class="warning"><p> ⚠️ Utilisez l&#39;IDE pour régler le problème qu&#39;il vous signale: seul le préfixe `android:`, correspondant au framework Android, est reconnu par défaut, et il faut donc ajouter une sorte d&#39;équivalent de `import` mais dans le XML, pour que préfixe `app:`, correspondamd à des attributs additionnels défini par ex dans des lib (ici `recyclerview`) </p>
+</aside>
 <ul>
 <li>ajoutez lui un <code>id</code>: soit en mode visuel soit en vous aidant de l&#39;auto-complétion <code>android:id="@+id/....</code></li>
 <li>Dans <code>TaskListFragment</code>, overridez <code>onViewCreated</code> pour y récupérer une référence à la <code>RecyclerView</code> du layout en utilisant <code>findViewById</code>:</li>
@@ -283,15 +285,15 @@ taskList = taskList + newTask
     
       <google-codelab-step label="ListAdapter" duration="0">
         <p>Améliorer l&#39;implémentation de <code>TasksListAdapter</code> en héritant de <a href="https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter" target="_blank"><code>ListAdapter</code></a> au lieu de <code>RecyclerView.Adapter</code></p>
-<p>Il faudra notamment: créer un <code>DiffUtil.ItemCallback<Task></code> et le passer au constructeur parent, supprimer <code>getItemCount</code> et la propriété <code>currentList</code> car ils existent déjà dans <code>ListAdapter</code></p>
+<p>Il faudra notamment: créer un <code>DiffUtil.ItemCallback<Task></code> et le passer au constructeur parent, supprimer <code>getItemCount</code> et la propriété <code>currentList</code> car ils sont déjà définis dans <code>ListAdapter</code></p>
 <p>Exemple:</p>
-<pre><code language="language-kotlin" class="language-kotlin">object ItemsDiffCallback : DiffUtil.ItemCallback&lt;Item&gt;() {
-   override fun areItemsTheSame(oldItem: Item, newItem: Item) : Boolean {
-      return // comparison: are they the same &#34;entity&#34; ? (usually same id)
+<pre><code language="language-kotlin" class="language-kotlin">object MyItemsDiffCallback : DiffUtil.MyItemCallback&lt;MyItem&gt;() {
+   override fun areItemsTheSame(oldItem: MyItem, newItem: MyItem) : Boolean {
+      return // comparaison: est-ce la même &#34;entité&#34; ? =&gt; même id?
    }
       
-   override fun areContentsTheSame(oldItem: Item, newItem: Item) : Boolean {
-      return // comparison: are they the same &#34;content&#34; ? (simplified for data class)
+   override fun areContentsTheSame(oldItem: MyItem, newItem: MyItem) : Boolean {
+      return // comparaison: est-ce le même &#34;contenu&#34; ? =&gt; mêmes valeurs? (avec data class: simple égalité)
    }
 }
 
