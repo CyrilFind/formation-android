@@ -41,34 +41,7 @@ Cet écran étant assez simple, on va en profiter pour s'initer à Jetpack Compo
 
 - Créez un package `detail` dans votre package principal
 - Créez-y avec l'IDE une nouvelle Activity: `DetailActivity`: `Clic droit sur le package > New > Activity > Gallery... > Empty Compose Activity`
-- Normalement, l'IDE devrait automatiquement compléter `app/build.gradle` pour configurer Compose, et ressembler à ceci:
-
-```groovy
-android {
- // ...
- buildFeatures {
-        // ...
-        compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion '1.3.2'
-    }
-  // ...
-} 
-dependencies {
-  // ...
-
-  implementation platform('androidx.compose:compose-bom:2022.10.00')
-  implementation 'androidx.activity:activity-compose:1.6.1'
-  implementation 'androidx.compose.ui:ui'
-  implementation 'androidx.compose.ui:ui-graphics'
-  implementation 'androidx.compose.ui:ui-tooling-preview'
-  implementation 'androidx.compose.material3:material3'
-  androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
-  debugImplementation 'androidx.compose.ui:ui-tooling'
-  debugImplementation 'androidx.compose.ui:ui-test-manifest'
-}
-```
+- L'IDE devrait automatiquement compléter `app/build.gradle` pour configurer Compose (buildFeatures, dependencies, etc)
 
 <aside class="positive">
 Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent explicite](https://developer.android.com/guide/components/intents-filters#Types):
