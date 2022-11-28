@@ -69,7 +69,7 @@ Compose étant assez récent, ça ne marche pas toujours parfaitement, mais en t
 - Ajoutez deux autres `Text()` avec comme contenu `"title"` et `"description"`
 - Mettez les 3 `Text` dans une `Column {}`: c'est l'équivalent d'un `LinearLayout` vertical
 - Ajoutez un `modifier` à votre `Column` pour ajouter un padding de `16.dp`
-- Ajoutez un `verticalArrangment` à votre `Column` pour espacer ses enfants de `16.dp` (`Arrangement.spacedBy(...)`)
+- Ajoutez un `verticalArrangement` à votre `Column` pour espacer ses enfants de `16.dp` (`Arrangement.spacedBy(...)`)
 - Ajoutez un `Button` de validation dans la `Column`
 - Personalisez un peu l'UI si vous le souhaitez
 - Vérifiez que vous naviguez bien vers l'écran en cliquant sur + et qu'il s'affiche correctement
