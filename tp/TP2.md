@@ -41,9 +41,10 @@ Cet écran étant assez simple, on va en profiter pour s'initer à Jetpack Compo
 
 - Créez un package `detail` dans votre package principal
 - Créez-y avec l'IDE une nouvelle Activity: `DetailActivity`: `Clic droit sur le package > New > Activity > Gallery... > Empty Compose Activity`
-- L'IDE devrait automatiquement compléter `app/build.gradle` pour configurer Compose (buildFeatures, dependencies, etc)
+- L'IDE devrait automatiquement compléter `app/build.gradle` pour configurer Compose (buildFeatures, dependencies, etc) et l'ajouter au `AndroidManifest.xml`
 
 <aside class="positive">
+
 Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent explicite](https://developer.android.com/guide/components/intents-filters#Types):
 
 ```kotlin
@@ -54,7 +55,7 @@ val intent = Intent(context, DetailActivity::class.java)
 - Faire en sorte de lancer la nouvelle Activity depuis le bouton + de la première activity
 
 ```kotlin
-startActivity(this, intent)
+startActivity(intent)
 ```
 
 - Renommez `Greeting` en `Detail` et `GreetingPreview` en `DetailPreview`
