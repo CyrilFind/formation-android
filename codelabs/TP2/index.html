@@ -76,7 +76,7 @@ myAdapter.onClickDelete = { task -&gt;
 <pre><code language="language-kotlin" class="language-kotlin">startActivity(intent)
 </code></pre>
 <ul>
-<li>Renommez <code>Greeting</code> en <code>Detail</code> et <code>GreetingPreview</code> en <code>DetailPreview</code></li>
+<li>Renommez <code>Greeting</code> en <code>Detail</code> et <code>GreetingPreview</code> en <code>DetailPreview</code> et supprimez l&#39;argument <code>name</code></li>
 </ul>
 <aside class="special"><p> Compose étant assez récent, ça ne marche pas toujours parfaitement, mais en théorie, si vous affichez le volet de Preview (&#34;Split&#34;), il affiche ce qui est dans `DetailPreview` sans avoir à relancer l&#39;app à chaque fois </p>
 </aside>
@@ -116,10 +116,14 @@ myAdapter.onClickDelete = { task -&gt;
       </google-codelab-step>
     
       <google-codelab-step label="Ajout de tâche complet: DetailActivity" duration="0">
-        <p>Dans votre composant <code>Detail</code>, ajoutez un paramètre lambda: <code>onValidate: (Task) -> Unit</code> et appelez le dans le <code>onClick</code> de votre bouton de validation,</p>
-<p>Dans onCreate, passez une lambda dans ce paramètre où vous créez une nouvelle instance de <code>Task</code>:</p>
+        <ul>
+<li>Dans votre composant <code>Detail</code>, ajoutez un paramètre <code>onValidate: (Task) -> Unit</code> et appelez cette lambda dans le <code>onClick</code> de votre bouton de validation, en passant une nouvelle task:</li>
+</ul>
 <pre><code language="language-kotlin" class="language-kotlin">val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;New Task !&#34;)
 </code></pre>
+<ul>
+<li>Dans <code>onCreate</code>, <code>Detail</code> va donc maintenant nécessiter une lambda <code>onValidate</code>, que nous allons définir et utiliser:</li>
+</ul>
 <aside class="special"><p>Toute Activity a une propriété <code>intent</code> déjà définie: ici il aura la valeur que l&#39;on a passée à <code>createTask</code>, on va utiliser ce même intent pour retourner un résultat</p>
 </aside>
 <ul>
