@@ -281,7 +281,7 @@ Il faudra notamment: créer un `DiffUtil.ItemCallback<Task>` et le passer au con
 Exemple:
 
 ```kotlin
-object MyItemsDiffCallback : DiffUtil.MyItemCallback<MyItem>() {
+object MyItemsDiffCallback : DiffUtil.ItemCallback<MyItem>() {
    override fun areItemsTheSame(oldItem: MyItem, newItem: MyItem) : Boolean {
       return // comparaison: est-ce la même "entité" ? => même id?
    }
