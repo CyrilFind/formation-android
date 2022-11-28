@@ -58,7 +58,7 @@ val intent = Intent(context, DetailActivity::class.java)
 startActivity(intent)
 ```
 
-- Renommez `Greeting` en `Detail` et `GreetingPreview` en `DetailPreview`
+- Renommez `Greeting` en `Detail` et `GreetingPreview` en `DetailPreview` et supprimez l'argument `name`
 
 <aside class="positive">
 Compose étant assez récent, ça ne marche pas toujours parfaitement, mais en théorie, si vous affichez le volet de Preview ("Split"), il affiche ce qui est dans `DetailPreview` sans avoir à relancer l'app à chaque fois
@@ -100,13 +100,14 @@ createTask.launch(intent)
 
 ## Ajout de tâche complet: DetailActivity
 
-Dans votre composant `Detail`, ajoutez un paramètre lambda: `onValidate: (Task) -> Unit` et appelez le dans le `onClick` de votre bouton de validation, 
-
-Dans onCreate, passez une lambda dans ce paramètre où vous créez une nouvelle instance de `Task`:
+- Dans votre composant `Detail`, ajoutez un paramètre `onValidate: (Task) -> Unit` et appelez cette lambda dans le `onClick` de votre bouton de validation, en passant une nouvelle task:
 
 ```kotlin
 val newTask = Task(id = UUID.randomUUID().toString(), title = "New Task !")
 ```
+
+- Dans `onCreate`, `Detail` va donc maintenant nécessiter une lambda `onValidate`, que nous allons définir et utiliser:
+
 
 <aside class="positive">
 
