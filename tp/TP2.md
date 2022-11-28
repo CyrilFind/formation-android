@@ -33,23 +33,78 @@ myAdapter.onClickDelete = { task ->
 }
 ```
 
-## Création de FormActivity
+## Compose: DetailActivity
 
-- Créez un package `form` dans votre package principal
-- Créez y avec l'IDE une nouvelle Activity: `FormActivity` (`Clic droit sur le package > New > Activity > Empty Activity`)
-- Dans le layout correspondant, créez 2 `EditText`, pour le titre et la description et un bouton pour valider
-
-<aside class="negative">
-
-⚠️ Si vous créez l'Activity "à la main", n'oubliez pas de la déclarer dans le manifest !
-
+<aside class="positive">
+Cet écran étant assez simple, on va en profiter pour s'initer à Jetpack Compose, qui remplace le système XML utilisé jusqu'ici
 </aside>
+
+- Créez un package `detail` dans votre package principal
+- Créez-y avec l'IDE une nouvelle Activity: `DetailActivity`: `Clic droit sur le package > New > Activity > Gallery... > Empty Compose Activity`
+- Normalement, l'IDE devrait automatiquement compléter `app/build.gradle` pour configurer Compose, et ressembler à ceci:
+
+```groovy
+android {
+ // ...
+ buildFeatures {
+        // ...
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.3.2'
+    }
+  // ...
+} 
+dependencies {
+  // ...
+
+  implementation platform('androidx.compose:compose-bom:2022.10.00')
+  implementation 'androidx.activity:activity-compose:1.6.1'
+  implementation 'androidx.compose.ui:ui'
+  implementation 'androidx.compose.ui:ui-graphics'
+  implementation 'androidx.compose.ui:ui-tooling-preview'
+  implementation 'androidx.compose.material3:material3'
+  androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
+  debugImplementation 'androidx.compose.ui:ui-tooling'
+  debugImplementation 'androidx.compose.ui:ui-test-manifest'
+}
+```
+
+<aside class="positive">
+Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent explicite](https://developer.android.com/guide/components/intents-filters#Types):
+
+```kotlin
+val intent = Intent(context, DetailActivity::class.java)
+```
+</aside>
+
+- Faire en sorte de lancer la nouvelle Activity depuis le bouton + de la première activity
+
+```kotlin
+startActivity(this, intent)
+```
+
+- Renommez `Greeting` en `Detail` et `GreetingPreview` en `DetailPreview`
+
+<aside class="positive">
+Compose étant assez récent, ça ne marche pas toujours parfaitement, mais en théorie, si vous affichez le volet de Preview ("Split"), il affiche ce qui est dans `DetailPreview` sans avoir à relancer l'app à chaque fois
+</aside>
+
+- Changez le texte affiché dans le component `Text(...)` par un titre: `"Task Detail"`
+- Ajoutez lui un `style` : `MaterialTheme.typography.h1`
+- Ajoutez deux autres `Text()` avec comme contenu `"title"` et `"description"`
+- Mettez les 3 `Text` dans une `Column {}`: c'est l'équivalent d'un `LinearLayout` vertical
+- Ajoutez un `modifier` à votre `Column` pour ajouter un padding de `16.dp`
+- Ajoutez un `verticalArrangment` à votre `Column` pour espacer ses enfants de `16.dp` (`Arrangement.spacedBy(...)`)
+- Ajoutez un `Button` de validation dans la `Column`
+- Personalisez un peu l'UI si vous le souhaitez
+- Vérifiez que vous naviguez bien vers l'écran en cliquant sur + et qu'il s'affiche correctement
 
 ## Ajout de tâche complet: Launcher
 
 <aside class="positive">
 
-Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent explicite](https://developer.android.com/guide/components/intents-filters#Types), et afin de récupérer un résultat de celle ci, nous allons utiliser un ["launcher"](https://developer.android.com/training/basics/intents/result#register) avec le "contrat" générique[StartActivityForResult](https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts.StartActivityForResult)
+Afin de récupérer un résultat de cette nouvelle Activity, nous allons utiliser un ["launcher"](https://developer.android.com/training/basics/intents/result#register) avec le "contrat" générique[StartActivityForResult](https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts.StartActivityForResult)
 
 **remarque**: Auparavant, il fallait utiliser `startActivityForResult(intent)` et `override fun onActivityResult(...)` avec un request code, etc.
 
@@ -66,16 +121,14 @@ val createTask = registerForActivityResult(StartActivityForResult()) { result ->
 - Remplacez l'action du bouton d'ajout pour qu'il ouvre cette activité avec un `Intent`
 
 ```kotlin
-val intent = Intent(context, FormActivity::class.java)
 createTask.launch(intent)
 ```
 
-## Ajout de tâche complet: FormActivity
+## Ajout de tâche complet: DetailActivity
 
-Dans le `onCreate` de la nouvelle activité, récupérer une référence au bouton de validation (comme précédemment avec le bouton d'ajout par ex) puis setter son `onClickListener` pour qu'il crée une tâche:
+Dans le `onCreate` de la nouvelle activité, dans le `onClick` de votre bouton de validation, créez une nouvelle instance de `Task`:
 
 ```kotlin
-// Instanciation d'un nouvel objet [Task]
 val newTask = Task(id = UUID.randomUUID().toString(), title = "New Task !")
 ```
 
@@ -85,6 +138,7 @@ Toute Activity a une propriété `intent` déjà définie: ici il aura la valeur
 
 </aside>
 
+- Changez le contenu de vos 2 `Text` pour qu'ils affichent le `title` et la `description` de votre `Task` (la description sera vide pour l'instant)
 - Ajouter `newTask` dans `intent`: `intent.putExtra("task", newTask)`: ça ne compilera pas car `Task` ne fait pas partie des types de base autorisés dans un intent !
 - L'un de ces types est `Serializable`: Faites donc hériter `Task` de `java.io.Serializable`, comme c'est une `data class`, il n'y a rien à implémenter !
 - utilisez `setResult(RESULT_OK, intent)` pour signifier que l'action s'est bien passée (idéalement, on aurait aussi géré des cas d'erreur)
@@ -111,23 +165,31 @@ ici on utilise `as Task?` (on pourrait utiliser `as? Task`) pour récupérer un 
 - Faites en sorte que la nouvelle tache s'affiche dans la liste directement
 
 <aside class="negative">
-
-Pour l'instant notre Task est créée avec des données "en dur", on va changer ça et récupérer les valeurs entrées par l'utilisateur dans les `EditText`, qui ont pour cela une propriété `text` qui est de type un peu particulier `Editable` mais vous utiliserez `toString()` dessus
-
+Pour l'instant notre Task est créée avec des données "en dur", on va changer ça et récupérer les valeurs entrées par l'utilisateur
 </aside>
 
-- Dans `FormActivity`, récupérez donc des références aux `EditText`, puis les valeurs entrées dedans, puis insérer les à la création `newTask`
+- Dans `DetailActivity`, changez les `Text` en `OutlinedTextField`, on va mettre à jour dynamiquement la Task affichée:
+
+<aside class="positive">
+Une fonction `@Composable` peut être *recomposée* (en gros: ré-exécutée) à tout moment donc on ne peut pas utiliser de variables simples car elles seraient remises à leur valeur de départ, on utilise donc `remember`:
+
+```kotlin
+val task by remember { mutableStateOf(Task(...)) } // faire les imports suggérés par l'IDE
+```
+
+Notez qu'on utilise également un `mutableStateOf` avec `by` qui permet à Compose de réagir automatiquement aux changements de valeurs
+</aside>
 
 ## Édition d'une tâche
 
-Inspirez vous de ce que vous avez fait pour le bouton "supprimer" et le bouton "ajouter" pour créer un bouton "éditer" permettant de modifier chaque tâche en ouvrant l'activité `FormActivity` pré-remplie avec les informations de la tâche en question:
+Inspirez vous de ce que vous avez fait pour le bouton "supprimer" et le bouton "ajouter" pour créer un bouton "éditer" permettant de modifier chaque tâche en ouvrant l'activité `DetailActivity` pré-remplie avec les informations de la tâche en question:
 
 - Créez un autre launcher dans le fragment
 - Créez une autre lambda dans l'adapter
 - Utilisez dans celle ci `putExtra` pour transmettre la `Task` à éditer (depuis `TaskListFragment` cette fois)
-- Récupérez la `Task` dans le `onCreate` de `FormActivity` avec `getSerializableExtra` comme précédemment (avec `intent` à la place de `result.data`)
+- Récupérez la `Task` dans le `onCreate` de `DetailActivity` avec `getSerializableExtra` comme précédemment (avec `intent` à la place de `result.data`)
 - La `Task` récupérée est `nullable`: c'est utile car elle sera `null` quand vous êtes dans le cas "Ajout", et sinon, elle aura une vraie valeur car vous êtes dans le cas "Édition"
-- utilisez la pour préremplir les `EditText` avec `setText()` (quand la task est `null`, ça remplira avec `""` donc pas de soucis)
+- utilisez la pour préremplir les `OutlinedTextField
 - Utilisez l'opérateur `?:` pour réutiliser l'id précédent dans le cas de l'édition, et en créer un sinon:
 
 ```kotlin

@@ -161,6 +161,6 @@ Suivez les mêmes étapes pour remplacer la navigation des TDs précédents avec
 
 - Remplacez le `FragmentContainerView` dans `MainActivity` par celui de `AuthenticationActivity` et supprimez `AuthenticationActivity`
 - Ajoutez `TaskListFragment` au graphe de navigation
-- Transformez `FormActivity` en `FormFragment` en adaptant les `override` et ajoutez le au graphe
+- Transformez `DetailActivity` en `FormFragment` en adaptant les `override` et ajoutez le au graphe
 - Faites pareil pour `UserInfoActivity`
 - Pour communiquer entre Fragments vous pouvez utiliser les `savedStateHandle` ([exemple](https://stackoverflow.com/a/62320979/3466492))

@@ -34,8 +34,8 @@ Dans `app/build.gradle` (celui du _module_ `app`), ajouter les libs suivante dan
 
 ```groovy
 implementation "androidx.recyclerview:recyclerview:1.2.1"
-implementation 'androidx.fragment:fragment-ktx:1.4.0'
-implementation 'androidx.activity:activity-ktx:1.4.0'
+implementation "androidx.fragment:fragment-ktx:1.5.4"
+implementation "androidx.activity:activity-ktx:1.6.1"
 ```
 
 ## Gestion des fichiers
@@ -50,9 +50,9 @@ Dans le volet "Projet" à gauche, vous pouvez choisir diverses visualisations de
 Ne faites pas attention aux packages surlignés en verts, qui contiennent le code des tests uniquement.
 </aside>
 
-- Créez un nouveau package `tasklist` à l'intérieur votre package source de base (pas à côté !),  :
+- Créez un nouveau package `list` à l'intérieur votre package source de base (pas à côté !),  :
 
-`app > java > com.nicoalex.todo  > clic droit > New > package > "tasklist"`
+`app > java > com.nicoalex.todo  > clic droit > New > package > "list"`
 
 Vous y mettrez tous les fichiers source (Kotlin) concernant la liste de tâches
 
@@ -64,7 +64,7 @@ Dans `activity_main.xml`, remplacez la balise `TextView` par celle ci (à adapte
 
 ```xml
  <androidx.fragment.app.FragmentContainerView
-    android:name="com.nicoalex.todo.tasklist.TaskListFragment"
+    android:name="com.nicoalex.todo.list.TaskListFragment"
     android:id="@+id/fragment_tasklist"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
@@ -131,9 +131,7 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 ```
 
 <aside class="negative">
-
 ⚠️ C'est normal que l'IDE nous signale un problème ici, on le règlera plus tard
-
 </aside>
 
 ## TaskListAdapter: utilisation
@@ -158,6 +156,10 @@ adapter.currentList = taskList
 ```xml
 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 ```
+
+<aside class="negative">
+⚠️ Utilisez l'IDE pour régler le problème qu'il vous signale: seul le préfixe `android:`, correspondant au framework Android, est reconnu par défaut, et il faut donc ajouter une sorte d'équivalent de `import` mais dans le XML, pour que préfixe `app:`, correspondamd à des attributs additionnels défini par ex dans des lib (ici `recyclerview`)
+</aside>
 
 - ajoutez lui un `id`: soit en mode visuel soit en vous aidant de l'auto-complétion `android:id="@+id/....`
 
@@ -274,18 +276,18 @@ Cette façon de "notifier" manuellement n'est pas idéale, il existe en fait une
 
 Améliorer l'implémentation de `TasksListAdapter` en héritant de [`ListAdapter`](https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter) au lieu de `RecyclerView.Adapter`
 
-Il faudra notamment: créer un `DiffUtil.ItemCallback<Task>` et le passer au constructeur parent, supprimer `getItemCount` et la propriété `currentList` car ils existent déjà dans `ListAdapter`
+Il faudra notamment: créer un `DiffUtil.ItemCallback<Task>` et le passer au constructeur parent, supprimer `getItemCount` et la propriété `currentList` car ils sont déjà définis dans `ListAdapter`
 
 Exemple:
 
 ```kotlin
-object ItemsDiffCallback : DiffUtil.ItemCallback<Item>() {
-   override fun areItemsTheSame(oldItem: Item, newItem: Item) : Boolean {
-      return // comparison: are they the same "entity" ? (usually same id)
+object MyItemsDiffCallback : DiffUtil.MyItemCallback<MyItem>() {
+   override fun areItemsTheSame(oldItem: MyItem, newItem: MyItem) : Boolean {
+      return // comparaison: est-ce la même "entité" ? => même id?
    }
       
-   override fun areContentsTheSame(oldItem: Item, newItem: Item) : Boolean {
-      return // comparison: are they the same "content" ? (simplified for data class)
+   override fun areContentsTheSame(oldItem: MyItem, newItem: MyItem) : Boolean {
+      return // comparaison: est-ce le même "contenu" ? => mêmes valeurs? (avec data class: simple égalité)
    }
 }
 
