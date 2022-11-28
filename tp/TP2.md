@@ -151,10 +151,10 @@ Pour l'instant notre Task est créée avec des données "en dur", on va changer 
 Une fonction `@Composable` peut être *recomposée* (en gros: ré-exécutée) à tout moment donc on ne peut pas utiliser de variables simples car elles seraient remises à leur valeur de départ, on utilise donc `remember`:
 
 ```kotlin
-val task by remember { mutableStateOf(Task(...)) } // faire les imports suggérés par l'IDE
+var task by remember { mutableStateOf(Task(...)) } // faire les imports suggérés par l'IDE
 ```
 
-Notez qu'on utilise également un `mutableStateOf` avec `by` qui permet à Compose de réagir automatiquement aux changements de valeurs
+Notez qu'on utilise également un `mutableStateOf` avec `by` qui permet à Compose de réagir automatiquement aux changements de valeurs mais pour cela vous devrez changer l'instance de task à chaque fois, on va utiliser `copy()` défini automatiquement pour les `data class` pour simplifier ça: `task = task.copy(title = "new title")`
 </aside>
 
 ## Édition d'une tâche
