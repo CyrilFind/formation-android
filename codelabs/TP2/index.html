@@ -64,16 +64,16 @@ myAdapter.onClickDelete = { task -&gt;
 <ul>
 <li>Créez un package <code>detail</code> dans votre package principal</li>
 <li>Créez-y avec l&#39;IDE une nouvelle Activity: <code>DetailActivity</code>: <code>Clic droit sur le package > New > Activity > Gallery... > Empty Compose Activity</code></li>
-<li>L&#39;IDE devrait automatiquement compléter <code>app/build.gradle</code> pour configurer Compose (buildFeatures, dependencies, etc)</li>
+<li>L&#39;IDE devrait automatiquement compléter <code>app/build.gradle</code> pour configurer Compose (buildFeatures, dependencies, etc) et l&#39;ajouter au <code>AndroidManifest.xml</code></li>
 </ul>
-<aside class="special"><p> Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent explicite](https://developer.android.com/guide/components/intents-filters#Types): </p>
+<aside class="special"><p>Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un <a href="https://developer.android.com/guide/components/intents-filters#Types" target="_blank">Intent explicite</a>:</p>
 <pre><code language="language-kotlin" class="language-kotlin">val intent = Intent(context, DetailActivity::class.java)
 </code></pre>
 </aside>
 <ul>
 <li>Faire en sorte de lancer la nouvelle Activity depuis le bouton + de la première activity</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">startActivity(this, intent)
+<pre><code language="language-kotlin" class="language-kotlin">startActivity(intent)
 </code></pre>
 <ul>
 <li>Renommez <code>Greeting</code> en <code>Detail</code> et <code>GreetingPreview</code> en <code>DetailPreview</code></li>
