@@ -153,9 +153,9 @@ myAdapter.onClickDelete = { task -&gt;
 <li>Dans <code>DetailActivity</code>, changez les <code>Text</code> en <code>OutlinedTextField</code>, on va mettre à jour dynamiquement la Task affichée:</li>
 </ul>
 <aside class="special"><p> Une fonction `@Composable` peut être *recomposée* (en gros: ré-exécutée) à tout moment donc on ne peut pas utiliser de variables simples car elles seraient remises à leur valeur de départ, on utilise donc `remember`: </p>
-<pre><code language="language-kotlin" class="language-kotlin">val task by remember { mutableStateOf(Task(...)) } // faire les imports suggérés par l&#39;IDE
+<pre><code language="language-kotlin" class="language-kotlin">var task by remember { mutableStateOf(Task(...)) } // faire les imports suggérés par l&#39;IDE
 </code></pre>
-<p>Notez qu&#39;on utilise également un <code>mutableStateOf</code> avec <code>by</code> qui permet à Compose de réagir automatiquement aux changements de valeurs</p>
+<p>Notez qu&#39;on utilise également un <code>mutableStateOf</code> avec <code>by</code> qui permet à Compose de réagir automatiquement aux changements de valeurs mais pour cela vous devrez changer l&#39;instance de task à chaque fois, on va utiliser <code>copy()</code> défini automatiquement pour les <code>data class</code> pour simplifier ça: <code>task = task.copy(title = "new title")</code></p>
 </aside>
 
 
