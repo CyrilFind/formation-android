@@ -122,7 +122,6 @@ myAdapter.onClickDelete = { task -&gt;
 <aside class="special"><p>Toute Activity a une propriété <code>intent</code> déjà définie: ici il aura la valeur que l&#39;on a passée à <code>createTask</code>, on va utiliser ce même intent pour retourner un résultat</p>
 </aside>
 <ul>
-<li>Changez le contenu de vos 2 <code>Text</code> pour qu&#39;ils affichent le <code>title</code> et la <code>description</code> de votre <code>Task</code> (la description sera vide pour l&#39;instant)</li>
 <li>Ajouter <code>newTask</code> dans <code>intent</code>: <code>intent.putExtra("task", newTask)</code>: ça ne compilera pas car <code>Task</code> ne fait pas partie des types de base autorisés dans un intent !</li>
 <li>L&#39;un de ces types est <code>Serializable</code>: Faites donc hériter <code>Task</code> de <code>java.io.Serializable</code>, comme c&#39;est une <code>data class</code>, il n&#39;y a rien à implémenter !</li>
 <li>utilisez <code>setResult(RESULT_OK, intent)</code> pour signifier que l&#39;action s&#39;est bien passée (idéalement, on aurait aussi géré des cas d&#39;erreur)</li>
