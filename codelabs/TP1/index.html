@@ -287,7 +287,7 @@ taskList = taskList + newTask
         <p>Améliorer l&#39;implémentation de <code>TasksListAdapter</code> en héritant de <a href="https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter" target="_blank"><code>ListAdapter</code></a> au lieu de <code>RecyclerView.Adapter</code></p>
 <p>Il faudra notamment: créer un <code>DiffUtil.ItemCallback<Task></code> et le passer au constructeur parent, supprimer <code>getItemCount</code> et la propriété <code>currentList</code> car ils sont déjà définis dans <code>ListAdapter</code></p>
 <p>Exemple:</p>
-<pre><code language="language-kotlin" class="language-kotlin">object MyItemsDiffCallback : DiffUtil.MyItemCallback&lt;MyItem&gt;() {
+<pre><code language="language-kotlin" class="language-kotlin">object MyItemsDiffCallback : DiffUtil.ItemCallback&lt;MyItem&gt;() {
    override fun areItemsTheSame(oldItem: MyItem, newItem: MyItem) : Boolean {
       return // comparaison: est-ce la même &#34;entité&#34; ? =&gt; même id?
    }
