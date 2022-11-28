@@ -100,7 +100,9 @@ createTask.launch(intent)
 
 ## Ajout de tâche complet: DetailActivity
 
-Dans le `onCreate` de la nouvelle activité, dans le `onClick` de votre bouton de validation, créez une nouvelle instance de `Task`:
+Dans votre composant `Detail`, ajoutez un paramètre lambda: `onValidate: (Task) -> Unit` et appelez le dans le `onClick` de votre bouton de validation, 
+
+Dans onCreate, passez une lambda dans ce paramètre où vous créez une nouvelle instance de `Task`:
 
 ```kotlin
 val newTask = Task(id = UUID.randomUUID().toString(), title = "New Task !")
