@@ -116,7 +116,8 @@ myAdapter.onClickDelete = { task -&gt;
       </google-codelab-step>
     
       <google-codelab-step label="Ajout de tâche complet: DetailActivity" duration="0">
-        <p>Dans le <code>onCreate</code> de la nouvelle activité, dans le <code>onClick</code> de votre bouton de validation, créez une nouvelle instance de <code>Task</code>:</p>
+        <p>Dans votre composant <code>Detail</code>, ajoutez un paramètre lambda: <code>onValidate: (Task) -> Unit</code> et appelez le dans le <code>onClick</code> de votre bouton de validation,</p>
+<p>Dans onCreate, passez une lambda dans ce paramètre où vous créez une nouvelle instance de <code>Task</code>:</p>
 <pre><code language="language-kotlin" class="language-kotlin">val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;New Task !&#34;)
 </code></pre>
 <aside class="special"><p>Toute Activity a une propriété <code>intent</code> déjà définie: ici il aura la valeur que l&#39;on a passée à <code>createTask</code>, on va utiliser ce même intent pour retourner un résultat</p>
