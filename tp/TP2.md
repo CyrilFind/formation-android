@@ -112,7 +112,8 @@ Toute Activity a une propriété `intent` déjà définie: ici il aura la valeur
 
 </aside>
 
-- Changez le contenu de vos 2 `Text` pour qu'ils affichent le `title` et la `description` de votre `Task` (la description sera vide pour l'instant)
+<!-- - Changez le contenu de vos 2 `Text` pour qu'ils affichent le `title` et la `description` de votre `Task` (la description sera vide pour l'instant) -->
+
 - Ajouter `newTask` dans `intent`: `intent.putExtra("task", newTask)`: ça ne compilera pas car `Task` ne fait pas partie des types de base autorisés dans un intent !
 - L'un de ces types est `Serializable`: Faites donc hériter `Task` de `java.io.Serializable`, comme c'est une `data class`, il n'y a rien à implémenter !
 - utilisez `setResult(RESULT_OK, intent)` pour signifier que l'action s'est bien passée (idéalement, on aurait aussi géré des cas d'erreur)
