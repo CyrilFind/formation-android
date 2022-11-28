@@ -236,6 +236,18 @@ fun MyComposable() {
 
 ![bg right:40% 95%](../assets/compose_tree.png)
 
+## Jetpack Compose: remember & state
+```kotlin
+Column(modifier = Modifier.padding(16.dp)) {
+    var name by remember { mutableStateOf("") }
+    TextField(
+        value = name,
+        onValueChange = { name = it },
+        label = { Text("Name") }
+    )
+}
+```
+
 ## Jetpack Compose: Lifecycle
 
 ![bg right:50% 95%](../assets/compose_lifecycle.png)

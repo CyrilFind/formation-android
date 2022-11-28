@@ -167,7 +167,7 @@ Inspirez vous de ce que vous avez fait pour le bouton "supprimer" et le bouton "
 - Utilisez dans celle ci `putExtra` pour transmettre la `Task` à éditer (depuis `TaskListFragment` cette fois)
 - Récupérez la `Task` dans le `onCreate` de `DetailActivity` avec `getSerializableExtra` comme précédemment (avec `intent` à la place de `result.data`)
 - La `Task` récupérée est `nullable`: c'est utile car elle sera `null` quand vous êtes dans le cas "Ajout", et sinon, elle aura une vraie valeur car vous êtes dans le cas "Édition"
-- utilisez la pour préremplir les `OutlinedTextField
+- passez la en argument de `Detail` et utilisez la pour préremplir les `OutlinedTextField`
 - Utilisez l'opérateur `?:` pour réutiliser l'id précédent dans le cas de l'édition, et en créer un sinon:
 
 ```kotlin
