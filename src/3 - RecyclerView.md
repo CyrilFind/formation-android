@@ -156,4 +156,6 @@ LazyColumn {
 }
 ```
 
-hé oui, c'est tout 🤷
+hé oui, c'est tout 🤷 
+
+Pareil en SwiftUI : `List(elements) { element in ... }` 

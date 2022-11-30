@@ -194,8 +194,8 @@ class TaskListAdapter(val listener: TaskListListener) : ... {
 
 class TaskListFragment : Fragment {
   val adapterListener : TaskListListener = object : TaskListListener {
-    override onClickDelete(task: Task) {...}
-    override onClickEdit(task: Task) {...}
+    override fun onClickDelete(task: Task) {...}
+    override fun onClickEdit(task: Task) {...}
   }
   val adapter = TaskListAdapter(adapterListener)
 }

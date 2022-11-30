@@ -8,22 +8,27 @@ marp: true
 
 ## Définition
 
-![height:350px](../assets/intents.png)
+![bg right 90%](../assets/intents.png)
 
-Un objet contenant les infos nécessaires à démarrer une `Activity` (en général) ➡️ Conceptuellement proche d'un lien HTML
+Objet "lancé" par une app ou le système qui contient les infos pour démarrer une `Activity` (`Service`, `Broadcast` plus rarement)
 
-Sert aussi (plus rarement) à démarrer un `Service` ou à envoyer un `Broadcast`
 
-Un intent peut être "lancé" par une application ou par le système
 
-## Explicit / Implicit
+## Explicite
 
-![height:250px](../assets/intents_explicit_implicit.png)
+![bg right:30% 90%](../assets/intents_explicit_implicit.png)
 
 ```kotlin
 val explicitIntent = Intent(context, MyActivity::class.java)
 
-// implicit intents:
+startActivity(intent)
+```
+
+## Implicite
+
+![bg right:30% 90%](../assets/intents_explicit_implicit.png)
+
+```kotlin
 val urlIntent = Intent("http://www.google.com")
 val callButtonIntent = Intent(ACTION_CALL_BUTTON)
 val phoneIntent = Intent(ACTION_DIAL, "tel:8005551234")
@@ -33,9 +38,6 @@ searchIntent.putExtra(SearchManager.QUERY, "cute cat pictures")
 val createPdfIntent = Intent(ACTION_CREATE_DOCUMENT)
 createPdfIntent.type = "application/pdf" // set MIME type
 createPdfIntent.addCategory(CATEGORY_OPENABLE)
-
-// use:
-startActivity(intent)
 ```
 
 ## Send / Receive data
@@ -56,6 +58,28 @@ startActivity(intent)
 val uri = intent.data
 val level = intent.getIntExtra("level_key", 0) // default to 0
 val food = intent.getStringArrayExtra("food_key")
+```
+
+## Resolving intents
+
+```kotlin
+// Check if that intent can be handled !
+if (intent.resolveActivity(packageManager) != null) {
+   startActivity(intent) // if no result needed, otherwise: ↴
+}
+```
+
+![height:300px](../assets/disambiguation.png)
+
+## Using Chooser Intent / Sharesheet
+
+![height:300px](../assets/app_chooser.png)
+
+```kotlin
+// using Chooser Intent / Sharesheet
+val intent = Intent(Intent.ACTION_SEND)
+val chooserIntent = Intent.createChooser(intent, "Chooser Title")
+   startActivity(chooserIntent)
 ```
 
 ## Intent Filters
@@ -92,90 +116,38 @@ val food = intent.getStringArrayExtra("food_key")
 
 ```kotlin
 class FirstActivity : Activity() { // requesting Activity
-    companion object {
-        const val UNIQUE_REQUEST_CODE = 666 // ID of the request
-    }
-
-    override fun onCreate() {
-        // ...
-        val intent = Intent(this, SecondActivity::class.java) // explicit intent
-        startActivityForResult(intent, UNIQUE_REQUEST_CODE) // launch request
-    }
-    
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == UNIQUE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-                val reply = intent!!.getStringExtra(SecondActivity.EXTRA_REPLY)
-                // … do something with the data
-            }
-        }
+    val startForResult = registerForActivityResult(StartActivityForResult()) { result ->
+    if (result.resultCode == Activity.RESULT_OK) // use result.data
+}
+    fun onUserStartedSomething() {
+        startForResult.launch(Intent(this, SecondActivity::class.java))
     }
 }
 
-class SecondActivity : Activity() { // requested Activity
-    companion object {
-        const val EXTRA_REPLY = "reply_key" // use a key to put/get result data
-    }
-
-    override fun onCreate() {
-        // ...
-        intent.putExtra(EXTRA_REPLY, "Done !") // add result data to intent
+class SecondActivity : Activity() {
+    fun onUserFinishedSomething() { // ...
+        intent.putExtra("reply_key", "reply data") // add result data to intent
         setResult(RESULT_OK, intent) // specify all went well and return the data
         finish() // close this activity
     }
 }
 ```
 
-## New API
+[Creating a custom contract](https://developer.android.com/training/basics/intents/result#custom)
 
-```kotlin
-// Asking for an image
-val getContent = registerForActivityResult(GetContent()) { uri: Uri? -> // Handle the returned Uri }
-// ...
+## Default ActivityResultContracts
+
+Exemple: 
+
+```kotlin 
+val getContent = registerForActivityResult(GetContent()) { uri ->  ... }
+
 getContent.launch("image/*")
-
-// Asking for a result
-val startForResult = registerForActivityResult(StartActivityForResult()) { result: ActivityResult ->
-    if (result.resultCode == Activity.RESULT_OK) {
-        val intent = result.data
-        // Handle the Intent
-    }
-}
-// ...
-startForResult.launch(Intent(this, ResultProducingActivity::class.java))
 ```
 
-Also:
-
-- [Default ActivityResultContracts](https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts)
-- [Creating a custom contract](https://developer.android.com/training/basics/intents/result#custom)
-
-## Resolving intents
-
-```kotlin
-// Check if that intent can be handled !
-if (intent.resolveActivity(packageManager) != null) {
-   startActivity(intent) // if no result needed, otherwise: ↴
-   startActivityForResult(intent, ACTIVITY_REQUEST_CREATE_FILE)
-}
-```
-
-![height:300px](../assets/disambiguation.png)
-
-## Using Chooser Intent / Sharesheet
-
-![height:300px](../assets/app_chooser.png)
-
-```kotlin
-// using Chooser Intent / Sharesheet
-val intent = Intent(Intent.ACTION_SEND)
-val chooserIntent = Intent.createChooser(intent, "Chooser Title")
-   startActivity(chooserIntent)
-```
+[Documentation](https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts)
 
 # Permissions
-
-## Demander la permission
 
 - Demandées “à la volée” depuis Android M
 - Les permissions “dangereuses” doivent être demandées à chaque fois
@@ -214,7 +186,7 @@ when {
 
 # iOS
 
-## segues
+## Segues
 
 ![height:400px](../assets/segue.png)
 
@@ -224,7 +196,9 @@ self.performSegue(withIdentifier: "SECOND_SCREEN_SEGUE", for sender: self)
 
 [Documentation](https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/UsingSegues.html)
 
-## Handmade delegates for results
+## Demander un résultat
+
+On fait des delegate à la main:
 
 ```swift
 protocol ImageDelegate{
@@ -237,8 +211,12 @@ class TakePictureController : UIViewController, ImageDelegate{ ... }
 
 ## Share Extensions
 
-Separate module with custom ViewController
+Plus compliqué: Il faut crér un module à part avec son propre `ViewController`
 
-Capabilities configured with a plist file:
+Les capabilities sont dans un fichierde configuration (plist):
 
 ![height:250px](../assets/ios_share_extensions.png)
+
+## Permissions 
+
+Beaucoup plus simple: on définit quelques textes dans des fichiers de configuration, ils seront utilisés pour remplir la popup quand l'OS l'estime nécessaire

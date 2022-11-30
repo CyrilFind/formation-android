@@ -193,6 +193,43 @@ override fun onCreate(savedInstanceState: Bundle?) {
 - Perdu si on quitte l’Activity
 - Plus persistent: DB, Web, SharedPreference, DataStore
 
+## Jetpack Compose: Layouts
+
+```kotlin
+@Composable
+fun MyComposable() {
+    Column(Modifier.fillMaxWidth()) {
+        Text("Hello")
+        Text(
+          text = "World", 
+          style = Typo.small
+        )
+    }
+}
+```
+
+- Écrit directement en kotlin
+- Géré par un plugin du compilateur
+- `Modifier`: `padding`, `clickable`, ... 
+
+![bg right:40% 90%](../assets/compose_tree.png)
+
+## Jetpack Compose: Lifecycle
+```kotlin
+var name by remember { mutableStateOf("") }
+TextField(
+    value = name,
+    onValueChange = { name = it },
+)
+```
+
+Sorte de lifecycle mais différent:
+1) Composition
+2) Recomposition ex: un `State<T>` a changé
+3) Décomposition
+
+![bg right:40% 90%](../assets/compose_lifecycle.png)
+
 # iOS
 
 ![bg left:30% 80%](../assets/xcode.png)
@@ -213,7 +250,7 @@ class LoginViewController: UIViewController {
 
 ## UIViewController
 
-![bg right:40% 95%](../assets/ios_lifecycle.png)
+![bg right:40% 90%](../assets/ios_lifecycle.png)
 
 - Layout:
   - StoryBoard
@@ -222,40 +259,15 @@ class LoginViewController: UIViewController {
 - rotation: `viewWillTransition`
 - state restauration: `restorationIdentifiers` on VC and Views
 
-## Jetpack Compose: Layouts
+## SwiftUI
 
-```kotlin
-@Composable
-fun MyComposable() {
-    Column(Modifier.fillMaxWidth()) {
-        Text("Hello")
-        Text("World")
+```swift
+struct AlbumDetail: View {
+	var body: some View {	
+    VStack(alignment: .leading) {
+      Text("Hello")
+      Text("World")
+        .foregroundStyle(.secondary)
     }
 }
 ```
-
-![bg right:40% 95%](../assets/compose_tree.png)
-
-## Jetpack Compose: remember & state
-```kotlin
-Column(modifier = Modifier.padding(16.dp)) {
-    var name by remember { mutableStateOf("") }
-    TextField(
-        value = name,
-        onValueChange = { name = it },
-        label = { Text("Name") }
-    )
-}
-```
-
-## Jetpack Compose: Lifecycle
-
-![bg right:50% 95%](../assets/compose_lifecycle.png)
-
-Beaucoup plus simple:
-
-- une première Composition quand le composant apparaît à l'écran
-- une Recomposition à chaque fois que c'est nécessaire: en général lorsqu'un `State<T>` a changé de valeur
-- le composant quitte l'écran
-
-⚠️ C'est en fait un lifecycle de nature très différente
