@@ -4,24 +4,10 @@
 
 Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, pour commencer nous allons simuler cela en passant directement un `token` dans les `headers` de nos requêtes `HTTP`:
 
-- Rendez vous sur [https://android-tasks-api.herokuapp.com/api-docs/](https://android-tasks-api.herokuapp.com/api-docs/)
-- Ce site permet de lire la documentation et d'utiliser les routes directement
-- Cliquez sur `users/sign_up` puis sur "Try it out"
-- Vous devriez voir un JSON prérempli dont vous devez remplir les données (vous pouvez mettre des infos bidon) avant de cliquer sur "Execute":
-
-```json
-{
-  "firstname": "UN PRENOM",
-  "lastname": "UN NOM",
-  "email": "UN EMAIL",
-  "password": "UN MDP",
-  "password_confirmation": "LE MEME MDP"
-}
-```
-
-- Copiez le token généré quelque part (vous pourrez le récupérer à nouveau en utilisant la route `/login`)
-- Copiez votre token dans la popup du bouton "Authorize" en haut
-- Maintenant que vous êtes "loggé", testez les routes disponibles (création, suppression, etc...)
+- Rendez vous sur [todoist.com](https://todoist.com/app)
+- Créez un compte, allez dans `Paramètres > Intégrations > Clé API` et copiez la quelque part
+- lisez un peu [la doc de l'API](https://developer.todoist.com), il y en a en fait 2: REST et Sync et on va utiliser notamment [tasks](https://developer.todoist.com/rest/v2/#tasks), [user](https://developer.todoist.com/sync/v9/#user)
+- En utilisant la clé copiée et les exemples de la documentation testez de créer un tache avec `curl` ou un équivalent (ex: [httpie](httpie) en terminal, web ou desktop)
 
 ## Accéder à l'internet
 
@@ -38,22 +24,22 @@ Dans le fichier `app/build.gradle` (celui du module):
 - Dans `dependencies {...}`, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l'IDE vous le propose):
 
 ```groovy
-  // Retrofit
-  implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-  implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3'
+     // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.9'
 
-  // KotlinX Serialization
-  implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2'
-  implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
+    // KotlinX Serialization
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
 
-  // Coroutines
-  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
-  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
-  // Lifecycle
-  implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-  implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
-  implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+    // Lifecycle
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
 ```
 
 - Tout en haut ajoutez le plugin de sérialisation:
@@ -61,23 +47,22 @@ Dans le fichier `app/build.gradle` (celui du module):
 ```groovy
 plugins {
     // ...
-    id 'org.jetbrains.kotlin.plugin.serialization' version "1.6.20"
+    id 'org.jetbrains.kotlin.plugin.serialization' version "1.7.20"
 }
 ```
 
-Après tout cela vous pouvez cliquer sur "Sync Now" pour que l'IDE synchronise le projet.
+Après tout cela vous pouvez cliquer sur "Sync Now" pour que l'IDE télécharge les dépendances, etc.
 
 En cas de soucis à ce moment là, vérifiez que Android Studio est à jour ("Check for updates")
-et que le Plugin Kotlin est à jour (`Settings > Plugins > Installed > Kotli
 
 ## Retrofit
 
-- Créer un package `network` qui contiendra les classes en rapport avec les échanges réseaux
-- Créer un `Api` (ses membres et méthodes seront donc `static`):
+- Créez un package `data`
+- Créez y un `object Api` (ses membres et méthodes seront donc `static`):
 
 ```kotlin
 object Api {
-  private const val TOKEN = "COPIEZ_VOTRE_TOKEN_ICI"
+  private const val TOKEN = "COPIEZ_VOTRE_CLE_API_ICI"
 
   private val retrofit by lazy {
     // client HTTP
@@ -100,7 +85,7 @@ object Api {
 
     // instance retrofit pour implémenter les webServices:
     Retrofit.Builder()
-      .baseUrl("https://android-tasks-api.herokuapp.com/api/")
+      .baseUrl("https://api.todoist.com/")
       .client(okHttpClient)
       .addConverterFactory(jsonSerializer.asConverterFactory("application/json".toMediaType()))
       .build()
@@ -124,35 +109,35 @@ la syntaxe `val retrofit by lazy { ... }` permet d'initialiser la variable `retr
 
 </aside>
 
-## UserInfo
+## User
 
-Exemple de json renvoyé par la route `/info`:
+Extrait d'un json renvoyé par la route `/sync/v9/user/`:
 
 ```json
 {
-  "email": "email",
-  "firstname": "john",
-  "lastname": "doe"
+  "email": "example@domain.com",
+  "full_name": "john doe",
+  "avatar_medium": "https://blablabla/image.jpg"
 }
 ```
 
-Créer la `data class` `UserInfo`:
+Créer la `data class` `User`:
 
 ```kotlin
 @Serializable
-data class UserInfo(
+data class User(
   @SerialName("email")
   val email: String,
-  @SerialName("firstname")
-  val firstName: String,
-  @SerialName("lastname")
-  val lastName: String
+  @SerialName("full_name")
+  val name: String,
+  @SerialName(avatar_medium)
+  val avatar: String?
 )
 ```
 
 <aside class="positive">
 
-Regardez bien les annotations ici (tout ce qui commence par `@`): elle servent à délimiter les éléments à parser pour la lib `KotlinX Serialization`
+Regardez bien les annotations ici (tout ce qui commence par `@`): elle servent à la lib `KotlinX Serialization` pour délimiter les éléments à parser et comment, avec les clés passées en argument
 
 </aside>
 
@@ -162,14 +147,14 @@ Regardez bien les annotations ici (tout ce qui commence par `@`): elle servent �
 
 ```kotlin
 interface UserWebService {
-  @GET("users/info")
-  suspend fun getInfo(): Response<UserInfo>
+  @GET("/sync/v9/user/")
+  suspend fun fetchUser(): Response<User>
 }
 ```
 
 <aside class="positive">
 
-`Response` est un type qui "encapsule" une réponse HTTP: on peut y retrouver un code de réponse, un message d'erreur, etc... et un résultat: ici une instance de `UserInfo`
+`Response` est un type qui "encapsule" une réponse HTTP: on peut y retrouver un code de réponse, un message d'erreur, etc... et un résultat: ici une instance de `User`
 
 </aside>
 
@@ -186,21 +171,31 @@ object Api {
 
 <aside class="positive">
 
-Ici, Retrofit va créer une implémentation de l'interface `UserWebService` pour nous, en utilisant d'une part les valeurs de base configurées dans `Api` et d'autre part les annotations qui lui donnent le type de requête (ex: `GET`), la route, les types de paramètres, etc.
+Ici, Retrofit va créer une implémentation de l'interface `UserWebService` pour nous, en utilisant d'une part les valeurs de base configurées dans `Api` et d'autre part les annotations (`@`) qui lui donnent le type de requête (ex: `GET`), la route, les types de paramètres, etc.
 
+Utiliser des interfaces est souvent préférables pour pouvoir interchanger facilement les implémentantions: par exemple si on change une source de données, une dépendances, etc.. 
+
+Un usage notable est les Tests Unitaires: on peut alors utiliser une "fausse implémentation" de test qui par ex ici ne fait pas vraiment de requêtes mais retourne des réponses fixées
 </aside>
 
 ## Affichage
 
 - Dans le layout qui contient la liste, ajoutez une `TextView` tout en haut (vous devrez probablement régler un peu les contraintes)
-- Overrider la méthode `onResume` pour y récupérer les infos de l'utilisateur, en ajoutant cette ligne, une erreur va s'afficher mais ne paniquez pas, on va s'en occuper:
+- Overrider la méthode `onResume` pour y récupérer les infos de l'utilisateur, en ajoutant cette ligne, une erreur va s'afficher car la définition de `fetchUser` contient un mot clé `suspend`:
 
 ```kotlin
 // Ici on ne va pas gérer les cas d'erreur donc on force le crash avec "!!"
-val userInfo = Api.userWebService.getInfo().body()!!
+val user = Api.userWebService.fetchUser().body()!!
 ```
+<aside class="negative">
 
-- La méthode `getInfo()` étant déclarée comme `suspend`, vous aurez besoin de la lancer dans un `CouroutineScope` (c'est ce que dit le message d'erreur): on va utiliser directement `lifeCycleScope` qui est un `CouroutineScope` déjà défini et géré par le système dans les `Activity` et `Fragment`
+le mot clé `suspend` ici sert à signifier que cette fonction ne peut pas s'éxécuter comme une fonction normale car elle peut potentiellement bloquer le thread courant en prenant beaucoup de temps à se terminer
+
+Afin de compiler, il faudra donc l'appeler dans le contexte d'un `CouroutineScope` (ou dans une autre fonction `suspend`)
+
+</aside>
+
+- On va utiliser directement `lifeCycleScope` qui est déjà défini par le framework Android dans les `Activity` et `Fragment`:
 
 ```kotlin
 lifecycleScope.launch {
@@ -215,17 +210,17 @@ On utilisera ensuite un autre scope: `viewModelScope` qui est fourni par android
 
 </aside>
 
-- Afficher les données dans votre `TextView`:
+- Afficher votre nom d'utilisateur dans la `TextView`:
 
 ```kotlin
-userInfoTextView.text = "${userInfo.firstName} ${userInfo.lastName}"
+userTextView.text = user.name
 ```
 
 ➡️ Lancez l'app et vérifiez que vos infos s'affichent !
 
 <aside class="negative">
 
-⚠️ Sur émulateur, à cette étape il y a parfois des crashes étranges:
+⚠️ Sur émulateur, à cette étape il y a parfois des crashs étranges:
 
 - "`...EPERM (operation not permitted)...`": désinstallez l'application de l'émulateur et relancez
 - L'app stoppe direct et sans stacktrace: redémarrer l'émulateur et vérifiez que son wifi est bien connecté
@@ -240,17 +235,31 @@ Créer un nouveau service `TaskWebService`:
 
 ```kotlin
 interface TasksWebService {
-  @GET("tasks")
-  suspend fun getTasks(): Response<List<Task>>
+  @GET("/rest/v2/tasks/")
+  suspend fun fetchTasks(): Response<List<Task>>
 }
 ```
 
 - Utiliser l'instance de retrofit comme précédemment pour créer une instance de `TasksWebService` dans l'objet `Api`
-- Modifier `Task` pour la rendre "serializable" par KotlinX Serialization (inspirez vous de `UserInfo`)
+
+Extrait d'un json renvoyé par la route `/rest/v2/tasks/`:
+
+```json
+[
+  {
+    "content": "title",
+    "description": "description",
+    "id": "123456789"
+  }
+]
+```
+
+- Modifier `Task` pour la rendre "serializable" par KotlinX Serialization (inspirez vous de `User`)
+
 
 <aside class="negative">
 
-⚠️ Ici vous aurez probablement un soucis car on a fait hériter `Task` de `Serializable` mais une des annotations de KotlinX Serialisation s'appelle aussi `Serializable`: pour résoudre ce conflit, faites hériter explicitement de `java.io.Serializable` à la place
+⚠️ Ici vous aurez peut être un conflit d'imports car on précédemment fait hériter `Task` de `Serializable`, et une des annotations de KotlinX Serialisation s'appelle aussi `@Serializable`: faites hériter explicitement de `java.io.Serializable` pour lever l'ambiguité.
 
 </aside>
 
@@ -270,12 +279,11 @@ Créer la classe `TasksListViewModel`, avec une liste de tâches _Observable_ gr
 class TasksListViewModel : ViewModel() {
   private val webService = Api.tasksWebService
 
-  // propri `
   public val tasksStateFlow = MutableStateFlow<List<Task>>(emptyList())
 
   fun refresh() {
       viewModelScope.launch {
-          val response = webService.getTasks() // Call HTTP (opération longue)
+          val response = webService.fetchTasks() // Call HTTP (opération longue)
           if (!response.isSuccessful) { // à cette ligne, on a reçu la réponse de l'API
             Log.e("Network", "Error: ${response.message()}")
             return@launch
@@ -286,9 +294,9 @@ class TasksListViewModel : ViewModel() {
   }
 
   // à compléter plus tard:
-  fun create(task: Task) {}
-  fun update(task: Task) {}
-  fun delete(task: Task) {}
+  fun add(task: Task) {}
+  fun edit(task: Task) {}
+  fun remove(task: Task) {}
 }
 ```
 
@@ -326,15 +334,15 @@ lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
 Modifier `TasksWebService` et ajoutez y les routes manquantes:
 
 ```kotlin
-@POST("tasks")
+@POST("/rest/v2/tasks/")
 suspend fun create(@Body task: Task): Response<Task>
 
-@PATCH("tasks/{id}")
+@PATCH("/rest/v2/tasks/{id}")
 suspend fun update(@Body task: Task, @Path("id") id: String = task.id): Response<Task>
 
 // Inspirez vous d'au dessus et de la doc de l'API pour compléter:
 @...(...)
-suspend fun delete(@...(...) id: String): Response<Unit>
+... delete(@...(...) id: String): Response<Unit>
 ```
 
 ## Suppression, Ajout, Édition

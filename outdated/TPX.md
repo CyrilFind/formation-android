@@ -53,7 +53,7 @@ class TasksRepository {
     private val webService = Api.tasksWebService
 
     suspend fun refresh(): List<Task>? {
-        val response = webService.getTasks()
+        val response = webService.fetchTasks()
         if (!response.isSuccessful) {
             Log.e("TasksRepository", "Error while fetching tasks: $response")
             return null

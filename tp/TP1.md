@@ -43,11 +43,15 @@ implementation "androidx.activity:activity-ktx:1.6.1"
 📁 Les fichiers source Java ou Kotlin sont rangés en "packages" (noté en haut de chaque classe: `package com.nicoalex.todo.nomdupackage`) qui sont aussi répliqués en tant que dossiers dans le filesystem
 
 <aside class="positive">
+
 Dans le volet "Projet" à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est "Android" qui affiche facilement le Manifest, les fichiers source (`com.nicoalex.todo`), et les fichier resources (`res`), etc... mais il peut parfois être pratique de passer en "Project Files" par ex pour voir l'arborescence réelle.
+
 </aside>
 
 <aside class="negative">
+
 Ne faites pas attention aux packages surlignés en verts, qui contiennent le code des tests uniquement.
+
 </aside>
 
 - Créez un nouveau package `list` à l'intérieur votre package source de base (pas à côté !),  :
@@ -131,7 +135,9 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 ```
 
 <aside class="negative">
+
 ⚠️ C'est normal que l'IDE nous signale un problème ici, on le règlera plus tard
+
 </aside>
 
 ## TaskListAdapter: utilisation
@@ -158,7 +164,9 @@ app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 ```
 
 <aside class="negative">
+
 ⚠️ Utilisez l'IDE pour régler le problème qu'il vous signale: seul le préfixe `android:`, correspondant au framework Android, est reconnu par défaut, et il faut donc ajouter une sorte d'équivalent de `import` mais dans le XML, pour que préfixe `app:`, correspondamd à des attributs additionnels défini par ex dans des lib (ici `recyclerview`)
+
 </aside>
 
 - ajoutez lui un `id`: soit en mode visuel soit en vous aidant de l'auto-complétion `android:id="@+id/....`

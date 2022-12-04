@@ -3,7 +3,7 @@ marp: true
 ---
 <!-- headingDivider: 2 -->
 
-<!-- use Flow from repositories + avoid UserInfo refresh calls ? -->
+<!-- use Flow from repositories + avoid User refresh calls ? -->
 
 # Architecture
 

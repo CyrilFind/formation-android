@@ -1,4 +1,4 @@
-# TP 2 - Actions & Intents
+# TP 2 - Compose & Intents
 
 ## Objectif
 
@@ -36,7 +36,9 @@ myAdapter.onClickDelete = { task ->
 ## Compose: DetailActivity
 
 <aside class="positive">
+
 Cet écran étant assez simple, on va en profiter pour s'initer à Jetpack Compose, qui remplace le système XML utilisé jusqu'ici
+
 </aside>
 
 - Créez un package `detail` dans votre package principal
@@ -61,7 +63,9 @@ startActivity(intent)
 - Renommez `Greeting` en `Detail` et `GreetingPreview` en `DetailPreview` et supprimez l'argument `name`
 
 <aside class="positive">
-Compose étant assez récent, ça ne marche pas toujours parfaitement, mais en théorie, si vous affichez le volet de Preview ("Split"), il affiche ce qui est dans `DetailPreview` sans avoir à relancer l'app à chaque fois
+
+Cliquez sur "Split", pour afficher `DetailPreview` sans avoir à relancer l'app à chaque fois
+
 </aside>
 
 - Changez le texte affiché dans le component `Text(...)` par un titre: `"Task Detail"`
@@ -143,12 +147,15 @@ ici on utilise `as Task?` (on pourrait utiliser `as? Task`) pour récupérer un 
 - Faites en sorte que la nouvelle tache s'affiche dans la liste directement
 
 <aside class="negative">
+
 Pour l'instant notre Task est créée avec des données "en dur", on va changer ça et récupérer les valeurs entrées par l'utilisateur
+
 </aside>
 
 - Dans `DetailActivity`, changez les `Text` en `OutlinedTextField`, on va mettre à jour dynamiquement la Task affichée:
 
 <aside class="positive">
+
 Une fonction `@Composable` peut être *recomposée* (en gros: ré-exécutée) à tout moment donc on ne peut pas utiliser de variables simples car elles seraient remises à leur valeur de départ, on utilise donc `remember`:
 
 ```kotlin
@@ -156,6 +163,7 @@ var task by remember { mutableStateOf(Task(...)) } // faire les imports suggér�
 ```
 
 Notez qu'on utilise également un `mutableStateOf` avec `by` qui permet à Compose de réagir automatiquement aux changements de valeurs mais pour cela vous devrez changer l'instance de task à chaque fois, on va utiliser `copy()` défini automatiquement pour les `data class` pour simplifier ça: `task = task.copy(title = "new title")`
+
 </aside>
 
 ## Édition d'une tâche

@@ -76,22 +76,6 @@ Remplacez l'utilisation des `SharedPreferences` par la nouvelle lib officielle: 
 - [Datastore documentation](https://developer.android.com/topic/libraries/architecture/datastore#preferences-datastore)
 - [Datastore codelab](https://developer.android.com/codelabs/android-preferences-datastore#0)
 
-## 4 - DataBinding
-
-Utiliser le data-binding pour afficher et éditer les données de l'application directement dans les layouts XML:
-
-- Commencer par les infos user affichées dans le fragment principal
-- Faire de même dans `TaskViewHolder`
-- Faire de même dans les autres écrans
-- Dans les écrans comme ajout/édition, userinfo, login/signup, utilisez le "two-way databinding" afin de remonter les modifications de données effectuées par l'utilisateur
-- utilisez un "custom binding adapter" pour passer la liste de tâches directement
-
-**Documentation:**
-
-- [DataBinding](https://developer.android.com/topic/libraries/data-binding) (affichage)
-- [Two-Way DataBinding](https://developer.android.com/topic/libraries/data-binding/two-way) (édition)
-- [DataBinding Adapter](https://developer.android.com/topic/libraries/data-binding/binding-adapters)
-
 ## 5 - Pagination
 
 Utiliser la lib "Paging 3" pour afficher une liste infinie de tâche de façon efficace dans votre RecyclerView qui n'affiche pour l'instant que la première page retournée par le serveur.
@@ -187,11 +171,3 @@ sqdelight
 - [Testing Codelab](https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-testing-basics/) (5.1 à 5.3)
 - [Mockito](https://site.mockito.org/)
 - [Espresso](https://developer.android.com/training/testing/ui-testing/espresso-testing)
-
-## 10 - Jetpack Compose
-
-Remplacer vos vues XML par du Kotlin:
-
-- [Documentation](https://developer.android.com/jetpack/compose/documentation)
-- [Listes](https://developer.android.com/jetpack/compose/lists)
-- [Navigation](https://developer.android.com/jetpack/compose/navigation)
