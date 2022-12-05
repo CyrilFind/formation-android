@@ -148,7 +148,7 @@ data class User(
   @SerialName(&#34;full_name&#34;)
   val name: String,
   @SerialName(avatar_medium)
-  val avatar: String?
+  val avatar: String? = null
 )
 </code></pre>
 <aside class="special"><p>Regardez bien les annotations ici (tout ce qui commence par <code>@</code>): elle servent à la lib <code>KotlinX Serialization</code> pour délimiter les éléments à parser et comment, avec les clés passées en argument</p>
@@ -314,7 +314,7 @@ lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
 <pre><code language="language-kotlin" class="language-kotlin">@POST(&#34;/rest/v2/tasks/&#34;)
 suspend fun create(@Body task: Task): Response&lt;Task&gt;
 
-@PATCH(&#34;/rest/v2/tasks/{id}&#34;)
+@POST(&#34;/rest/v2/tasks/{id}&#34;)
 suspend fun update(@Body task: Task, @Path(&#34;id&#34;) id: String = task.id): Response&lt;Task&gt;
 
 // Inspirez vous d&#39;au dessus et de la doc de l&#39;API pour compléter:
