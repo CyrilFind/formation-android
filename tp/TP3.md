@@ -131,7 +131,7 @@ data class User(
   @SerialName("full_name")
   val name: String,
   @SerialName(avatar_medium)
-  val avatar: String?
+  val avatar: String? = null
 )
 ```
 
@@ -337,7 +337,7 @@ Modifier `TasksWebService` et ajoutez y les routes manquantes:
 @POST("/rest/v2/tasks/")
 suspend fun create(@Body task: Task): Response<Task>
 
-@PATCH("/rest/v2/tasks/{id}")
+@POST("/rest/v2/tasks/{id}")
 suspend fun update(@Body task: Task, @Path("id") id: String = task.id): Response<Task>
 
 // Inspirez vous d'au dessus et de la doc de l'API pour compléter:
