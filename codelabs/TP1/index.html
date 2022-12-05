@@ -69,9 +69,9 @@ implementation &#34;androidx.activity:activity-ktx:1.6.1&#34;
     
       <google-codelab-step label="Gestion des fichiers" duration="0">
         <p>📁 Les fichiers source Java ou Kotlin sont rangés en &#34;packages&#34; (noté en haut de chaque classe: <code>package com.nicoalex.todo.nomdupackage</code>) qui sont aussi répliqués en tant que dossiers dans le filesystem</p>
-<aside class="special"><p> Dans le volet &#34;Projet&#34; à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est &#34;Android&#34; qui affiche facilement le Manifest, les fichiers source (`com.nicoalex.todo`), et les fichier resources (`res`), etc... mais il peut parfois être pratique de passer en &#34;Project Files&#34; par ex pour voir l&#39;arborescence réelle. </p>
+<aside class="special"><p>Dans le volet &#34;Projet&#34; à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est &#34;Android&#34; qui affiche facilement le Manifest, les fichiers source (<code>com.nicoalex.todo</code>), et les fichier resources (<code>res</code>), etc... mais il peut parfois être pratique de passer en &#34;Project Files&#34; par ex pour voir l&#39;arborescence réelle.</p>
 </aside>
-<aside class="warning"><p> Ne faites pas attention aux packages surlignés en verts, qui contiennent le code des tests uniquement. </p>
+<aside class="warning"><p>Ne faites pas attention aux packages surlignés en verts, qui contiennent le code des tests uniquement.</p>
 </aside>
 <ul>
 <li>Créez un nouveau package <code>list</code> à l&#39;intérieur votre package source de base (pas à côté !),  :</li>
@@ -142,7 +142,7 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
   }
 }
 </code></pre>
-<aside class="warning"><p> ⚠️ C&#39;est normal que l&#39;IDE nous signale un problème ici, on le règlera plus tard </p>
+<aside class="warning"><p>⚠️ C&#39;est normal que l&#39;IDE nous signale un problème ici, on le règlera plus tard</p>
 </aside>
 
 
@@ -170,7 +170,7 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
 </ul>
 <pre><code language="language-xml" class="language-xml">app:layoutManager=&#34;androidx.recyclerview.widget.LinearLayoutManager&#34;
 </code></pre>
-<aside class="warning"><p> ⚠️ Utilisez l&#39;IDE pour régler le problème qu&#39;il vous signale: seul le préfixe `android:`, correspondant au framework Android, est reconnu par défaut, et il faut donc ajouter une sorte d&#39;équivalent de `import` mais dans le XML, pour que préfixe `app:`, correspondamd à des attributs additionnels défini par ex dans des lib (ici `recyclerview`) </p>
+<aside class="warning"><p>⚠️ Utilisez l&#39;IDE pour régler le problème qu&#39;il vous signale: seul le préfixe <code>android:</code>, correspondant au framework Android, est reconnu par défaut, et il faut donc ajouter une sorte d&#39;équivalent de <code>import</code> mais dans le XML, pour que préfixe <code>app:</code>, correspondamd à des attributs additionnels défini par ex dans des lib (ici <code>recyclerview</code>)</p>
 </aside>
 <ul>
 <li>ajoutez lui un <code>id</code>: soit en mode visuel soit en vous aidant de l&#39;auto-complétion <code>android:id="@+id/....</code></li>

@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>TP 2 - Actions &amp; Intents</title>
+  <title>TP 2 - Compose &amp; Intents</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
@@ -23,7 +23,7 @@
   <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
   <google-codelab codelab-gaid=""
                   id="TP2"
-                  title="TP 2 - Actions &amp; Intents"
+                  title="TP 2 - Compose &amp; Intents"
                   environment="web"
                   feedback-link="">
     
@@ -59,7 +59,7 @@ myAdapter.onClickDelete = { task -&gt;
       </google-codelab-step>
     
       <google-codelab-step label="Compose: DetailActivity" duration="0">
-        <aside class="special"><p> Cet écran étant assez simple, on va en profiter pour s&#39;initer à Jetpack Compose, qui remplace le système XML utilisé jusqu&#39;ici </p>
+        <aside class="special"><p>Cet écran étant assez simple, on va en profiter pour s&#39;initer à Jetpack Compose, qui remplace le système XML utilisé jusqu&#39;ici</p>
 </aside>
 <ul>
 <li>Créez un package <code>detail</code> dans votre package principal</li>
@@ -78,7 +78,7 @@ myAdapter.onClickDelete = { task -&gt;
 <ul>
 <li>Renommez <code>Greeting</code> en <code>Detail</code> et <code>GreetingPreview</code> en <code>DetailPreview</code> et supprimez l&#39;argument <code>name</code></li>
 </ul>
-<aside class="special"><p> Compose étant assez récent, ça ne marche pas toujours parfaitement, mais en théorie, si vous affichez le volet de Preview (&#34;Split&#34;), il affiche ce qui est dans `DetailPreview` sans avoir à relancer l&#39;app à chaque fois </p>
+<aside class="special"><p>Cliquez sur &#34;Split&#34;, pour afficher <code>DetailPreview</code> sans avoir à relancer l&#39;app à chaque fois</p>
 </aside>
 <ul>
 <li>Changez le texte affiché dans le component <code>Text(...)</code> par un titre: <code>"Task Detail"</code></li>
@@ -151,12 +151,12 @@ myAdapter.onClickDelete = { task -&gt;
 <ul>
 <li>Faites en sorte que la nouvelle tache s&#39;affiche dans la liste directement</li>
 </ul>
-<aside class="warning"><p> Pour l&#39;instant notre Task est créée avec des données &#34;en dur&#34;, on va changer ça et récupérer les valeurs entrées par l&#39;utilisateur </p>
+<aside class="warning"><p>Pour l&#39;instant notre Task est créée avec des données &#34;en dur&#34;, on va changer ça et récupérer les valeurs entrées par l&#39;utilisateur</p>
 </aside>
 <ul>
 <li>Dans <code>DetailActivity</code>, changez les <code>Text</code> en <code>OutlinedTextField</code>, on va mettre à jour dynamiquement la Task affichée:</li>
 </ul>
-<aside class="special"><p> Une fonction `@Composable` peut être *recomposée* (en gros: ré-exécutée) à tout moment donc on ne peut pas utiliser de variables simples car elles seraient remises à leur valeur de départ, on utilise donc `remember`: </p>
+<aside class="special"><p>Une fonction <code>@Composable</code> peut être <em>recomposée</em> (en gros: ré-exécutée) à tout moment donc on ne peut pas utiliser de variables simples car elles seraient remises à leur valeur de départ, on utilise donc <code>remember</code>:</p>
 <pre><code language="language-kotlin" class="language-kotlin">var task by remember { mutableStateOf(Task(...)) } // faire les imports suggérés par l&#39;IDE
 </code></pre>
 <p>Notez qu&#39;on utilise également un <code>mutableStateOf</code> avec <code>by</code> qui permet à Compose de réagir automatiquement aux changements de valeurs mais pour cela vous devrez changer l&#39;instance de task à chaque fois, on va utiliser <code>copy()</code> défini automatiquement pour les <code>data class</code> pour simplifier ça: <code>task = task.copy(title = "new title")</code></p>
@@ -173,7 +173,7 @@ myAdapter.onClickDelete = { task -&gt;
 <li>Utilisez dans celle ci <code>putExtra</code> pour transmettre la <code>Task</code> à éditer (depuis <code>TaskListFragment</code> cette fois)</li>
 <li>Récupérez la <code>Task</code> dans le <code>onCreate</code> de <code>DetailActivity</code> avec <code>getSerializableExtra</code> comme précédemment (avec <code>intent</code> à la place de <code>result.data</code>)</li>
 <li>La <code>Task</code> récupérée est <code>nullable</code>: c&#39;est utile car elle sera <code>null</code> quand vous êtes dans le cas &#34;Ajout&#34;, et sinon, elle aura une vraie valeur car vous êtes dans le cas &#34;Édition&#34;</li>
-<li>utilisez la pour préremplir les `OutlinedTextField</li>
+<li>passez la en argument de <code>Detail</code> et utilisez la pour préremplir les <code>OutlinedTextField</code></li>
 <li>Utilisez l&#39;opérateur <code>?:</code> pour réutiliser l&#39;id précédent dans le cas de l&#39;édition, et en créer un sinon:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val id = task?.id ?: UUID.randomUUID().toString()
@@ -199,8 +199,8 @@ class TaskListAdapter(val listener: TaskListListener) : ... {
 
 class TaskListFragment : Fragment {
   val adapterListener : TaskListListener = object : TaskListListener {
-    override onClickDelete(task: Task) {...}
-    override onClickEdit(task: Task) {...}
+    override fun onClickDelete(task: Task) {...}
+    override fun onClickEdit(task: Task) {...}
   }
   val adapter = TaskListAdapter(adapterListener)
 }
