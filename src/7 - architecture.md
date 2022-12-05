@@ -3,8 +3,6 @@ marp: true
 ---
 <!-- headingDivider: 2 -->
 
-<!-- use Flow from repositories + avoid User refresh calls ? -->
-
 # Architecture
 
 ## MVC
