@@ -130,7 +130,7 @@ data class User(
   val email: String,
   @SerialName("full_name")
   val name: String,
-  @SerialName(avatar_medium)
+  @SerialName("avatar_medium")
   val avatar: String? = null
 )
 ```

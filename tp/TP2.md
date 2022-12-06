@@ -104,7 +104,7 @@ createTask.launch(intent)
 
 ## Ajout de tâche complet: DetailActivity
 
-- Dans votre composant `Detail`, ajoutez un paramètre `onValidate: (Task) -> Unit` et appelez cette lambda dans le `onClick` de votre bouton de validation, en passant une nouvelle task:
+- Dans votre composant `Detail`, ajoutez un argument `onValidate: (Task) -> Unit` et appelez cette lambda dans le `onClick` de votre bouton de validation, en passant une nouvelle task:
 
 ```kotlin
 val newTask = Task(id = UUID.randomUUID().toString(), title = "New Task !")
@@ -175,14 +175,14 @@ Inspirez vous de ce que vous avez fait pour le bouton "supprimer" et le bouton "
 - Utilisez dans celle ci `putExtra` pour transmettre la `Task` à éditer (depuis `TaskListFragment` cette fois)
 - Récupérez la `Task` dans le `onCreate` de `DetailActivity` avec `getSerializableExtra` comme précédemment (avec `intent` à la place de `result.data`)
 - La `Task` récupérée est `nullable`: c'est utile car elle sera `null` quand vous êtes dans le cas "Ajout", et sinon, elle aura une vraie valeur car vous êtes dans le cas "Édition"
-- passez la en argument de `Detail` et utilisez la pour préremplir les `OutlinedTextField`
-- Utilisez l'opérateur `?:` pour réutiliser l'id précédent dans le cas de l'édition, et en créer un sinon:
+- passez la en argument de `Detail`: `initialTask: Task?` et utilisez la comme valeur initiale de votre variable compose `task` afin de préremplir les `OutlinedTextField` lors de l'édition
+- Utilisez l'opérateur `?:` pour gérer à la fois le cas édition et ajout:
 
 ```kotlin
-val id = task?.id ?: UUID.randomUUID().toString()
+mutableStateOf(initialTask ?: newTask)
 ```
 
-- Au retour dans votre launcher, mettez à jour la liste: `taskList = taskList.map { if (it.id == task.id) task else it }`
+- Au retour dans votre launcher, récupérez la task modifiée, gérez la nullabilité (avec un `if` ou un `?: return` par ex) mettez à jour la liste: `taskList = taskList.map { if (it.id == task.id) task else it }`
 - Vérifier que les infos éditées s'affichent bien à notre retour sur l'activité principale.
 
 ## Interface et délégation
@@ -212,6 +212,13 @@ class TaskListFragment : Fragment {
 ## Partager
 
 - En modifiant `AndroidManifest.xml`, ajouter la possibilité de partager du texte **depuis les autres applications** (par ex en surlignant un texte dans un navigateur puis en cliquant sur "partager") et ouvrir le formulaire de création de tâche avec une description pré-remplie ([Documentation][1])
+
+<aside class="negative">
+
+⚠️ Attention l'Activity concernée devra avoir l'attribut `exported="true"` dans le manifest
+
+</aside>
+
 - En utilisant un `Intent` **implicite**, ajouter la possibilité de partager du texte **vers les autres applications** (avec un `OnLongClickListener` sur les tâches par ex ou bien avec un bouton dans la vue formulaire) ([Documentation][2])
 
 ## Changements de configuration
