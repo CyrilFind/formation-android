@@ -44,7 +44,7 @@ setContent {
     }
 }
 ```
-- Lancer cette `Activity` quand on clique sur l'`ImageView` du premier écran
+- Lancer cette `Activity` quand on clique sur l'`ImageView` du premier écran (pas besoin de laucher ici on attends pas de résultat: `startActivity(intent)`)
 
 ## Caméra: ActivityResult
 
@@ -93,6 +93,12 @@ private fun Bitmap.toRequestBody(): MultipartBody.Part {
 ```
 
 - Dans la callback de `takePicture`, envoyez l'image au serveur avec `updateAvatar`, en  convertissant `bitmap` avec `toRequestBody` avant
+
+<aside class="negative">
+
+⚠️ Si vous n'avez pas accès à `lifecycleScope`, vous pourvez utilisez une syntaxe propre à Compose: `val composeScope = rememberCoroutineScope()`)
+
+</aside>
 
 - Enfin, dans les `onResume` de `TaskListFragment`, afficher l'avatar renvoyé depuis le serveur afin de le voir sur l'écran principal:
 
