@@ -117,7 +117,7 @@ myAdapter.onClickDelete = { task -&gt;
     
       <google-codelab-step label="Ajout de tâche complet: DetailActivity" duration="0">
         <ul>
-<li>Dans votre composant <code>Detail</code>, ajoutez un paramètre <code>onValidate: (Task) -> Unit</code> et appelez cette lambda dans le <code>onClick</code> de votre bouton de validation, en passant une nouvelle task:</li>
+<li>Dans votre composant <code>Detail</code>, ajoutez un argument <code>onValidate: (Task) -> Unit</code> et appelez cette lambda dans le <code>onClick</code> de votre bouton de validation, en passant une nouvelle task:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;New Task !&#34;)
 </code></pre>
@@ -173,13 +173,13 @@ myAdapter.onClickDelete = { task -&gt;
 <li>Utilisez dans celle ci <code>putExtra</code> pour transmettre la <code>Task</code> à éditer (depuis <code>TaskListFragment</code> cette fois)</li>
 <li>Récupérez la <code>Task</code> dans le <code>onCreate</code> de <code>DetailActivity</code> avec <code>getSerializableExtra</code> comme précédemment (avec <code>intent</code> à la place de <code>result.data</code>)</li>
 <li>La <code>Task</code> récupérée est <code>nullable</code>: c&#39;est utile car elle sera <code>null</code> quand vous êtes dans le cas &#34;Ajout&#34;, et sinon, elle aura une vraie valeur car vous êtes dans le cas &#34;Édition&#34;</li>
-<li>passez la en argument de <code>Detail</code> et utilisez la pour préremplir les <code>OutlinedTextField</code></li>
-<li>Utilisez l&#39;opérateur <code>?:</code> pour réutiliser l&#39;id précédent dans le cas de l&#39;édition, et en créer un sinon:</li>
+<li>passez la en argument de <code>Detail</code>: <code>initialTask: Task?</code> et utilisez la comme valeur initiale de votre variable compose <code>task</code> afin de préremplir les <code>OutlinedTextField</code> lors de l&#39;édition</li>
+<li>Utilisez l&#39;opérateur <code>?:</code> pour gérer à la fois le cas édition et ajout:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">val id = task?.id ?: UUID.randomUUID().toString()
+<pre><code language="language-kotlin" class="language-kotlin">mutableStateOf(initialTask ?: newTask)
 </code></pre>
 <ul>
-<li>Au retour dans votre launcher, mettez à jour la liste: <code>taskList = taskList.map { if (it.id == task.id) task else it }</code></li>
+<li>Au retour dans votre launcher, récupérez la task modifiée, gérez la nullabilité (avec un <code>if</code> ou un <code>?: return</code> par ex) mettez à jour la liste: <code>taskList = taskList.map { if (it.id == task.id) task else it }</code></li>
 <li>Vérifier que les infos éditées s&#39;affichent bien à notre retour sur l&#39;activité principale.</li>
 </ul>
 
@@ -212,6 +212,10 @@ class TaskListFragment : Fragment {
       <google-codelab-step label="Partager" duration="0">
         <ul>
 <li>En modifiant <code>AndroidManifest.xml</code>, ajouter la possibilité de partager du texte <strong>depuis les autres applications</strong> (par ex en surlignant un texte dans un navigateur puis en cliquant sur &#34;partager&#34;) et ouvrir le formulaire de création de tâche avec une description pré-remplie (<a href="https://developer.android.com/training/sharing/receive" target="_blank">Documentation</a>)</li>
+</ul>
+<aside class="warning"><p>⚠️ Attention l&#39;Activity concernée devra avoir l&#39;attribut <code>exported="true"</code> dans le manifest</p>
+</aside>
+<ul>
 <li>En utilisant un <code>Intent</code> <strong>implicite</strong>, ajouter la possibilité de partager du texte <strong>vers les autres applications</strong> (avec un <code>OnLongClickListener</code> sur les tâches par ex ou bien avec un bouton dans la vue formulaire) (<a href="https://developer.android.com/training/sharing/send" target="_blank">Documentation</a>)</li>
 </ul>
 
