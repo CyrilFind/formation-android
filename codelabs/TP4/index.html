@@ -70,7 +70,7 @@ setContent {
 }
 </code></pre>
 <ul>
-<li>Lancer cette <code>Activity</code> quand on clique sur l&#39;<code>ImageView</code> du premier écran</li>
+<li>Lancer cette <code>Activity</code> quand on clique sur l&#39;<code>ImageView</code> du premier écran (pas besoin de laucher ici on attends pas de résultat: <code>startActivity(intent)</code>)</li>
 </ul>
 
 
@@ -119,6 +119,10 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response&lt;User&gt;
 </code></pre>
 <ul>
 <li>Dans la callback de <code>takePicture</code>, envoyez l&#39;image au serveur avec <code>updateAvatar</code>, en  convertissant <code>bitmap</code> avec <code>toRequestBody</code> avant</li>
+</ul>
+<aside class="warning"><p>⚠️ Si vous n&#39;avez pas accès à <code>lifecycleScope</code>, vous pourvez utilisez une syntaxe propre à Compose: <code>val composeScope = rememberCoroutineScope()</code>)</p>
+</aside>
+<ul>
 <li>Enfin, dans les <code>onResume</code> de <code>TaskListFragment</code>, afficher l&#39;avatar renvoyé depuis le serveur afin de le voir sur l&#39;écran principal:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">imageView.load(user.avatar) {
