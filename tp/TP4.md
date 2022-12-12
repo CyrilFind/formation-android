@@ -114,7 +114,6 @@ On va maintenant permettre à l'utilisateur d'uploader une image enregistrée su
 
 Pour simplifier on utilisera [PhotoPicker](https://developer.android.com/training/data-storage/shared/photopicker)
 
-- changez la variable `image` en `Uri?` (vous pouvez commenter le code relatif à la caméra pour l'instant)
 - Gérez l'uri alors récupérée quasiment comme pour la caméra, vous aurez besoin d'une variante de l'extension précédente pour l'URI:
 
 ```kotlin
@@ -145,7 +144,7 @@ Mais pour gérer les versions plus anciennes, il faut demander la permission `RE
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
 ```
 - ajoutez un `launcher` avec le contrat `RequestPermission()`
-- utilisez le au click du 1er bouton et dans sa callback, utilisez le launcher précédent
+- utilisez le au click du bouton (avec ` Manifest.permission.READ_EXTERNAL_STORAGE`) et dans sa callback, utilisez le launcher précédent
 - pour tester, créez temporairement un émulateur en API 9 ou moins, sur les autres devices, cela ne doit pas changer le fonctionnement
 
 ## Amélioration de la caméra
