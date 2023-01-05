@@ -9,7 +9,7 @@ La lib `Coil` permet d'afficher des images depuis une URL de façon efficace en 
 </aside>
 
 - Parcourez rapidement la [documentation de Coil](https://coil-kt.github.io/coil/)
-- Ajouter les dépendances nécessaires à `app/build.gradle`
+- Ajouter les dépendances nécessaires à `app/build.gradle`: on aura besoin de la lib de base et et de l'extension spécifique pour Jetpack Compose
 - Ajouter une `ImageView` qui affichera l'avatar de l'utilisateur dans le layout de la liste (à coté de votre `TextView` par ex)
 - Dans `onResume`, récupérez une référence à cette vue puis utilisez Coil pour afficher une image en passant une URL de votre choix, par exemple:
 
@@ -174,7 +174,7 @@ takePicture.launch(captureUri)
 
 ```kotlin
 @PATCH("sync/v9/users")
-suspend fun update(@Body user: UserUpdate): Response<User>
+suspend fun update(@Body user: UserUpdate): Response<Unit>
 ```
 
 - Référez vous à la [documentation](https://developer.todoist.com/sync/v9/#user) car ce n'est pas une API REST donc on ne passe pas simplement l'objet `User`: il faut créer un objet `UserUpdate` qui l'encapsule
