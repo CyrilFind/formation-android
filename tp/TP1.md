@@ -24,7 +24,13 @@ Vous allez créer un unique projet "fil rouge que vous mettrez à jour au fur à
 - Language: `Kotlin`
 - Minimum API Level: laissez la valeur proposée par défaut
 - Initialisez un projet git et faites un commit initial
-- Faites des commits régulièrement: à chaque fois que vous avez quelque chose qui compile et qui fonctionne au mieux, à la fin de chaque TP au minimum.
+
+<aside class="negative">
+
+⚠️ Le projet va évoluer au cours des TP donc faites des commits régulièrement: à chaque étape par exemple et à la fin de chaque TP au minimum (ne commentez pas votre code dans tous les sens)
+Comme dans un vrai projet pro en fait !
+
+</aside>
 
 ## Ajout de Dépendances
 

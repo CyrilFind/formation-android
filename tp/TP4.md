@@ -170,12 +170,15 @@ takePicture.launch(captureUri)
 
 - Comme précédemment, re-factorisez cette Activity en utilisant un `UserViewModel`
 - Dans `UserActivity`, permettre d'éditer et d'afficher les informations (nom, prénom, email) en respectant cette architecture
-- Vous aurez besoin d'ajouter à `UserWebService`:
+- Vous aurez besoin d'ajouter une méthode à `UserWebService`:
 
 ```kotlin
 @PATCH("sync/v9/users")
-suspend fun update(@Body user: User): Response<User>
+suspend fun update(@Body user: UserUpdate): Response<User>
 ```
+
+- Référez vous à la [documentation](https://developer.todoist.com/sync/v9/#user) car ce n'est pas une API REST donc on ne passe pas simplement l'objet `User`: il faut créer un objet `UserUpdate` qui l'encapsule
+
 
 ## Gérer le refus
 

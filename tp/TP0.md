@@ -47,10 +47,10 @@ Pour commencer, on va se baser sur les [Codelabs Google](https://developer.andro
 
 Pendant les prochains TP, vous allez créer un projet en binôme que vous complèterez au fur à mesure.
 
-C'est une simple Todo app, mais vous pouvez choisir un autre sujet qui vous intéresse plus, mais dans tous les cas il faudra que le résultat final respecte certaines specifications:
+C'est une simple Todo app, mais vous pouvez choisir un autre sujet qui vous intéresse plus, mais dans tous les cas il faudra que le résultat final respecte certaines specifications (quitte a faire une app un peu hybride):
 
-- Une liste scrollable d'éléments (avec `RecyclerView`)
-- Intéragis avec une API distante (avec `Retrofit`, `kotlinXcoroutines` et `kotlinXserialization`)
+- Liste scrollable d'éléments (avec `RecyclerView`)
+- Intéraction avec une API distante (avec `Retrofit`, `kotlinXcoroutines` et `kotlinXserialization`)
 - Afficher des images (avec `Coil`)
 - Naviguer entre plusieurs écrans en échangeant des infos (`Intent`, Navigation Component, Activity Result)
 - Respecter une architecture minimale (avec `ViewModel`)
@@ -59,6 +59,17 @@ C'est une simple Todo app, mais vous pouvez choisir un autre sujet qui vous int�
 Quelques idées d'applications:
 
 - Affichage d'horaires de trains
-- Client Twitch, Twitter, etc
+- Client alternatif pour Twitch, Twitter, etc
 - Traqueur de films, séries, jeux, etc
 - Jeux à UI simple: Quiz, Memory, etc
+
+Exemples d'API: 
+- https://trakt.docs.apiary.io
+- https://imgflip.com/api
+
+Barême approximatif /10 :
+- base /2 
+- TP features principales /3
+- propreté et stabilité /2
+- TP complets /3
++ bonus (UI, sujet personnalisé)

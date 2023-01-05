@@ -32,7 +32,7 @@ val myUser = User()
 
 ```kotlin
 // valeur donnée à la compilation qui ne peut pas changer:
-const val MY_CONSTANT = 42 
+const val MY_CONSTANT = 42
 
 // valeur donnée à l'execution qui ne peut pas changer ensuite:
 val myImmutableVariable = MY_CONSTANT + 8
