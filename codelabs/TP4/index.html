@@ -194,11 +194,14 @@ takePicture.launch(captureUri)
         <ul>
 <li>Comme précédemment, re-factorisez cette Activity en utilisant un <code>UserViewModel</code></li>
 <li>Dans <code>UserActivity</code>, permettre d&#39;éditer et d&#39;afficher les informations (nom, prénom, email) en respectant cette architecture</li>
-<li>Vous aurez besoin d&#39;ajouter à <code>UserWebService</code>:</li>
+<li>Vous aurez besoin d&#39;ajouter une méthode à <code>UserWebService</code>:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">@PATCH(&#34;sync/v9/users&#34;)
-suspend fun update(@Body user: User): Response&lt;User&gt;
+suspend fun update(@Body user: UserUpdate): Response&lt;User&gt;
 </code></pre>
+<ul>
+<li>Référez vous à la <a href="https://developer.todoist.com/sync/v9/#user" target="_blank">documentation</a> car ce n&#39;est pas une API REST donc on ne passe pas simplement l&#39;objet <code>User</code>: il faut créer un objet <code>UserUpdate</code> qui l&#39;encapsule</li>
+</ul>
 
 
       </google-codelab-step>
