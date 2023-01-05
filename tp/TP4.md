@@ -173,7 +173,7 @@ takePicture.launch(captureUri)
 - Vous aurez besoin d'ajouter une méthode à `UserWebService`:
 
 ```kotlin
-@PATCH("sync/v9/users")
+@PATCH("sync/v9/sync")
 suspend fun update(@Body user: UserUpdate): Response<Unit>
 ```
 
