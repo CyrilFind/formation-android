@@ -32,7 +32,7 @@
 </aside>
 <ul>
 <li>Parcourez rapidement la <a href="https://coil-kt.github.io/coil/" target="_blank">documentation de Coil</a></li>
-<li>Ajouter les dépendances nécessaires à <code>app/build.gradle</code></li>
+<li>Ajouter les dépendances nécessaires à <code>app/build.gradle</code>: on aura besoin de la lib de base et et de l&#39;extension spécifique pour Jetpack Compose</li>
 <li>Ajouter une <code>ImageView</code> qui affichera l&#39;avatar de l&#39;utilisateur dans le layout de la liste (à coté de votre <code>TextView</code> par ex)</li>
 <li>Dans <code>onResume</code>, récupérez une référence à cette vue puis utilisez Coil pour afficher une image en passant une URL de votre choix, par exemple:</li>
 </ul>
@@ -197,7 +197,7 @@ takePicture.launch(captureUri)
 <li>Vous aurez besoin d&#39;ajouter une méthode à <code>UserWebService</code>:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">@PATCH(&#34;sync/v9/users&#34;)
-suspend fun update(@Body user: UserUpdate): Response&lt;User&gt;
+suspend fun update(@Body user: UserUpdate): Response&lt;Unit&gt;
 </code></pre>
 <ul>
 <li>Référez vous à la <a href="https://developer.todoist.com/sync/v9/#user" target="_blank">documentation</a> car ce n&#39;est pas une API REST donc on ne passe pas simplement l&#39;objet <code>User</code>: il faut créer un objet <code>UserUpdate</code> qui l&#39;encapsule</li>
