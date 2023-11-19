@@ -1,6 +1,7 @@
 ---
 marp: true
 ---
+
 <!-- headingDivider: 2 -->
 
 # Background work
@@ -41,7 +42,7 @@ Basically, a `Job` is anything that can be canceled
 
 ```kotlin
 fun main() {
-    val job = GlobalScope.launch { 
+    val job = GlobalScope.launch {
         // do something long
     }
     if (input == `^C`) job.cancel()
@@ -56,7 +57,7 @@ ex: `Dispatcher.Main` runs tasks on the main thread, `Dispatcher.IO` offloads bl
 
 ```kotlin
 fun main() {
-    GlobalScope.launch(Dispatchers.IO) { 
+    GlobalScope.launch(Dispatchers.IO) {
         // do something long on IO thread
     }
 }
@@ -67,14 +68,14 @@ fun main() {
 Suspend functions are only allowed to be called from a coroutine or another suspend function
 
 ```kotlin
-suspend fun doSomethingLong() { 
+suspend fun doSomethingLong() {
     // request server, DB, filesystem, ...
 }
 
 fun main() {
-    doSomethingLong() // ❌ KO 
+    doSomethingLong() // ❌ KO
 
-    GlobalScope.launch { 
+    GlobalScope.launch {
         doSomethingLong() // ✅ OK
     }
 }
@@ -101,7 +102,7 @@ val result: SomeClass = result.await() // wait for result data
 
 ```kotlin
 // in Repository
-suspend fun getData() : Int = withContext(Dispatchers.IO) {  
+suspend fun getData() : Int = withContext(Dispatchers.IO) {
     // execute long IO operation
 }
 
@@ -121,7 +122,7 @@ lifecycleScope.launchWhenStarted { /* launches when fragment is in started state
 
 ## Observer pattern
 
-Design pattern that allows decoupling actions and data consumption by decoupling the *observable* (or subject) from the *observers* (or listeners):
+Design pattern that allows decoupling actions and data consumption by decoupling the _observable_ (or subject) from the _observers_ (or listeners):
 
 ```kotlin
 val observable = Observable<Data>(initialData)
@@ -133,7 +134,7 @@ observable.observe { data -> /* use the value */ }
 
 ## Reactive Streams
 
-Represent data as an async sequence that can be *observed* : (pseudo-code)
+Represent data as an async sequence that can be _observed_ : (pseudo-code)
 
 ```kotlin
 val stream = Stream(null)
@@ -155,7 +156,7 @@ Streams can be "hot" or "cold" (analogy: Radio // CD)
 Implementation of reactive streams based on coroutines:
 
 ```kotlin
-val flow: Flow<String> = listOf("red", "white", "blue").asFlow() 
+val flow: Flow<String> = listOf("red", "white", "blue").asFlow()
             .map { it -> it.ToUpperCase() }
             .flowOn(Dispatchers.Default)
 
@@ -179,8 +180,8 @@ suspend fun refreshUser() {
 
 // react in Activity/Fragment:
 lifecycleScope.launch {
-    userFlow.filterNotNull().collect { user -> 
-    nameTextView.text = user.name 
+    userFlow.filterNotNull().collect { user ->
+    nameTextView.text = user.name
     }
 }
 

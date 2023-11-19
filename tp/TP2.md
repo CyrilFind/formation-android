@@ -52,6 +52,7 @@ Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent e
 ```kotlin
 val intent = Intent(context, DetailActivity::class.java)
 ```
+
 </aside>
 
 - Faire en sorte de lancer la nouvelle Activity depuis le bouton + de la première activity
@@ -111,7 +112,6 @@ val newTask = Task(id = UUID.randomUUID().toString(), title = "New Task !")
 ```
 
 - Dans `onCreate`, `Detail` va donc maintenant nécessiter une lambda `onValidate`, que nous allons définir et utiliser:
-
 
 <aside class="positive">
 

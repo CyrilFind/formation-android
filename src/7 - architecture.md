@@ -1,6 +1,7 @@
 ---
 marp: true
 ---
+
 <!-- headingDivider: 2 -->
 
 # Architecture

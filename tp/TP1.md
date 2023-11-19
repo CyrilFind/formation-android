@@ -299,7 +299,7 @@ object MyItemsDiffCallback : DiffUtil.ItemCallback<MyItem>() {
    override fun areItemsTheSame(oldItem: MyItem, newItem: MyItem) : Boolean {
       return // comparaison: est-ce la même "entité" ? => même id?
    }
-      
+
    override fun areContentsTheSame(oldItem: MyItem, newItem: MyItem) : Boolean {
       return // comparaison: est-ce le même "contenu" ? => mêmes valeurs? (avec data class: simple égalité)
    }

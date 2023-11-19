@@ -161,7 +161,7 @@ interface UserWebService {
 - Utilisez retrofit pour créer une implémentation de ce service:
 
 ```kotlin
-object Api { 
+object Api {
   // ...
   val userWebService : UserWebService by lazy {
     retrofit.create(UserWebService::class.java)
@@ -173,7 +173,7 @@ object Api {
 
 Ici, Retrofit va créer une implémentation de l'interface `UserWebService` pour nous, en utilisant d'une part les valeurs de base configurées dans `Api` et d'autre part les annotations (`@`) qui lui donnent le type de requête (ex: `GET`), la route, les types de paramètres, etc.
 
-Utiliser des interfaces est souvent préférables pour pouvoir interchanger facilement les implémentantions: par exemple si on change une source de données, une dépendances, etc.. 
+Utiliser des interfaces est souvent préférables pour pouvoir interchanger facilement les implémentantions: par exemple si on change une source de données, une dépendances, etc..
 
 Un usage notable est les Tests Unitaires: on peut alors utiliser une "fausse implémentation" de test qui par ex ici ne fait pas vraiment de requêtes mais retourne des réponses fixées
 </aside>
@@ -187,6 +187,7 @@ Un usage notable est les Tests Unitaires: on peut alors utiliser une "fausse imp
 // Ici on ne va pas gérer les cas d'erreur donc on force le crash avec "!!"
 val user = Api.userWebService.fetchUser().body()!!
 ```
+
 <aside class="negative">
 
 le mot clé `suspend` ici sert à signifier que cette fonction ne peut pas s'éxécuter comme une fonction normale car elle peut potentiellement bloquer le thread courant en prenant beaucoup de temps à se terminer
@@ -255,7 +256,6 @@ Extrait d'un json renvoyé par la route `/rest/v2/tasks/`:
 ```
 
 - Modifier `Task` pour la rendre "serializable" par KotlinX Serialization (inspirez vous de `User`)
-
 
 <aside class="negative">
 

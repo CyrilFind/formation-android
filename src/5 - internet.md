@@ -1,6 +1,7 @@
 ---
 marp: true
 ---
+
 <!-- headingDivider: 2 -->
 
 # L'internet
@@ -78,7 +79,7 @@ val movieJson = """{
 data class Movie (
   val id: Int,
   val title: String,
-  @SerialName("image_path")  
+  @SerialName("image_path")
   val imagePath: String? = null,
 )
 

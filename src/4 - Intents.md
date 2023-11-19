@@ -1,6 +1,7 @@
 ---
 marp: true
 ---
+
 <!-- headingDivider: 2 -->
 <!-- TODO: Deeplinks ? -->
 
@@ -11,8 +12,6 @@ marp: true
 ![bg right 90%](../assets/intents.png)
 
 Objet "lancé" par une app ou le système qui contient les infos pour démarrer une `Activity` (`Service`, `Broadcast` plus rarement)
-
-
 
 ## Explicite
 
@@ -103,7 +102,7 @@ val chooserIntent = Intent.createChooser(intent, "Chooser Title")
         <data android:host="developer.android.com" />
     </intent-filter>
     <intent-filter>
-        <intent-filter> 
+        <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 
             <category android:name="android.intent.category.LAUNCHER" />
@@ -137,9 +136,9 @@ class SecondActivity : Activity() {
 
 ## Default ActivityResultContracts
 
-Exemple: 
+Exemple:
 
-```kotlin 
+```kotlin
 val getContent = registerForActivityResult(GetContent()) { uri ->  ... }
 
 getContent.launch("image/*")
@@ -153,7 +152,7 @@ getContent.launch("image/*")
 - Les permissions “dangereuses” doivent être demandées à chaque fois
 - On recommande d’expliquer la raison avant (et après un refus)
 - Ajouter dans le manifest:
-    `<uses-permission android:name="android.permission.CAMERA" />`
+  `<uses-permission android:name="android.permission.CAMERA" />`
 - Vérifier si la permission a été donnée
 - La demander sinon (éventuellement demander à devenir app par défaut)
 - Éxecuter l’action ou expliquer pourquoi elle est impossible en cas de refus
@@ -170,7 +169,7 @@ val requestPermissionLauncher =
 
 // Checking for a permission, and requesting a permission from the user when necessary
 when {
-    ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) 
+    ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
         == PackageManager.PERMISSION_GRANTED -> {
         // You can use the API that requires the permission.
     }
@@ -186,7 +185,7 @@ when {
 
 # iOS
 
-## Segues
+## iOS: Segues
 
 ![height:400px](../assets/segue.png)
 
@@ -196,7 +195,7 @@ self.performSegue(withIdentifier: "SECOND_SCREEN_SEGUE", for sender: self)
 
 [Documentation](https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/UsingSegues.html)
 
-## Demander un résultat
+## iOS: Demander un résultat
 
 On fait des delegate à la main:
 
@@ -209,7 +208,7 @@ protocol ImageDelegate{
 class TakePictureController : UIViewController, ImageDelegate{ ... }
 ```
 
-## Share Extensions
+## iOS: Share Extensions
 
 Plus compliqué: Il faut crér un module à part avec son propre `ViewController`
 
@@ -217,6 +216,6 @@ Les capabilities sont dans un fichierde configuration (plist):
 
 ![height:250px](../assets/ios_share_extensions.png)
 
-## Permissions 
+## iOS: Permissions
 
 Beaucoup plus simple: on définit quelques textes dans des fichiers de configuration, ils seront utilisés pour remplir la popup quand l'OS l'estime nécessaire

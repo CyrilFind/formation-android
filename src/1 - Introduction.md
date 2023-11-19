@@ -1,6 +1,7 @@
 ---
 marp: true
 ---
+
 <!-- headingDivider: 2 -->
 
 # Introduction au Dévelopment Mobile
@@ -38,7 +39,7 @@ const val MY_CONSTANT = 42
 val myImmutableVariable = MY_CONSTANT + 8
 
 // valeur qui peut changer:
-var myMutableVariable = 0 
+var myMutableVariable = 0
 myMutableVariable = 1
 ```
 
@@ -49,7 +50,7 @@ val user: User? = getCurrentUser()
 
 // soft unwrap: exécute ou retourne null si l'instance est null
 user?.name // soft unwrap
-    
+
 // force unwrap: exécute OU crash si l'instance est nulle:
 user!!.toString()
 
@@ -94,7 +95,7 @@ print(result)
 
 ```kotlin
 fun functionName(
-  firstArgumentName: FirstArgumentType, 
+  firstArgumentName: FirstArgumentType,
   secondArgumentName: SecondArgumentType
 ) : ReturnType {
   val result: ReturnType
@@ -102,7 +103,7 @@ fun functionName(
   return result
 }
 
-// short syntax: le 
+// short syntax: le
 fun add(first: Int, second: Int) = first + second
 ```
 
@@ -110,37 +111,37 @@ fun add(first: Int, second: Int) = first + second
 
 ```kotlin
 // classes are final by default
-class Student( // declaration and constructor 
+class Student( // declaration and constructor
   name: String, // constructor argument
   public val subjects: List<Subject>, // public property
 ) : User(name) { // parent constructor
     private val secret = "something hidden" // private property
 
     init { ... }
-} 
+}
 
 // open makes them non-final
-open class User(val name: String) {} 
+open class User(val name: String) {}
 ```
 
 ## Object
 
 Permet de créer facilement un Singleton
 
-``` kotlin
-object Analytics { 
+```kotlin
+object Analytics {
   fun trackLoginEvent() { ... }
 }
 
 // à utiliser comme une classe `static` Java:
-Analytics.trackLoginEvent() 
+Analytics.trackLoginEvent()
 ```
 
 ## Companion object
 
 Permet d'avoir l'équivalent des membres `static` en Java:
 
-``` kotlin
+```kotlin
 class Math {
 
   companion object {
@@ -155,7 +156,7 @@ Math.PI // interop java: MyClass.Companion.MY_CONSTANT
 
 `equals(), toString(), hashCode(), copy()` et destructuration sans rien coder !
 
-``` kotlin
+```kotlin
 data class Point(val x: Float, val y: Float)
 
 val pointA = Point(1.0f, 2.0f)
@@ -174,11 +175,11 @@ pointA == pointC // ➡️ true
 
 Classes ayant un nombre de sous classes défini et limité
 
-``` kotlin
+```kotlin
 sealed class Result {
-  
+
   class Success(val value: Any) : Result()
-  
+
   class Failure(val error: Error) : Result()
 }
 ```
@@ -187,11 +188,11 @@ sealed class Result {
 
 ## Extension functions
 
-``` kotlin
-fun String.capitalize(): String { 
-  this.chars().mapIndexed { char, index -> 
-    if (index == 0) char.toUpperCase() else char 
-  } 
+```kotlin
+fun String.capitalize(): String {
+  this.chars().mapIndexed { char, index ->
+    if (index == 0) char.toUpperCase() else char
+  }
 }
 
 "blabla".capitalize() // ➡️ "Blabla"
@@ -199,9 +200,9 @@ fun String.capitalize(): String {
 
 ## Delegates
 
-``` kotlin
+```kotlin
 class DraggableButton(
-  clickListener: ClickListener, 
+  clickListener: ClickListener,
   dragListener: DragListener
 ) : ClickListener by clickListener, DragListener by dragListener
 

@@ -13,7 +13,7 @@ marp: true
 - Contrôle une "page" qui prends généralement tout l’écran
 - Son rôle est de créer, afficher, manipuler les `View` pour permettre à l'utilisateur d'interagir
 - Obéit à un "Lifecycle"
-- Peut contenir des `Fragment`
+- Peut contenir des `Fragment` (ex: youtube mini player fragment)
 - Souvent une "Single Activity" dans laquelle on navigue en intervertissant des `Fragment`
 - ⚠️ Éviter la tendance à mettre trop de logique dans l'Activity
 
@@ -48,7 +48,7 @@ Fichier XML décrivant un écran (ou une partie)
 
 ## Views
 
- Élément graphique de l’interface: Text, Image, Button, ...
+Élément graphique de l’interface: Text, Image, Button, ...
 
 ```xml
 <TextView
@@ -201,7 +201,7 @@ fun MyComposable() {
     Column(Modifier.fillMaxWidth()) {
         Text("Hello")
         Text(
-          text = "World", 
+          text = "World",
           style = Typo.small
         )
     }
@@ -210,11 +210,12 @@ fun MyComposable() {
 
 - Écrit directement en kotlin
 - Géré par un plugin du compilateur
-- `Modifier`: `padding`, `clickable`, ... 
+- `Modifier`: `padding`, `clickable`, ...
 
 ![bg right:40% 90%](../assets/compose_tree.png)
 
 ## Jetpack Compose: Lifecycle
+
 ```kotlin
 var name by remember { mutableStateOf("") }
 TextField(
@@ -224,9 +225,10 @@ TextField(
 ```
 
 Sorte de lifecycle mais différent:
-1) Composition
-2) Recomposition ex: un `State<T>` a changé
-3) Décomposition
+
+1. Composition
+2. Recomposition ex: un `State<T>` a changé
+3. Décomposition
 
 ![bg right:40% 90%](../assets/compose_lifecycle.png)
 
@@ -263,7 +265,7 @@ class LoginViewController: UIViewController {
 
 ```swift
 struct AlbumDetail: View {
-	var body: some View {	
+  var body: some View {
     VStack(alignment: .leading) {
       Text("Hello")
       Text("World")

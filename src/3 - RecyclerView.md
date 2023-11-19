@@ -1,6 +1,7 @@
 ---
 marp: true
 ---
+
 <!-- headingDivider: 2 -->
 
 # RecyclerView
@@ -57,7 +58,7 @@ class WordListAdapter(val wordList: List<Word>) : RecyclerView.Adapter<WordListA
    inner class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
       fun bind(word: Word) {
          // Fill a cell with data
-      }  
+      }
    }
 }
 ```
@@ -156,6 +157,6 @@ LazyColumn {
 }
 ```
 
-hé oui, c'est tout 🤷 
+hé oui, c'est tout 🤷
 
-Pareil en SwiftUI : `List(elements) { element in ... }` 
+Pareil en SwiftUI : `List(elements) { element in ... }`
