@@ -219,3 +219,5 @@ Les capabilities sont dans un fichierde configuration (plist):
 ## iOS: Permissions
 
 Beaucoup plus simple: on définit quelques textes dans des fichiers de configuration, ils seront utilisés pour remplir la popup quand l'OS l'estime nécessaire
+
+![bg left:30% 90%](../assets/ios_permission.png)
