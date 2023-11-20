@@ -3,22 +3,27 @@ name: Build Slides
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [master]
     paths:
-      - 'src/*'
+      - "src/*"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Clean previous  
-      run: rm slides/*.html
-    - name: Build & Deploy to GitHub Pages
-      env: 
-        MARP_ARGS: "-I src/ --output slides/"
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REPOSITORY: ${{ github.repository }}
-        PUBLISH_TO_BRANCH: master
-      uses: ralexander-phi/marp-action@master
-      
+      - uses: actions/checkout@v3
+      - name: Clean previous
+        run: rm slides/*.html
+      - name: Marp Build (README.pdf)
+        run: npx @marp-team/marp-cli@latest --input-dir src/ --output slides/
+        env:
+          MARP_USER: root:root
+      - name: Push
+        run: |
+          git pull
+          git config user.name "Slides Builder"
+          git config user.email "<>"
+          git add slides/*
+          git commit -m "build slides"
+          git push
+  
