@@ -4,7 +4,18 @@ marp: true
 
 <!-- headingDivider: 2 -->
 
-# Introduction au Dévelopment Mobile
+# Introduction au Développement Mobile
+
+# Présentation
+
+Cyril Findeling 👋
+
+## Développement mobile
+
+- technos moderne
+- performances limitées
+- livraisons itératives
+- domaine compétitif
 
 ## Kotlin
 
@@ -32,13 +43,14 @@ val myUser = User()
 ## Mutabilité
 
 ```kotlin
-// valeur donnée à la compilation qui ne peut pas changer:
-const val MY_CONSTANT = 42
+// valeur primitive donnée à la compilation qui ne peut pas changer
+const val APP_ID = 42424242
 
-// valeur donnée à l'execution qui ne peut pas changer ensuite:
-val myImmutableVariable = MY_CONSTANT + 8
+// valeur donnée à l'execution qui ne peut pas changer ensuite
+val user = User("alice")
+user = User("bob") // ❌ ne compile pas
 
-// valeur qui peut changer:
+// valeur qui peut changer
 var myMutableVariable = 0
 myMutableVariable = 1
 ```
@@ -49,16 +61,16 @@ myMutableVariable = 1
 val user: User? = getCurrentUser()
 
 // soft unwrap: exécute ou retourne null si l'instance est null
-user?.name // soft unwrap
+user?.name
 
-// force unwrap: exécute OU crash si l'instance est nulle:
+// force unwrap: exécute OU crash si l'instance est nulle
 user!!.toString()
 
-// elvis operator: éxécute la partie à droite si la partie à gauche est null:
-user?.name ?: "no user" // coalesce operator
+// elvis operator: exécute la partie à droite si la partie à gauche est null
+user?.name ?: "no user"
 ```
 
-⚠️ Pour l'interopérabilité avec Java il faut une annotation `@Nullable`
+⚠️ `@Nullable` pour l'interopérabilité avec Java
 
 ## Smart casts
 
@@ -94,34 +106,39 @@ print(result)
 ## Functions
 
 ```kotlin
-fun functionName(
-  firstArgumentName: FirstArgumentType,
-  secondArgumentName: SecondArgumentType
-) : ReturnType {
-  val result: ReturnType
-  // ...
+fun add(
+  first: Int,
+  second: Int,
+) : Int {
+  var result: Int
+  result = first + second
   return result
 }
 
-// short syntax: le
+// short syntax
 fun add(first: Int, second: Int) = first + second
 ```
 
 ## Classes
 
 ```kotlin
-// classes are final by default
-class Student( // declaration and constructor
-  name: String, // constructor argument
-  public val subjects: List<Subject>, // public property
-) : User(name) { // parent constructor
-    private val secret = "something hidden" // private property
+// declaration and primary constructor
+class Student(
+  login: String, // constructor argument
+  public val subjects: List<Subject> = emptyList(), // public property
+) : User(login) { // parent constructor
 
-    init { ... }
+    private val email: String // private property
+
+    constructor(firstname: String, lastname: String) : this("$firstname_$lastname") // secondary constructor
+
+    init { // additional constructor logic
+      email = "$login@school.com"
+    }
 }
 
-// open makes them non-final
-open class User(val name: String) {}
+// classes are final by default: `open` allows inheritage
+open class User(val login: String) {}
 ```
 
 ## Object
@@ -133,7 +150,7 @@ object Analytics {
   fun trackLoginEvent() { ... }
 }
 
-// à utiliser comme une classe `static` Java:
+// remplace le `static class` Java:
 Analytics.trackLoginEvent()
 ```
 
@@ -182,9 +199,13 @@ sealed class Result {
 
   class Failure(val error: Error) : Result()
 }
-```
 
-➡️ Permet d'être smart-casté
+// utile avec les smart cast
+when (result) {
+  is Result.Success -> display(result.value)
+  is Result.Failure -> log(result.error)
+}
+```
 
 ## Extension functions
 
@@ -195,7 +216,7 @@ fun String.capitalize(): String {
   }
 }
 
-"blabla".capitalize() // ➡️ "Blabla"
+"hello".capitalize() // ➡️ "Hello"
 ```
 
 ## Delegates
@@ -215,30 +236,18 @@ Blocs d'execution qui se manipulent en tant que variables:
 
 ```kotlin
 val add: (Int, Int) -> Int = { a, b -> a + b }
+add(1, 2) // ➡️ 3
 
-val three = add(1, 2)
-
-fun operation(number: Int, operation: (Int, Int) -> Int) {
+fun applyToSelf(number: Int, operation: (Int, Int) -> Int) {
     operation(number, number)
  }
 
-operation(4, add) // 8
-operation(3) { a, b -> a - b } // 0
+applyToSelf(4, add) // 8
+applyToSelf(3) { a, b -> a - b } // 0
 
-// Lambda for SAM
+// for Single Abstract Method (SAM) interface
 button.setOnClickListener { view -> ... }
 ```
-
-## Kotlin Koans
-
-Petits exercices pour prendre en main le langage:
-
-- Soit en ligne: [try.kotl.in/koans](http://try.kotl.in/koans)
-
-- Soit dans l'IDE (pour avoir l'autocompletion), :
-  - installer le plugin Edutools: `Plugins > Marketplace > Edutools > Install`
-  - accepter de redémarrer
-  - Démarrer le cours: `My Courses > Start New Course > Marketplace > Kotlin Koans > Start`
 
 # Android
 
@@ -251,8 +260,9 @@ Petits exercices pour prendre en main le langage:
 - Nombreux utilisateurs
 - Devices très différents
 - Versions d’OS anciennes
+- Play Store
 - Puissance limitée
-- Phone, Tablet, TV, Watch, Auto, Chrome OS, Fuschia OS
+- Phone, Tablet, TV, Watch, Auto, Chrome, Windows, ...
 - Dev natif en Kotlin et Java
 
 ## Android Studio
@@ -265,6 +275,7 @@ Petits exercices pour prendre en main le langage:
 - Logcat
 - Émulateurs
 - SDK Manager
+- strings.xml
 - Refactoring
 - RAM 🔥
 
@@ -296,17 +307,26 @@ Petits exercices pour prendre en main le langage:
 - Plus de 💰 dépensés
 - Moins de devices différents
 - OS mis à jour plus rapidement
+- App Store
 - Swift (interop Objective-C)
 - XCode 💩
+- Simulator
 
-# Cross-Platform et Composants
+# Cross-Platform
 
-![bg left:30% 80%](../assets/compose.svg)
+![bg left:30% 90%](../assets/react.png)
+![bg left:30% 70%](../assets/flutter.svg)
 
 - Permet de coder une seule fois
 - Souvent à base de "Components" (à la React)
 - Désavantage: performances, UX, possibilités spécifiques ou récentes des OS
 - Xamarin, ReactNative, NativeScript, Ionic, ...
 - Dart: Flutter (iOS, Android, Desktop, Web) par Google
-- Swift: SwiftUI (iOS only) par Apple
-- Kotlin: Jetpack Compose sur Android, Desktop, Web et même iOS (non-officiel) par JetBrains et Google
+
+# Composants
+
+![bg left:30% 90%](../assets/compose.png)
+![bg left:30% 75%](../assets/swiftui.png)
+
+- Swift: SwiftUI par Apple
+- Kotlin: Jetpack Compose sur Android, Desktop, Web et même iOS par JetBrains et Google
