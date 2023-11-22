@@ -20,8 +20,9 @@
   </style>
 </head>
 <body>
-  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
   <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
                   id="TP3"
                   title="TP 3: L&#39;Internet"
                   environment="web"
@@ -171,7 +172,7 @@ data class User(
 <ul>
 <li>Utilisez retrofit pour créer une implémentation de ce service:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">object Api { 
+<pre><code language="language-kotlin" class="language-kotlin">object Api {
   // ...
   val userWebService : UserWebService by lazy {
     retrofit.create(UserWebService::class.java)

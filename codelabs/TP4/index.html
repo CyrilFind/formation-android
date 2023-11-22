@@ -20,8 +20,9 @@
   </style>
 </head>
 <body>
-  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
   <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
                   id="TP4"
                   title="TP 4: Images, Permissions, Stockage"
                   environment="web"
@@ -196,7 +197,7 @@ takePicture.launch(captureUri)
 <li>Dans <code>UserActivity</code>, permettre d&#39;éditer et d&#39;afficher les informations (nom, prénom, email) en respectant cette architecture</li>
 <li>Vous aurez besoin d&#39;ajouter une méthode à <code>UserWebService</code>:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">@PATCH(&#34;sync/v9/users&#34;)
+<pre><code language="language-kotlin" class="language-kotlin">@PATCH(&#34;sync/v9/sync&#34;)
 suspend fun update(@Body user: UserUpdate): Response&lt;Unit&gt;
 </code></pre>
 <ul>

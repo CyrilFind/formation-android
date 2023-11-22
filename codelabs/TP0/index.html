@@ -20,8 +20,9 @@
   </style>
 </head>
 <body>
-  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
   <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
                   id="TP0"
                   title="TP 0 - Introduction"
                   environment="web"
@@ -30,12 +31,12 @@
       <google-codelab-step label="Mise en place" duration="0">
         <p>Avant le premier cours, vérifiez que votre poste de travail est opérationnel (<a href="https://developer.android.com/courses/pathways/android-basics-kotlin-two" target="_blank">tuto</a>):</p>
 <ul>
-<li>Installez Android Studio (<a href="https://developer.android.com/codelabs/basic-android-kotlin-training-install-android-studio?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-two%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-install-android-studio#0" target="_blank">tuto</a>)</li>
+<li>Installez <a href="https://developer.android.com/studio" target="_blank">Android Studio</a> (<a href="https://developer.android.com/codelabs/basic-android-kotlin-training-install-android-studio?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-two%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-install-android-studio#0" target="_blank">tuto</a>)</li>
 <li>Créez un projet vide (laissez l&#39;api minimale proposée) et essayez de le lancer: (<a href="https://developer.android.com/codelabs/basic-android-kotlin-training-first-template-project?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-two%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-first-template-project#0" target="_blank">tuto</a>)</li>
-<li>Si vous avez un appareil Android physique et un cable qui fonctionne, passez le en mode développeur (en tapant 7 fois sur le numéro de build dans les paramètres) et prenez le avec vous en cours, ce sera beaucoup plus simple. (<a href="https://developer.android.com/codelabs/basic-android-kotlin-training-run-on-mobile-device?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-two%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-run-on-mobile-device#0" target="_blank">tuto</a>)</li>
-<li>Sinon, créez un émulateur: choisissez un device avec le triangle de google play services puis une version d&#39;OS Android (pour éviter des problèmes, ne choisissez pas la toute dernière, mais l&#39;avant dernière par ex). Si vous êtes sous Windows, vous aurez peut être des paramètres BIOS à changer pour la virtualisation.</li>
+<li>Si vous avez un appareil Android physique et un cable qui fonctionne, passez le en mode développeur (en tapant 7 fois sur le numéro de build dans les paramètres) et prenez le avec vous en cours, ce sera plus simple. (<a href="https://developer.android.com/codelabs/basic-android-kotlin-training-run-on-mobile-device?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-two%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-run-on-mobile-device#0" target="_blank">tuto</a>)</li>
+<li>Sinon, créez un émulateur: choisissez un device avec le triangle du PlayStore puis une version d&#39;OS Android (pour éviter des problèmes, ne choisissez pas la toute dernière, mais l&#39;avant dernière par ex). Si vous êtes sous Windows, vous aurez peut être des paramètres BIOS à changer pour la virtualisation.</li>
 </ul>
-<aside class="special"><p> N&#39;hésitez pas à me contacter en avance si vous avez un soucis </p>
+<aside class="special"><p> N&#39;hésitez pas à me contacter en avance si vous avez un soucis (les liens &#39;tuto&#39; ne sont pas nécessaire normalement mais ils peuvent aider aussi) </p>
 </aside>
 
 
@@ -44,10 +45,10 @@
       <google-codelab-step label="Paramètrage" duration="0">
         <p>Prenez en main l&#39;IDE: vous pouvez aller dans les paramètres (<code>File > Settings</code> ou <code>Android Studio > Preferences</code>) et personnalisez l&#39;IDE, je vous conseille notamment ceci:</p>
 <ul>
-<li>Activer tous dans <code>Editor > Inlay Hints</code></li>
+<li>Activez tout dans <code>Editor > Inlay Hints</code></li>
 <li>Activez les imports automatiques: <code>Editor > General > Auto Import > Kotlin > cocher "Add unambiguous import on the fly" et "Optimize imports on the fly..."</code></li>
-<li>Personnalisez la coloration syntaxique (ex: le plugin &#34;Rainglow Color Schemes&#34;, mon thème <a href="https://raw.githubusercontent.com/CyrilFind/intellij-settings-repository/master/colors/Darculai%20_cyrilfind_.icls" target="_blank">Darculai</a> dans <code>Settings > Editor > Color Scheme > ⚙ > Import Scheme</code>)</li>
-<li>Personnalisez les raccourcis clavier (ex: <a href="https://raw.githubusercontent.com/CyrilFind/intellij-settings-repository/master/keymaps/cyrilfind.xml" target="_blank">mon setup</a>)</li>
+<li>Personnalisez la coloration syntaxique dans <code>Settings > Editor > Color Scheme > ⚙ > Import Scheme</code> (ex: le plugin &#34;Rainglow Color Schemes&#34;, ou <a href="https://raw.githubusercontent.com/CyrilFind/intellij-settings-repository/master/colors/Darculai%20_cyrilfind_.icls" target="_blank">mon thème</a></li>
+<li>Personnalisez les raccourcis clavier (ex: <a href="https://raw.githubusercontent.com/CyrilFind/intellij-settings-repository/master/keymaps/cyrilfind.xml" target="_blank">mon keymap</a>)</li>
 </ul>
 
 
@@ -63,12 +64,16 @@
       </google-codelab-step>
     
       <google-codelab-step label="Google Codelabs" duration="0">
-        <p>Pour commencer, on va se baser sur les <a href="https://developer.android.com/courses/android-basics-kotlin/course" target="_blank">Codelabs Google</a> mais tout n&#39;est pas indispensable:</p>
+        <p>On va commencer en douceur en se basant sur les <a href="https://developer.android.com/courses/android-basics-kotlin/course" target="_blank">Codelabs Google</a></p>
+<aside class="warning"><p> Je sais que ces tutos sont &#34;not maintained&#34; c&#39;est parce qu&#39;il s&#39;agit de l&#39;ancien système de vues, mais il faut aussi l&#39;apprendre et on passera au nouveau ensuite </p>
+</aside>
+<p>Tous ces tutos ne sont pas indispensable pour des presque-ingénieurs tels que vous alors on va en faire seulement quelques uns:</p>
 <ul>
-<li>Commencez directement par celui ci: <a href="https://developer.android.com/codelabs/basic-android-kotlin-training-xml-layouts?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-unit-2-pathway-1%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-xml-layouts#0" target="_blank">Create XML layouts for Android</a></li>
-<li>Puis continuer par les codelabs suivants: <a href="https://developer.android.com/courses/pathways/android-basics-kotlin-unit-2-pathway-2" target="_blank">Part 2</a></li>
+<li>1e partie: <a href="https://developer.android.com/codelabs/basic-android-kotlin-training-xml-layouts?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-unit-2-pathway-1%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-xml-layouts" target="_blank">XML layouts</a></li>
+<li>2e partie <a href="https://developer.android.com/codelabs/basic-android-kotlin-training-tip-calculator?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-unit-2-pathway-1%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-tip-calculator" target="_blank">ViewBinding</a></li>
+<li>3e partie <a href="https://developer.android.com/codelabs/basic-android-kotlin-training-recyclerview-scrollable-list?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-kotlin-unit-2-pathway-3%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-training-recyclerview-scrollable-list#0" target="_blank">RecyclerView</a></li>
 </ul>
-<aside class="warning"><p> ⚠️ Ne perdez pas de temps sur les pages &#34;Introduction&#34;, &#34;Overview&#34;, ... des codelabs, ce sont juste des résumés de ce que vous allez faire. </p>
+<aside class="warning"><p> ⚠️ Ne perdez pas de temps sur les pages &#34;Introduction&#34;, &#34;Overview&#34;, ... des codelabs, ce sont juste des résumés de ce que vous allez faire, ni sur les dernières étapes (questions, exercices) </p>
 </aside>
 
 
@@ -76,13 +81,13 @@
     
       <google-codelab-step label="Projet" duration="0">
         <p>Pendant les prochains TP, vous allez créer un projet en binôme que vous complèterez au fur à mesure.</p>
-<p>C&#39;est une simple Todo app, mais vous pouvez choisir un autre sujet qui vous intéresse plus, mais dans tous les cas il faudra que le résultat final respecte certaines specifications (quitte a faire une app un peu hybride):</p>
+<p>Par défaut c&#39;est une simple Todo app, mais vous pouvez choisir un autre sujet qui vous intéresse plus, mais dans tous les cas il faudra que le résultat final respecte certaines specifications:</p>
 <ul>
 <li>Liste scrollable d&#39;éléments (avec <code>RecyclerView</code>)</li>
-<li>Intéraction avec une API distante (avec <code>Retrofit</code>, <code>kotlinXcoroutines</code> et <code>kotlinXserialization</code>)</li>
+<li>Interaction avec une API distante (avec <code>Retrofit</code>, <code>kotlinXcoroutines</code> et <code>kotlinXserialization</code>)</li>
 <li>Afficher des images (avec <code>Coil</code>)</li>
 <li>Naviguer entre plusieurs écrans en échangeant des infos (<code>Intent</code>, Navigation Component, Activity Result)</li>
-<li>Respecter une architecture minimale (avec <code>ViewModel</code>)</li>
+<li>Respecter une architecture minimale (avec <code>ViewModel</code> et <code>Repository</code>)</li>
 <li>Demander une ou plusieurs permissions</li>
 </ul>
 <p>Quelques idées d&#39;applications:</p>
@@ -91,19 +96,17 @@
 <li>Client alternatif pour Twitch, Twitter, etc</li>
 <li>Traqueur de films, séries, jeux, etc</li>
 <li>Jeux à UI simple: Quiz, Memory, etc</li>
+<li>un chatbot spécialisé</li>
+</ul>
+<p>Exemples d&#39;années précédentes:</p>
+<ul>
+<li>Cémantix</li>
+<li>Reigns-like</li>
 </ul>
 <p>Exemples d&#39;API:</p>
 <ul>
-<li>https://trakt.docs.apiary.io</li>
-<li>https://imgflip.com/api</li>
-</ul>
-<p>Barême approximatif /10 :</p>
-<ul>
-<li>base /2</li>
-<li>TP features principales /3</li>
-<li>propreté et stabilité /2</li>
-<li>TP complets /3</li>
-<li>bonus (UI, sujet personnalisé)</li>
+<li><a href="https://trakt.docs.apiary.io" target="_blank">https://trakt.docs.apiary.io</a></li>
+<li><a href="https://imgflip.com/api" target="_blank">https://imgflip.com/api</a></li>
 </ul>
 
 

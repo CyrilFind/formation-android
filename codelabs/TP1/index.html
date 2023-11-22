@@ -20,8 +20,9 @@
   </style>
 </head>
 <body>
-  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
   <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
                   id="TP1"
                   title="TP 1 - RecyclerView"
                   environment="web"
@@ -292,7 +293,7 @@ taskList = taskList + newTask
    override fun areItemsTheSame(oldItem: MyItem, newItem: MyItem) : Boolean {
       return // comparaison: est-ce la même &#34;entité&#34; ? =&gt; même id?
    }
-      
+
    override fun areContentsTheSame(oldItem: MyItem, newItem: MyItem) : Boolean {
       return // comparaison: est-ce le même &#34;contenu&#34; ? =&gt; mêmes valeurs? (avec data class: simple égalité)
    }
