@@ -1,14 +1,16 @@
 # Formation Android
 
-## Principe
-
-Un peu de théorie et un maximum de pratique
+contact: <cyrilfind@gmail.com>
 
 - [Slides](slides/)
 - [TPs](codelabs/)
 - [Videos](videos/)
 
-Afin de connaître les fondamentaux du développement Android et notamment:
+## Objectif
+
+Acquérir les fondamentaux du développement Android avec Kotlin travers un maximum de pratique (et un peu de théorie quand même)
+
+## Notions
 
 - Se familiariser avec Kotlin
 - Prendre en main Android Studio et le Layout Editor
@@ -30,10 +32,3 @@ Afin de connaître les fondamentaux du développement Android et notamment:
 - <https://developer.android.com/courses/android-basics-compose/course>
 - <https://kotlinlang.org/>
 - <https://kotlinlang.org/docs/reference/basic-syntax.html>
-
-## Outils
-
-- [Android Studio](https://developer.android.com/studio)
-- [scrcpy](https://github.com/Genymobile/scrcpy)
-
-contact: <cyrilfind@gmail.com>
