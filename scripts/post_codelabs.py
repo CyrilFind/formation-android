@@ -3,7 +3,7 @@ import glob
 
 
 def add_text_to_files(pattern, text):
-    """Iterates over files matching *pattern* 
+    """Iterates over files matching *pattern*
     in the directory and appends *text* to the end of the file.
     """
     for fname in glob.glob(pattern):
