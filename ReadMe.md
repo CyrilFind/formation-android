@@ -1,8 +1,12 @@
-# [Formation Android](https://cyrilfind.github.io/formation-android/)
+# Formation Android
 
 ## Principe
 
-Un peu de théorie ([Slides](slides/)) et un maximum de pratique ([TPs](codelabs/))
+Un peu de théorie et un maximum de pratique
+
+- [Slides](slides/)
+- [TPs](codelabs/)
+- [Videos](videos/)
 
 Afin de connaître les fondamentaux du développement Android et notamment:
 
@@ -19,14 +23,15 @@ Afin de connaître les fondamentaux du développement Android et notamment:
 - stocker des données
 - Évoquer les équivalences avec iOS
 
-### Références
+## Références
 
 - <https://developer.android.com/modern-android-development>
-- <https://developer.android.com/courses/kotlin-android-fundamentals/overview>
+- <https://developer.android.com/courses/android-basics-kotlin/course>
+- <https://developer.android.com/courses/android-basics-compose/course>
 - <https://kotlinlang.org/>
 - <https://kotlinlang.org/docs/reference/basic-syntax.html>
 
-### Outils
+## Outils
 
 - [Android Studio](https://developer.android.com/studio)
 - [scrcpy](https://github.com/Genymobile/scrcpy)

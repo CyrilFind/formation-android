@@ -1,0 +1,10 @@
+layout: stacked
+style: light
+
+plugins:
+  - jekyll-octicons
+  - jekyll-github-metadata
+  - jemoji
+  - jekyll-spaceship
+
+title: Formation Android
