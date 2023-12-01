@@ -59,8 +59,9 @@ Fichier XML décrivant un écran (ou une partie)
   android:layout_height="wrap_content" // use only needed height
 />
 
-<Button
-  android:id="@+id/button_login"
+<ImageView
+  android:id="@+id/imageView_login"
+  android:src="@drawable/ic_login"
   android:layout_width="0dp" // match width to constraints
   android:layout_height="200dp" // specify explicit height
   app:layout_constraintEnd_toEndOf="@id/textView_login" // constraint start
@@ -95,19 +96,17 @@ class MainFragment : Fragment() {
 
 ## References to views
 
-![bg left:40% 90%](../assets/views.png)
-
 ```kotlin
-// traditional
 val loginTextView: TextView = findViewById(R.id.textView_login)
-val loginTextView = findViewById<TextView>(R.id.textView_login)
-
-// ButterKnife
-@BindView(R.id.textView_login) val loginTextView: TextView
-
-// viewbinding / databinding
-binding.textViewLogin
+val loginImageView = findViewById<ImageView>(R.id.imageView_login)
 ```
+
+Problèmes:
+
+- Pas type safe
+- Pas null-safe
+- Tous les ids de tous les layouts sont disponibles
+- Verbeux
 
 ## ViewBinding
 
@@ -128,8 +127,9 @@ Usage:
 val binding = ActivityMainBinding.inflate(layoutInflater)
 val rootView = binding.root
 
-// pour manipuler les vues:
-binding.textViewLogin.setOnCLickListener { ... }
+// toutes les vues avec des ids sont accessibles
+binding.textView.text = "hello world!"
+binding.imageView.setOnCLickListener { ... }
 ```
 
 [Documentation](https://developer.android.com/topic/libraries/view-binding#fragments)
@@ -198,7 +198,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
 # iOS
 
-![bg left:30% 80%](../assets/xcode.png)
+![bg right:30% 80%](../assets/xcode.png)
 
 - UIViewController (Équivalent de Activity)
 - Storyboards (Layout XML manipulé visuellement)

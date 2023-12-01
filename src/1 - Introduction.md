@@ -21,7 +21,7 @@ Cyril Findeling 👋
 
 ## Kotlin
 
-![bg left:30% 50%](../assets/kotlin.png)
+![bg right:30% 80%](../assets/kotlin.png)
 
 - Moderne
 - Concis
@@ -301,7 +301,7 @@ button.setOnClickListener { view -> ... }
 
 ## Intro
 
-![bg left:30% 50%](../assets/android.png)
+![bg right:30% 50%](../assets/android.png)
 
 - Nombreux utilisateurs
 - Devices très différents
@@ -313,9 +313,10 @@ button.setOnClickListener { view -> ... }
 
 ## Android Studio
 
-![bg left:30% 100%](../assets/android_studio.svg)
+![bg right:50% 100%](../assets/android_studio.svg)
 
-- IDE dédié développé par Jetbrains (IntelliJ)
+- IDE dédié
+- Développé par Jetbrains (IntelliJ)
 - Navigation projet
 - Terminal
 - Logcat
@@ -327,7 +328,7 @@ button.setOnClickListener { view -> ... }
 
 ## Éléments d'une app Android
 
-![bg left:30% 50%](../assets/android.png)
+![bg right:40% 80%](../assets/android_elements.png)
 
 - Scripts Gradle
 - AndroidManifest.xml
@@ -338,7 +339,7 @@ button.setOnClickListener { view -> ... }
 
 ## App Components
 
-![bg left:40% 160%](../assets/app_components.png)
+![bg right:40% 160%](../assets/app_components.png)
 
 - Activity / Fragments ➡ Screen Controller
 - Service ➡ Headless Controller
@@ -347,7 +348,7 @@ button.setOnClickListener { view -> ... }
 
 # iOS
 
-![bg left:40% 80%](../assets/xcode.png)
+![bg right:40% 80%](../assets/xcode.png)
 
 - Beaucoup d'utilisateurs aux US
 - Plus de 💰 dépensés
@@ -360,8 +361,8 @@ button.setOnClickListener { view -> ... }
 
 # Cross-Platform
 
-![bg left:30% 90%](../assets/react.png)
-![bg left:30% 70%](../assets/flutter.svg)
+![bg right:30% 90%](../assets/react.png)
+![bg right:30% 70%](../assets/flutter.svg)
 
 - Permet de coder une seule fois
 - Souvent à base de "Components" (à la React)
@@ -371,8 +372,8 @@ button.setOnClickListener { view -> ... }
 
 # Composants
 
-![bg left:30% 90%](../assets/compose.png)
-![bg left:30% 75%](../assets/swiftui.png)
+![bg right:30% 90%](../assets/compose.png)
+![bg right:30% 75%](../assets/swiftui.png)
 
 - Swift: SwiftUI par Apple
 - Kotlin: Jetpack Compose sur Android, Desktop, Web et même iOS par JetBrains et Google

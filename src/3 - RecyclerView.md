@@ -157,7 +157,7 @@ class MyTableDataSource : UITableViewDataSource {
 
 ## Jetpack Compose
 
-![bg left:30% 80%](../assets/compose.svg)
+![bg right:30% 100%](../assets/compose.svg)
 
 ```kotlin
 LazyColumn {

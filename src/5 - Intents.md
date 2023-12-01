@@ -17,27 +17,28 @@ Objet "lancé" par une app ou le système qui contient les infos pour démarrer 
 
 ## Explicite
 
-![bg right:30% 90%](../assets/intents_explicit_implicit.png)
+![bg right:40% 90%](../assets/intents_explicit_implicit.png)
 
 ```kotlin
-val explicitIntent = Intent(context, MyActivity::class.java)
+val explicitIntent =
+    Intent(context, MyActivity::class.java)
 
 startActivity(intent)
 ```
 
 ## Implicite
 
-![bg right:30% 90%](../assets/intents_explicit_implicit.png)
+![bg right:40% 90%](../assets/intents_explicit_implicit.png)
 
 ```kotlin
 val urlIntent = Intent("http://www.google.com")
 val callButtonIntent = Intent(ACTION_CALL_BUTTON)
 val phoneIntent = Intent(ACTION_DIAL, "tel:8005551234")
 val searchIntent = Intent(Intent.ACTION_WEB_SEARCH)
-searchIntent.putExtra(SearchManager.QUERY, "cute cat pictures")
+searchIntent.putExtra(SearchManager.QUERY, "cats")
 
 val createPdfIntent = Intent(ACTION_CREATE_DOCUMENT)
-createPdfIntent.type = "application/pdf" // set MIME type
+createPdfIntent.type = "application/pdf" // MIME type
 createPdfIntent.addCategory(CATEGORY_OPENABLE)
 ```
 
@@ -66,22 +67,23 @@ val food = intent.getStringArrayExtra("food_key")
 ```kotlin
 // Check if that intent can be handled !
 if (intent.resolveActivity(packageManager) != null) {
-   startActivity(intent) // if no result needed, otherwise: ↴
+   startActivity(intent)
 }
 ```
 
-![height:300px](../assets/disambiguation.png)
+![bg right:30% 90%](../assets/disambiguation.png)
 
 ## Using Chooser Intent / Sharesheet
 
-![height:300px](../assets/app_chooser.png)
 
 ```kotlin
 // using Chooser Intent / Sharesheet
 val intent = Intent(Intent.ACTION_SEND)
-val chooserIntent = Intent.createChooser(intent, "Chooser Title")
-   startActivity(chooserIntent)
+val chooserIntent = Intent.createChooser(intent, "Title")
+startActivity(chooserIntent)
 ```
+
+![bg right:30% 90%](../assets/app_chooser.png)
 
 ## Intent Filters
 
@@ -220,7 +222,7 @@ Les capabilities sont dans un fichierde configuration (plist):
 
 ## iOS: Permissions
 
-![bg left:30% 90%](../assets/ios_permission.png)
+![bg right:30% 90%](../assets/ios_permission.png)
 
 Beaucoup plus simple: on définit quelques textes dans des fichiers de configuration, ils seront utilisés pour remplir la popup quand l'OS l'estime nécessaire
 
