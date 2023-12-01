@@ -61,8 +61,9 @@
   <span class="hljs-attr">android:layout_height</span>=<span class="hljs-string">&quot;wrap_content&quot;</span> // <span class="hljs-attr">use</span> <span class="hljs-attr">only</span> <span class="hljs-attr">needed</span> <span class="hljs-attr">height</span>
 /&gt;</span>
 
-<span class="hljs-tag">&lt;<span class="hljs-name">Button</span>
-  <span class="hljs-attr">android:id</span>=<span class="hljs-string">&quot;@+id/button_login&quot;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">ImageView</span>
+  <span class="hljs-attr">android:id</span>=<span class="hljs-string">&quot;@+id/imageView_login&quot;</span>
+  <span class="hljs-attr">android:src</span>=<span class="hljs-string">&quot;@drawable/ic_login&quot;</span>
   <span class="hljs-attr">android:layout_width</span>=<span class="hljs-string">&quot;0dp&quot;</span> // <span class="hljs-attr">match</span> <span class="hljs-attr">width</span> <span class="hljs-attr">to</span> <span class="hljs-attr">constraints</span>
   <span class="hljs-attr">android:layout_height</span>=<span class="hljs-string">&quot;200dp&quot;</span> // <span class="hljs-attr">specify</span> <span class="hljs-attr">explicit</span> <span class="hljs-attr">height</span>
   <span class="hljs-attr">app:layout_constraintEnd_toEndOf</span>=<span class="hljs-string">&quot;@id/textView_login&quot;</span> // <span class="hljs-attr">constraint</span> <span class="hljs-attr">start</span>
@@ -93,20 +94,20 @@
 
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:40%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="left"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/views.png&quot;);background-size:90%;"></figure></div></section></foreignObject><foreignObject width="60%" height="720" x="40%"><section id="8" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:40%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="left">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="references-to-views">References to views</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-comment">// traditional</span>
-<span class="hljs-keyword">val</span> loginTextView: TextView = findViewById(R.id.textView_login)
-<span class="hljs-keyword">val</span> loginTextView = findViewById&lt;TextView&gt;(R.id.textView_login)
-
-<span class="hljs-comment">// ButterKnife</span>
-<span class="hljs-meta">@BindView(R.id.textView_login)</span> <span class="hljs-keyword">val</span> loginTextView: TextView
-
-<span class="hljs-comment">// viewbinding / databinding</span>
-binding.textViewLogin
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-keyword">val</span> loginTextView: TextView = findViewById(R.id.textView_login)
+<span class="hljs-keyword">val</span> loginImageView = findViewById&lt;ImageView&gt;(R.id.imageView_login)
 </code></pre>
+<p>Problèmes:</p>
+<ul>
+<li>Pas type safe</li>
+<li>Pas null-safe</li>
+<li>Tous les ids de tous les layouts sont disponibles</li>
+<li>Verbeux</li>
+</ul>
 </section>
-</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="left"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="viewbinding">ViewBinding</h2>
 <p>Dans <code>app/build.gradle</code>:</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-gradle">android {
@@ -120,8 +121,9 @@ binding.textViewLogin
 <span class="hljs-keyword">val</span> binding = ActivityMainBinding.inflate(layoutInflater)
 <span class="hljs-keyword">val</span> rootView = binding.root
 
-<span class="hljs-comment">// pour manipuler les vues:</span>
-binding.textViewLogin.setOnCLickListener { ... }
+<span class="hljs-comment">// toutes les vues avec des ids sont accessibles</span>
+binding.textView.text = <span class="hljs-string">&quot;hello world!&quot;</span>
+binding.imageView.setOnCLickListener { ... }
 </code></pre>
 <p><a href="https://developer.android.com/topic/libraries/view-binding#fragments">Documentation</a></p>
 </section>
@@ -184,7 +186,7 @@ binding.textViewLogin.setOnCLickListener { ... }
 <li>Plus persistent: DB, Web, SharedPreference, DataStore</li>
 </ul>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:30%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="left"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/xcode.png&quot;);background-size:80%;"></figure></div></section></foreignObject><foreignObject width="70%" height="720" x="30%"><section id="16" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:30%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="left">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:30%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/xcode.png&quot;);background-size:80%;"></figure></div></section></foreignObject><foreignObject width="70%" height="720"><section id="16" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:30%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
 <h1 id="ios">iOS</h1>
 
 <ul>
@@ -201,7 +203,7 @@ binding.textViewLogin.setOnCLickListener { ... }
 }
 </code></pre>
 </section>
-</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="left"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:40%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/ios_lifecycle.png&quot;);background-size:90%;"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="17" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:40%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
+</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:40%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/ios_lifecycle.png&quot;);background-size:90%;"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="17" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:40%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
 <h2 id="uiviewcontroller">UIViewController</h2>
 
 <ul>
