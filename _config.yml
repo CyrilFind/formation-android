@@ -8,3 +8,9 @@ plugins:
   - jekyll-spaceship
 
 title: Formation Android
+
+videos:
+  - title: Intro
+    url: https://www.youtube.com/embed/C2-2Wg800vs
+  - title: Views
+    url: https://www.youtube.com/embed/x_hgFEmtQR4
