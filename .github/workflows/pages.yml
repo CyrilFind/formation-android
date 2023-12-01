@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Clean previous
-        run: rm slides/*.html
+        run: git rm slides/*.html
       - name: Marp Build (README.pdf)
         run: npx @marp-team/marp-cli@latest --input-dir src/ --output slides/
         env:
