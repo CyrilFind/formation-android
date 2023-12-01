@@ -7,6 +7,8 @@ marp: true
 
 # Intents
 
+![bg right:65% 100%](../assets/jetpack.svg)
+
 ## Définition
 
 ![bg right 90%](../assets/intents.png)

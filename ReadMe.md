@@ -16,13 +16,14 @@ Acquérir les fondamentaux du développement Android avec Kotlin travers un maxi
 - Prendre en main Android Studio et le Layout Editor
 - Interagir avec des `View`
 - Implémenter une `RecyclerView`
+- Créer des vues avec `Jetpack Compose`
 - Naviguer et passer des données entre `Fragment` et `Activity`
 - Interroger une API distante avec `Retrofit`
 - Utiliser des `Coroutines`
 - Architecturer avec `Flow`, `ViewModel` et `Repository`
-- Manipuler des images
+- Manipuler des images avec `Coil`
 - Demander des permissions
-- stocker des données
+- Stocker des données
 - Évoquer les équivalences avec iOS
 
 ## Références

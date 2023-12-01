@@ -4,9 +4,11 @@ marp: true
 
 <!-- headingDivider: 2 -->
 
-# Introduction au Développement Mobile
+# Introduction
 
-# Présentation
+![bg right:65% 100%](../assets/jetpack.svg)
+
+## Présentation
 
 Cyril Findeling 👋
 
@@ -30,20 +32,22 @@ Cyril Findeling 👋
 ## Typage statique inféré
 
 ```kotlin
+// explicit
 val myInt: Int = 1
+
+// implicit
 val myInt = 1
-
-val myString: String = "coucou"
 val myString = "coucou"
-
-val myUser: User = User()
 val myUser = User()
+
+val myList = listOf(0f, 0.5f, 1f) // List<Float>
+val emptyList = emptyList<Double>() // List<Double>
 ```
 
 ## Mutabilité
 
 ```kotlin
-// valeur primitive donnée à la compilation qui ne peut pas changer
+// valeur primitive fixée à la compilation qui ne peut pas changer
 const val APP_ID = 42424242
 
 // valeur donnée à l'execution qui ne peut pas changer ensuite
@@ -53,6 +57,13 @@ user = User("bob") // ❌ ne compile pas
 // valeur qui peut changer
 var myMutableVariable = 0
 myMutableVariable = 1
+
+// structure de données mutables ou immutables, ex: listes
+val immutableList = listOf(1, 2, 3)
+immutableList.add(4) // ❌
+
+val mutableList = mutableListOf(1, 2, 3)
+mutableList.add(4) // ✅
 ```
 
 ## Nullabilité
@@ -103,6 +114,26 @@ val result = when(x) {
 print(result)
 ```
 
+## Loops
+
+```kotlin
+val list = listOf(1, 2, 3, 4, 5)
+
+for (i in 0..4) {
+  print(list[i])
+}
+
+for (element in list) {
+  print(element)
+}
+
+list.forEach { element ->
+  print(element)
+}
+
+// while, do while, etc
+```
+
 ## Functions
 
 ```kotlin
@@ -130,7 +161,8 @@ class Student(
 
     private val email: String // private property
 
-    constructor(firstname: String, lastname: String) : this("$firstname_$lastname") // secondary constructor
+    // secondary constructor
+    constructor(firstname: String, lastname: String) : this("$firstname_$lastname")
 
     init { // additional constructor logic
       email = "$login@school.com"
@@ -188,16 +220,29 @@ val pointC = Point(1.0f, 2.0f)
 pointA == pointC // ➡️ true
 ```
 
+## Enum class
+
+```kotlin
+enum class Color {
+  RED, GREEN, BLUE
+}
+
+enum class Color(val rgb: Int) {
+  RED(0xFF0000),
+  GREEN(0x00FF00),
+  BLUE(0x0000FF),
+}
+```
+
 ## Sealed class
 
 Classes ayant un nombre de sous classes défini et limité
 
 ```kotlin
 sealed class Result {
-
   class Success(val value: Any) : Result()
-
   class Failure(val error: Error) : Result()
+  object Loading : Result()
 }
 
 // utile avec les smart cast
@@ -207,14 +252,15 @@ when (result) {
 }
 ```
 
-## Extension functions
+## Extensions
 
 ```kotlin
-fun String.capitalize(): String {
-  this.chars().mapIndexed { char, index ->
-    if (index == 0) char.toUpperCase() else char
-  }
+fun String.capitalize(): String { // function
+  return ...
 }
+
+val String.titlecased // property
+  get() = this.capitalize()
 
 "hello".capitalize() // ➡️ "Hello"
 ```
@@ -292,7 +338,7 @@ button.setOnClickListener { view -> ... }
 
 ## App Components
 
-![bg left:30% 160%](../assets/app_components.png)
+![bg left:40% 160%](../assets/app_components.png)
 
 - Activity / Fragments ➡ Screen Controller
 - Service ➡ Headless Controller
@@ -301,7 +347,7 @@ button.setOnClickListener { view -> ... }
 
 # iOS
 
-![bg left:30% 80%](../assets/xcode.png)
+![bg left:40% 80%](../assets/xcode.png)
 
 - Beaucoup d'utilisateurs aux US
 - Plus de 💰 dépensés

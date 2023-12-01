@@ -6,6 +6,8 @@ marp: true
 
 # Architecture
 
+![bg right:65% 100%](../assets/jetpack.svg)
+
 ## MVC
 
 Model View Controller

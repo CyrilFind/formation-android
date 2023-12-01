@@ -4,7 +4,9 @@ marp: true
 
 <!-- headingDivider: 2 -->
 
-# UI Framework: Activities, Fragments, Lifecycle, Views
+# Views Framework
+
+![bg right:65% 100%](../assets/jetpack.svg)
 
 ## Activity
 
@@ -71,7 +73,7 @@ Fichier XML décrivant un écran (ou une partie)
 
 View contenant d’autres Views, avec diverses règles d’affichage:
 
-![viewgroups](../assets/layouts.png)
+![w:900](../assets/layouts.png)
 
 ## Inflating Layout in Activity
 
@@ -147,7 +149,9 @@ binding.textViewLogin.setOnCLickListener { ... }
 </activity>
 ```
 
-# Lifecycle Components
+# Lifecycle
+
+![bg right:70% 100%](../assets/jetpack.svg)
 
 ## Activity lifecycle
 
@@ -178,7 +182,6 @@ override fun onSaveInstanceState(outState: Bundle) {
    outState.putString("key", count_text_view.text.toString())
 }
 
-
 override fun onCreate(savedInstanceState: Bundle?) {
    super.onCreate(savedInstanceState)
    setContentView(R.layout.activity_main)
@@ -192,45 +195,6 @@ override fun onCreate(savedInstanceState: Bundle?) {
 - Configuré manuellement
 - Perdu si on quitte l’Activity
 - Plus persistent: DB, Web, SharedPreference, DataStore
-
-## Jetpack Compose: Layouts
-
-```kotlin
-@Composable
-fun MyComposable() {
-    Column(Modifier.fillMaxWidth()) {
-        Text("Hello")
-        Text(
-          text = "World",
-          style = Typo.small
-        )
-    }
-}
-```
-
-- Écrit directement en kotlin
-- Géré par un plugin du compilateur
-- `Modifier`: `padding`, `clickable`, ...
-
-![bg right:40% 90%](../assets/compose_tree.png)
-
-## Jetpack Compose: Lifecycle
-
-```kotlin
-var name by remember { mutableStateOf("") }
-TextField(
-    value = name,
-    onValueChange = { name = it },
-)
-```
-
-Sorte de lifecycle mais différent:
-
-1. Composition
-2. Recomposition ex: un `State<T>` a changé
-3. Décomposition
-
-![bg right:40% 90%](../assets/compose_lifecycle.png)
 
 # iOS
 
@@ -260,16 +224,3 @@ class LoginViewController: UIViewController {
   - `loadView`, `viewDidLoad`, ...
 - rotation: `viewWillTransition`
 - state restauration: `restorationIdentifiers` on VC and Views
-
-## SwiftUI
-
-```swift
-struct AlbumDetail: View {
-  var body: some View {
-    VStack(alignment: .leading) {
-      Text("Hello")
-      Text("World")
-        .foregroundStyle(.secondary)
-    }
-}
-```

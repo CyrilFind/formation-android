@@ -6,9 +6,15 @@ marp: true
 
 # RecyclerView
 
+![bg right:65% 100%](../assets/jetpack.svg)
+
 ## Fonctionnement
 
-![bg right 70%](../assets/recyclerview.png)
+![bg right 90%](../assets/recyclerview.png)
+
+## Structure
+
+![bg right 70%](../assets/recyclerview_structure.png)
 
 Conteneur scrollable pour afficher une grande quantité de donnée de façon efficace:
 
@@ -101,6 +107,10 @@ val myAdapter = WordListAdapter()
 recyclerView.adapter = myAdapter
 myAdapter.submitList(listOf("word#1", "word #2"))
 ```
+
+## Summary
+
+![summary w:900](../assets/recyclerview_summary.png)
 
 ## iOS
 

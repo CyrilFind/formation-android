@@ -6,6 +6,8 @@ marp: true
 
 # Background work
 
+![bg right:65% 100%](../assets/jetpack.svg)
+
 ## Threads
 
 ![thread bg right](../assets/thread.png)
