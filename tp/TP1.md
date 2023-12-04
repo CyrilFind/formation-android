@@ -180,7 +180,7 @@ app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
 <aside class="negative">
 
-⚠️ Utilisez l'IDE pour régler le problème qu'il vous signale: seul le préfixe `android:`, correspondant au framework Android, est reconnu par défaut, et il faut donc ajouter une sorte d'équivalent de `import` mais dans le XML, pour que préfixe `app:`, correspondamd à des attributs additionnels défini par ex dans des lib (ici `recyclerview`)
+⚠️ Utilisez l'IDE pour régler le problème qu'il vous signale: seul le préfixe `android:`, correspondant au framework Android, est reconnu par défaut, et il faut donc ajouter une sorte d'équivalent de `import` mais dans le XML, pour que le préfixe `app:`, correspondant à des attributs additionnels défini par ex dans des lib (ici `recyclerview`) soit reconnu.
 
 </aside>
 

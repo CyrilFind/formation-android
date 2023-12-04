@@ -48,30 +48,85 @@ fun normalFunction() {
 }
 ```
 
-## Base components (foundation)
+## Base components
 
 ```kotlin
 Surface() // colored background
 Text("hello")
-Image(painter = painterResource(id = R.drawable.ic_close))
-Column { /* ColumnScope */ }
-Row { /* RowScope */ }
-Box { /* BoxScope */ }
-BoxWithConstraints { /* defined measurements like: $minHeight, $maxHeight, etc */ }
+Image(
+  painter = painterResource(id = R.drawable.ic_close),
+  contentDescription = "Close"
+)
 Spacer(modifier = Modifier.weight(1f, fill = true))
 ```
 
-## State
+## Containers
+
+![containers h:300px](../assets/compose_containers.svg)
 
 ```kotlin
-val name = "name" // will always reset
-var name = mutableStateOf("name") // observable but will still always reset
-var name = remember { mutableStateOf("name") } // observable and survives recompositions
-var name by remember { mutableStateOf("name") } // simplifies syntax instead of using `name.value`
+Column { /* ColumnScope */
+  Text(modifier = Modifier.align(Alignment.CenterHorizontally), text = "hello")
+  Text("world")
+}
+Row { /* RowScope */
+  Text(modifier = Modifier.align(Alignment.CenterVertically), text = "hello")
+  Text("world")
+}
+Box { /* BoxScope */ }
+BoxWithConstraints { /* defined measurements like: $minHeight, $maxHeight, etc */ }
+```
 
-TextField(
-    value = name,
-    onValueChange = { name = it },
+## ConstraintLayout
+
+```kotlin
+ConstraintLayout {
+  val (hello, world) = createRefs()
+  Text(
+    text = "Hello"
+    modifier = Modifier.constrainAs(hello) { top.linkTo(parent.top, margin = 16.dp) },
+  )
+  Text(
+    text = "World",
+    modifier = Modifier.constrainAs(world) { top.linkTo(hello.bottom, margin = 16.dp) }
+  )
+}
+```
+
+## Lazy lists
+
+```kotlin
+val listState = rememberLazyListState()
+LazyRow(state = listState) { ... }
+
+val words = listOf("Hello", "world", "!")
+LazyColumn {
+    items(words) { word -> Text(word) }
+}
+
+LazyVerticalGrid(columns = GridCells.Fixed(count = COLUMN_COUNT)) { ... }
+
+val elements = viewModel.pagedElements.collectAsLazyPagingItems()
+LazyHorizontalGrid(...) { items(elements) { ... } }
+```
+
+## Slots API
+
+![slots w:500px](../assets/compose_slots.png)
+
+```kotlin
+@Composable
+fun TopAppBar(
+  title: @Composable () -> Unit,
+  navigationIcon: @Composable (() -> Unit)? = null,
+  actions: @Composable RowScope.() -> Unit = {},
+)
+
+// usage
+TopAppBar(
+  title = { Text(text = "Title") },
+  actions = { IconButton(onClick = { /* doSomething() */ },
+  navigationIcon = { Icon(Icons.Filled.Menu) },
 )
 ```
 
@@ -93,24 +148,35 @@ Sorte de lifecycle mais différent:
 
 ![bg right:40% 90%](../assets/compose_lifecycle.png)
 
-## Lazy lists
+## State
+
+![state bg right:20% 90%](../assets/compose_state.png)
 
 ```kotlin
-val listState = rememberLazyListState()
-LazyRow(state = listState) { ... }
+var name = "name" // always reset
+val name = mutableStateOf("name") // observable
+var name = remember { "name" } // survive recompositions
+val name = remember { mutableStateOf("name") } // both!
 
-val words = listOf("Hello", "world", "!")
-LazyColumn {
-    items(words) { word -> Text(word) }
-}
+var name by remember { mutableStateOf("name") } // avoid `name.value`
 
-LazyVerticalGrid(columns = GridCells.Fixed(count = COLUMN_COUNT)) { ... }
-
-val elements = viewModel.pagedElements.collectAsLazyPagingItems()
-LazyHorizontalGrid(...) { items(elements) { ... } }
+TextField(
+    value = name,
+    onValueChange = { name = it },
+)
 ```
 
-## modifiers
+## remembers
+
+```kotlin
+remember { ... }
+remember(key) { ... }
+rememberSaveable { Bundle(...) }
+rememberLazyListState()
+rememberCoroutineScope()
+```
+
+## Modifiers
 
 order matters!
 
@@ -122,30 +188,21 @@ Text(
     .background(White) // applies after padding
     .padding(8.dp) // doesn't apply to white background
     .clickable { /* imperative code */ } // click zone is inside 2nd padding
-)_
-```
-
-## remembers
-
-```kotlin
-remember { Color.random() }
-rememberSaveable { Bundle("key" to parcelableValue)}
-remember(key) { }
-rememberLazyListState()
-rememberCoroutineScope()
+)
 ```
 
 # Side Effects
 
-<https://developer.android.com/jetpack/compose/side-effects>
+Une fonction `@Composable` qui n'émet pas d'UI mais exécute des effect quand la composition termine.
 
 ## SideEffect
 
-publish Compose state to non-compose code
+Publish Compose state to non-compose code
 
 ```kotlin
 SideEffect {
-  //
+  // update metadata on every successful composition
+  analytics.setUserProperty("userType", user.userType)
 }
 ```
 
@@ -170,8 +227,8 @@ run suspend functions in the scope of a composable
 
 ```kotlin
 if (state.hasError) { // only start when it's true and cancel if it's false
-  LaunchedEffect(key = snackbarHostState) { // will cancel and re-launch if state changes
-      // when the coroutine is cancelled the snackbar will automatically dismiss.
+  LaunchedEffect(key = snackbarHostState) { // cancel and re-launch if state changes
+      // auto dismiss when coroutine is cancelled
       snackbarHostState.showSnackbar(message = "Error message", actionLabel = "Retry message")
   }
 }
@@ -181,18 +238,72 @@ if (state.hasError) { // only start when it's true and cancel if it's false
 
 obtain a composition-aware scope to launch a coroutine outside a composable
 
+```kotlin
+val listState = rememberLazyListState()
+val coroutineScope = rememberCoroutineScope()
+
+LazyColumn(state = listState) {
+    // ...
+}
+
+Button (
+  onClick = {
+    coroutineScope.launch {
+      listState.animateScrollToItem(index = 10)
+    }
+  }
+) { ... }
+```
+
 ## rememberUpdatedState
 
 reference a value in an effect that shouldn't restart if the value changes
 
-## CompositionLocalProvider
+```kotlin
+@Composable
+fun LandingScreen(onTimeout: () -> Unit) {
+  // always latest onTimeout function value
+  val currentOnTimeout by rememberUpdatedState(onTimeout)
+
+  // effect that matches the lifecycle of LandingScreen.
+  // on recomposes, the delay shouldn't start again.
+  LaunchedEffect(true) {
+      delay(SplashWaitTimeMillis)
+      currentOnTimeout()
+  }
+}
+```
+
+## CompositionLocal
+
+```kotlin
+val LocalElevations = compositionLocalOf { Elevations() }
+```
+
+```kotlin
+// usage
+val elevations = if (isSystemInDarkTheme()) {
+    Elevations(card = 1.dp, default = 1.dp)
+} else {
+    Elevations(card = 0.dp, default = 0.dp)
+}
+
+// Bind elevation as the value for LocalElevations
+CompositionLocalProvider(LocalElevations provides elevations) {
+    // ...
+    LocalElevations.current // access
+}
+
+```
 
 ## ProvideTextStyle
 
-## Collect
-
 ```kotlin
-flow, livedata
+@Composable
+fun ProvideTextStyle(value: TextStyle, content: @Composable () -> Unit) {
+    val mergedStyle = LocalTextStyle.current.merge(value)
+    CompositionLocalProvider(LocalTextStyle provides mergedStyle, content = content)
+}
 ```
 
 ## navigation
@@ -213,35 +324,58 @@ navController.navigate("post/123456")
 ## theme
 
 ```kotlin
-
-```
-
-## design system
-
-```kotlin
-
-```
-
-## slots
-
-```kotlin
-
+MaterialTheme(
+  colorScheme = lightColorScheme(
+    primary = md_theme_light_primary,
+    onPrimary = md_theme_light_onPrimary,
+    primaryContainer = md_theme_light_primaryContainer,
+    // ..
+  ),
+  typography = Typography(
+    titleLarge = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 22.sp),
+    titleMedium = TextStyle(lineHeight = 24.sp),
+    // ..
+  ),
+  shapes = Shapes(
+    small = RoundedCornerShape(8.dp),
+    medium = RoundedCornerShape(12.dp),
+    // ..
+  ),
+) { ... }
 ```
 
 ## Design system
 
-- showkase
+- Tokens
+- Atoms
+- Molecules
+- ...
 
-## example (tab bar avec contenu lazy)
-
-```kotlin
-
-```
-
-## ui model
+## UI state
 
 ```kotlin
+class LoginViewModel : ViewModel() {
+    private val _uiState = MutableStateFlow<UiState>(UiState.SignedOut)
+    val uiState: StateFlow<UiState>
+        get() = _uiState
+    fun signIn() {
+        // ...
+        _uiState.value = UiState.SignedIn
+    }
+}
 
+@Composable
+fun LoginScreen(viewModel: LoginViewModel) {
+    val uiState by viewModel.uiState.collectAsState()
+    when (uiState.value) {
+        UiState.SignedOut -> {
+            Button(onClick = { viewModel.signIn() }) { Text("Sign in") }
+        }
+        UiState.SignedIn -> {
+            Text("Signed in as ${uiState.userId}")
+        }
+    }
+}
 ```
 
 ## iOS: SwiftUI

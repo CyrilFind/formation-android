@@ -42,8 +42,8 @@ Cet écran étant assez simple, on va en profiter pour s'initer à Jetpack Compo
 </aside>
 
 - Créez un package `detail` dans votre package principal
-- Créez-y avec l'IDE une nouvelle Activity: `DetailActivity`: `Clic droit sur le package > New > Activity > Gallery... > Empty Compose Activity`
-- L'IDE devrait automatiquement compléter `app/build.gradle` pour configurer Compose (buildFeatures, dependencies, etc) et l'ajouter au `AndroidManifest.xml`
+- Créez-y avec l'IDE une nouvelle Activity: `DetailActivity`: `Clic droit sur le package > New > Activity > Gallery... > Empty Activity`
+- L'IDE devrait automatiquement compléter `app/build.gradle.kts` pour configurer Compose (buildFeatures, dependencies, etc) et l'ajouter au `AndroidManifest.xml`
 
 <aside class="positive">
 
