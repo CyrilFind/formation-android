@@ -48,46 +48,47 @@
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="base-components-foundation">Base components (foundation)</h2>
+<h2 id="base-components">Base components</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">Surface() <span class="hljs-comment">// colored background</span>
 Text(<span class="hljs-string">&quot;hello&quot;</span>)
-Image(painter = painterResource(id = R.drawable.ic_close))
-Column { <span class="hljs-comment">/* ColumnScope */</span> }
-Row { <span class="hljs-comment">/* RowScope */</span> }
-Box { <span class="hljs-comment">/* BoxScope */</span> }
-BoxWithConstraints { <span class="hljs-comment">/* defined measurements like: $minHeight, $maxHeight, etc */</span> }
+Image(
+  painter = painterResource(id = R.drawable.ic_close),
+  contentDescription = <span class="hljs-string">&quot;Close&quot;</span>
+)
 Spacer(modifier = Modifier.weight(<span class="hljs-number">1f</span>, fill = <span class="hljs-literal">true</span>))
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="state">State</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-keyword">val</span> name = <span class="hljs-string">&quot;name&quot;</span> <span class="hljs-comment">// will always reset</span>
-<span class="hljs-keyword">var</span> name = mutableStateOf(<span class="hljs-string">&quot;name&quot;</span>) <span class="hljs-comment">// observable but will still always reset</span>
-<span class="hljs-keyword">var</span> name = remember { mutableStateOf(<span class="hljs-string">&quot;name&quot;</span>) } <span class="hljs-comment">// observable and survives recompositions</span>
-<span class="hljs-keyword">var</span> name <span class="hljs-keyword">by</span> remember { mutableStateOf(<span class="hljs-string">&quot;name&quot;</span>) } <span class="hljs-comment">// simplifies syntax instead of using `name.value`</span>
-
-TextField(
-    value = name,
-    onValueChange = { name = it },
-)
+<h2 id="containers">Containers</h2>
+<p><img src="../assets/compose_containers.svg" alt="containers" style="height:300px;" /></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">Column { <span class="hljs-comment">/* ColumnScope */</span>
+  Text(modifier = Modifier.align(Alignment.CenterHorizontally), text = <span class="hljs-string">&quot;hello&quot;</span>)
+  Text(<span class="hljs-string">&quot;world&quot;</span>)
+}
+Row { <span class="hljs-comment">/* RowScope */</span>
+  Text(modifier = Modifier.align(Alignment.CenterVertically), text = <span class="hljs-string">&quot;hello&quot;</span>)
+  Text(<span class="hljs-string">&quot;world&quot;</span>)
+}
+Box { <span class="hljs-comment">/* BoxScope */</span> }
+BoxWithConstraints { <span class="hljs-comment">/* defined measurements like: $minHeight, $maxHeight, etc */</span> }
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:40%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/compose_lifecycle.png&quot;);background-size:90%;"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="6" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:40%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
-<h2 id="lifecycle">Lifecycle</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-keyword">var</span> name <span class="hljs-keyword">by</span> remember { mutableStateOf(<span class="hljs-string">&quot;&quot;</span>) }
-TextField(
-    value = name,
-    onValueChange = { name = it },
-)
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+<h2 id="constraintlayout">ConstraintLayout</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">ConstraintLayout {
+  <span class="hljs-keyword">val</span> (hello, world) = createRefs()
+  Text(
+    text = <span class="hljs-string">&quot;Hello&quot;</span>
+    modifier = Modifier.constrainAs(hello) { top.linkTo(parent.top, margin = <span class="hljs-number">16.</span>dp) },
+  )
+  Text(
+    text = <span class="hljs-string">&quot;World&quot;</span>,
+    modifier = Modifier.constrainAs(world) { top.linkTo(hello.bottom, margin = <span class="hljs-number">16.</span>dp) }
+  )
+}
 </code></pre>
-<p>Sorte de lifecycle mais différent:</p>
-<ol>
-<li>Composition</li>
-<li>Recomposition ex: un <code>State&lt;T&gt;</code> a changé</li>
-<li>Décomposition</li>
-</ol>
 </section>
-</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="lazy-lists">Lazy lists</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-keyword">val</span> listState = rememberLazyListState()
 LazyRow(state = listState) { ... }
@@ -104,7 +105,64 @@ LazyHorizontalGrid(...) { items(elements) { ... } }
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="modifiers">modifiers</h2>
+<h2 id="slots-api">Slots API</h2>
+<p><img src="../assets/compose_slots.png" alt="slots" style="width:500px;" /></p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-meta">@Composable</span>
+<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">TopAppBar</span><span class="hljs-params">(
+  title: @<span class="hljs-type">Composable</span> () -&gt; <span class="hljs-type">Unit</span>,
+  navigationIcon: @<span class="hljs-type">Composable</span> (() -&gt; <span class="hljs-type">Unit</span>)? = <span class="hljs-literal">null</span>,
+  actions: @<span class="hljs-type">Composable</span> <span class="hljs-type">RowScope</span>.() -&gt; <span class="hljs-type">Unit</span> = {},
+)</span></span>
+
+<span class="hljs-comment">// usage</span>
+TopAppBar(
+  title = { Text(text = <span class="hljs-string">&quot;Title&quot;</span>) },
+  actions = { IconButton(onClick = { <span class="hljs-comment">/* doSomething() */</span> },
+  navigationIcon = { Icon(Icons.Filled.Menu) },
+)
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:40%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/compose_lifecycle.png&quot;);background-size:90%;"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="9" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:40%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
+<h2 id="lifecycle">Lifecycle</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-keyword">var</span> name <span class="hljs-keyword">by</span> remember { mutableStateOf(<span class="hljs-string">&quot;&quot;</span>) }
+TextField(
+    value = name,
+    onValueChange = { name = it },
+)
+</code></pre>
+<p>Sorte de lifecycle mais différent:</p>
+<ol>
+<li>Composition</li>
+<li>Recomposition ex: un <code>State&lt;T&gt;</code> a changé</li>
+<li>Décomposition</li>
+</ol>
+</section>
+</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:20%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/compose_state.png&quot;);background-size:90%;"><figcaption>state</figcaption></figure></div></section></foreignObject><foreignObject width="80%" height="720"><section id="10" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:20%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
+<h2 id="state">State</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-keyword">var</span> name = <span class="hljs-string">&quot;name&quot;</span> <span class="hljs-comment">// always reset</span>
+<span class="hljs-keyword">val</span> name = mutableStateOf(<span class="hljs-string">&quot;name&quot;</span>) <span class="hljs-comment">// observable</span>
+<span class="hljs-keyword">var</span> name = remember { <span class="hljs-string">&quot;name&quot;</span> } <span class="hljs-comment">// survive recompositions</span>
+<span class="hljs-keyword">val</span> name = remember { mutableStateOf(<span class="hljs-string">&quot;name&quot;</span>) } <span class="hljs-comment">// both!</span>
+
+<span class="hljs-keyword">var</span> name <span class="hljs-keyword">by</span> remember { mutableStateOf(<span class="hljs-string">&quot;name&quot;</span>) } <span class="hljs-comment">// avoid `name.value`</span>
+
+TextField(
+    value = name,
+    onValueChange = { name = it },
+)
+</code></pre>
+</section>
+</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+<h2 id="remembers">remembers</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">remember { ... }
+remember(key) { ... }
+rememberSaveable { Bundle(...) }
+rememberLazyListState()
+rememberCoroutineScope()
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+<h2 id="modifiers">Modifiers</h2>
 <p>order matters!</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">Text(
   text = <span class="hljs-string">&quot;example&quot;</span>,
@@ -113,31 +171,23 @@ LazyHorizontalGrid(...) { items(elements) { ... } }
     .background(White) <span class="hljs-comment">// applies after padding</span>
     .padding(<span class="hljs-number">8.</span>dp) <span class="hljs-comment">// doesn&#x27;t apply to white background</span>
     .clickable { <span class="hljs-comment">/* imperative code */</span> } <span class="hljs-comment">// click zone is inside 2nd padding</span>
-)_
+)
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="remembers">remembers</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">remember { Color.random() }
-rememberSaveable { Bundle(<span class="hljs-string">&quot;key&quot;</span> to parcelableValue)}
-remember(key) { }
-rememberLazyListState()
-rememberCoroutineScope()
-</code></pre>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h1 id="side-effects">Side Effects</h1>
-<p><a href="https://developer.android.com/jetpack/compose/side-effects">https://developer.android.com/jetpack/compose/side-effects</a></p>
+<p>Une fonction <code>@Composable</code> qui n'émet pas d'UI mais exécute des effect quand la composition termine.</p>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="11" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="sideeffect">SideEffect</h2>
-<p>publish Compose state to non-compose code</p>
+<p>Publish Compose state to non-compose code</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">SideEffect {
-  <span class="hljs-comment">//</span>
+  <span class="hljs-comment">// update metadata on every successful composition</span>
+  analytics.setUserProperty(<span class="hljs-string">&quot;userType&quot;</span>, user.userType)
 }
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="disposableeffect">DisposableEffect</h2>
 <p>effects that require cleanup</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">DisposableEffect(manager) {
@@ -150,37 +200,82 @@ rememberCoroutineScope()
 }
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="launchedeffect">LaunchedEffect</h2>
 <p>run suspend functions in the scope of a composable</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-keyword">if</span> (state.hasError) { <span class="hljs-comment">// only start when it&#x27;s true and cancel if it&#x27;s false</span>
-  LaunchedEffect(key = snackbarHostState) { <span class="hljs-comment">// will cancel and re-launch if state changes</span>
-      <span class="hljs-comment">// when the coroutine is cancelled the snackbar will automatically dismiss.</span>
+  LaunchedEffect(key = snackbarHostState) { <span class="hljs-comment">// cancel and re-launch if state changes</span>
+      <span class="hljs-comment">// auto dismiss when coroutine is cancelled</span>
       snackbarHostState.showSnackbar(message = <span class="hljs-string">&quot;Error message&quot;</span>, actionLabel = <span class="hljs-string">&quot;Retry message&quot;</span>)
   }
 }
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="14" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="remembercoroutinescope">rememberCoroutineScope</h2>
 <p>obtain a composition-aware scope to launch a coroutine outside a composable</p>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="15" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="rememberupdatedstate">rememberUpdatedState</h2>
-<p>reference a value in an effect that shouldn't restart if the value changes</p>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="16" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="compositionlocalprovider">CompositionLocalProvider</h2>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="17" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="providetextstyle">ProvideTextStyle</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-keyword">val</span> listState = rememberLazyListState()
+<span class="hljs-keyword">val</span> coroutineScope = rememberCoroutineScope()
+
+LazyColumn(state = listState) {
+    <span class="hljs-comment">// ...</span>
+}
+
+Button (
+  onClick = {
+    coroutineScope.launch {
+      listState.animateScrollToItem(index = <span class="hljs-number">10</span>)
+    }
+  }
+) { ... }
+</code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="collect">Collect</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">flow, livedata
+<h2 id="rememberupdatedstate">rememberUpdatedState</h2>
+<p>reference a value in an effect that shouldn't restart if the value changes</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-meta">@Composable</span>
+<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">LandingScreen</span><span class="hljs-params">(onTimeout: () -&gt; <span class="hljs-type">Unit</span>)</span></span> {
+  <span class="hljs-comment">// always latest onTimeout function value</span>
+  <span class="hljs-keyword">val</span> currentOnTimeout <span class="hljs-keyword">by</span> rememberUpdatedState(onTimeout)
+
+  <span class="hljs-comment">// effect that matches the lifecycle of LandingScreen.</span>
+  <span class="hljs-comment">// on recomposes, the delay shouldn&#x27;t start again.</span>
+  LaunchedEffect(<span class="hljs-literal">true</span>) {
+      delay(SplashWaitTimeMillis)
+      currentOnTimeout()
+  }
+}
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+<h2 id="compositionlocal">CompositionLocal</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-keyword">val</span> LocalElevations = compositionLocalOf { Elevations() }
+</code></pre>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-comment">// usage</span>
+<span class="hljs-keyword">val</span> elevations = <span class="hljs-keyword">if</span> (isSystemInDarkTheme()) {
+    Elevations(card = <span class="hljs-number">1.</span>dp, default = <span class="hljs-number">1.</span>dp)
+} <span class="hljs-keyword">else</span> {
+    Elevations(card = <span class="hljs-number">0.</span>dp, default = <span class="hljs-number">0.</span>dp)
+}
+
+<span class="hljs-comment">// Bind elevation as the value for LocalElevations</span>
+CompositionLocalProvider(LocalElevations provides elevations) {
+    <span class="hljs-comment">// ...</span>
+    LocalElevations.current <span class="hljs-comment">// access</span>
+}
+
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+<h2 id="providetextstyle">ProvideTextStyle</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-meta">@Composable</span>
+<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">ProvideTextStyle</span><span class="hljs-params">(value: <span class="hljs-type">TextStyle</span>, content: @<span class="hljs-type">Composable</span> () -&gt; <span class="hljs-type">Unit</span>)</span></span> {
+    <span class="hljs-keyword">val</span> mergedStyle = LocalTextStyle.current.merge(value)
+    CompositionLocalProvider(LocalTextStyle provides mergedStyle, content = content)
+}
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="navigation">navigation</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-keyword">val</span> navController = rememberNavController()
 NavHost(navController = navController, startDestination = <span class="hljs-string">&quot;profile&quot;</span>) {
@@ -192,38 +287,64 @@ NavHost(navController = navController, startDestination = <span class="hljs-stri
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">navController.navigate(<span class="hljs-string">&quot;post/123456&quot;</span>)
 </code></pre>
 </section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="20" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="theme">theme</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">
-</code></pre>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="21" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="design-system">design system</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">
-</code></pre>
-</section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="22" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="slots">slots</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">
+<h2 id="theme">theme</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">MaterialTheme(
+  colorScheme = lightColorScheme(
+    primary = md_theme_light_primary,
+    onPrimary = md_theme_light_onPrimary,
+    primaryContainer = md_theme_light_primaryContainer,
+    <span class="hljs-comment">// ..</span>
+  ),
+  typography = Typography(
+    titleLarge = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = <span class="hljs-number">22.</span>sp),
+    titleMedium = TextStyle(lineHeight = <span class="hljs-number">24.</span>sp),
+    <span class="hljs-comment">// ..</span>
+  ),
+  shapes = Shapes(
+    small = RoundedCornerShape(<span class="hljs-number">8.</span>dp),
+    medium = RoundedCornerShape(<span class="hljs-number">12.</span>dp),
+    <span class="hljs-comment">// ..</span>
+  ),
+) { ... }
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="23" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="design-system-1">Design system</h2>
+<h2 id="design-system">Design system</h2>
 <ul>
-<li>showkase</li>
+<li>Tokens</li>
+<li>Atoms</li>
+<li>Molecules</li>
+<li>...</li>
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="24" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="example-tab-bar-avec-contenu-lazy">example (tab bar avec contenu lazy)</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">
+<h2 id="ui-state">UI state</h2>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LoginViewModel</span> : <span class="hljs-type">ViewModel</span>() {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">val</span> _uiState = MutableStateFlow&lt;UiState&gt;(UiState.SignedOut)
+    <span class="hljs-keyword">val</span> uiState: StateFlow&lt;UiState&gt;
+        <span class="hljs-keyword">get</span>() = _uiState
+    <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">signIn</span><span class="hljs-params">()</span></span> {
+        <span class="hljs-comment">// ...</span>
+        _uiState.value = UiState.SignedIn
+    }
+}
+
+<span class="hljs-meta">@Composable</span>
+<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">LoginScreen</span><span class="hljs-params">(viewModel: <span class="hljs-type">LoginViewModel</span>)</span></span> {
+    <span class="hljs-keyword">val</span> uiState <span class="hljs-keyword">by</span> viewModel.uiState.collectAsState()
+    <span class="hljs-keyword">when</span> (uiState.value) {
+        UiState.SignedOut -&gt; {
+            Button(onClick = { viewModel.signIn() }) { Text(<span class="hljs-string">&quot;Sign in&quot;</span>) }
+        }
+        UiState.SignedIn -&gt; {
+            Text(<span class="hljs-string">&quot;Signed in as <span class="hljs-subst">${uiState.userId}</span>&quot;</span>)
+        }
+    }
+}
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="25" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="ui-model">ui model</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">
-</code></pre>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="26" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="ios-swiftui">iOS: SwiftUI</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-swift"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">AlbumDetail</span>: <span class="hljs-title class_">View</span> {
   <span class="hljs-keyword">var</span> body: <span class="hljs-keyword">some</span> <span class="hljs-type">View</span> {
