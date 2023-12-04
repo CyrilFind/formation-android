@@ -18,16 +18,25 @@ N'hésitez pas à me contacter en avance si vous avez un soucis (les liens 'tuto
 Prenez en main l'IDE: vous pouvez aller dans les paramètres (`File > Settings` ou `Android Studio > Preferences`) et personnalisez l'IDE, je vous conseille notamment ceci:
 
 - Activez tout dans `Editor > Inlay Hints`
-- Activez les imports automatiques: `Editor > General > Auto Import > Kotlin > cocher "Add unambiguous import on the fly" et "Optimize imports on the fly..."`
+- Activez les imports automatiques: `Editor > General > Auto Import > Kotlin (en bas) > cocher les 2 cases`
 - Personnalisez la coloration syntaxique dans `Settings > Editor > Color Scheme > ⚙ > Import Scheme` (ex: le plugin "Rainglow Color Schemes")
 - Personnalisez les raccourcis clavier
+
+## Android Studio
+
+🚀 Aidez vous de l'IDE: Android Studio fait beaucoup de travail pour vous donc utilisez l'autocompletion et les raccourcis:
+
+- `CTRL/CMD` + `click` pour voir les usages ou la définition d'un élément
+- `Alt` + `Enter` pour des "💡 QuickFix" (suggestions de l'IDE)
+- `Shift, Shift + "recherche"` pour tout le reste (rechercher une variable, fonction, classe, actions, options, ...)
+- `CTRL/CMD + alt + L` pour ré-indenter correctement tout le code (ou la sélection)
 
 ## Google Codelabs
 
 On va commencer en douceur en se basant sur les [Codelabs Google](https://developer.android.com/courses/android-basics-kotlin/course)
 
 <aside class="negative">
-Je sais que ces tutos sont "not maintained" c'est parce qu'il s'agit de l'ancien système de vues, mais il faut aussi l'apprendre et on passera au nouveau ensuite
+Ces tutos sont "not maintained" parce qu'il s'agit de l'ancien système de vues, mais il faut aussi en apprendre les bases, on passera au nouveau ensuite.
 </aside>
 
 Tous ces tutos ne sont pas indispensable pour des presque-ingénieurs tels que vous alors on va en faire seulement quelques uns:

@@ -10,11 +10,7 @@ implémenter un écran affichant une liste de tâches et permettre de créer des
 Sinon, demandez moi!
 </aside>
 
-🚀 Aidez vous de l'IDE: Android Studio fait beaucoup de travail pour vous donc utilisez l'autocompletion et les raccourcis:
-
-- `CTRL/CMD` + `click` pour voir les usages ou la définition d'un élément
-- `Alt` + `Enter` pour des "💡 QuickFix"
-- `Shift, Shift + "recherche"` pour tout le reste (rechercher une variable, fonction, classe, actions, options, ...)
+Remarque: si vous n'avez pas paramétré votre IDE, relisez le début du [TP0](../TP0)
 
 ## Créer un projet
 
@@ -327,4 +323,4 @@ adapter.submitList(listOf("Item#1", "Item #2"))
 
 ## ViewBinding
 
-Utiliser le [`ViewBinding`](https://developer.android.com/topic/libraries/view-binding) pour `inflate` les layouts du Fragment puis des Items (pour MainActivity ce n'est pas très intéressant) et aisin remplacer les `findViewByIds` (cf [slides](../../slides/2%20-%20UI.html#9) pour un squelette d'implémentation)
+Utiliser le [`ViewBinding`](https://developer.android.com/topic/libraries/view-binding) pour `inflate` les layouts du Fragment puis des Items (pour MainActivity ce n'est pas très intéressant) et ainsi remplacer les `findViewByIds` (cf [slides](../../slides/2%20-%20Views.html#9) pour un squelette d'implémentation)
