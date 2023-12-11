@@ -53,28 +53,27 @@
 <ul>
 <li>Dans <code>dependencies {...}</code>, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l&#39;IDE vous le propose):</li>
 </ul>
-<pre><code language="language-groovy" class="language-groovy">     // Retrofit
-    implementation &#39;com.squareup.retrofit2:retrofit:2.9.0&#39;
-    implementation &#39;com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.9&#39;
+<pre><code language="language-groovy" class="language-groovy">// Retrofit
+implementation &#39;com.squareup.retrofit2:retrofit:2.9.0&#39;
+implementation &#39;com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.9&#39;
 
-    // KotlinX Serialization
-    implementation &#39;org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1&#39;
-    implementation &#39;com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0&#39;
+// KotlinX Serialization
+implementation &#39;org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1&#39;
+implementation &#39;com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0&#39;
 
-    // Coroutines
-    implementation &#39;org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4&#39;
-    implementation &#39;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4&#39;
+// Coroutines
+implementation &#39;org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4&#39;
+implementation &#39;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4&#39;
 
-    // Lifecycle
-    implementation &#39;androidx.lifecycle:lifecycle-extensions:2.2.0&#39;
-    implementation &#39;androidx.lifecycle:lifecycle-runtime-ktx:2.5.1&#39;
-    implementation &#39;androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1&#39;
+// Lifecycle
+implementation &#39;androidx.lifecycle:lifecycle-extensions:2.2.0&#39;
+implementation &#39;androidx.lifecycle:lifecycle-runtime-ktx:2.5.1&#39;
+implementation &#39;androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1&#39;
 </code></pre>
 <ul>
 <li>Tout en haut ajoutez le plugin de sérialisation:</li>
 </ul>
 <pre><code language="language-groovy" class="language-groovy">plugins {
-    // ...
     id &#39;org.jetbrains.kotlin.plugin.serialization&#39; version &#34;1.7.20&#34;
 }
 </code></pre>
@@ -173,7 +172,6 @@ data class User(
 <li>Utilisez retrofit pour créer une implémentation de ce service:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">object Api {
-  // ...
   val userWebService : UserWebService by lazy {
     retrofit.create(UserWebService::class.java)
   }
@@ -246,7 +244,7 @@ val user = Api.userWebService.fetchUser().body()!!
 <ul>
 <li>Modifier <code>Task</code> pour la rendre &#34;serializable&#34; par KotlinX Serialization (inspirez vous de <code>User</code>)</li>
 </ul>
-<aside class="warning"><p>⚠️ Ici vous aurez peut être un conflit d&#39;imports car on précédemment fait hériter <code>Task</code> de <code>Serializable</code>, et une des annotations de KotlinX Serialisation s&#39;appelle aussi <code>@Serializable</code>: faites hériter explicitement de <code>java.io.Serializable</code> pour lever l&#39;ambiguité.</p>
+<aside class="warning"><p>⚠️ Ici vous aurez peut être un conflit d&#39;imports car on précédemment fait hériter <code>Task</code> de <code>Serializable</code>, et une des annotations de KotlinX Serialization s&#39;appelle aussi <code>@Serializable</code>: faites hériter explicitement de <code>java.io.Serializable</code> pour lever l&#39;ambiguité.</p>
 </aside>
 
 
@@ -301,7 +299,7 @@ viewModel.refresh() // on demande de rafraîchir les données sans attendre le r
 // Dans onViewCreated()
 lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
     viewModel.tasksStateFlow.collect { newList -&gt;
-      // cette lambda est executée à chaque fois que la liste est mise à jour dans le VM
+      // cette lambda est exécutée à chaque fois que la liste est mise à jour dans le VM
       // -&gt; ici, on met à jour la liste dans l&#39;adapter
     }
 }
@@ -318,9 +316,9 @@ suspend fun create(@Body task: Task): Response&lt;Task&gt;
 @POST(&#34;/rest/v2/tasks/{id}&#34;)
 suspend fun update(@Body task: Task, @Path(&#34;id&#34;) id: String = task.id): Response&lt;Task&gt;
 
-// Inspirez vous d&#39;au dessus et de la doc de l&#39;API pour compléter:
-@...(...)
-... delete(@...(...) id: String): Response&lt;Unit&gt;
+// Complétez avec les méthodes précédentes, la doc de l&#39;API, et celle de Retrofit:
+@...
+suspend fun delete(@... id: String): Response&lt;Unit&gt;
 </code></pre>
 
 
@@ -331,16 +329,19 @@ suspend fun update(@Body task: Task, @Path(&#34;id&#34;) id: String = task.id): 
 <li>Inspirez vous du fonctionnement de <code>refresh()</code> pour ajouter toutes les autres actions avec le serveur dans le VM, par ex pour l&#39;édition:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">fun update(task: Task) {
-    viewModelScope.launch {
-      val response = ... // TODO: appel réseau
-      if (!response.isSuccessful) {
-        Log.e(&#34;Network&#34;, &#34;Error: ${response.raw()}&#34;)
-        return@launch
-      }
-
-      val updatedTask = response.body()!!
-      tasksStateFlow.value = tasksStateFlow.value.map { if (it.id == updatedTask.id) updatedTask else it }
+  viewModelScope.launch {
+    val response = ... // TODO: appel réseau
+    if (!response.isSuccessful) {
+      Log.e(&#34;Network&#34;, &#34;Error: ${response.raw()}&#34;)
+      return@launch
     }
+
+    val updatedTask = response.body()!!
+    val updatedList = tasksStateFlow.value.map {
+      if (it.id == updatedTask.id) updatedTask else it
+    }
+    tasksStateFlow.value = updatedList
+  }
 }
 </code></pre>
 <ul>

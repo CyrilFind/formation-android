@@ -43,15 +43,19 @@
 <li>Dans l&#39;adapter, ajouter une propriété <code>onClickDelete</code> de type lambda qui prends en arguments une <code>Task</code> et ne renvoie rien: <code>(Task) -> Unit</code> et l&#39;initier à <code>{}</code> (elle ne fait rien par défaut)</li>
 <li>Utilisez cette lambda dans le <code>onClickListener</code> du bouton supprimer</li>
 <li>Dans le fragment, accéder à <code>onClickDelete</code> depuis l&#39;adapter et implémentez là: donnez lui comme valeur une lambda qui va supprimer la tache passée en argument de la liste</li>
+<li>Déclaration de la variable lambda dans l&#39;adapter, par défaut elle ne fait rien (<code>{}</code>):</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">// Déclaration de la variable lambda dans l&#39;adapter:
-var onClickDelete: (Task) -&gt; Unit = {}
-
-// Utilisation de la lambda dans le ViewHolder:
-onClickDelete(task)
-
-// &#34;implémentation&#34; de la lambda dans le fragment:
-myAdapter.onClickDelete = { task -&gt;
+<pre><code language="language-kotlin" class="language-kotlin">var onClickDelete: (Task) -&gt; Unit = {}
+</code></pre>
+<ul>
+<li>Utilisation de la lambda dans le ViewHolder, quand on clique sur le bouton:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">onClickDelete(task)
+</code></pre>
+<ul>
+<li>&#34;implémentation&#34; de la lambda dans le fragment, pour que la lambda aie un effet:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">myAdapter.onClickDelete = { task -&gt;
     // Supprimer la tâche
 }
 </code></pre>
