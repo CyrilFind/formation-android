@@ -28,7 +28,7 @@ Prenez en main l'IDE: vous pouvez aller dans les paramètres (`File > Settings` 
 
 - `CTRL/CMD` + `click` pour voir les usages ou la définition d'un élément
 - `Alt` + `Enter` pour des "💡 QuickFix" (suggestions de l'IDE)
-- `Shift, Shift + "recherche"` pour tout le reste (rechercher une variable, fonction, classe, actions, options, ...)
+- `Shift, Shift + "recherche"` pour tout le reste (variable, fonction, classe, actions, options, ...)
 - `CTRL/CMD + alt + L` pour ré-indenter correctement tout le code (ou la sélection)
 
 ## Google Codelabs
@@ -36,7 +36,7 @@ Prenez en main l'IDE: vous pouvez aller dans les paramètres (`File > Settings` 
 On va commencer en douceur en se basant sur les [Codelabs Google](https://developer.android.com/courses/android-basics-kotlin/course)
 
 <aside class="negative">
-Ces tutos sont "not maintained" parce qu'il s'agit de l'ancien système de vues, mais il faut aussi en apprendre les bases, on passera au nouveau ensuite.
+Ces tutos sont "not maintained" parce qu'il s'agit de "l'ancien" système de vues, mais il faut aussi en apprendre les bases, on passera au nouveau ensuite.
 </aside>
 
 Tous ces tutos ne sont pas indispensable pour des presque-ingénieurs tels que vous alors on va en faire seulement quelques uns:

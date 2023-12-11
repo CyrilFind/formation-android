@@ -8,9 +8,12 @@ implémenter un écran affichant une liste de tâches et permettre de créer des
 ⚠️ Lisez toutes les questions: souvent vous bloquez simplement parce que vous n'avez pas encore regardé l'étape suivante ou le sujet dans son ensemble.
 
 Sinon, demandez moi!
+
 </aside>
 
+<aside class="positive">
 Remarque: si vous n'avez pas paramétré votre IDE, relisez le début du [TP0](../TP0)
+</aside>
 
 ## Créer un projet
 
@@ -30,6 +33,7 @@ Vous allez créer un unique projet que vous mettrez à jour au fur à mesure des
 Vous allez parfois supprimer et remplacer des parties de code: ne commentez pas votre code dans tous les sens, les commits garderons l'historique.
 
 Comme dans un vrai projet pro finalement !
+
 </aside>
 
 ## Ajout de Dépendances
@@ -104,6 +108,7 @@ val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 <aside class="positive">
 
 `R` est un raccourci signifiant "Resource": c'est une classe générée automatiquement à partir des dossiers et fichiers créés dans `res` qui s'utilise comme ceci: `R.string.app_name`, `R.drawable.app_icon`, etc... afin de récupérer des `int` qui servent d'`id` à ces ressources et que l'on utilise dans les fonctions du framework Android (`getString`, `getDrawable`, etc...)
+
 </aside>
 
 - Pour l'instant, la liste des tâches sera simplement une liste de `String` locale, ajoutez la en tant que propriété de votre classe `TaskListFragment`:
@@ -159,7 +164,7 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 private val adapter = TaskListAdapter()
 ```
 
-- connectez le  votre source de données dans `onCreateView`:
+- connectez le à votre source de données dans `onCreateView`:
 
 ```kotlin
 adapter.currentList = taskList
@@ -192,7 +197,7 @@ val recyclerView = view.findViewById<RecyclerView>(R.id.id_de_votre_recycler_vie
 
 ## Item View
 
-- Créer un layout `item_task.xml` qui servira à afficher chaque cellule de la liste (et donc lié à `TaskViewHolder`)
+- Créer un layout `item_task.xml` qui servira à afficher chaque cellule de la liste avec comme racine un `LinearLayout` contenant pour l'instant une seule `TextView` en enfant:
 
 ```xml
 <LinearLayout
@@ -283,7 +288,7 @@ taskList = taskList + newTask
 ⚠️ Votre modification de liste ne va pas s'afficher directement, il faut:
 
 - passer la nouvelle liste à votre adapter
-- puis le **[notifier](https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#notifyDataSetChanged())** que la donnée a changé
+- puis le **[notifier](<https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView.Adapter#notifyDataSetChanged()>)** que la donnée a changé
 
 ➡ créez une méthode `refreshAdapter` qui va faire les deux actions ci-dessus afin de rendre cela réutilisable
 
@@ -323,4 +328,9 @@ adapter.submitList(listOf("Item#1", "Item #2"))
 
 ## ViewBinding
 
-Utiliser le [`ViewBinding`](https://developer.android.com/topic/libraries/view-binding) pour `inflate` les layouts du Fragment puis des Items (pour MainActivity ce n'est pas très intéressant) et ainsi remplacer les `findViewByIds` (cf [slides](../../slides/2%20-%20Views.html#9) pour un squelette d'implémentation)
+Utiliser le `ViewBinding` ([documentation](https://developer.android.com/topic/libraries/view-binding) / [slides](../../slides/2%20-%20Views.html#9) dans `TaskListFragment`:
+
+- changez le `inflate` pour récupérer une instance de type `XxxBinding`
+- remplacez les `findViewByIds` par des calls direct du genre `binding.myViewId`
+
+Puis faites pareil pour les `ViewHolder`: c'est un peu plus complexe, il faudra changer le constructeur pour qu'il prenne un `val binding: ItemTaskBinding` afin d'y avoir accès dans le corps de la classe et passer `binding.root` au constructeur parent.

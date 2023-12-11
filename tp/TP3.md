@@ -24,29 +24,28 @@ Dans le fichier `app/build.gradle` (celui du module):
 - Dans `dependencies {...}`, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l'IDE vous le propose):
 
 ```groovy
-     // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.9'
+// Retrofit
+implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.9'
 
-    // KotlinX Serialization
-    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1'
-    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
+// KotlinX Serialization
+implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1'
+implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
 
-    // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+// Coroutines
+implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
-    // Lifecycle
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+// Lifecycle
+implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
 ```
 
 - Tout en haut ajoutez le plugin de sérialisation:
 
 ```groovy
 plugins {
-    // ...
     id 'org.jetbrains.kotlin.plugin.serialization' version "1.7.20"
 }
 ```
@@ -162,7 +161,6 @@ interface UserWebService {
 
 ```kotlin
 object Api {
-  // ...
   val userWebService : UserWebService by lazy {
     retrofit.create(UserWebService::class.java)
   }
@@ -259,7 +257,7 @@ Extrait d'un json renvoyé par la route `/rest/v2/tasks/`:
 
 <aside class="negative">
 
-⚠️ Ici vous aurez peut être un conflit d'imports car on précédemment fait hériter `Task` de `Serializable`, et une des annotations de KotlinX Serialisation s'appelle aussi `@Serializable`: faites hériter explicitement de `java.io.Serializable` pour lever l'ambiguité.
+⚠️ Ici vous aurez peut être un conflit d'imports car on précédemment fait hériter `Task` de `Serializable`, et une des annotations de KotlinX Serialization s'appelle aussi `@Serializable`: faites hériter explicitement de `java.io.Serializable` pour lever l'ambiguité.
 
 </aside>
 
@@ -323,7 +321,7 @@ viewModel.refresh() // on demande de rafraîchir les données sans attendre le r
 // Dans onViewCreated()
 lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
     viewModel.tasksStateFlow.collect { newList ->
-      // cette lambda est executée à chaque fois que la liste est mise à jour dans le VM
+      // cette lambda est exécutée à chaque fois que la liste est mise à jour dans le VM
       // -> ici, on met à jour la liste dans l'adapter
     }
 }
@@ -340,9 +338,9 @@ suspend fun create(@Body task: Task): Response<Task>
 @POST("/rest/v2/tasks/{id}")
 suspend fun update(@Body task: Task, @Path("id") id: String = task.id): Response<Task>
 
-// Inspirez vous d'au dessus et de la doc de l'API pour compléter:
-@...(...)
-... delete(@...(...) id: String): Response<Unit>
+// Complétez avec les méthodes précédentes, la doc de l'API, et celle de Retrofit:
+@...
+suspend fun delete(@... id: String): Response<Unit>
 ```
 
 ## Suppression, Ajout, Édition
@@ -351,16 +349,19 @@ suspend fun update(@Body task: Task, @Path("id") id: String = task.id): Response
 
 ```kotlin
 fun update(task: Task) {
-    viewModelScope.launch {
-      val response = ... // TODO: appel réseau
-      if (!response.isSuccessful) {
-        Log.e("Network", "Error: ${response.raw()}")
-        return@launch
-      }
-
-      val updatedTask = response.body()!!
-      tasksStateFlow.value = tasksStateFlow.value.map { if (it.id == updatedTask.id) updatedTask else it }
+  viewModelScope.launch {
+    val response = ... // TODO: appel réseau
+    if (!response.isSuccessful) {
+      Log.e("Network", "Error: ${response.raw()}")
+      return@launch
     }
+
+    val updatedTask = response.body()!!
+    val updatedList = tasksStateFlow.value.map {
+      if (it.id == updatedTask.id) updatedTask else it
+    }
+    tasksStateFlow.value = updatedList
+  }
 }
 ```
 

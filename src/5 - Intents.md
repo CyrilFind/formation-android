@@ -5,7 +5,7 @@ marp: true
 <!-- headingDivider: 2 -->
 <!-- TODO: Deeplinks ? -->
 
-# Intents
+# <!-- fit --> Intents
 
 ![bg right:65% 100%](../assets/jetpack.svg)
 
@@ -21,7 +21,7 @@ Objet "lancé" par une app ou le système qui contient les infos pour démarrer 
 
 ```kotlin
 val explicitIntent =
-    Intent(context, MyActivity::class.java)
+  Intent(context, MyActivity::class.java)
 
 startActivity(intent)
 ```

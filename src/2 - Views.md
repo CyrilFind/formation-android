@@ -129,7 +129,7 @@ val rootView = binding.root
 
 // toutes les vues avec des ids sont accessibles
 binding.textView.text = "hello world!"
-binding.imageView.setOnCLickListener { ... }
+binding.imageView.setOnClickListener { ... }
 ```
 
 [Documentation](https://developer.android.com/topic/libraries/view-binding#fragments)

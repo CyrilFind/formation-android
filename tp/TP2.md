@@ -20,14 +20,21 @@ Aidez vous des lignes de code plus bas pour réaliser un "Click Listener" à l'a
 - Utilisez cette lambda dans le `onClickListener` du bouton supprimer
 - Dans le fragment, accéder à `onClickDelete` depuis l'adapter et implémentez là: donnez lui comme valeur une lambda qui va supprimer la tache passée en argument de la liste
 
+- Déclaration de la variable lambda dans l'adapter, par défaut elle ne fait rien (`{}`):
+
 ```kotlin
-// Déclaration de la variable lambda dans l'adapter:
 var onClickDelete: (Task) -> Unit = {}
+```
 
-// Utilisation de la lambda dans le ViewHolder:
+- Utilisation de la lambda dans le ViewHolder, quand on clique sur le bouton:
+
+```kotlin
 onClickDelete(task)
+```
 
-// "implémentation" de la lambda dans le fragment:
+- "implémentation" de la lambda dans le fragment, pour que la lambda aie un effet:
+
+```kotlin
 myAdapter.onClickDelete = { task ->
     // Supprimer la tâche
 }
