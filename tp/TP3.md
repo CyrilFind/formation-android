@@ -6,7 +6,7 @@ Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, pour 
 
 - Rendez vous sur [todoist.com](https://todoist.com/app)
 - Créez un compte, allez dans `Paramètres > Intégrations > Clé API` et copiez la quelque part
-- lisez un peu [la doc de l'API](https://developer.todoist.com), il y en a en fait 2: REST et Sync et on va utiliser notamment [tasks](https://developer.todoist.com/rest/v2/#tasks), [user](https://developer.todoist.com/sync/v9/#user)
+- lisez un peu [la doc de l'API](https://developer.todoist.com), il y en a en fait 2: REST et Sync et on va utiliser notamment: [tasks](https://developer.todoist.com/rest/v2/#tasks) et [user](https://developer.todoist.com/sync/v9/#user)
 - En utilisant la clé copiée et les exemples de la documentation testez de créer un tache avec `curl` ou un équivalent (ex: [httpie](httpie) en terminal, web ou desktop)
 
 ## Accéder à l'internet
@@ -25,28 +25,28 @@ Dans le fichier `app/build.gradle` (celui du module):
 
 ```groovy
 // Retrofit
-implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.9'
+implementation("com.squareup.retrofit2:retrofit:2.9.0")
+implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
 
 // KotlinX Serialization
-implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1'
-implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
+implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
 
 // Coroutines
-implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
 // Lifecycle
-implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
 ```
 
 - Tout en haut ajoutez le plugin de sérialisation:
 
 ```groovy
 plugins {
-    id 'org.jetbrains.kotlin.plugin.serialization' version "1.7.20"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }
 ```
 
