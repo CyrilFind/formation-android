@@ -15,7 +15,8 @@
 </foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:50%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/intents.png&quot;);background-size:90%;"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="2" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:50%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
 <h2 id="d%C3%A9finition">Définition</h2>
 
-<p>Objet &quot;lancé&quot; par une app ou le système qui contient les infos pour démarrer une <code>Activity</code> (<code>Service</code>, <code>Broadcast</code> plus rarement)</p>
+<p>Objet qui contient les infos pour trouver et démarrer une <code>Activity</code> (<code>Service</code>, <code>Broadcast</code> plus rarement)</p>
+<p>La requête peut venir d'une autre app, d'une autre Activity de la même app ou du système.</p>
 </section>
 </foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:40%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/intents_explicit_implicit.png&quot;);background-size:90%;"></figure></div></section></foreignObject><foreignObject width="60%" height="720"><section id="3" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:40%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
 <h2 id="explicite">Explicite</h2>
@@ -40,18 +41,15 @@ createPdfIntent.addCategory(CATEGORY_OPENABLE)
 </section>
 </foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="send--receive-data">Send / Receive data</h2>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-comment">// Preparing intent in FirstActivity</span>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-comment">// Preparing intent in SendActivity</span>
 <span class="hljs-keyword">val</span> intent = Intent(<span class="hljs-keyword">this</span>, SecondActivity::<span class="hljs-keyword">class</span>.java)
-
 intent.<span class="hljs-keyword">data</span> = Uri.parse(<span class="hljs-string">&quot;https://www.google.com&quot;</span>) <span class="hljs-comment">// Web URL</span>
 intent.<span class="hljs-keyword">data</span> = Uri.fromFile(File(<span class="hljs-string">&quot;/file_path/file.jpg&quot;</span>)) <span class="hljs-comment">// File URI</span>
-
 intent.putExtra(<span class="hljs-string">&quot;level_key&quot;</span>, <span class="hljs-number">42</span>)
 intent.putExtra(<span class="hljs-string">&quot;food_key&quot;</span>, arrayOf(<span class="hljs-string">&quot;Rice&quot;</span>, <span class="hljs-string">&quot;Beans&quot;</span>, <span class="hljs-string">&quot;Fruit&quot;</span>))
-
 startActivity(intent)
-
-<span class="hljs-comment">// Receiving data in SecondActivity</span>
+</code></pre>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-comment">// Receiving data in ReceiveActivity</span>
 <span class="hljs-keyword">val</span> uri = intent.<span class="hljs-keyword">data</span>
 <span class="hljs-keyword">val</span> level = intent.getIntExtra(<span class="hljs-string">&quot;level_key&quot;</span>, <span class="hljs-number">0</span>) <span class="hljs-comment">// default to 0</span>
 <span class="hljs-keyword">val</span> food = intent.getStringArrayExtra(<span class="hljs-string">&quot;food_key&quot;</span>)
@@ -112,8 +110,9 @@ startActivity(chooserIntent)
         startForResult.launch(Intent(<span class="hljs-keyword">this</span>, SecondActivity::<span class="hljs-keyword">class</span>.java))
     }
 }
-
-<span class="hljs-keyword">class</span> <span class="hljs-title class_">SecondActivity</span> : <span class="hljs-type">Activity</span>() {
+</code></pre>
+<p>Toute Activity a une propriété <code>intent</code> qui a permis de la créer:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SecondActivity</span> : <span class="hljs-type">Activity</span>() {
     <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">onUserFinishedSomething</span><span class="hljs-params">()</span></span> { <span class="hljs-comment">// ...</span>
         intent.putExtra(<span class="hljs-string">&quot;reply_key&quot;</span>, <span class="hljs-string">&quot;reply data&quot;</span>) <span class="hljs-comment">// add result data to intent</span>
         setResult(RESULT_OK, intent) <span class="hljs-comment">// specify all went well and return the data</span>
@@ -138,35 +137,29 @@ getContent.launch(<span class="hljs-string">&quot;image/*&quot;</span>)
 <li>Demandées “à la volée” depuis Android M</li>
 <li>Les permissions “dangereuses” doivent être demandées à chaque fois</li>
 <li>On recommande d’expliquer la raison avant (et après un refus)</li>
-<li>Ajouter dans le manifest:<br />
-<code>&lt;uses-permission android:name=&quot;android.permission.CAMERA&quot; /&gt;</code></li>
 <li>Vérifier si la permission a été donnée</li>
 <li>La demander sinon (éventuellement demander à devenir app par défaut)</li>
-<li>Éxecuter l’action ou expliquer pourquoi elle est impossible en cas de refus</li>
+<li>Exécuter l’action ou expliquer pourquoi elle est impossible en cas de refus</li>
+<li>Auto-reset permissions of unused apps</li>
 </ul>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="12" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="example">Example</h2>
+<p>Ajouter dans le manifest:</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">uses-permission</span> <span class="hljs-attr">android:name</span>=<span class="hljs-string">&quot;android.permission.CAMERA&quot;</span> /&gt;</span>
+</code></pre>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-comment">// Register the permissions callback</span>
 <span class="hljs-keyword">val</span> requestPermissionLauncher =
-        registerForActivityResult(RequestPermission()) { isGranted -&gt;
-            <span class="hljs-keyword">if</span> (isGranted) <span class="hljs-comment">// Permission is granted</span>
-            <span class="hljs-keyword">else</span> <span class="hljs-comment">// Explain required permission the user denied</span>
-    }
+  registerForActivityResult(RequestPermission()) { isGranted -&gt;
+    <span class="hljs-keyword">if</span> (isGranted) <span class="hljs-comment">// Permission is granted</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-comment">// Explain required permission the user denied</span>
+}
 
-<span class="hljs-comment">// Checking for a permission, and requesting a permission from the user when necessary</span>
 <span class="hljs-keyword">when</span> {
-    ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
-        == PackageManager.PERMISSION_GRANTED -&gt; {
-        <span class="hljs-comment">// You can use the API that requires the permission.</span>
-    }
-    shouldShowRequestPermissionRationale(...) -&gt; {
-        <span class="hljs-comment">// Explain to the user why your app requires this permission</span>
-    }
-    <span class="hljs-keyword">else</span> -&gt; {
-        <span class="hljs-comment">// ask for the permission</span>
-        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-    }
+  ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+     == PackageManager.PERMISSION_GRANTED -&gt; <span class="hljs-comment">// You can use the API that requires the permission.</span>
+  shouldShowRequestPermissionRationale(...) -&gt; <span class="hljs-comment">// Explain to the user why your app requires this permission</span>
+  <span class="hljs-keyword">else</span> -&gt; requestPermissionLauncher.launch(Manifest.permission.CAMERA) <span class="hljs-comment">// ask for the permission</span>
 }
 </code></pre>
 </section>
