@@ -13,7 +13,9 @@ marp: true
 
 ![bg right 90%](../assets/intents.png)
 
-Objet "lancé" par une app ou le système qui contient les infos pour démarrer une `Activity` (`Service`, `Broadcast` plus rarement)
+Objet qui contient les infos pour trouver et démarrer une `Activity` (`Service`, `Broadcast` plus rarement)
+
+La requête peut venir d'une autre app, d'une autre Activity de la même app ou du système.
 
 ## Explicite
 
@@ -45,18 +47,17 @@ createPdfIntent.addCategory(CATEGORY_OPENABLE)
 ## Send / Receive data
 
 ```kotlin
-// Preparing intent in FirstActivity
+// Preparing intent in SendActivity
 val intent = Intent(this, SecondActivity::class.java)
-
 intent.data = Uri.parse("https://www.google.com") // Web URL
 intent.data = Uri.fromFile(File("/file_path/file.jpg")) // File URI
-
 intent.putExtra("level_key", 42)
 intent.putExtra("food_key", arrayOf("Rice", "Beans", "Fruit"))
-
 startActivity(intent)
+```
 
-// Receiving data in SecondActivity
+```kotlin
+// Receiving data in ReceiveActivity
 val uri = intent.data
 val level = intent.getIntExtra("level_key", 0) // default to 0
 val food = intent.getStringArrayExtra("food_key")
@@ -74,7 +75,6 @@ if (intent.resolveActivity(packageManager) != null) {
 ![bg right:30% 90%](../assets/disambiguation.png)
 
 ## Using Chooser Intent / Sharesheet
-
 
 ```kotlin
 // using Chooser Intent / Sharesheet
@@ -126,7 +126,11 @@ class FirstActivity : Activity() { // requesting Activity
         startForResult.launch(Intent(this, SecondActivity::class.java))
     }
 }
+```
 
+Toute Activity a une propriété `intent` qui a permis de la créer:
+
+```kotlin
 class SecondActivity : Activity() {
     fun onUserFinishedSomething() { // ...
         intent.putExtra("reply_key", "reply data") // add result data to intent
@@ -155,35 +159,32 @@ getContent.launch("image/*")
 - Demandées “à la volée” depuis Android M
 - Les permissions “dangereuses” doivent être demandées à chaque fois
 - On recommande d’expliquer la raison avant (et après un refus)
-- Ajouter dans le manifest:
-  `<uses-permission android:name="android.permission.CAMERA" />`
 - Vérifier si la permission a été donnée
 - La demander sinon (éventuellement demander à devenir app par défaut)
-- Éxecuter l’action ou expliquer pourquoi elle est impossible en cas de refus
+- Exécuter l’action ou expliquer pourquoi elle est impossible en cas de refus
+- Auto-reset permissions of unused apps
 
 ## Example
+
+Ajouter dans le manifest:
+
+```xml
+<uses-permission android:name="android.permission.CAMERA" />
+```
 
 ```kotlin
 // Register the permissions callback
 val requestPermissionLauncher =
-        registerForActivityResult(RequestPermission()) { isGranted ->
-            if (isGranted) // Permission is granted
-            else // Explain required permission the user denied
-    }
+  registerForActivityResult(RequestPermission()) { isGranted ->
+    if (isGranted) // Permission is granted
+    else // Explain required permission the user denied
+}
 
-// Checking for a permission, and requesting a permission from the user when necessary
 when {
-    ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
-        == PackageManager.PERMISSION_GRANTED -> {
-        // You can use the API that requires the permission.
-    }
-    shouldShowRequestPermissionRationale(...) -> {
-        // Explain to the user why your app requires this permission
-    }
-    else -> {
-        // ask for the permission
-        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-    }
+  ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+     == PackageManager.PERMISSION_GRANTED -> // You can use the API that requires the permission.
+  shouldShowRequestPermissionRationale(...) -> // Explain to the user why your app requires this permission
+  else -> requestPermissionLauncher.launch(Manifest.permission.CAMERA) // ask for the permission
 }
 ```
 

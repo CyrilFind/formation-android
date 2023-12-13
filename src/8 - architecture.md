@@ -64,3 +64,7 @@ Analogie: Serveur
 - Présente les données
 
 Analogie: Cuisine
+
+## Compose
+
+https://developer.android.com/jetpack/compose/architecture
