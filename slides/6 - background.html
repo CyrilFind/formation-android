@@ -24,47 +24,6 @@
 </ul>
 </section>
 </foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="couroutine-context">Couroutine Context</h2>
-<p>Coroutines always execute in some <code>CoroutineContext</code>: a set of various elements, mainly its <code>Job</code> and its <code>CoroutineDispatcher</code></p>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="scope">Scope</h2>
-<p>A coroutine's scope defines the context in which the coroutine runs.</p>
-<ul>
-<li>A scope combines information about a coroutine's <code>Job</code> and <code>CoroutineDispatcher</code></li>
-<li>Scopes keep track of coroutines that are “in them”</li>
-</ul>
-<p><img class="emoji" draggable="false" alt="➡️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/27a1.svg" data-marp-twemoji=""/> actually just a wrapper around a <code>CoroutineContext</code>, can be seen as a &quot;parent context&quot;</p>
-<p>ex: <code>GlobalScope</code>, <code>MainScope</code>, <code>viewModelScope</code>, <code>lifeCycleScope</code></p>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="job">Job</h2>
-<p>Basically, a <code>Job</code> is anything that can be canceled</p>
-<ul>
-<li>Every coroutine has a <code>Job</code>, and you can use it to cancel the coroutine</li>
-<li>Jobs can be arranged into parent-child hierarchies</li>
-<li>Canceling a parent job immediately cancels all the job's children</li>
-</ul>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
-    <span class="hljs-keyword">val</span> job = GlobalScope.launch {
-        <span class="hljs-comment">// do something long</span>
-    }
-    <span class="hljs-keyword">if</span> (input == `^C`) job.cancel()
-}
-</code></pre>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="dispatcher">Dispatcher</h2>
-<p>The <code>CoroutineDispatcher</code> sends off coroutines to run on various threads</p>
-<p>ex: <code>Dispatcher.Main</code> runs tasks on the main thread, <code>Dispatcher.IO</code> offloads blocking I/O tasks to a shared pool of threads</p>
-<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
-    GlobalScope.launch(Dispatchers.IO) {
-        <span class="hljs-comment">// do something long on IO thread</span>
-    }
-}
-</code></pre>
-</section>
-</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="suspending">Suspending</h2>
 <p>Suspend functions are only allowed to be called from a coroutine or another suspend function</p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-keyword">suspend</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">doSomethingLong</span><span class="hljs-params">()</span></span> {
@@ -81,6 +40,47 @@
 
 <span class="hljs-keyword">suspend</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">otherSuspendFunction</span><span class="hljs-params">()</span></span> {
     doSomethingLong() <span class="hljs-comment">// <img class="emoji" draggable="false" alt="✅" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/2705.svg" data-marp-twemoji=""/> OK</span>
+}
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+<h2 id="couroutine-context">Couroutine Context</h2>
+<p>Coroutines always execute in some <code>CoroutineContext</code>: a set of various elements, mainly its <code>Job</code> and its <code>CoroutineDispatcher</code></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+<h2 id="scope">Scope</h2>
+<p>A coroutine's scope defines the context in which the coroutine runs.</p>
+<ul>
+<li>A scope combines information about a coroutine's <code>Job</code> and <code>CoroutineDispatcher</code></li>
+<li>Scopes keep track of coroutines that are “in them”</li>
+</ul>
+<p><img class="emoji" draggable="false" alt="➡️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/27a1.svg" data-marp-twemoji=""/> actually just a wrapper around a <code>CoroutineContext</code>, can be seen as a &quot;parent context&quot;</p>
+<p>ex: <code>GlobalScope</code>, <code>MainScope</code>, <code>viewModelScope</code>, <code>lifeCycleScope</code></p>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="7" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+<h2 id="job">Job</h2>
+<p>Basically, a <code>Job</code> is anything that can be canceled</p>
+<ul>
+<li>Every coroutine has a <code>Job</code>, and you can use it to cancel the coroutine</li>
+<li>Jobs can be arranged into parent-child hierarchies</li>
+<li>Canceling a parent job immediately cancels all the job's children</li>
+</ul>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">val</span> job = GlobalScope.launch {
+        <span class="hljs-comment">// do something long</span>
+    }
+    <span class="hljs-keyword">if</span> (input == `^C`) job.cancel()
+}
+</code></pre>
+</section>
+</foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-heading-divider="2" lang="C" style="--heading-divider:2;">
+<h2 id="dispatcher">Dispatcher</h2>
+<p>The <code>CoroutineDispatcher</code> sends off coroutines to run on various threads</p>
+<p>ex: <code>Dispatcher.Main</code> runs tasks on the main thread, <code>Dispatcher.IO</code> offloads blocking I/O tasks to a shared pool of threads</p>
+<pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
+    GlobalScope.launch(Dispatchers.IO) {
+        <span class="hljs-comment">// do something long on IO thread</span>
+    }
 }
 </code></pre>
 </section>
@@ -169,8 +169,8 @@ scope.launch {
 <span class="hljs-comment">// react in Activity/Fragment:</span>
 lifecycleScope.launch {
     userFlow.filterNotNull().collect { user -&gt;
-    nameTextView.text = user.name
-    }
+      nameTextView.text = user.name
+  }
 }
 
 <span class="hljs-comment">// or in Compose:</span>
