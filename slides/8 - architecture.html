@@ -39,16 +39,16 @@
 <p><img class="emoji" draggable="false" alt="⚠️" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/26a0.svg" data-marp-twemoji=""/> Ici <code>Intent</code> n'est pas le type spécifique à Android</p>
 <p><img class="emoji" draggable="false" alt="💡" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@14.1.2/assets/svg/1f4a1.svg" data-marp-twemoji=""/> Ceci s'adapte encore plus directement avec Jetpack Compose</p>
 </section>
-</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:70%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/google_arch.png&quot;);"></figure></div></section></foreignObject><foreignObject width="30%" height="720"><section id="8" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:70%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
+</foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:70%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/google_arch.png&quot;);background-size:90%;"></figure></div></section></foreignObject><foreignObject width="30%" height="720"><section id="8" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:70%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
 <h2 id="google-architecture">Google Architecture</h2>
 </section>
 </foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="9" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="viewmodel">ViewModel</h2>
 <ul>
 <li>Formate les données pour l'UI</li>
-<li>Survis aux configuration changes</li>
+<li>Survit aux &quot;configuration changes&quot;</li>
 <li>Peut aussi partager des données entre Fragments</li>
-<li>Fait partie lifecycle library</li>
+<li>Fait partie de la &quot;lifecycle library&quot; mais ré-implémentable</li>
 <li>Ne pas passer de Context (si besoin, étendre AndroidViewModel)</li>
 </ul>
 <p>Analogie: Serveur</p>
@@ -56,7 +56,7 @@
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="10" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="repository">Repository</h2>
 <ul>
-<li>Pas un Architecture Components mais une bonne pratique</li>
+<li>Pas un Architecture Component mais une bonne pratique</li>
 <li>Récupère les données d'une ou plusieurs <code>DataSource</code></li>
 <li>Choisis la source en fonction des circonstances</li>
 <li>Synchronise les sources</li>
