@@ -4,7 +4,7 @@
 
 <aside class="positive">
 
-La lib `Coil` permet d'afficher des images depuis une URL de façon efficace en gérant la taille, le cache, etc... `Picasso` et `Glide` sont les alternatives les plus utilisées.
+La lib `Coil` permet d'afficher des images depuis une URL de façon efficace en gérant la taille, le cache, etc... (`Picasso` et `Glide` sont également souvent utilisées et assez similaires)
 
 </aside>
 
@@ -22,8 +22,8 @@ imageView.load("https://goo.gl/gEgYUd")
 - Créer un nouveau package `user`
 - Créez y une nouvelle activité `UserActivity` et ajoutez la dans le manifest
 - Créez son UI en `Compose`:
+
 ```kotlin
-// Résumé:
 setContent {
     var bitmap: Bitmap? by remember { mutableStateOf(null) }
     var uri: Uri? by remember { mutableStateOf(null) }
@@ -44,7 +44,8 @@ setContent {
     }
 }
 ```
-- Lancer cette `Activity` quand on clique sur l'`ImageView` du premier écran (pas besoin de laucher ici on attends pas de résultat: `startActivity(intent)`)
+
+- Lancer cette `Activity` quand on clique sur l'`ImageView` du premier écran (pas besoin de launcher ici car on attends pas de résultat: `startActivity(intent)`)
 
 ## Caméra: ActivityResult
 
@@ -56,7 +57,7 @@ Pour les cas d'utilisations très courants, il existe [plusieurs "contrats" pré
 
 </aside>
 
-- On va donc ici utiliser un nouveau launcher dans le contexte compose (donc la syntaxe est un peu différente) et avec `TakePicturePreview` qui retourne un `Bitmap` (c'est à dire une image stockée dans une variable, pas dans un fichier):
+- On va donc ici utiliser un nouveau launcher dans le contexte compose (donc la syntaxe est un peu différente) et avec `TakePicturePreview` qui retourne un `Bitmap` (c'est à dire une image stockée dans une variable, pas dans un fichier, donc en qualité limitée):
 
 ```kotlin
 val takePicture = rememberLauncherForActivityResult(TakePicturePreview()) {
@@ -81,7 +82,7 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response<User>
 ```kotlin
 private fun Bitmap.toRequestBody(): MultipartBody.Part {
     val tmpFile = File.createTempFile("avatar", "jpg")
-    tmpFile.outputStream().use { // *use* se charge de faire open et close
+    tmpFile.outputStream().use { // *use*: open et close automatiquement
         this.compress(Bitmap.CompressFormat.JPEG, 100, it) // *this* est le bitmap ici
     }
     return MultipartBody.Part.createFormData(
@@ -92,11 +93,11 @@ private fun Bitmap.toRequestBody(): MultipartBody.Part {
 }
 ```
 
-- Dans la callback de `takePicture`, envoyez l'image au serveur avec `updateAvatar`, en  convertissant `bitmap` avec `toRequestBody` avant
+- Dans la callback de `takePicture`, envoyez l'image au serveur avec `updateAvatar`, en convertissant `bitmap` avec `toRequestBody` avant
 
 <aside class="negative">
 
-⚠️ Si vous n'avez pas accès à `lifecycleScope`, vous pourvez utilisez une syntaxe propre à Compose: `val composeScope = rememberCoroutineScope()`)
+⚠️ Quand vous n'avez pas accès à `lifecycleScope`, vous pouvez utilisez un scope propre à Compose: `val composeScope = rememberCoroutineScope()`)
 
 </aside>
 
@@ -138,13 +139,17 @@ private fun Uri.toRequestBody(): MultipartBody.Part {
 
 Jusqu'ici, vous avez probablement utilisé un Android en version 10 ou plus récente: la gestion de l'accès aux fichiers est simplifiée tant qu'on utilise les dossiers partagés (Images, Videos, etc)
 Mais pour gérer les versions plus anciennes, il faut demander la permission `READ_EXTERNAL_STORAGE` avant d'accéder au fichiers:
+
 - ajoutez la permission au `Manifest.xml`:
 
 ```xml
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 ```
+
+<!-- new permissions android 13 ! -->
+
 - ajoutez un `launcher` avec le contrat `RequestPermission()`
-- utilisez le au click du bouton (avec ` Manifest.permission.READ_EXTERNAL_STORAGE`) et dans sa callback, utilisez le launcher précédent
+- utilisez le au click du bouton (avec `Manifest.permission.READ_EXTERNAL_STORAGE`) et dans sa callback, utilisez le launcher précédent
 - pour tester, créez temporairement un émulateur en API 9 ou moins, sur les autres devices, cela ne doit pas changer le fonctionnement
 
 ## Amélioration de la caméra
@@ -153,7 +158,7 @@ Actuellement, la qualité d'image récupérée de l'appareil photo est très fai
 
 ```kotlin
 // propriété: une URI dans le dossier partagé "Images"
-private val captureUri by lazy { 
+private val captureUri by lazy {
     contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues())
 }
 
@@ -169,22 +174,21 @@ takePicture.launch(captureUri)
 ## Édition infos utilisateurs
 
 - Comme précédemment, re-factorisez cette Activity en utilisant un `UserViewModel`
-- Dans `UserActivity`, permettre d'éditer et d'afficher les informations (nom, prénom, email) en respectant cette architecture
+- Dans `UserActivity`, permettre d'afficher et éditer le nom d'utilisateur
 - Vous aurez besoin d'ajouter une méthode à `UserWebService`:
 
 ```kotlin
 @PATCH("sync/v9/sync")
-suspend fun update(@Body user: UserUpdate): Response<Unit>
+suspend fun update(@Body userUpdate: UserUpdate): Response<Unit>
 ```
 
-- Référez vous à la [documentation](https://developer.todoist.com/sync/v9/#user) car ce n'est pas une API REST donc on ne passe pas simplement l'objet `User`: il faut créer un objet `UserUpdate` qui l'encapsule
-
+- Référez vous à la [documentation](https://developer.todoist.com/sync/v9/#user) car ce n'est pas une API REST donc on ne passe pas simplement l'objet `User`: il faut créer un objet `UserUpdate`
 
 ## Gérer le refus
 
 <aside class="positive">
 
-Il y a tout une gestion [assez compliquée](https://developer.android.com/training/permissions/requesting#workflow_for_requesting_permissions) notamment dans le cas où l'utilisateur *refuse* une permission
+Il y a tout une gestion [assez compliquée](https://developer.android.com/training/permissions/requesting#workflow_for_requesting_permissions) notamment dans le cas où l'utilisateur _refuse_ une permission
 
 </aside>
 
@@ -192,14 +196,14 @@ Il y a tout une gestion [assez compliquée](https://developer.android.com/traini
 
 ```kotlin
 private fun pickPhotoWithPermission() {
-    val camPermission = Manifest.permission.CAMERA
-    val permissionStatus = checkSelfPermission(camPermission)
+    val storagePermission = Manifest.permission.READ_EXTERNAL_STORAGE
+    val permissionStatus = checkSelfPermission(storagePermission)
     val isAlreadyAccepted = permissionStatus == PackageManager.PERMISSION_GRANTED
-    val isExplanationNeeded = shouldShowRequestPermissionRationale(camPermission)
+    val isExplanationNeeded = shouldShowRequestPermissionRationale(storagePermission)
     when {
         isAlreadyAccepted -> // lancer l'action souhaitée
         isExplanationNeeded -> // afficher une explication
-        else -> // lancer la demande de permission
+        else -> // lancer la demande de permission et afficher une explication en cas de refus
     }
 }
 

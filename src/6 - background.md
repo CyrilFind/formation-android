@@ -19,6 +19,28 @@ marp: true
 - Coroutines are asynchronous and non-blocking.
 - Coroutines use suspend functions to make asynchronous code sequential.
 
+## Suspending
+
+Suspend functions are only allowed to be called from a coroutine or another suspend function
+
+```kotlin
+suspend fun doSomethingLong() {
+    // request server, DB, filesystem, ...
+}
+
+fun main() {
+    doSomethingLong() // ❌ KO
+
+    GlobalScope.launch {
+        doSomethingLong() // ✅ OK
+    }
+}
+
+suspend fun otherSuspendFunction() {
+    doSomethingLong() // ✅ OK
+}
+```
+
 ## Couroutine Context
 
 Coroutines always execute in some `CoroutineContext`: a set of various elements, mainly its `Job` and its `CoroutineDispatcher`
@@ -62,28 +84,6 @@ fun main() {
     GlobalScope.launch(Dispatchers.IO) {
         // do something long on IO thread
     }
-}
-```
-
-## Suspending
-
-Suspend functions are only allowed to be called from a coroutine or another suspend function
-
-```kotlin
-suspend fun doSomethingLong() {
-    // request server, DB, filesystem, ...
-}
-
-fun main() {
-    doSomethingLong() // ❌ KO
-
-    GlobalScope.launch {
-        doSomethingLong() // ✅ OK
-    }
-}
-
-suspend fun otherSuspendFunction() {
-    doSomethingLong() // ✅ OK
 }
 ```
 
@@ -183,8 +183,8 @@ suspend fun refreshUser() {
 // react in Activity/Fragment:
 lifecycleScope.launch {
     userFlow.filterNotNull().collect { user ->
-    nameTextView.text = user.name
-    }
+      nameTextView.text = user.name
+  }
 }
 
 // or in Compose:
