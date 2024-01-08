@@ -43,21 +43,21 @@ Model View Intent
 
 ## Google Architecture
 
-![bg right:70%](../assets/google_arch.png)
+![bg right:70% 90%](../assets/google_arch.png)
 
 ## ViewModel
 
 - Formate les données pour l'UI
-- Survis aux configuration changes
+- Survit aux "configuration changes"
 - Peut aussi partager des données entre Fragments
-- Fait partie lifecycle library
+- Fait partie de la "lifecycle library" mais ré-implémentable
 - Ne pas passer de Context (si besoin, étendre AndroidViewModel)
 
 Analogie: Serveur
 
 ## Repository
 
-- Pas un Architecture Components mais une bonne pratique
+- Pas un Architecture Component mais une bonne pratique
 - Récupère les données d'une ou plusieurs `DataSource`
 - Choisis la source en fonction des circonstances
 - Synchronise les sources
@@ -67,4 +67,4 @@ Analogie: Cuisine
 
 ## Compose
 
-https://developer.android.com/jetpack/compose/architecture
+<https://developer.android.com/jetpack/compose/architecture>
