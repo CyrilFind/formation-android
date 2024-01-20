@@ -8,6 +8,8 @@ plugins:
 
 title: Formation Android
 
+youtube_channel: https://www.youtube.com/channel/UCi9aAeElFz5egE_sZVF2WPQ
+
 videos:
   - title: Intro
     id: C2-2Wg800vs
@@ -19,3 +21,9 @@ videos:
     id: SrnmTIhiZ8Y
   - title: Intents
     id: UPZ-LmDoGcY
+  - title: Background
+    id: TP75F7NTfqQ
+  - title: Internet
+    id: A2b4bYmdAu0
+  - title: Architecture
+    id: DlxRQndS0_A
