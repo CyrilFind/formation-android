@@ -156,6 +156,8 @@ getContent.launch("image/*")
 
 # Permissions
 
+<https://developer.android.com/training/permissions/requesting>
+
 - Demandées “à la volée” depuis Android M
 - Les permissions “dangereuses” doivent être demandées à chaque fois
 - On recommande d’expliquer la raison avant (et après un refus)

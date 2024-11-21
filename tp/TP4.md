@@ -171,18 +171,21 @@ val takePicture = rememberLauncherForActivityResult(TakePicture()) { success ->
 takePicture.launch(captureUri)
 ```
 
+## Refactor
+
+- Comme précédemment, re-factorisez un peu en créant un `UserViewModel`: il ne doit plus y avoir de calls API directement dans `UserActivity`
+
 ## Édition infos utilisateurs
 
-- Comme précédemment, re-factorisez cette Activity en utilisant un `UserViewModel`
 - Dans `UserActivity`, permettre d'afficher et éditer le nom d'utilisateur
 - Vous aurez besoin d'ajouter une méthode à `UserWebService`:
 
 ```kotlin
 @PATCH("sync/v9/sync")
-suspend fun update(@Body userUpdate: UserUpdate): Response<Unit>
+suspend fun update(@Body commands: List<Commands>): Response<Unit>
 ```
 
-- Référez vous à la [documentation](https://developer.todoist.com/sync/v9/#user) car ce n'est pas une API REST donc on ne passe pas simplement l'objet `User`: il faut créer un objet `UserUpdate`
+- Référez vous à la [documentation](https://developer.todoist.com/sync/v9/#user) car ce n'est pas une API REST donc on ne passe pas simplement l'objet `User`: il faut créer un objet `Commands` de type `user_update`
 
 ## Gérer le refus
 
