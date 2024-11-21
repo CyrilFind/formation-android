@@ -4,6 +4,8 @@ marp: true
 
 <!-- headingDivider: 2 -->
 
+<!-- https://medium.com/androiddevelopers/cancellation-in-coroutines-aa6b90163629 -->
+
 # Background work
 
 ![bg right:65% 100%](../assets/jetpack.svg)

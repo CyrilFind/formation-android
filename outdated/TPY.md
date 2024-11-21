@@ -14,6 +14,7 @@ Créer une nouvelle Activity : `AuthenticationActivity` avec pour UI:
 - Dans notre cas il s'agit d'ouvrir une page web de connection à Todoist, d'intercepter l'url de redirection pour récupérer un code et de faire une requête avec pour enfin recevoir un token
 - Vous pouvez gérer tout cela avec [AppAuth](https://github.com/openid/AppAuth-Android), une lib qui simplifie beaucoup la procédure.
 <!-- https://github.com/okta/okta-mobile-kotlin ? -->
+<!-- https://joebirch.co/android/oauth-on-android-with-custom-tabs/ ? -->
 - En cas d'erreur, afficher un toast d'explication:
 
   ```kotlin
