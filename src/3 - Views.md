@@ -196,6 +196,10 @@ override fun onCreate(savedInstanceState: Bundle?) {
 - Perdu si on quitte l’Activity
 - Plus persistent: DB, Web, SharedPreference, DataStore
 
+## ViewModel
+
+![lifecycle bg right](../assets/lifecycle.png)
+
 # iOS
 
 ![bg right:30% 80%](../assets/xcode.png)

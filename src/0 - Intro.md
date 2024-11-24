@@ -3,6 +3,25 @@ marp: true
 ---
 <!-- headingDivider: 2 -->
 
+# Présentation
+
+Cyril Findeling 👋
+
+## Développement mobile
+
+- technos moderne
+- performances limitées
+- livraisons itératives
+- domaine compétitif
+- conditions de travail
+
+## Ce cours
+
+- Focus sur Kotlin et Android
+- Notions principales pour développer une app dans un vrai projet
+- Un peu de théorie surtout au début, beaucoup de pratique
+- Un projet fil rouge noté à la fin
+
 # OOP: Object Oriented Programming
 
 ## Vocabulary

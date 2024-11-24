@@ -79,13 +79,19 @@ fun main() {
 
 The `CoroutineDispatcher` sends off coroutines to run on various threads
 
-ex: `Dispatcher.Main` runs tasks on the main thread, `Dispatcher.IO` offloads blocking I/O tasks to a shared pool of threads
+![dispatchers height:200](../assets/dispatchers.png)
 
 ```kotlin
-fun main() {
-    GlobalScope.launch(Dispatchers.IO) {
-        // do something long on IO thread
+suspend fun fetch(url: String) {
+    // start on Dispatchers.Main
+    showLoading(true)
+    val result = withContext(Dispatchers.IO) {
+        // switch to Dispatchers.IO to do long network call
+        longNetworkCall(url)
     }
+    // back on Dispatchers.Main
+    showLoading(false)
+    showResult(result)
 }
 ```
 
@@ -125,6 +131,8 @@ lifecycleScope.launchWhenStarted { /* launches when fragment is in started state
 ```
 
 ## Observer pattern
+
+![bg right:50% 90%](../assets/observe.png)
 
 Design pattern that allows decoupling actions and data consumption by decoupling the _observable_ (or subject) from the _observers_ (or listeners):
 

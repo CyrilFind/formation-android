@@ -12,7 +12,9 @@ Sinon, demandez moi!
 </aside>
 
 <aside class="positive">
-Remarque: si vous n'avez pas paramétré votre IDE, relisez le début du [TP0](../TP0)
+
+Remarque: si vous n'avez pas bien paramétré votre IDE, relisez le début du [TP0](../TP0)
+
 </aside>
 
 ## Créer un projet

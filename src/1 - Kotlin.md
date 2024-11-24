@@ -4,27 +4,16 @@ marp: true
 
 <!-- headingDivider: 2 -->
 
-# Introduction
-
-![bg right:65% 100%](../assets/jetpack.svg)
-
-## Présentation
-
-Cyril Findeling 👋
-
-## Développement mobile
-
-- technos moderne
-- performances limitées
-- livraisons itératives
-- domaine compétitif
-
-## Kotlin
+# Kotlin
 
 ![bg right:30% 80%](../assets/kotlin.png)
 
-- Moderne
-- Concis
+## Intro
+
+![bg right:30% 80%](../assets/kotlin.png)
+
+- Moderne, Concis
+- Orienté Objet / Fonctionnel
 - Java Interop
 - Développé par JetBrains
 - Kotlin everywhere: JVM, Backend, JS, KTS, iOS...
@@ -51,8 +40,8 @@ val emptyList = emptyList<Double>() // List<Double>
 const val APP_ID = 42424242
 
 // valeur donnée à l'execution qui ne peut pas changer ensuite
-val user = User("alice")
-user = User("bob") // ❌ ne compile pas
+val user = 0
+user = 1 // ❌ ne compile pas
 
 // valeur qui peut changer
 var myMutableVariable = 0
@@ -60,7 +49,7 @@ myMutableVariable = 1
 
 // structure de données mutables ou immutables, ex: listes
 val immutableList = listOf(1, 2, 3)
-immutableList.add(4) // ❌
+immutableList.add(4) // ❌ la méthode n'existe pas
 
 val mutableList = mutableListOf(1, 2, 3)
 mutableList.add(4) // ✅
@@ -69,7 +58,8 @@ mutableList.add(4) // ✅
 ## Nullabilité
 
 ```kotlin
-val user: User? = getCurrentUser()
+var user: User? = null
+user = getUser()
 
 // soft unwrap: exécute ou retourne null si l'instance est null
 user?.name
@@ -78,7 +68,11 @@ user?.name
 user!!.toString()
 
 // elvis operator: exécute la partie à droite si la partie à gauche est null
-user?.name ?: "no user"
+user?.name ?: "none"
+
+// let: extension qui permet de manipuler une instance dans une lambda
+// souvent utilisé avec des instances nullables
+user?.let { it.name } ?: "none"
 ```
 
 ⚠️ `@Nullable` pour l'interopérabilité avec Java
@@ -90,7 +84,7 @@ var user: User?
 
 user?.connect()
 
-if (nullable != null) { nullable.connect() }
+if (nullable != null) nullable.connect()
 ```
 
 ## When statements
@@ -295,85 +289,8 @@ applyToSelf(3) { a, b -> a - b } // 0
 button.setOnClickListener { view -> ... }
 ```
 
-# Android
+## Démo
 
-![bg right:70% 100%](../assets/jetpack.svg)
+![bg right:30% 80%](../assets/kotlin.png)
 
-## Intro
-
-![bg right:30% 50%](../assets/android.png)
-
-- Nombreux utilisateurs
-- Devices très différents
-- Versions d’OS anciennes
-- Play Store
-- Puissance limitée
-- Phone, Tablet, TV, Watch, Auto, Chrome, Windows, ...
-- Dev natif en Kotlin et Java
-
-## Android Studio
-
-![bg right:50% 100%](../assets/android_studio.svg)
-
-- IDE dédié
-- Développé par Jetbrains (IntelliJ)
-- Navigation projet
-- Terminal
-- Logcat
-- Émulateurs
-- SDK Manager
-- strings.xml
-- Refactoring
-- RAM 🔥
-
-## Éléments d'une app Android
-
-![bg right:40% 80%](../assets/android_elements.png)
-
-- Scripts Gradle
-- AndroidManifest.xml
-- App
-- Activity
-- Fragment
-- Layouts XML
-
-## App Components
-
-![bg right:40% 160%](../assets/app_components.png)
-
-- Activity / Fragments ➡ Screen Controller
-- Service ➡ Headless Controller
-- Broadcast Receiver ➡ Event Listener
-- ContentProvider ➡ Shared Data API
-
-# iOS
-
-![bg right:40% 80%](../assets/xcode.png)
-
-- Beaucoup d'utilisateurs aux US
-- Plus de 💰 dépensés
-- Moins de devices différents
-- OS mis à jour plus rapidement
-- App Store
-- Swift (interop Objective-C)
-- XCode 💩
-- Simulator
-
-# Cross-Platform
-
-![bg right:30% 90%](../assets/react.png)
-![bg right:30% 70%](../assets/flutter.svg)
-
-- Permet de coder une seule fois
-- Souvent à base de "Components" (à la React)
-- Désavantage: performances, UX, possibilités spécifiques ou récentes des OS
-- Xamarin, ReactNative, NativeScript, Ionic, ...
-- Dart: Flutter (iOS, Android, Desktop, Web) par Google
-
-# Composants
-
-![bg right:30% 90%](../assets/compose.png)
-![bg right:30% 75%](../assets/swiftui.png)
-
-- Swift: SwiftUI par Apple
-- Kotlin: Jetpack Compose sur Android, Desktop, Web et même iOS par JetBrains et Google
+[Kotlin Playground](https://play.kotlinlang.org)
