@@ -6,7 +6,7 @@ marp: true
 
 # Android
 
-![bg right:70% 100%](../assets/jetpack.svg)
+![bg](../assets/jetpack.svg)
 
 ## Intro
 
@@ -27,7 +27,7 @@ marp: true
 - IDE dédié
 - Développé par Jetbrains (IntelliJ)
 - Navigation projet
-- Terminal
+- "Sync Now"
 - Logcat
 - Émulateurs
 - SDK Manager
@@ -40,6 +40,7 @@ marp: true
 ![bg right:40% 80%](../assets/android_elements.png)
 
 - Scripts Gradle
+- Libs TOML
 - AndroidManifest.xml
 - App
 - Activity

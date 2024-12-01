@@ -6,7 +6,7 @@ marp: true
 
 # L'internet
 
-![bg right:65% 100%](../assets/jetpack.svg)
+![bg](../assets/jetpack.svg)
 
 ## HTTP
 

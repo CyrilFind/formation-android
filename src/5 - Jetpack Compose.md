@@ -28,7 +28,7 @@ fun MyComposable() {
 ## Syntax
 
 Kotlin mais compilé autrement: exécution en désordre, en parallèle, skips, ...
-➡️ Pour simplifier: considérer ça comme une loop de rendu (jeux vidéos)
+➡️ En gros: comme une boucle de rendu, avec des optimisations
 
 ```kotlin
 var number = 1
@@ -306,7 +306,7 @@ fun ProvideTextStyle(value: TextStyle, content: @Composable () -> Unit) {
 }
 ```
 
-## navigation
+## Navigation
 
 ```kotlin
 val navController = rememberNavController()
@@ -321,7 +321,7 @@ NavHost(navController = navController, startDestination = "profile") {
 navController.navigate("post/123456")
 ```
 
-## theme
+## Theme
 
 ```kotlin
 MaterialTheme(

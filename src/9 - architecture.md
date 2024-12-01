@@ -6,26 +6,12 @@ marp: true
 
 # Architecture
 
-![bg right:65% 100%](../assets/jetpack.svg)
-
-## MVC
-
-Model View Controller
-
-![bg right:60% 95%](../assets/mvc.png)
+![bg](../assets/jetpack.svg)
 
 ## MVP
 
 Model View Presenter
 ![bg right:60% 95%](../assets/mvp.png)
-
-## Dependency Rule
-
-![bg right:60% 95%](../assets/dependency.png)
-
-## Clean Architecture
-
-![bg right:70% 95%](../assets/clean_arch.png)
 
 # MVVM
 
@@ -40,6 +26,14 @@ Model View Intent
 ⚠️ Ici `Intent` n'est pas le type spécifique à Android
 
 💡 Ceci s'adapte encore plus directement avec Jetpack Compose
+
+## Dependency Rule
+
+![bg right:60% 95%](../assets/dependency.png)
+
+## Clean Architecture
+
+![bg right:70% 95%](../assets/clean_arch.png)
 
 ## Google Architecture
 

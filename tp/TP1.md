@@ -7,13 +7,13 @@ implémenter un écran affichant une liste de tâches et permettre de créer des
 <aside class="negative">
 ⚠️ Lisez toutes les questions: souvent vous bloquez simplement parce que vous n'avez pas encore regardé l'étape suivante ou le sujet dans son ensemble.
 
-Sinon, demandez moi!
+**Sinon, demandez moi!!**
 
 </aside>
 
 <aside class="positive">
 
-Remarque: si vous n'avez pas bien paramétré votre IDE, relisez le début du [TP0](../TP0)
+Remarque: si vous n'avez pas bien paramétré votre IDE, relisez le début du [TP0](./TP0)
 
 </aside>
 
@@ -21,7 +21,7 @@ Remarque: si vous n'avez pas bien paramétré votre IDE, relisez le début du [T
 
 Vous allez créer un unique projet que vous mettrez à jour au fur à mesure des TPs:
 
-- Créer un nouveau projet avec une `Empty Views Activity`
+- Créer un nouveau projet avec une `Empty VIEWS Activity` (⚠️ pas `Empty Activity` SVP ⚠️)
 - Donnez lui un nom personnalisé comme `TodoNicolasAlexandre` (⚠️ pas `TP1` SVP ⚠️)
 - Choisissez un package name unique de ce genre: `com.nicoalex.todo`
 - Language: `Kotlin`
@@ -37,18 +37,6 @@ Vous allez parfois supprimer et remplacer des parties de code: ne commentez pas 
 Comme dans un vrai projet pro finalement !
 
 </aside>
-
-## Ajout de Dépendances
-
-Dans `./build.gradle` (celui du _projet_), vérifiez que `kotlin_version` est récent (ex: `1.5.31`)
-
-Dans `app/build.gradle.kts` (celui du _module_ `app`), ajouter les libs suivante dans `dependencies {}` (si l'IDE vous le propose, mettez à jour les numéros de version):
-
-```groovy
-implementation("androidx.recyclerview:recyclerview:1.3.2")
-implementation("androidx.fragment:fragment-ktx:1.6.2")
-implementation("androidx.activity:activity-ktx:1.8.1")
-```
 
 ## Gestion des fichiers
 

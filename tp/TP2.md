@@ -143,6 +143,14 @@ val task = result.data?.getSerializableExtra("task") as Task?
 
 - et ajoutez la à la liste, comme vous le faisiez avec le bouton d'ajout précédemment
 
+- Créez une constante pour remplacez les 2 utilisations de `"task"`:
+
+```kotlin
+companion object {
+  const val TASK_KEY = "task"
+}
+```
+
 <aside class="negative">
 
 La syntaxe `as Task` permet de **"caster"** un objet récupéré en tant que `Task`: c'est à dire qu'on force l'objet à être considéré de type `Task`, qui est (depuis l'étape précédente) un sous-type de `Serializable` (retourné par `getSerializableExtra`)

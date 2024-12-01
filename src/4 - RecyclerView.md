@@ -6,10 +6,6 @@ marp: true
 
 # RecyclerView
 
-![bg right:65% 100%](../assets/jetpack.svg)
-
-## Fonctionnement
-
 ![bg right 90%](../assets/recyclerview.png)
 
 ## Structure

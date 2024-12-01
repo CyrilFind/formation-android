@@ -84,7 +84,7 @@ var user: User?
 
 user?.connect()
 
-if (nullable != null) nullable.connect()
+if (user != null) user.connect()
 ```
 
 ## When statements
@@ -169,7 +169,7 @@ open class User(val login: String) {}
 
 ## Object
 
-Permet de créer facilement un Singleton
+Permet de créer facilement un Singleton (~`static class`)
 
 ```kotlin
 object Analytics {
@@ -259,17 +259,6 @@ val String.titlecased // property
 "hello".capitalize() // ➡️ "Hello"
 ```
 
-## Delegates
-
-```kotlin
-class DraggableButton(
-  clickListener: ClickListener,
-  dragListener: DragListener
-) : ClickListener by clickListener, DragListener by dragListener
-
-val lazyUser: User by lazy { getCurrentUser() }
-```
-
 ## Lambdas
 
 Blocs d'execution qui se manipulent en tant que variables:
@@ -287,6 +276,17 @@ applyToSelf(3) { a, b -> a - b } // 0
 
 // for Single Abstract Method (SAM) interface
 button.setOnClickListener { view -> ... }
+```
+
+## Delegates
+
+```kotlin
+class DraggableButton(
+  clickListener: ClickListener,
+  dragListener: DragListener
+) : ClickListener by clickListener, DragListener by dragListener
+
+val lazyUser: User by lazy { getCurrentUser() }
 ```
 
 ## Démo

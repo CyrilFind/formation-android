@@ -6,7 +6,7 @@ marp: true
 
 # Views Framework
 
-![bg right:65% 100%](../assets/jetpack.svg)
+![bg right:65%](../assets/jetpack.svg)
 
 ## Activity
 
@@ -18,6 +18,22 @@ marp: true
 - Peut contenir des `Fragment` (ex: youtube mini player fragment)
 - Souvent une "Single Activity" dans laquelle on navigue en intervertissant des `Fragment`
 - ⚠️ Éviter la tendance à mettre trop de logique dans l'Activity
+
+## Declare activity in manifest
+
+```xml
+// MainActivity needs to include intent-filter to start from launcher
+<activity
+      android:name=".MainActivity"
+      android:label="@string/app_name"
+      android:exported="true"
+      android:theme="@style/AppTheme.NoActionBar">
+  <intent-filter>
+      <action android:name="android.intent.action.MAIN"/>
+      <category android:name="android.intent.category.LAUNCHER"/>
+  </intent-filter>
+</activity>
+```
 
 ## Context
 
@@ -134,21 +150,6 @@ binding.imageView.setOnClickListener { ... }
 
 [Documentation](https://developer.android.com/topic/libraries/view-binding#fragments)
 
-## Declare main activity in manifest
-
-```xml
-// MainActivity needs to include intent-filter to start from launcher
-<activity
-      android:name=".MainActivity"
-      android:label="@string/app_name"
-      android:theme="@style/AppTheme.NoActionBar">
-  <intent-filter>
-      <action android:name="android.intent.action.MAIN"/>
-      <category android:name="android.intent.category.LAUNCHER"/>
-  </intent-filter>
-</activity>
-```
-
 # Lifecycle
 
 ![bg right:70% 100%](../assets/jetpack.svg)
@@ -194,7 +195,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 - Préserve les données de l’Activity
 - Configuré manuellement
 - Perdu si on quitte l’Activity
-- Plus persistent: DB, Web, SharedPreference, DataStore
+- Plus persistent: Web, database, SharedPreference, DataStore, ViewModel
 
 ## ViewModel
 

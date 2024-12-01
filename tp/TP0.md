@@ -2,15 +2,21 @@
 
 ## Mise en place
 
-Avant le premier cours, vérifiez que votre poste de travail est opérationnel ([tuto][android_studio_pathway]):
+Avant le premier cours, vérifiez que votre poste de travail est opérationnel:
 
-- Installez la dernière version d'[Android Studio][android_studio_download] ([tuto][android_studio_install] ou mettez le à jour si vous l'avez déjà)
-- Créez un projet vide (laissez l'api minimale proposée) et essayez de le lancer: ([tuto][android_studio_create_app])
-- Si vous avez un appareil Android physique et un cable qui fonctionne, passez le en mode développeur (en tapant 7 fois sur le numéro de build dans les paramètres) et prenez le avec vous en cours, ce sera plus simple. ([tuto][android_studio_run_on_real_device])
-- Sinon, [créez un émulateur][android_studio_run_on_emulator]: choisissez un device avec le triangle du PlayStore puis une version d'OS Android (pour éviter des problèmes, ne choisissez pas la toute dernière, mais l'avant dernière par ex). Si vous êtes sous Windows, vous aurez peut être des paramètres BIOS à changer pour la virtualisation.
+- Installez - **sur un disque où vous avez de la place** - la dernière version d'[Android Studio][android_studio_download],ou mettez le à jour si vous l'avez déjà
+- Créez un projet vide (laissez l'api minimale proposée)
+- Si vous avez un appareil Android physique et un cable qui fonctionne, passez le en mode développeur (en tapant 7 fois sur le numéro de build dans les paramètres) et prenez le avec vous en cours, ce sera plus simple.
+- Sinon: Dans `Device Manager > Create virtual device` choisissez un device avec le triangle du PlayStore, puis une version d'OS Android récente.
+- Essayez de le lancer le projet (en cliquant sur le triangle vert)
 
 <aside class="positive">
-N'hésitez pas à me contacter en avance si vous avez un soucis (les liens 'tuto' ne sont pas nécessaire normalement mais ils peuvent aider aussi)
+
+N'hésitez pas à me contacter en avance si vous avez un soucis (vous pouvez aussi suivre des [tutos Google][android_studio_pathway])
+
+Un problème courant est le manque d'espace notamment pour le SDK et l'émulateur ou la connexion de l'école qui ne permet pas toujours de télécharger les dépendances
+
+Si vous êtes sous Windows, vous aurez peut être des paramètres BIOS à changer pour la virtualisation.
 </aside>
 
 ## Paramétrage
@@ -19,7 +25,7 @@ Prenez en main l'IDE: vous pouvez aller dans les paramètres (`File > Settings` 
 
 - Activez tout dans `Editor > Inlay Hints`
 - Activez les imports automatiques: `Editor > General > Auto Import > Kotlin (en bas) > cocher les 2 cases`
-- Personnalisez la coloration syntaxique dans `Settings > Editor > Color Scheme > ⚙ > Import Scheme` (ex: le plugin "Rainglow Color Schemes")
+- Personnalisez la coloration syntaxique dans `Settings > Editor > Color Scheme` (vous pouvez utiliser ma config avec `⚙ > Import Scheme` et ce [fichier](./assets/Darculai.icls))
 - Personnalisez les raccourcis clavier
 
 ## Android Studio
@@ -30,6 +36,7 @@ Prenez en main l'IDE: vous pouvez aller dans les paramètres (`File > Settings` 
 - `Alt` + `Enter` pour des "💡 QuickFix" (suggestions de l'IDE)
 - `Shift, Shift + "recherche"` pour tout le reste (variable, fonction, classe, actions, options, ...)
 - `CTRL/CMD + alt + L` pour ré-indenter correctement tout le code (ou la sélection)
+- Cliquez sur `Sync Now` (dans la barre bleue en haut)quand l'IDE vous le propose: ça arrive notamment quand on change des fichiers de configs comme les fichiers gradle par exemple pour ajouter des dépendances. Cela permet à l'IDE de fonctionner correctement.
 
 ## Kotlin
 
@@ -76,7 +83,7 @@ Par défaut c'est une simple Todo app, mais vous pouvez choisir un autre sujet q
 Quelques idées d'applications:
 
 - Affichage d'horaires de trains
-- Client alternatif pour Twitch, Twitter, etc
+- Client alternatif pour Twitch, Twitter, Bluesky, ...
 - Traqueur de films, séries, jeux, etc
 - Jeux à UI simple: Quiz, Memory, etc
 - un chatbot spécialisé
@@ -91,7 +98,7 @@ Exemples d'API gratuites:
 - <https://trakt.docs.apiary.io>
 - <https://imgflip.com/api>
 
-Si vous le souhaitez, on peut aussi essayer de faire du Kotlin Mutliplatform afin de pouvoir lancer votre app également iOS !
+Si vous le souhaitez, on peut aussi essayer de faire du Kotlin Mutliplatform afin de pouvoir lancer votre app également sur iOS !
 
 Au moment de setup le projet, demandez moi un coup de main, on utilisera [cet outil](https://kmp.jetbrains.com/)
 

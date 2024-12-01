@@ -5,9 +5,9 @@ marp: true
 <!-- headingDivider: 2 -->
 <!-- TODO: Deeplinks ? -->
 
-# <!-- fit --> Intents
+# Intents
 
-![bg right:65% 100%](../assets/jetpack.svg)
+![bg](../assets/jetpack.svg)
 
 ## Définition
 
