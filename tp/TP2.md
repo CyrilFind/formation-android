@@ -79,7 +79,7 @@ Cliquez sur "Split", pour afficher `DetailPreview` sans avoir à relancer l'app 
 </aside>
 
 - Changez le texte affiché dans le component `Text(...)` par un titre: `"Task Detail"`
-- Ajoutez lui un `style` : `MaterialTheme.typography.headlineLarge`
+- Ajoutez lui un `textStyle` : `MaterialTheme.typography.headlineLarge`
 - Ajoutez deux autres `Text()` avec comme contenu `"title"` et `"description"`
 - Mettez les 3 `Text` dans une `Column {}`: c'est l'équivalent d'un `LinearLayout` vertical
 - Ajoutez un `modifier` à votre `Column` pour ajouter un padding de `16.dp`
