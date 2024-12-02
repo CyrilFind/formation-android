@@ -39,13 +39,16 @@ marp: true
 
 ![bg right:40% 80%](../assets/android_elements.png)
 
-- Scripts Gradle
-- Libs TOML
+- Scripts Gradle: build logic
+  - minSdk, compileSdk, targetSdk
+  - implementations, libs TOML
+  - versionCode, versionName
 - AndroidManifest.xml
 - App
 - Activity
 - Fragment
 - Layouts XML
+- Components
 
 ## App Components
 

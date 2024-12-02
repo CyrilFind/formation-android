@@ -118,12 +118,8 @@ soutenance?
 
 [android_studio_pathway]: https://developer.android.com/courses/pathways/android-basics-compose-unit-1-pathway-2
 [android_studio_download]: https://developer.android.com/studio
-[android_studio_install]: https://developer.android.com/codelabs/basic-android-kotlin-compose-install-android-studio?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-compose-unit-1-pathway-2%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-compose-install-android-studio#0
-[android_studio_create_app]: https://developer.android.com/codelabs/basic-android-kotlin-compose-first-app?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-compose-unit-1-pathway-2%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-compose-first-app#0
-[android_studio_run_on_real_device]: https://developer.android.com/codelabs/basic-android-kotlin-compose-connect-device?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-compose-unit-1-pathway-2%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-compose-connect-device#0
-[android_studio_run_on_emulator]: https://developer.android.com/codelabs/basic-android-kotlin-compose-emulator?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-compose-unit-1-pathway-2%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-compose-emulator#0
-[compose_text_codelab]: https://developer.android.com/codelabs/basic-android-kotlin-compose-text-composables?continue=https%253A%252F%252Fdeveloper.android.com%252Fcourses%252Fpathways%252Fandroid-basics-compose-unit-1-pathway-3%2523codelab-https%253A%252F%252Fdeveloper.android.com%252Fcodelabs%252Fbasic-android-kotlin-compose-text-composables
-[compose_images_codelab]: https://developer.android.com/codelabs/basic-android-kotlin-compose-add-images?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-compose-unit-1-pathway-3%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-compose-add-images#3
-[compose_buttons_codelab]: https://developer.android.com/codelabs/basic-android-kotlin-compose-build-a-dice-roller-app?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-compose-unit-2-pathway-2%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-compose-build-a-dice-roller-app#1
+[compose_text_codelab]: https://developer.android.com/codelabs/basic-android-kotlin-compose-text-composables
+[compose_images_codelab]: https://developer.android.com/codelabs/basic-android-kotlin-compose-add-images
+[compose_buttons_codelab]: https://developer.android.com/codelabs/basic-android-kotlin-compose-build-a-dice-roller-app
 [koans]: http://try.kotl.in/koans
 [constraint_layout_codelab]: https://developer.android.com/codelabs/constraint-layout
