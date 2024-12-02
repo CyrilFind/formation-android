@@ -30,6 +30,7 @@
     
       <google-codelab-step label="Objectif" duration="0">
         <p>implémenter des actions sur nos tâches, en naviguant entre des <code>Activity</code> et partager des infos entre elle ou dans une autre application avec des <code>Intent</code>.</p>
+<p><strong>Prérequis</strong>: Terminez au moins l&#39;étape &#34;Ajout de tâche rapide&#34; du TP 1</p>
 
 
       </google-codelab-step>
@@ -149,7 +150,12 @@
 </code></pre>
 <ul>
 <li>et ajoutez la à la liste, comme vous le faisiez avec le bouton d&#39;ajout précédemment</li>
+<li>Créez une constante pour remplacez les 2 utilisations de <code>"task"</code>:</li>
 </ul>
+<pre><code language="language-kotlin" class="language-kotlin">companion object {
+  const val TASK_KEY = &#34;task&#34;
+}
+</code></pre>
 <aside class="warning"><p>La syntaxe <code>as Task</code> permet de <strong>&#34;caster&#34;</strong> un objet récupéré en tant que <code>Task</code>: c&#39;est à dire qu&#39;on force l&#39;objet à être considéré de type <code>Task</code>, qui est (depuis l&#39;étape précédente) un sous-type de <code>Serializable</code> (retourné par <code>getSerializableExtra</code>)</p>
 <p>ici on utilise <code>as Task?</code> (on pourrait utiliser <code>as? Task</code>) pour récupérer un <strong>nullable</strong> et éviter d&#39;avoir une exception si le cast ne fonctionne pas en retournant <code>null</code> à la place</p>
 </aside>

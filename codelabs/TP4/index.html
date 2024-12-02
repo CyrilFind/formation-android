@@ -190,17 +190,24 @@ takePicture.launch(captureUri)
 
       </google-codelab-step>
     
+      <google-codelab-step label="Refactor" duration="0">
+        <ul>
+<li>Comme précédemment, re-factorisez un peu en créant un <code>UserViewModel</code>: il ne doit plus y avoir de calls API directement dans <code>UserActivity</code></li>
+</ul>
+
+
+      </google-codelab-step>
+    
       <google-codelab-step label="Édition infos utilisateurs" duration="0">
         <ul>
-<li>Comme précédemment, re-factorisez cette Activity en utilisant un <code>UserViewModel</code></li>
 <li>Dans <code>UserActivity</code>, permettre d&#39;afficher et éditer le nom d&#39;utilisateur</li>
 <li>Vous aurez besoin d&#39;ajouter une méthode à <code>UserWebService</code>:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">@PATCH(&#34;sync/v9/sync&#34;)
-suspend fun update(@Body userUpdate: UserUpdate): Response&lt;Unit&gt;
+suspend fun update(@Body commands: List&lt;Commands&gt;): Response&lt;Unit&gt;
 </code></pre>
 <ul>
-<li>Référez vous à la <a href="https://developer.todoist.com/sync/v9/#user" target="_blank">documentation</a> car ce n&#39;est pas une API REST donc on ne passe pas simplement l&#39;objet <code>User</code>: il faut créer un objet <code>UserUpdate</code></li>
+<li>Référez vous à la <a href="https://developer.todoist.com/sync/v9/#user" target="_blank">documentation</a> car ce n&#39;est pas une API REST donc on ne passe pas simplement l&#39;objet <code>User</code>: il faut créer un objet <code>Commands</code> de type <code>user_update</code></li>
 </ul>
 
 
