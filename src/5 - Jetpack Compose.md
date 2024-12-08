@@ -148,17 +148,29 @@ Sorte de lifecycle mais différent:
 
 ![bg right:40% 90%](../assets/compose_lifecycle.png)
 
+## Étapes
+
+![steps](../assets/compose_steps_1.svg)
+
+- Parcours de l'arbre: en fonction du state et de l'imbrication des composants
+- Placement des éléments: en fonction de l'arbre et de certains modifiers
+- Rendu: en fonction de l'arbre, du placement et de certains modifiers
+
+## Étapes: exemple
+
+![steps](../assets/compose_steps_2.png)
+
 ## State
 
 ![state bg right:20% 90%](../assets/compose_state.png)
 
 ```kotlin
-var name = "name" // always reset
-val name = mutableStateOf("name") // observable
-var name = remember { "name" } // survive recompositions
-val name = remember { mutableStateOf("name") } // both!
+var name: String = "name" // always reset
+val name: State<String> = mutableStateOf("name") // observable
+var name: String = remember { "name" } // survive recompositions
+val name: State<String> = remember { mutableStateOf("name") } // both!
 
-var name by remember { mutableStateOf("name") } // avoid `name.value`
+var name: String by remember { mutableStateOf("name") } // avoid `name.value`
 
 TextField(
     value = name,
@@ -178,7 +190,7 @@ rememberCoroutineScope()
 
 ## Modifiers
 
-order matters!
+L'ordre compte !
 
 ```kotlin
 Text(
@@ -189,6 +201,45 @@ Text(
     .padding(8.dp) // doesn't apply to white background
     .clickable { /* imperative code */ } // click zone is inside 2nd padding
 )
+```
+
+## Exemple ❌
+
+![bg right:40% 90%](../assets/layout-padding-not-clickable.gif)
+
+```kotlin
+Text(
+  text = "example",
+  modifier = Modifier.padding(8.dp)
+    .clickable {}
+)
+```
+
+## Exemple ✅
+
+![bg right:40% 90%](../assets/layout-padding-clickable.gif)
+
+```kotlin
+Text(
+  text = "example",
+  modifier = Modifier.clickable {}
+    .padding(8.dp)
+)
+```
+
+## Navigation
+
+```kotlin
+val navController = rememberNavController()
+NavHost(navController = navController, startDestination = "profile") {
+    composable("friends") { Friends(...) } // simple route
+    composable("post/{postId}") { Post(...) } // required argument
+    composable("profile?userId={userId}") { Profile(...) } // optional argument
+}
+```
+
+```kotlin
+navController.navigate("post/123456")
 ```
 
 # Side Effects
@@ -277,79 +328,29 @@ fun LandingScreen(onTimeout: () -> Unit) {
 ## CompositionLocal
 
 ```kotlin
-val LocalElevations = compositionLocalOf { Elevations() }
-```
-
-```kotlin
-// usage
-val elevations = if (isSystemInDarkTheme()) {
-    Elevations(card = 1.dp, default = 1.dp)
-} else {
-    Elevations(card = 0.dp, default = 0.dp)
-}
-
-// Bind elevation as the value for LocalElevations
-CompositionLocalProvider(LocalElevations provides elevations) {
+val LocalElevations = staticCompositionLocalOf { Elevations() }
+// ...
+CompositionLocalProvider(LocalElevations provides Elevations(default = 1.dp, ...)) {
     // ...
     LocalElevations.current // access
 }
 
 ```
 
-## ProvideTextStyle
-
-```kotlin
-@Composable
-fun ProvideTextStyle(value: TextStyle, content: @Composable () -> Unit) {
-    val mergedStyle = LocalTextStyle.current.merge(value)
-    CompositionLocalProvider(LocalTextStyle provides mergedStyle, content = content)
-}
-```
-
-## Navigation
-
-```kotlin
-val navController = rememberNavController()
-NavHost(navController = navController, startDestination = "profile") {
-    composable("friends") { Friends(...) } // simple route
-    composable("post/{postId}") { Post(...) } // required argument
-    composable("profile?userId={userId}") { Profile(...) } // optional argument
-}
-```
-
-```kotlin
-navController.navigate("post/123456")
-```
-
 ## Theme
 
 ```kotlin
 MaterialTheme(
-  colorScheme = lightColorScheme(
-    primary = md_theme_light_primary,
-    onPrimary = md_theme_light_onPrimary,
-    primaryContainer = md_theme_light_primaryContainer,
-    // ..
-  ),
-  typography = Typography(
-    titleLarge = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 22.sp),
-    titleMedium = TextStyle(lineHeight = 24.sp),
-    // ..
-  ),
-  shapes = Shapes(
-    small = RoundedCornerShape(8.dp),
-    medium = RoundedCornerShape(12.dp),
-    // ..
-  ),
-) { ... }
+  colorScheme = lightColorScheme(primary = ..., onPrimary = ...),
+  typography = Typography(titleLarge = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 22.sp), ...),
+  shapes = Shapes(small = RoundedCornerShape(8.dp), ...),
+) { App()} // Composant qui s'applique sur toute l'app / chaque écran
 ```
 
-## Design system
+- `MaterialTheme` est fourni par Google et permet de fournir définir des valeurs par défaut aux composants Material (à l'aide de Compositionlocal)
+- On peut définir son propre Theme et ses propres Composants qui l'utilisent
+- Cela permet de définir son propre Design System
 
-- Tokens
-- Atoms
-- Molecules
-- ...
 
 ## UI state
 
@@ -367,13 +368,9 @@ class LoginViewModel : ViewModel() {
 @Composable
 fun LoginScreen(viewModel: LoginViewModel) {
     val uiState by viewModel.uiState.collectAsState()
-    when (uiState.value) {
-        UiState.SignedOut -> {
-            Button(onClick = { viewModel.signIn() }) { Text("Sign in") }
-        }
-        UiState.SignedIn -> {
-            Text("Signed in as ${uiState.userId}")
-        }
+    when (uiState) {
+        UiState.SignedOut -> Button(onClick = { viewModel.signIn() }) { Text("Sign in") }
+        UiState.SignedIn -> Text("Signed in as ${uiState.userId}")
     }
 }
 ```

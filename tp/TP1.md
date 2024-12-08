@@ -38,6 +38,8 @@ Comme dans un vrai projet pro finalement !
 
 </aside>
 
+<!-- ajouter une icone ? -->
+
 ## Gestion des fichiers
 
 📁 Les fichiers source Java ou Kotlin sont rangés en "packages":
@@ -106,6 +108,18 @@ val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 ```kotlin
 private var taskList = listOf("Task 1", "Task 2", "Task 3")
 ```
+<!-- utiliser une liste de res string pour la culture ? -->
+
+```kotlin
+<resources>
+    <string name="app_name">Affirmations</string>
+    <string name="task1">#1 Faire les courses</string>
+    <string name="task2">#2 Faire la vaisselle</string>
+    <string name="task3">#3 Faire le ménage</string>
+</resources>
+```
+<!-- utiliser map {} ? -->
+<!--         recyclerView.setHasFixedSize(true) -->
 
 ## MainActivity
 
@@ -318,7 +332,7 @@ adapter.submitList(listOf("Item#1", "Item #2"))
 
 ## ViewBinding
 
-Utiliser le `ViewBinding` ([documentation](https://developer.android.com/topic/libraries/view-binding) / [slides](../../slides/2%20-%20Views.html#9) dans `TaskListFragment`:
+Utiliser le `ViewBinding` ([documentation](https://developer.android.com/topic/li braries/view-binding) / [slides](../../slides/3%20-%20Views.html#9)) dans `TaskListFragment`:
 
 - changez le `inflate` pour récupérer une instance de type `XxxBinding`
 - remplacez les `findViewByIds` par des calls direct du genre `binding.myViewId`

@@ -154,42 +154,6 @@ getContent.launch("image/*")
 
 [Documentation](https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts)
 
-# Permissions
-
-<https://developer.android.com/training/permissions/requesting>
-
-- Demandées “à la volée” depuis Android M
-- Les permissions “dangereuses” doivent être demandées à chaque fois
-- On recommande d’expliquer la raison avant (et après un refus)
-- Vérifier si la permission a été donnée
-- La demander sinon (éventuellement demander à devenir app par défaut)
-- Exécuter l’action ou expliquer pourquoi elle est impossible en cas de refus
-- Auto-reset permissions of unused apps
-
-## Example
-
-Ajouter dans le manifest:
-
-```xml
-<uses-permission android:name="android.permission.CAMERA" />
-```
-
-```kotlin
-// Register the permissions callback
-val requestPermissionLauncher =
-  registerForActivityResult(RequestPermission()) { isGranted ->
-    if (isGranted) // Permission is granted
-    else // Explain required permission the user denied
-}
-
-when {
-  ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
-     == PackageManager.PERMISSION_GRANTED -> // You can use the API that requires the permission.
-  shouldShowRequestPermissionRationale(...) -> // Explain to the user why your app requires this permission
-  else -> requestPermissionLauncher.launch(Manifest.permission.CAMERA) // ask for the permission
-}
-```
-
 # iOS
 
 ## iOS: Segues
@@ -222,11 +186,3 @@ Plus compliqué: Il faut crér un module à part avec son propre `ViewController
 Les capabilities sont dans un fichierde configuration (plist):
 
 ![height:250px](../assets/ios_share_extensions.png)
-
-## iOS: Permissions
-
-![bg right:30% 90%](../assets/ios_permission.png)
-
-Beaucoup plus simple: on définit quelques textes dans des fichiers de configuration, ils seront utilisés pour remplir la popup quand l'OS l'estime nécessaire
-
-![permissions string](../assets/ios_permission_string.png)

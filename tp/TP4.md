@@ -216,3 +216,5 @@ private fun showMessage(message: String) {
 ```
 
 Pour faire encore mieux, vous pouvez aussi afficher un message avec AlertDialog en Compose et continuer le flow en fonction de la réponse de l'utilisateur
+
+<!-- NavHost refacto ? -->

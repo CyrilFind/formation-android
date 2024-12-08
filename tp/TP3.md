@@ -17,6 +17,12 @@ Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 
+<aside class="positive">
+
+C'est ici une "install-time permission", car elle n'est pas critique, et donc il n'y a pas besoin de la demander explicitement à l'utilisateur, elle est acceptée à l'installation.
+
+</aside>
+
 ## Ajout des dépendances
 
 Dans le fichier `app/build.gradle.kts` (celui du module):
@@ -25,34 +31,29 @@ Dans le fichier `app/build.gradle.kts` (celui du module):
 
 ```groovy
 // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+implementation("com.squareup.retrofit2:retrofit:2.11.0")
+implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
-    // KotlinX Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+// KotlinX Serialization
+implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
 
-    // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-
-    // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+// Coroutines
+implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 ```
 
 - Tout en haut ajoutez le plugin de sérialisation:
 
 ```groovy
 plugins {
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
 }
 ```
 
-Après tout cela vous pouvez cliquer sur "Sync Now" pour que l'IDE télécharge les dépendances, etc.
-
-En cas de soucis à ce moment là, vérifiez que Android Studio est à jour ("Check for updates")
+- Après tout cela vous pouvez cliquer sur "Sync Now" pour que l'IDE télécharge les dépendances, etc.
+- Passez toutes ces dépendances dans libs.versions.toml en vous aidant de l'IDE
+- Faites pareil pour le plugin, en utilisant `version.ref = "kotlin"`
 
 ## Retrofit
 
@@ -104,7 +105,7 @@ Ici je vous donne tout ce code de config car ce n'est pas très intéressant à 
 
 <aside class="negative">
 
-la syntaxe `val retrofit by lazy { ... }` permet d'initialiser la variable `retrofit` automatiquement la première fois qu'elle sera utilisée (en executant la lambda qui suit le mot `lazy`)
+la syntaxe `val retrofit by lazy { ... }` permet d'initialiser la variable `retrofit` automatiquement la première fois qu'elle sera utilisée
 
 </aside>
 
@@ -120,7 +121,7 @@ Extrait d'un json renvoyé par la route `/sync/v9/user/`:
 }
 ```
 
-Créer la `data class` `User`:
+Créer la `data class User` correspondante:
 
 ```kotlin
 @Serializable
@@ -171,9 +172,9 @@ object Api {
 
 Ici, Retrofit va créer une implémentation de l'interface `UserWebService` pour nous, en utilisant d'une part les valeurs de base configurées dans `Api` et d'autre part les annotations (`@`) qui lui donnent le type de requête (ex: `GET`), la route, les types de paramètres, etc.
 
-Utiliser des interfaces est souvent préférables pour pouvoir interchanger facilement les implémentantions: par exemple si on change une source de données, une dépendances, etc..
+Utiliser des interfaces est souvent préférables pour pouvoir interchanger facilement les implémentations: par exemple si on change une source de données, une dépendances, etc..
 
-Un usage notable est les Tests Unitaires: on peut alors utiliser une "fausse implémentation" de test qui par ex ici ne fait pas vraiment de requêtes mais retourne des réponses fixées
+Typiquement dans les Tests Unitaires, on a souvent une "fausse implémentation" qui ne fait pas vraiment de requêtes mais retourne des réponses fixes directement
 </aside>
 
 ## Affichage
@@ -257,24 +258,24 @@ Extrait d'un json renvoyé par la route `/rest/v2/tasks/`:
 
 <aside class="negative">
 
-⚠️ Ici vous aurez peut être un conflit d'imports car on précédemment fait hériter `Task` de `Serializable`, et une des annotations de KotlinX Serialization s'appelle aussi `@Serializable`: faites hériter explicitement de `java.io.Serializable` pour lever l'ambiguité.
+⚠️ Ici vous aurez peut être un conflit d'imports car on a précédemment fait hériter `Task` de `Serializable`, et une des annotations de KotlinX Serialization s'appelle aussi `@Serializable`: faites hériter explicitement de `java.io.Serializable` pour lever l’ambiguïté.
 
 </aside>
 
-## TasksListViewModel
+## TaskListViewModel
 
 <aside class="positive">
 
 `ViewModel` est une classe du framework Android qui permet de gérer les données d'une vue, et dont on peut facilement créer et récupérer une instance, en général chacune associée à une `Activity` ou un `Fragment`
 
-On va donc y déplacer une partie de la logique: dans l'idéal l'`Activity` ou le `Fragment` doit seulement s'occuper de passer les évènements (comme les clics) au VM
+On va donc y déplacer une partie de la logique: dans l'idéal l'`Activity` ou le `Fragment` doit seulement s'occuper de passer les évènements (comme les clics) au VM, et insérer ce que le VM lui dit d'afficher dans les vues
 
 </aside>
 
-Créer la classe `TasksListViewModel`, avec une liste de tâches _Observable_ grâce au `MutableStateFlow`:
+Créer la classe `TaskListViewModel`, avec une liste de tâches _Observable_ grâce au `MutableStateFlow`:
 
 ```kotlin
-class TasksListViewModel : ViewModel() {
+class TaskListViewModel : ViewModel() {
   private val webService = Api.tasksWebService
 
   public val tasksStateFlow = MutableStateFlow<List<Task>>(emptyList())
