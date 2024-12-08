@@ -44,6 +44,8 @@
         <p>Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut ajouter la permission dans le fichier <code>AndroidManifest</code>, juste au dessus de la balise <code>application</code></p>
 <pre><code language="language-xml" class="language-xml">&lt;uses-permission android:name=&#34;android.permission.INTERNET&#34; /&gt;
 </code></pre>
+<aside class="special"><p>C&#39;est ici une &#34;install-time permission&#34;, car elle n&#39;est pas critique, et donc il n&#39;y a pas besoin de la demander explicitement à l&#39;utilisateur, elle est acceptée à l&#39;installation.</p>
+</aside>
 
 
       </google-codelab-step>
@@ -54,31 +56,29 @@
 <li>Dans <code>dependencies {...}</code>, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l&#39;IDE vous le propose, il vous permet également de facilement les passer dans le <code>libs.versions.toml</code>):</li>
 </ul>
 <pre><code language="language-groovy" class="language-groovy">// Retrofit
-    implementation(&#34;com.squareup.retrofit2:retrofit:2.11.0&#34;)
-    implementation(&#34;com.squareup.okhttp3:logging-interceptor:4.12.0&#34;)
+implementation(&#34;com.squareup.retrofit2:retrofit:2.11.0&#34;)
+implementation(&#34;com.squareup.okhttp3:logging-interceptor:4.12.0&#34;)
 
-    // KotlinX Serialization
-    implementation(&#34;org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2&#34;)
-    implementation(&#34;com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0&#34;)
+// KotlinX Serialization
+implementation(&#34;org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2&#34;)
+implementation(&#34;com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0&#34;)
 
-    // Coroutines
-    implementation(&#34;org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3&#34;)
-    implementation(&#34;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3&#34;)
-
-    // Lifecycle
-    implementation(&#34;androidx.lifecycle:lifecycle-extensions:2.2.0&#34;)
-    implementation(&#34;androidx.lifecycle:lifecycle-runtime-ktx:2.8.7&#34;)
-    implementation(&#34;androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7&#34;)
+// Coroutines
+implementation(&#34;org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3&#34;)
+implementation(&#34;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3&#34;)
 </code></pre>
 <ul>
 <li>Tout en haut ajoutez le plugin de sérialisation:</li>
 </ul>
 <pre><code language="language-groovy" class="language-groovy">plugins {
-    id(&#34;org.jetbrains.kotlin.plugin.serialization&#34;) version &#34;1.9.0&#34;
+    id(&#34;org.jetbrains.kotlin.plugin.serialization&#34;) version &#34;2.0.0&#34;
 }
 </code></pre>
-<p>Après tout cela vous pouvez cliquer sur &#34;Sync Now&#34; pour que l&#39;IDE télécharge les dépendances, etc.</p>
-<p>En cas de soucis à ce moment là, vérifiez que Android Studio est à jour (&#34;Check for updates&#34;)</p>
+<ul>
+<li>Après tout cela vous pouvez cliquer sur &#34;Sync Now&#34; pour que l&#39;IDE télécharge les dépendances, etc.</li>
+<li>Passez toutes ces dépendances dans libs.versions.toml en vous aidant de l&#39;IDE</li>
+<li>Faites pareil pour le plugin, en utilisant <code>version.ref = "kotlin"</code></li>
+</ul>
 
 
       </google-codelab-step>
@@ -126,7 +126,7 @@
 <li>on crée une instance de <a href="https://square.github.io/retrofit/" target="_blank">Retrofit</a> que l&#39;on configure avec les éléments ci dessus (en adaptant le Serializer en <code>ConverterFactory</code>)</li>
 </ul>
 </aside>
-<aside class="warning"><p>la syntaxe <code>val retrofit by lazy { ... }</code> permet d&#39;initialiser la variable <code>retrofit</code> automatiquement la première fois qu&#39;elle sera utilisée (en executant la lambda qui suit le mot <code>lazy</code>)</p>
+<aside class="warning"><p>la syntaxe <code>val retrofit by lazy { ... }</code> permet d&#39;initialiser la variable <code>retrofit</code> automatiquement la première fois qu&#39;elle sera utilisée</p>
 </aside>
 
 
@@ -140,7 +140,7 @@
   &#34;avatar_medium&#34;: &#34;https://blablabla/image.jpg&#34;
 }
 </code></pre>
-<p>Créer la <code>data class</code> <code>User</code>:</p>
+<p>Créer la <code>data class User</code> correspondante:</p>
 <pre><code language="language-kotlin" class="language-kotlin">@Serializable
 data class User(
   @SerialName(&#34;email&#34;)
@@ -178,8 +178,8 @@ data class User(
 }
 </code></pre>
 <aside class="special"><p>Ici, Retrofit va créer une implémentation de l&#39;interface <code>UserWebService</code> pour nous, en utilisant d&#39;une part les valeurs de base configurées dans <code>Api</code> et d&#39;autre part les annotations (<code>@</code>) qui lui donnent le type de requête (ex: <code>GET</code>), la route, les types de paramètres, etc.</p>
-<p>Utiliser des interfaces est souvent préférables pour pouvoir interchanger facilement les implémentantions: par exemple si on change une source de données, une dépendances, etc..</p>
-<p>Un usage notable est les Tests Unitaires: on peut alors utiliser une &#34;fausse implémentation&#34; de test qui par ex ici ne fait pas vraiment de requêtes mais retourne des réponses fixées</p>
+<p>Utiliser des interfaces est souvent préférables pour pouvoir interchanger facilement les implémentations: par exemple si on change une source de données, une dépendances, etc..</p>
+<p>Typiquement dans les Tests Unitaires, on a souvent une &#34;fausse implémentation&#34; qui ne fait pas vraiment de requêtes mais retourne des réponses fixes directement</p>
 </aside>
 
 
@@ -244,18 +244,18 @@ val user = Api.userWebService.fetchUser().body()!!
 <ul>
 <li>Modifier <code>Task</code> pour la rendre &#34;serializable&#34; par KotlinX Serialization (inspirez vous de <code>User</code>)</li>
 </ul>
-<aside class="warning"><p>⚠️ Ici vous aurez peut être un conflit d&#39;imports car on précédemment fait hériter <code>Task</code> de <code>Serializable</code>, et une des annotations de KotlinX Serialization s&#39;appelle aussi <code>@Serializable</code>: faites hériter explicitement de <code>java.io.Serializable</code> pour lever l&#39;ambiguité.</p>
+<aside class="warning"><p>⚠️ Ici vous aurez peut être un conflit d&#39;imports car on a précédemment fait hériter <code>Task</code> de <code>Serializable</code>, et une des annotations de KotlinX Serialization s&#39;appelle aussi <code>@Serializable</code>: faites hériter explicitement de <code>java.io.Serializable</code> pour lever l&#39;ambiguïté.</p>
 </aside>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="TasksListViewModel" duration="0">
+      <google-codelab-step label="TaskListViewModel" duration="0">
         <aside class="special"><p><code>ViewModel</code> est une classe du framework Android qui permet de gérer les données d&#39;une vue, et dont on peut facilement créer et récupérer une instance, en général chacune associée à une <code>Activity</code> ou un <code>Fragment</code></p>
-<p>On va donc y déplacer une partie de la logique: dans l&#39;idéal l&#39;<code>Activity</code> ou le <code>Fragment</code> doit seulement s&#39;occuper de passer les évènements (comme les clics) au VM</p>
+<p>On va donc y déplacer une partie de la logique: dans l&#39;idéal l&#39;<code>Activity</code> ou le <code>Fragment</code> doit seulement s&#39;occuper de passer les évènements (comme les clics) au VM, et insérer ce que le VM lui dit d&#39;afficher dans les vues</p>
 </aside>
-<p>Créer la classe <code>TasksListViewModel</code>, avec une liste de tâches <em>Observable</em> grâce au <code>MutableStateFlow</code>:</p>
-<pre><code language="language-kotlin" class="language-kotlin">class TasksListViewModel : ViewModel() {
+<p>Créer la classe <code>TaskListViewModel</code>, avec une liste de tâches <em>Observable</em> grâce au <code>MutableStateFlow</code>:</p>
+<pre><code language="language-kotlin" class="language-kotlin">class TaskListViewModel : ViewModel() {
   private val webService = Api.tasksWebService
 
   public val tasksStateFlow = MutableStateFlow&lt;List&lt;Task&gt;&gt;(emptyList())

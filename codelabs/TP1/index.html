@@ -101,6 +101,13 @@
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">private var taskList = listOf(&#34;Task 1&#34;, &#34;Task 2&#34;, &#34;Task 3&#34;)
 </code></pre>
+<pre><code language="language-kotlin" class="language-kotlin">&lt;resources&gt;
+    &lt;string name=&#34;app_name&#34;&gt;Affirmations&lt;/string&gt;
+    &lt;string name=&#34;task1&#34;&gt;#1 Faire les courses&lt;/string&gt;
+    &lt;string name=&#34;task2&#34;&gt;#2 Faire la vaisselle&lt;/string&gt;
+    &lt;string name=&#34;task3&#34;&gt;#3 Faire le ménage&lt;/string&gt;
+&lt;/resources&gt;
+</code></pre>
 
 
       </google-codelab-step>
@@ -305,7 +312,7 @@ adapter.submitList(listOf(&#34;Item#1&#34;, &#34;Item #2&#34;))
       </google-codelab-step>
     
       <google-codelab-step label="ViewBinding" duration="0">
-        <p>Utiliser le <code>ViewBinding</code> (<a href="https://developer.android.com/topic/libraries/view-binding" target="_blank">documentation</a> / <a href="../../slides/2%20-%20Views.html#9" target="_blank">slides</a> dans <code>TaskListFragment</code>:</p>
+        <p>Utiliser le <code>ViewBinding</code> ([documentation](https://developer.android.com/topic/li braries/view-binding) / <a href="../../slides/3%20-%20Views.html#9" target="_blank">slides</a>) dans <code>TaskListFragment</code>:</p>
 <ul>
 <li>changez le <code>inflate</code> pour récupérer une instance de type <code>XxxBinding</code></li>
 <li>remplacez les <code>findViewByIds</code> par des calls direct du genre <code>binding.myViewId</code></li>
