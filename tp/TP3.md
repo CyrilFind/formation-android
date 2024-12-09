@@ -2,6 +2,8 @@
 
 ## Avant de commencer
 
+**Prérequis**: Terminez au moins l'étape "Édition d'une tâche" du TP 2
+
 Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, pour commencer nous allons simuler cela en passant directement un `token` dans les `headers` de nos requêtes `HTTP`:
 
 - Rendez vous sur [todoist.com](https://todoist.com/app)
