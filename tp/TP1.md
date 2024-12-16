@@ -23,8 +23,7 @@ Vous allez créer un unique projet que vous mettrez à jour au fur à mesure des
 
 - Créer un nouveau projet avec une `Empty VIEWS Activity` (⚠️ pas `Empty Activity` SVP ⚠️)
 - Donnez lui un nom personnalisé comme `TodoNicolasAlexandre` (⚠️ pas `TP1` SVP ⚠️)
-- Choisissez un package name unique de ce genre: `com.nicoalex.todo`
-- Language: `Kotlin`
+- Choisissez un package name unique de ce genre: `com.nicoalex.todo` (ce sera la racine de tous vos packages et sert d'identifiant unique d'application)
 - Minimum API Level: laissez la valeur proposée par défaut
 - Initialisez un projet git et faites un commit initial
 
@@ -55,6 +54,13 @@ Mais il peut parfois être pratique de passer en "Project Files" par ex pour voi
 
 </aside>
 
+Parcourez les différents fichiers de config, notamment les plus importants:
+
+- `app/build.gradle.kts`: contient la configuration de module principal (`app`), notamment les versions compatibles, son propre numéro de version, etc et surtout les différentes dépendances.
+- `./build.gradle.kts`: contient moins de choses, en général des plugins, mais concerne tout le projet
+- `libs.versions.toml`: un catalogue de dépendances, de plugins et de versions, qui est utilisé par les fichiers précédents. Vérifiez que vous utilisez les dernières versions disponible, surtout pour `kotlin`.
+- `app/src/main/AndroidManifest.xml`: contient les info de packaging de l'app comme les activités existantes, le nom de l'app, l'icône, etc.
+
 <aside class="negative">
 
 Les packages surlignés en vert contiennent le code de test uniquement: ne vous en occupez pas pour l'instant
@@ -72,14 +78,16 @@ Vous y mettrez tous les fichiers source (Kotlin) concernant la liste de tâches
 - Créez dans votre nouveau package un fichier kotlin `TaskListFragment.kt` qui contiendra la classe `TaskListFragment`:
 
 ```kotlin
-class TaskListFragment : Fragment() {}
+class TaskListFragment : Fragment() {
+   //...
+}
 ```
 
 - Créer le layout associé `fragment_task_list.xml` dans `res/layout`
 
 <aside class="positive">
 
-vous pouvez aussi utiliser Android Studio pour créer les 2 fichiers à la fois: `Clic droit sur le package > New > Fragment > Fragment (Blank)`
+vous pouvez aussi utiliser Android Studio pour créer les 2 fichiers à la fois: `Clic droit sur le package > New > Fragment > Fragment (Blank)`, mais la classe sera remplie de plein de code inutile -> supprimez-le
 
 </aside>
 

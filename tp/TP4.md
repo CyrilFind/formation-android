@@ -2,6 +2,8 @@
 
 ## Coil
 
+**Prérequis**: Terminez totalement le TP précédent
+
 <aside class="positive">
 
 La lib `Coil` permet d'afficher des images depuis une URL de façon efficace en gérant la taille, le cache, etc... (`Picasso` et `Glide` sont également souvent utilisées et assez similaires)

@@ -56,18 +56,14 @@ Cet écran étant assez simple, on va en profiter pour s'initer à Jetpack Compo
 
 <aside class="positive">
 
-Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent explicite](https://developer.android.com/guide/components/intents-filters#Types):
-
-```kotlin
-val intent = Intent(context, DetailActivity::class.java)
-```
+Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent explicite](https://developer.android.com/guide/components/intents-filters#Types)
 
 </aside>
 
 - Faire en sorte de lancer la nouvelle Activity depuis le bouton + de la première activity
 
 ```kotlin
-startActivity(intent)
+startActivity(Intent(context, ...))
 ```
 
 - Renommez `Greeting` en `Detail` et `GreetingPreview` en `DetailPreview` et supprimez l'argument `name`

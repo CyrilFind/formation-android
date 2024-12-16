@@ -27,6 +27,10 @@ Model View Intent
 
 💡 Ceci s'adapte encore plus directement avec Jetpack Compose
 
+## Layers
+
+![bg right:60% 95%](../assets/layers.png)
+
 ## Dependency Rule
 
 ![bg right:60% 95%](../assets/dependency.png)
@@ -60,5 +64,8 @@ Analogie: Serveur
 Analogie: Cuisine
 
 ## Compose
+
+- Similaire: MVVM / MVI
+- Inspirations de React ?
 
 <https://developer.android.com/jetpack/compose/architecture>
