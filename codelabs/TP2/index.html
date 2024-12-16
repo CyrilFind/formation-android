@@ -72,14 +72,12 @@
 <li>Créez-y avec l&#39;IDE une nouvelle Activity: <code>DetailActivity</code>: <code>Clic droit sur le package > New > Activity > Gallery... > Empty Activity</code></li>
 <li>L&#39;IDE devrait automatiquement compléter <code>app/build.gradle.kts</code> pour configurer Compose (buildFeatures, dependencies, etc) et l&#39;ajouter au <code>AndroidManifest.xml</code></li>
 </ul>
-<aside class="special"><p>Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un <a href="https://developer.android.com/guide/components/intents-filters#Types" target="_blank">Intent explicite</a>:</p>
-<pre><code language="language-kotlin" class="language-kotlin">val intent = Intent(context, DetailActivity::class.java)
-</code></pre>
+<aside class="special"><p>Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un <a href="https://developer.android.com/guide/components/intents-filters#Types" target="_blank">Intent explicite</a></p>
 </aside>
 <ul>
 <li>Faire en sorte de lancer la nouvelle Activity depuis le bouton + de la première activity</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">startActivity(intent)
+<pre><code language="language-kotlin" class="language-kotlin">startActivity(Intent(context, ...))
 </code></pre>
 <ul>
 <li>Renommez <code>Greeting</code> en <code>Detail</code> et <code>GreetingPreview</code> en <code>DetailPreview</code> et supprimez l&#39;argument <code>name</code></li>

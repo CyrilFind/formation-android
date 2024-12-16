@@ -44,8 +44,7 @@
 <ul>
 <li>Créer un nouveau projet avec une <code>Empty VIEWS Activity</code> (⚠️ pas <code>Empty Activity</code> SVP ⚠️)</li>
 <li>Donnez lui un nom personnalisé comme <code>TodoNicolasAlexandre</code> (⚠️ pas <code>TP1</code> SVP ⚠️)</li>
-<li>Choisissez un package name unique de ce genre: <code>com.nicoalex.todo</code></li>
-<li>Language: <code>Kotlin</code></li>
+<li>Choisissez un package name unique de ce genre: <code>com.nicoalex.todo</code> (ce sera la racine de tous vos packages et sert d&#39;identifiant unique d&#39;application)</li>
 <li>Minimum API Level: laissez la valeur proposée par défaut</li>
 <li>Initialisez un projet git et faites un commit initial</li>
 </ul>
@@ -66,6 +65,13 @@
 <aside class="special"><p>Dans le volet &#34;Projet&#34; à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est &#34;Android&#34; qui affiche facilement le Manifest, les fichiers source, les fichier resources (<code>res</code>), compacte les dossiers vides ensemble (<code>com.nicoalex.todo</code>): tout ce qui est utile spécifiquement pour Android...</p>
 <p>Mais il peut parfois être pratique de passer en &#34;Project Files&#34; par ex pour voir l&#39;arborescence réelle et certains fichiers cachés autrement.</p>
 </aside>
+<p>Parcourez les différents fichiers de config, notamment les plus importants:</p>
+<ul>
+<li><code>app/build.gradle.kts</code>: contient la configuration de module principal (<code>app</code>), notamment les versions compatibles, son propre numéro de version, etc et surtout les différentes dépendances.</li>
+<li><code>./build.gradle.kts</code>: contient moins de choses, en général des plugins, mais concerne tout le projet</li>
+<li><code>libs.versions.toml</code>: un catalogue de dépendances, de plugins et de versions, qui est utilisé par les fichiers précédents. Vérifiez que vous utilisez les dernières versions disponible, surtout pour <code>kotlin</code>.</li>
+<li><code>app/src/main/AndroidManifest.xml</code>: contient les info de packaging de l&#39;app comme les activités existantes, le nom de l&#39;app, l&#39;icône, etc.</li>
+</ul>
 <aside class="warning"><p>Les packages surlignés en vert contiennent le code de test uniquement: ne vous en occupez pas pour l&#39;instant</p>
 </aside>
 <p>Créez un nouveau package <code>list</code> à l&#39;intérieur votre package source de base (pas à côté !) :</p>
@@ -79,12 +85,14 @@
         <ul>
 <li>Créez dans votre nouveau package un fichier kotlin <code>TaskListFragment.kt</code> qui contiendra la classe <code>TaskListFragment</code>:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">class TaskListFragment : Fragment() {}
+<pre><code language="language-kotlin" class="language-kotlin">class TaskListFragment : Fragment() {
+   //...
+}
 </code></pre>
 <ul>
 <li>Créer le layout associé <code>fragment_task_list.xml</code> dans <code>res/layout</code></li>
 </ul>
-<aside class="special"><p>vous pouvez aussi utiliser Android Studio pour créer les 2 fichiers à la fois: <code>Clic droit sur le package > New > Fragment > Fragment (Blank)</code></p>
+<aside class="special"><p>vous pouvez aussi utiliser Android Studio pour créer les 2 fichiers à la fois: <code>Clic droit sur le package > New > Fragment > Fragment (Blank)</code>, mais la classe sera remplie de plein de code inutile -&gt; supprimez-le</p>
 </aside>
 <ul>
 <li>Dans <code>TaskListFragment</code>, overrider la méthode <code>onCreateView(...)</code>: commencez à taper <code>onCrea...</code> et utilisez l&#39;auto-completion de l&#39;IDE pour vous aider (vous pouvez supprimer la ligne <code>super.onCreateView(...)</code>)</li>
