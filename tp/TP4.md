@@ -111,6 +111,12 @@ imageView.load(user.avatar) {
 }
 ```
 
+<aside class="negative">
+
+⚠️ Importez bien `import coil3.request.error` sinon vous risquez d'utiliser `error(any: Any)` qui sert à throw une `IllegalStateException` et donc va crash
+
+</aside>
+
 ## Stockage: Accéder et uploader
 
 On va maintenant permettre à l'utilisateur d'uploader une image enregistrée sur son téléphone
@@ -152,7 +158,7 @@ Mais pour gérer les versions plus anciennes, il faut demander la permission `RE
 
 - ajoutez un `launcher` avec le contrat `RequestPermission()`
 - utilisez le au click du bouton (avec `Manifest.permission.READ_EXTERNAL_STORAGE`) et dans sa callback, utilisez le launcher précédent
-- pour tester, créez temporairement un émulateur en API 9 ou moins, sur les autres devices, cela ne doit pas changer le fonctionnement
+- pour tester, créez temporairement un émulateur en API 9 ou moins, sur les devices en 10 ou plus, le comportement doit rester le même qu'avant donc faites un `if (Build.VERSION.SDK_INT >= 29) { ... }`
 
 ## Amélioration de la caméra
 
@@ -173,7 +179,7 @@ val takePicture = rememberLauncherForActivityResult(TakePicture()) { success ->
 takePicture.launch(captureUri)
 ```
 
-## Refactor
+## Refactor: UserViewModel
 
 - Comme précédemment, re-factorisez un peu en créant un `UserViewModel`: il ne doit plus y avoir de calls API directement dans `UserActivity`
 
@@ -217,6 +223,12 @@ private fun showMessage(message: String) {
 }
 ```
 
-Pour faire encore mieux, vous pouvez aussi afficher un message avec AlertDialog en Compose et continuer le flow en fonction de la réponse de l'utilisateur
+Pour faire encore mieux, vous pouvez aussi afficher un message avec AlertDialog en Compose et continuer le flow en fonction de la réponse de l'utilisateur.
 
-<!-- NavHost refacto ? -->
+## Export
+
+Permettez à l'utilisateur de faire un export texte de ses tâches dans un `backup.csv` contenant chaque tâche ligne par ligne s'enregistrera dans les fichiers du téléphone.
+
+## Import
+
+Permettez à l'utilisateur de créer des tâches depuis un fichier `.csv`.

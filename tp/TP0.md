@@ -14,9 +14,13 @@ Avant le premier cours, vérifiez que votre poste de travail est opérationnel:
 
 N'hésitez pas à me contacter en avance si vous avez un soucis (vous pouvez aussi suivre des [tutos Google][android_studio_pathway])
 
-Un problème courant est le manque d'espace notamment pour le SDK et l'émulateur ou la connexion de l'école qui ne permet pas toujours de télécharger les dépendances
+Problème courants:
 
-Si vous êtes sous Windows, vous aurez peut être des paramètres BIOS à changer pour la virtualisation.
+- manque d'espace pour le SDK, l'émulateur: installez sur un disque secondaire si il y a + de place
+- la connexion de l'école qui ne permet pas toujours de télécharger les dépendances: passez en partage de connexion ou sur un autre réseau
+- problèmes de permissions (ex `Failed to create jwk directory`): lancez en mode Administrateur
+- sous Windows, vous aurez peut être des paramètres BIOS à changer pour la virtualisation HAXM
+
 </aside>
 
 ## Paramétrage
