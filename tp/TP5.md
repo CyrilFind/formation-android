@@ -18,14 +18,14 @@ On va maintenant rendre l'app plus proche d'une app réelle en permettant de se 
 [OAuth](https://en.wikipedia.org/wiki/OAuth) est un protocole d'authentification sécurisé utilisé par de nombreux services.
 Il y a plusieurs étapes, mais en gros:
 
-1. on requête un "`authorization endpoint" en fournissant des identifiants en tant que client tiers (client id et secret) et des paramètres pour spécifier de quelles resources on a besoin (scopes)
+1. on requête un "authorization endpoint" en fournissant des identifiants en tant que client tiers (client id et secret) et des paramètres pour spécifier de quelles resources on a besoin (scopes)
 2. l'utilisateur se connecte et accepte (il voit les resources demandées)
 3. on récupère un code et une uri de redirection vers notre "site"
 4. on revient dans l'app grace à cette uri
 5. avec le code on interroge un "token endpoint" pour obtenir un "access token" pour notre utilisateur
 6. on peut utiliser ce token comme avant dans nos requêtes API
 
-J'ai déjà créé un client tierce donc je vais vous donner les identifiants mais vous pouvez créer votre propre app tierce si vous voulez [sur Todoist](https://developer.todoist.com/appconsole.html).
+J'ai déjà créé un client tiers donc je vais vous donner les identifiants mais vous pouvez créer le votre si vous voulez [sur Todoist](https://developer.todoist.com/appconsole.html).
 
 Pour simplifier l'implémentation, on va utiliser la lib: <https://github.com/kalinjul/kotlin-multiplatform-oidc>, la configuration n'est pas évidente même en lisant le ReadMe donc je vous guide un peu.
 
@@ -140,7 +140,7 @@ class TokenRepository(val context: Context) {
 - Mettez vos écrans Compose directement dedans
 - Mettez l'écran principal (liste) avec un Composant `AndroidFragment`
 
-<aside class="positive">>
+<aside class="positive">
 
   Je vous laisse vous débrouiller avec [la doc](https://developer.android.com/guide/navigation/design#compose), vous êtes quasiment des pro maintenant !
 
@@ -148,21 +148,24 @@ class TokenRepository(val context: Context) {
 
 ## Injection de dépendance
 
-<aside class="positive">>
+<aside class="positive">
 
 Parmi les grands principes SOLID, il y en a un fondamental qui est la "Dependency Inversion" qui dit en gros que les composants externes doivent dépendre des composants interne et pas l'inverse, ce qui nécessite de passer par des interfaces à implémenter: chaque couche définit une interface ("ce dont on a besoin") et la couche d'en dessous l'implémente ("comment c'est fait").
 
 <!-- ![dependency](../assets/dependency.png) -->
 
+Afin de gérer cela on utilise souvent une lib d'injection de dépendance, qui permet de dire: si on a besoin de `InterfaceA` alors on va utiliser `ClassA` qui implémente `InterfaceA` et éventuellement créer une instance directement.
+En procédant ainsi, on crée un arbre de dépendances ou chaque implémentation est remplaçable facilement.
+
 </aside>
 
 - Ajouter la lib [Koin](https://insert-koin.io/docs/setup/koin#android) dans `build.gradle` et suivez les étapes de configuration
-- créez un module koin `appModule` et y ajoutez la classe `TokenRepository` en `single`
+- créez un module koin `appModule` et y ajoutez la classe `TokenRepository` en `single` et vos ViewModels
 - récupérez cette instance unique dans vos 2 écrans
 
 ## Repository
 
-Refactorisez toute l'app pour que vos écrans ne récupèrent qu'un objet "state", et remontent seulement des évènements vers des ViewModel qui eux même interrogent des Repository partagés
+Refactorisez toute l'app pour que vos écrans ne récupèrent qu'un objet "state", et remontent seulement des évènements vers des ViewModel qui eux même interrogent des Repository partagés.
 
 <!-- ![google arch](../assets/google_arch.png) -->
 
@@ -170,8 +173,9 @@ Refactorisez toute l'app pour que vos écrans ne récupèrent qu'un objet "state
 
 - Renommez `TaskRepository` en `TaskRepositoryImpl` et créez une nouvelle interface `TaskRepository`
 - Adaptez le module Koin et le reste du code pour que seule l'interface soit utilisée
+- Faites de même pour les autres Repository
 
-## Tests
+## Tests unitaires
 
-- Créez `LoginViewModelTest` et ajoutez des tests unitaires avec [Mockk](https://mockk.io/)
+- Créez `LoginViewModelTest` et ajoutez des tests unitaires avec [Mockk](https://mockk.io/) pour remplacer les implémentations concrètes des Repository
 - Faites de même pour les autres écrans et Repository
