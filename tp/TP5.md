@@ -132,6 +132,7 @@ class TokenRepository(val context: Context) {
 - Dans l'écran liste, créez une instance de `TokenRepository` et collectez le `tokenFlow`
 - Chaque nouvelle valeur doit s'appliquer au token dans `Api` et déclencher un refresh des tasks, sauf si la valeur est nulle, dans ce cas il faut naviguer vers le login
 - Dans l'écran login, créez une instance de `TokenRepository` et enregistrez le token avec quand il est récupéré
+- Dans l'écran "user", créez une instance de `TokenRepository`, ajouter un bouton logout et effacer le token quand on clique dessus.
 
 ## Navigation
 
@@ -151,7 +152,7 @@ class TokenRepository(val context: Context) {
 
 Parmi les grands principes SOLID, il y en a un fondamental qui est la "Dependency Inversion" qui dit en gros que les composants externes doivent dépendre des composants interne et pas l'inverse, ce qui nécessite de passer par des interfaces à implémenter: chaque couche définit une interface ("ce dont on a besoin") et la couche d'en dessous l'implémente ("comment c'est fait").
 
-![dependency](../assets/dependency.png)
+<!-- ![dependency](../assets/dependency.png) -->
 
 </aside>
 
@@ -163,7 +164,7 @@ Parmi les grands principes SOLID, il y en a un fondamental qui est la "Dependenc
 
 Refactorisez toute l'app pour que vos écrans ne récupèrent qu'un objet "state", et remontent seulement des évènements vers des ViewModel qui eux même interrogent des Repository partagés
 
-![google arch](../assets/google_arch.png)
+<!-- ![google arch](../assets/google_arch.png) -->
 
 ## Interfaces
 

@@ -225,10 +225,10 @@ private fun showMessage(message: String) {
 
 Pour faire encore mieux, vous pouvez aussi afficher un message avec AlertDialog en Compose et continuer le flow en fonction de la réponse de l'utilisateur.
 
-## Export
+## Bonus: Export
 
 Permettez à l'utilisateur de faire un export texte de ses tâches dans un `backup.csv`, contenant chaque tâche ligne par ligne et s'enregistrera dans les fichiers du téléphone.
 
-## Import
+## Bonus: Import
 
 Permettez à l'utilisateur de créer des tâches depuis un fichier `.csv`.
