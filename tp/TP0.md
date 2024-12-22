@@ -18,8 +18,10 @@ Problème courants:
 
 - manque d'espace pour le SDK, l'émulateur: installez sur un disque secondaire si il y a + de place
 - la connexion de l'école qui ne permet pas toujours de télécharger les dépendances: passez en partage de connexion ou sur un autre réseau
-- problèmes de permissions (ex `Failed to create jwk directory`): lancez en mode Administrateur
-- sous Windows, vous aurez peut être des paramètres BIOS à changer pour la virtualisation HAXM
+- problèmes de permissions (ex `Failed to create jwk directory`): lancez Android Studio en mode Administrateur
+- problèmes divers d'execution et de performances de l'émulateur: vous pouvez tenter des conseils [ici](https://developer.android.com/studio/run/emulator-acceleration)
+
+D'une manière générale, si vous avez un device physique et un cable, ça vous évitera pas mal de soucis.
 
 </aside>
 

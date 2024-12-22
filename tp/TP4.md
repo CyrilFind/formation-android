@@ -227,7 +227,7 @@ Pour faire encore mieux, vous pouvez aussi afficher un message avec AlertDialog 
 
 ## Export
 
-Permettez à l'utilisateur de faire un export texte de ses tâches dans un `backup.csv` contenant chaque tâche ligne par ligne s'enregistrera dans les fichiers du téléphone.
+Permettez à l'utilisateur de faire un export texte de ses tâches dans un `backup.csv`, contenant chaque tâche ligne par ligne et s'enregistrera dans les fichiers du téléphone.
 
 ## Import
 
