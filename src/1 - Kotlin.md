@@ -294,3 +294,19 @@ val lazyUser: User by lazy { getCurrentUser() }
 ![bg right:30% 80%](../assets/kotlin.png)
 
 [Kotlin Playground](https://play.kotlinlang.org)
+
+## Swift
+
+![bg right:30% 80%](../assets/swift.png)
+
+Très similaire:
+
+- Typage statique inféré
+- Optionals
+- Closure
+- Extensions
+- ...
+
+<https://nilhcem.com/swift-is-like-kotlin/>
+
+Petites nuances: Structs, Automatic Reference Counting, ...

@@ -65,7 +65,9 @@ Analogie: Cuisine
 
 ## Compose
 
+![state bg right:30% 90%](../assets/compose_state.png)
+
 - Similaire: MVVM / MVI
 - Inspirations de React ?
 
-<https://developer.android.com/jetpack/compose/architecture>
+[Documentation](https://developer.android.com/develop/ui/compose/architecture)
