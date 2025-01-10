@@ -118,6 +118,8 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response&lt;User&gt;
     )
 }
 </code></pre>
+<aside class="special"><p>     Une fonction d&#39;extension est définie sur une classe : `fun MyClass.myFunction()` et s&#39;utilise comme si elle était définie dans la classe d&#39;origine (mais sa visibilité peut être différente)     C&#39;est pratique pour rajouter des fonctions aux classes du framework, par ex `Bitmap` ici, ou souvent `Context`, mais aussi des classes de base comme `String`, au lieu de redéfinir une classe qui encapsule la 1e juste pour ajouter une fonction. </p>
+</aside>
 <ul>
 <li>Dans la callback de <code>takePicture</code>, envoyez l&#39;image au serveur avec <code>updateAvatar</code>, en convertissant <code>bitmap</code> avec <code>toRequestBody</code> avant</li>
 </ul>
@@ -142,8 +144,8 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response&lt;User&gt;
 <ul>
 <li>Gérez l&#39;uri alors récupérée quasiment comme pour la caméra, vous aurez besoin d&#39;une variante de l&#39;extension précédente pour l&#39;URI:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">private fun Uri.toRequestBody(): MultipartBody.Part {
-    val fileInputStream = contentResolver.openInputStream(this)!!
+<pre><code language="language-kotlin" class="language-kotlin">private fun Uri.toRequestBody(context: Context): MultipartBody.Part {
+    val fileInputStream = context.contentResolver.openInputStream(this)!!
     val fileBody = fileInputStream.readBytes().toRequestBody()
     return MultipartBody.Part.createFormData(
         name = &#34;avatar&#34;,
@@ -152,8 +154,6 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response&lt;User&gt;
     )
 }
 </code></pre>
-<aside class="warning"><p>⚠️ Si vous utilisez un device sur Android 9 ou plus ancien, ça ne va pas fonctionner tout de suite, passez à l&#39;étape suivante</p>
-</aside>
 
 
       </google-codelab-step>
@@ -180,13 +180,14 @@ suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response&lt;User&gt;
 private val captureUri by lazy {
     contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues())
 }
-
-// launcher
+</code></pre>
+<pre><code language="language-kotlin" class="language-kotlin">// launcher
 val takePicture = rememberLauncherForActivityResult(TakePicture()) { success -&gt;
-    if (success) uri = capturedUri
+    if (success) uri = captureUri
+    // compléter
 }
-
-// utilisation
+</code></pre>
+<pre><code language="language-kotlin" class="language-kotlin">// utilisation
 takePicture.launch(captureUri)
 </code></pre>
 
@@ -204,13 +205,13 @@ takePicture.launch(captureUri)
       <google-codelab-step label="Édition infos utilisateurs" duration="0">
         <ul>
 <li>Dans <code>UserActivity</code>, permettre d&#39;afficher et éditer le nom d&#39;utilisateur</li>
-<li>Vous aurez besoin d&#39;ajouter une méthode à <code>UserWebService</code>:</li>
+<li>Vous aurez besoin de créer plusieurs <code>data class</code> afin de serializer le body de la requête correctement pour l&#39;API et d&#39;ajouter une méthode à <code>UserWebService</code>:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">@PATCH(&#34;sync/v9/sync&#34;)
-suspend fun update(@Body commands: List&lt;Commands&gt;): Response&lt;Unit&gt;
+<pre><code language="language-kotlin" class="language-kotlin">@POST(&#34;sync/v9/sync&#34;)
+suspend fun update(@Body userUpdate: UserUpdate): Response&lt;Unit&gt;
 </code></pre>
 <ul>
-<li>Référez vous à la <a href="https://developer.todoist.com/sync/v9/#user" target="_blank">documentation</a> car ce n&#39;est pas une API REST donc on ne passe pas simplement l&#39;objet <code>User</code>: il faut créer un objet <code>Commands</code> de type <code>user_update</code></li>
+<li>Référez vous à la <a href="https://developer.todoist.com/sync/v9/#update-user-39-s-properties" target="_blank">documentation</a> car ce n&#39;est pas une API REST donc on ne passe pas simplement l&#39;objet <code>User</code>: il faut créer un objet <code>Commands</code> de type <code>user_update</code></li>
 </ul>
 
 
@@ -251,6 +252,7 @@ private fun showMessage(message: String) {
     
       <google-codelab-step label="Bonus: Import" duration="0">
         <p>Permettez à l&#39;utilisateur de créer des tâches depuis un fichier <code>.csv</code>.</p>
+<p>// revoir toute la fin: demander les permissions pour l&#39;export, pas pour les photos</p>
 
 
       </google-codelab-step>

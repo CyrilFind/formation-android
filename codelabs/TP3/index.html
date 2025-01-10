@@ -109,6 +109,7 @@ implementation(&#34;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3&#34;)
     val jsonSerializer = Json {
         ignoreUnknownKeys = true
         coerceInputValues = true
+        encodeDefaults = true
     }
 
     // instance retrofit pour implémenter les webServices:
