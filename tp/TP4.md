@@ -95,6 +95,11 @@ private fun Bitmap.toRequestBody(): MultipartBody.Part {
 }
 ```
 
+<aside class="positive">
+    Une fonction d'extension est définie sur une classe : `fun MyClass.myFunction()` et s'utilise comme si elle était définie dans la classe d'origine (mais sa visibilité peut être différente)
+    C'est pratique pour rajouter des fonctions aux classes du framework, par ex `Bitmap` ici, ou souvent `Context`, mais aussi des classes de base comme `String`, au lieu de redéfinir une classe qui encapsule la 1e juste pour ajouter une fonction.
+</aside>
+
 - Dans la callback de `takePicture`, envoyez l'image au serveur avec `updateAvatar`, en convertissant `bitmap` avec `toRequestBody` avant
 
 <aside class="negative">
@@ -126,8 +131,8 @@ Pour simplifier on utilisera [PhotoPicker](https://developer.android.com/trainin
 - Gérez l'uri alors récupérée quasiment comme pour la caméra, vous aurez besoin d'une variante de l'extension précédente pour l'URI:
 
 ```kotlin
-private fun Uri.toRequestBody(): MultipartBody.Part {
-    val fileInputStream = contentResolver.openInputStream(this)!!
+private fun Uri.toRequestBody(context: Context): MultipartBody.Part {
+    val fileInputStream = context.contentResolver.openInputStream(this)!!
     val fileBody = fileInputStream.readBytes().toRequestBody()
     return MultipartBody.Part.createFormData(
         name = "avatar",
@@ -136,12 +141,6 @@ private fun Uri.toRequestBody(): MultipartBody.Part {
     )
 }
 ```
-
-<aside class="negative">
-
-⚠️ Si vous utilisez un device sur Android 9 ou plus ancien, ça ne va pas fonctionner tout de suite, passez à l'étape suivante
-
-</aside>
 
 ## Permissions
 
@@ -169,12 +168,17 @@ Actuellement, la qualité d'image récupérée de l'appareil photo est très fai
 private val captureUri by lazy {
     contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues())
 }
+```
 
+```kotlin
 // launcher
 val takePicture = rememberLauncherForActivityResult(TakePicture()) { success ->
-    if (success) uri = capturedUri
+    if (success) uri = captureUri
+    // compléter
 }
+```
 
+```kotlin
 // utilisation
 takePicture.launch(captureUri)
 ```
@@ -186,14 +190,14 @@ takePicture.launch(captureUri)
 ## Édition infos utilisateurs
 
 - Dans `UserActivity`, permettre d'afficher et éditer le nom d'utilisateur
-- Vous aurez besoin d'ajouter une méthode à `UserWebService`:
+- Vous aurez besoin de créer plusieurs `data class` afin de serializer le body de la requête correctement pour l'API et d'ajouter une méthode à `UserWebService`:
 
 ```kotlin
-@PATCH("sync/v9/sync")
-suspend fun update(@Body commands: List<Commands>): Response<Unit>
+@POST("sync/v9/sync")
+suspend fun update(@Body userUpdate: UserUpdate): Response<Unit>
 ```
 
-- Référez vous à la [documentation](https://developer.todoist.com/sync/v9/#user) car ce n'est pas une API REST donc on ne passe pas simplement l'objet `User`: il faut créer un objet `Commands` de type `user_update`
+- Référez vous à la [documentation](https://developer.todoist.com/sync/v9/#update-user-39-s-properties) car ce n'est pas une API REST donc on ne passe pas simplement l'objet `User`: il faut créer un objet `Commands` de type `user_update`
 
 ## Gérer le refus
 
@@ -232,3 +236,6 @@ Permettez à l'utilisateur de faire un export texte de ses tâches dans un `back
 ## Bonus: Import
 
 Permettez à l'utilisateur de créer des tâches depuis un fichier `.csv`.
+
+
+// revoir toute la fin: demander les permissions pour l'export, pas pour les photos

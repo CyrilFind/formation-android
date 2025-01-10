@@ -83,6 +83,7 @@ object Api {
     val jsonSerializer = Json {
         ignoreUnknownKeys = true
         coerceInputValues = true
+        encodeDefaults = true
     }
 
     // instance retrofit pour implémenter les webServices:
