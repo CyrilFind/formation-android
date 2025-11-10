@@ -29,14 +29,38 @@
                   feedback-link="">
     
       <google-codelab-step label="Avant de commencer" duration="0">
-        <p><strong>Prérequis</strong>: Terminez au moins l&#39;étape &#34;Édition d&#39;une tâche&#34; du TP 2</p>
+        <aside class="warning"><p>⚠️ <strong>Prérequis</strong>: Terminez au moins l&#39;étape &#34;Édition d&#39;une tâche&#34; du TP 2</p>
+</aside>
 <p>Les APIs qui nous allons utiliser exigent qu&#39;une personne soit connectée, pour commencer nous allons simuler cela en passant directement un <code>token</code> dans les <code>headers</code> de nos requêtes <code>HTTP</code>:</p>
 <ul>
 <li>Rendez vous sur <a href="https://todoist.com/app" target="_blank">todoist.com</a></li>
 <li>Créez un compte, allez dans <code>Paramètres > Intégrations > Clé API</code> et copiez la quelque part</li>
-<li>lisez un peu <a href="https://developer.todoist.com" target="_blank">la doc de l&#39;API</a>, il y en a en fait 2: REST et Sync et on va utiliser notamment: <a href="https://developer.todoist.com/rest/v2/#tasks" target="_blank">tasks</a> et <a href="https://developer.todoist.com/sync/v9/#user" target="_blank">user</a></li>
-<li>En utilisant la clé copiée et les exemples de la documentation testez de créer un tache avec <code>curl</code> ou un équivalent (ex: <a href="httpie" target="_blank">httpie</a> en terminal, web ou desktop)</li>
+<li>lisez un peu <a href="https://developer.todoist.com" target="_blank">la doc de l&#39;API</a>, il y en a en fait 2: REST (ex: <a href="https://developer.todoist.com/rest/v2/#tasks" target="_blank">tasks</a>) et Sync (ex: <a href="https://developer.todoist.com/sync/v9/#user" target="_blank">user</a>)</li>
+<li>En utilisant la clé copiée et les exemples de la documentation testez de créer un tache avec <code>curl</code>, Postman ou autres (je recommance <a href="https://httpie.io/" target="_blank">httpie</a> en terminal, web ou desktop, par ex)</li>
 </ul>
+<aside class="special"><p>✨ C&#39;est le moment de bifurquer si vous voulez faire un projet différent: vous pouvez utiliser une autre API REST, il faudra adapter légèrement mais je serai très tolérant dans la notation vu que ça vous demande un peu plus d&#39;efforts.</p>
+<p>Proposez moi votre idée avant de commencer pour que je puisse vous guider si besoin.</p>
+<p>Voici quelques exemples d&#39;API similaires (qui permettent de POST et de lister des choses notamment):</p>
+<ul>
+<li><a href="https://developer.themoviedb.org/v4/reference/" target="_blank">https://developer.themoviedb.org/v4/reference/</a></li>
+<li><a href="https://dev.splitwise.com/" target="_blank">https://dev.splitwise.com/</a></li>
+<li><a href="https://developer.atlassian.com/cloud/trello/rest/" target="_blank">https://developer.atlassian.com/cloud/trello/rest/</a></li>
+<li><a href="https://docs.github.com/en/rest" target="_blank">https://docs.github.com/en/rest</a></li>
+<li><a href="https://platform.openai.com/docs/api-reference/" target="_blank">https://platform.openai.com/docs/api-reference/</a></li>
+<li><a href="https://www.file.io/developers" target="_blank">https://www.file.io/developers</a></li>
+<li><a href="https://developers.google.com/books/docs/v1/reference" target="_blank">https://developers.google.com/books/docs/v1/reference</a></li>
+<li><a href="https://spoonacular.com/food-api/docs" target="_blank">https://spoonacular.com/food-api/docs</a></li>
+</ul>
+<p>En voici quelques autres qui permettent moins de choses, mais on peut discuter d&#39;utiliser une base de donnée locale par exemple pour compléter les fonctionnalités:</p>
+<ul>
+<li><a href="https://lyricsovh.docs.apiary.io" target="_blank">https://lyricsovh.docs.apiary.io</a></li>
+<li><a href="http://numbersapi.com/#random/trivia" target="_blank">http://numbersapi.com/#random/trivia</a></li>
+<li><a href="https://openweathermap.org/api" target="_blank">https://openweathermap.org/api</a></li>
+<li><a href="https://api.nasa.gov/" target="_blank">https://api.nasa.gov/</a></li>
+<li><a href="https://www.thecocktaildb.com" target="_blank">https://www.thecocktaildb.com</a></li>
+<li>il y en a énormément dans le genre, listés ici par ex: <a href="https://rapidapi.com/collection/list-of-free-apis" target="_blank">https://rapidapi.com/collection/list-of-free-apis</a></li>
+</ul>
+</aside>
 
 
       </google-codelab-step>
