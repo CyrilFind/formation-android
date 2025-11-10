@@ -17,29 +17,9 @@ Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, pour 
 
 <aside class="positive">
 
-✨ C'est le moment de bifurquer si vous voulez faire un projet différent: vous pouvez utiliser une autre API REST, il faudra adapter légèrement mais je serai très tolérant dans la notation vu que ça vous demande un peu plus d'efforts.
+✨ C'est le moment de bifurquer si vous voulez faire un projet différent !!
 
-Proposez moi votre idée avant de commencer pour que je puisse vous guider si besoin.
-
-Voici quelques exemples d'API similaires (qui permettent de POST et de lister des choses notamment):
-
-- <https://developer.themoviedb.org/v4/reference/>
-- <https://dev.splitwise.com/>
-- <https://developer.atlassian.com/cloud/trello/rest/>
-- <https://docs.github.com/en/rest>
-- <https://platform.openai.com/docs/api-reference/>
-- <https://www.file.io/developers>
-- <https://developers.google.com/books/docs/v1/reference>
-- <https://spoonacular.com/food-api/docs>
-
-En voici quelques autres qui permettent moins de choses, mais on peut discuter d'utiliser une base de donnée locale par exemple pour compléter les fonctionnalités:
-
-- <https://lyricsovh.docs.apiary.io>
-- <http://numbersapi.com/#random/trivia>
-- <https://openweathermap.org/api>
-- <https://api.nasa.gov/>
-- <https://www.thecocktaildb.com>
-- il y en a énormément dans le genre, listés ici par ex: <https://rapidapi.com/collection/list-of-free-apis>
+Proposez moi votre idée avant de commencer pour que je puisse vous guider si besoin: [voir TP0](./TP0/#5)
 
 </aside>
 

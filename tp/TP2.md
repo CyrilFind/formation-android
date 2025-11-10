@@ -10,7 +10,6 @@ implémenter des actions sur nos tâches, en naviguant entre des `Activity` et p
 
 </aside>
 
-
 ## Suppression d'une tache
 
 Dans le layout de vos item, ajouter un `ImageButton` qui servira à supprimer la tâche associée. Vous pouvez utiliser par exemple l'icône `@android:drawable/ic_menu_delete`

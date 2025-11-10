@@ -44,11 +44,9 @@ Prenez en main l'IDE: vous pouvez aller dans les paramètres (`File > Settings` 
 - `CTRL/CMD + alt + L` pour ré-indenter correctement tout le code (ou la sélection)
 - Cliquez sur `Sync Now` (dans la barre bleue en haut)quand l'IDE vous le propose: ça arrive notamment quand on change des fichiers de configs comme les fichiers gradle par exemple pour ajouter des dépendances. Cela permet à l'IDE de fonctionner correctement.
 
-## Kotlin
+## Kotlin Basics
 
-Pour prendre en main les bases du langage: [try.kotl.in/koans][koans]
-
-Commencez par ces exercices:
+Pour prendre en main les bases du langage:
 
 - [Nullable types](https://play.kotlinlang.org/koans/Introduction/Nullable%20types/Task.kt)
 - [String templates](https://play.kotlinlang.org/koans/Introduction/String%20templates/Task.kt)
@@ -58,11 +56,7 @@ Commencez par ces exercices:
 
 Pour aller plus loin sur Kotlin : [Kotlin Bootcamp](https://developer.android.com/courses/kotlin-bootcamp/overview)
 
-## Google Codelabs
-
-On va commencer en douceur en se basant sur les [Codelabs Google](https://developer.android.com/courses/android-basics-compose/course)
-
-Tous ces tutos ne sont pas indispensable pour des presque-ingénieurs tels que vous alors on va en faire seulement quelques uns:
+## Jetpack Compose Basics
 
 - [Compose Texts][compose_text_codelab]
 - [Compose Images][compose_images_codelab]
@@ -72,6 +66,8 @@ Tous ces tutos ne sont pas indispensable pour des presque-ingénieurs tels que v
 <aside class="negative">
 ⚠️ Ne perdez pas de temps sur les pages "Introduction", "Overview", etc... ni sur les dernières étapes: questions, exercices, etc...
 </aside>
+
+Pour continuer voir [les autres codelabs Google](https://developer.android.com/courses/android-basics-compose/course)
 
 ## Projet
 
@@ -91,27 +87,42 @@ Quelques idées d'applications:
 - Affichage d'horaires de trains
 - Client alternatif pour Twitch, Twitter, Bluesky, ...
 - Traqueur de films, séries, jeux, etc
-- Jeux à UI simple: Quiz, Memory, etc
-- un chatbot spécialisé
+- Jeux à UI simple: Quiz, Memory, Wordle, Food Guessr, etc
 
 Exemples d'années précédentes:
 
 - Cémantix
 - Reigns-like
+- Jukebox Spotify
 
 Exemples d'API gratuites:
 
 - <https://trakt.docs.apiary.io>
 - <https://imgflip.com/api>
+- <https://developer.themoviedb.org/v4/reference/>
+- <https://dev.splitwise.com/>
+- <https://developer.atlassian.com/cloud/trello/rest/>
+- <https://docs.github.com/en/rest>
+- <https://www.file.io/developers>
+- <https://developers.google.com/books/docs/v1/reference>
+- <https://spoonacular.com/food-api/docs>
 
-Si vous le souhaitez, on peut aussi essayer de faire du Kotlin Mutliplatform afin de pouvoir lancer votre app également sur iOS !
+Moins permissives:
 
-Au moment de setup le projet, demandez moi un coup de main, on utilisera [cet outil](https://kmp.jetbrains.com/)
+- <https://lyricsovh.docs.apiary.io>
+- <http://numbersapi.com/#random/trivia>
+- <https://openweathermap.org/api>
+- <https://api.nasa.gov/>
+- <https://www.thecocktaildb.com>
+- autres: <https://rapidapi.com/collection/list-of-free-apis>
+
+Il faudra adapter légèrement les TP mais je serai très tolérant dans la notation vu que ça vous demande un peu plus d'efforts.
+
+Pour ceux qui ont un mac et/ou un iPhone, on peut aussi essayer de faire du Kotlin Mutliplatform afin de pouvoir lancer votre app également sur iOS !
 
 [android_studio_pathway]: https://developer.android.com/courses/pathways/android-basics-compose-unit-1-pathway-2
 [android_studio_download]: https://developer.android.com/studio
 [compose_text_codelab]: https://developer.android.com/codelabs/basic-android-kotlin-compose-text-composables
 [compose_images_codelab]: https://developer.android.com/codelabs/basic-android-kotlin-compose-add-images
 [compose_buttons_codelab]: https://developer.android.com/codelabs/basic-android-kotlin-compose-build-a-dice-roller-app
-[koans]: http://try.kotl.in/koans
 [constraint_layout_codelab]: https://developer.android.com/codelabs/constraint-layout
