@@ -4,7 +4,12 @@
 
 implémenter des actions sur nos tâches, en naviguant entre des `Activity` et partager des infos entre elle ou dans une autre application avec des `Intent`.
 
-**Prérequis**: Terminez au moins l'étape "Ajout de tâche rapide" du TP 1
+<aside class="negative">
+
+⚠️ **Prérequis**: Terminez au moins l'étape "Ajout de tâche rapide" du TP 1
+
+</aside>
+
 
 ## Suppression d'une tache
 

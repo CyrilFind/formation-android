@@ -138,10 +138,7 @@ object MovieApi {
     chain.proceed(newRequest)
   }.build()
 
-  private val jsonSerializer = Json {
-    ignoreUnknownKeys = true
-    coerceInputValues = true
-  }
+  private val jsonSerializer = Json { /* config */ }
 
   val converterFactory = jsonSerializer.asConverterFactory("application/json".toMediaType())
 

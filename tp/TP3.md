@@ -2,14 +2,46 @@
 
 ## Avant de commencer
 
-**Prérequis**: Terminez au moins l'étape "Édition d'une tâche" du TP 2
+<aside class="negative">
+
+⚠️ **Prérequis**: Terminez au moins l'étape "Édition d'une tâche" du TP 2
+
+</aside>
 
 Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, pour commencer nous allons simuler cela en passant directement un `token` dans les `headers` de nos requêtes `HTTP`:
 
 - Rendez vous sur [todoist.com](https://todoist.com/app)
 - Créez un compte, allez dans `Paramètres > Intégrations > Clé API` et copiez la quelque part
-- lisez un peu [la doc de l'API](https://developer.todoist.com), il y en a en fait 2: REST et Sync et on va utiliser notamment: [tasks](https://developer.todoist.com/rest/v2/#tasks) et [user](https://developer.todoist.com/sync/v9/#user)
-- En utilisant la clé copiée et les exemples de la documentation testez de créer un tache avec `curl` ou un équivalent (ex: [httpie](httpie) en terminal, web ou desktop)
+- lisez un peu [la doc de l'API](https://developer.todoist.com), il y en a en fait 2: REST (ex: [tasks](https://developer.todoist.com/rest/v2/#tasks)) et Sync (ex: [user](https://developer.todoist.com/sync/v9/#user))
+- En utilisant la clé copiée et les exemples de la documentation testez de créer un tache avec `curl`, Postman ou autres (je recommance [httpie](https://httpie.io/) en terminal, web ou desktop, par ex)
+
+<aside class="positive">
+
+✨ C'est le moment de bifurquer si vous voulez faire un projet différent: vous pouvez utiliser une autre API REST, il faudra adapter légèrement mais je serai très tolérant dans la notation vu que ça vous demande un peu plus d'efforts.
+
+Proposez moi votre idée avant de commencer pour que je puisse vous guider si besoin.
+
+Voici quelques exemples d'API similaires (qui permettent de POST et de lister des choses notamment):
+
+- <https://developer.themoviedb.org/v4/reference/>
+- <https://dev.splitwise.com/>
+- <https://developer.atlassian.com/cloud/trello/rest/>
+- <https://docs.github.com/en/rest>
+- <https://platform.openai.com/docs/api-reference/>
+- <https://www.file.io/developers>
+- <https://developers.google.com/books/docs/v1/reference>
+- <https://spoonacular.com/food-api/docs>
+
+En voici quelques autres qui permettent moins de choses, mais on peut discuter d'utiliser une base de donnée locale par exemple pour compléter les fonctionnalités:
+
+- <https://lyricsovh.docs.apiary.io>
+- <http://numbersapi.com/#random/trivia>
+- <https://openweathermap.org/api>
+- <https://api.nasa.gov/>
+- <https://www.thecocktaildb.com>
+- il y en a énormément dans le genre, listés ici par ex: <https://rapidapi.com/collection/list-of-free-apis>
+
+</aside>
 
 ## Accéder à l'internet
 

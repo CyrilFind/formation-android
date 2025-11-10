@@ -2,7 +2,11 @@
 
 ## Coil
 
-**Prérequis**: Terminez totalement le TP précédent
+<aside class="negative">
+
+⚠️ **Prérequis**: Terminez totalement le TP précédent
+
+</aside>
 
 <aside class="positive">
 
@@ -236,6 +240,5 @@ Permettez à l'utilisateur de faire un export texte de ses tâches dans un `back
 ## Bonus: Import
 
 Permettez à l'utilisateur de créer des tâches depuis un fichier `.csv`.
-
 
 // revoir toute la fin: demander les permissions pour l'export, pas pour les photos

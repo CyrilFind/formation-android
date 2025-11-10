@@ -108,20 +108,6 @@ Si vous le souhaitez, on peut aussi essayer de faire du Kotlin Mutliplatform afi
 
 Au moment de setup le projet, demandez moi un coup de main, on utilisera [cet outil](https://kmp.jetbrains.com/)
 
-<!--
-Barème approximatif /10 :
-- base /2
-- TP features principales /3
-- propreté et stabilité /2
-- TP complets /3
-- bonus (UI, sujet personnalisé)
-
--> ReadMe
-
-soutenance?
-
--->
-
 [android_studio_pathway]: https://developer.android.com/courses/pathways/android-basics-compose-unit-1-pathway-2
 [android_studio_download]: https://developer.android.com/studio
 [compose_text_codelab]: https://developer.android.com/codelabs/basic-android-kotlin-compose-text-composables

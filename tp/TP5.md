@@ -1,6 +1,10 @@
 # TP5
 
-**Prérequis**: Terminez au moins l'étape "Refactor: UserViewModel" du TP precedent
+<aside class="negative">
+
+⚠️ **Prérequis**: Terminez au moins l'étape "Refactor: UserViewModel" du TP precedent
+
+</aside>
 
 On va maintenant rendre l'app plus proche d'une app réelle en permettant de se logger au lieu d'avoir un token en dur
 

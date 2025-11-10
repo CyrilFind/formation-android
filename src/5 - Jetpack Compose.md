@@ -178,6 +178,8 @@ TextField(
 )
 ```
 
+// state hoisting
+
 ## remembers
 
 ```kotlin

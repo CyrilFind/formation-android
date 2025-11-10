@@ -17,6 +17,7 @@ marp: true
 - Java Interop
 - Développé par JetBrains
 - Kotlin everywhere: JVM, Backend, JS, KTS, iOS...
+- Pour Android on est sur la JVM: garbage collector, etc
 
 ## Typage statique inféré
 
@@ -62,17 +63,17 @@ var user: User? = null
 user = getUser()
 
 // soft unwrap: exécute ou retourne null si l'instance est null
-user?.name
+val name: String? = user?.name
 
 // force unwrap: exécute OU crash si l'instance est nulle
-user!!.toString()
+val name: String = user!!.toString()
 
 // elvis operator: exécute la partie à droite si la partie à gauche est null
-user?.name ?: "none"
+val name: String = user?.name ?: "none"
 
 // let: extension qui permet de manipuler une instance dans une lambda
 // souvent utilisé avec des instances nullables
-user?.let { it.name } ?: "none"
+val name: String = user?.let { it.name } ?: "none"
 ```
 
 ⚠️ `@Nullable` pour l'interopérabilité avec Java
@@ -147,12 +148,14 @@ fun add(first: Int, second: Int) = first + second
 ## Classes
 
 ```kotlin
-// declaration and primary constructor
-class Student(
-  login: String, // constructor argument
-  public val subjects: List<Subject> = emptyList(), // public property
-) : User(login) { // parent constructor
+open class User(login: String) {// final by default: `open` for inheritage
+  open fun connect() {}
+}
 
+class Student(// declaration and primary constructor
+  login: String, // constructor argument
+  public val subjects: List<Subject> = emptyList(), // public property (default)
+) : User(login) { // parent constructor
     private val email: String // private property
 
     // secondary constructor
@@ -161,22 +164,23 @@ class Student(
     init { // additional constructor logic
       email = "$login@school.com"
     }
-}
 
-// classes are final by default: `open` allows inheritage
-open class User(val login: String) {}
+    override fun connect() { // override parent method
+      super.connect() // call parent method
+      // additional logic
+    }
+}
 ```
 
 ## Object
 
-Permet de créer facilement un Singleton (~`static class`)
+Permet de créer facilement un Singleton (~`static class` en Java)
 
 ```kotlin
 object Analytics {
   fun trackLoginEvent() { ... }
 }
 
-// remplace le `static class` Java:
 Analytics.trackLoginEvent()
 ```
 
@@ -243,12 +247,17 @@ sealed class Result {
 when (result) {
   is Result.Success -> display(result.value)
   is Result.Failure -> log(result.error)
+  is Result.Loading -> displayLoader()
 }
 ```
 
 ## Extensions
 
 ```kotlin
+fun capitalize(string: String): String { // function
+  return string
+}
+
 fun String.capitalize(): String { // function
   return ...
 }
@@ -272,7 +281,7 @@ fun applyToSelf(number: Int, operation: (Int, Int) -> Int) {
  }
 
 applyToSelf(4, add) // 8
-applyToSelf(3) { a, b -> a - b } // 0
+applyToSelf(3) { a, b -> a * b } // 9
 
 // for Single Abstract Method (SAM) interface
 button.setOnClickListener { view -> ... }
@@ -305,8 +314,15 @@ Très similaire:
 - Optionals
 - Closure
 - Extensions
-- ...
+- <https://nilhcem.com/swift-is-like-kotlin/>
 
-<https://nilhcem.com/swift-is-like-kotlin/>
+Pas de smart cast:
 
-Petites nuances: Structs, Automatic Reference Counting, ...
+```swift
+let user: User? = getCurrentUser()
+if let user = user {
+  // user is not null
+}
+```
+
+Nuances: Structs, Automatic Reference Counting, `weak`...
