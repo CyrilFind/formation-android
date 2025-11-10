@@ -79,14 +79,13 @@ fun main() {
 
 The `CoroutineDispatcher` sends off coroutines to run on various threads
 
-![dispatchers height:200](../assets/dispatchers.png)
+![dispatchers height:150](../assets/dispatchers.png)
 
 ```kotlin
 suspend fun fetch(url: String) {
     // start on Dispatchers.Main
     showLoading(true)
-    val result = withContext(Dispatchers.IO) {
-        // switch to Dispatchers.IO to do long network call
+    val result = withContext(Dispatchers.IO) { // switch to IO for network call
         longNetworkCall(url)
     }
     // back on Dispatchers.Main
@@ -182,24 +181,16 @@ scope.launch {
 Special type of flow that always has a value:
 
 ```kotlin
-
 // create and modify in ViewModel:
 val userFlow = MutableStateFlow<NetworkUser?>(null)
-
-suspend fun refreshUser() {
-    userFlow.value = repository.fetchUser()
-}
+suspend fun refreshUser() { userFlow.value = repository.fetchUser() }
 
 // react in Activity/Fragment:
 lifecycleScope.launch {
-    userFlow.filterNotNull().collect { user ->
-      nameTextView.text = user.name
-  }
+    userFlow.filterNotNull().collect { user -> nameTextView.text = user.name }
 }
 
 // or in Compose:
 val user by userFlow.collectAsState()
-
 Text(user.name)
-
 ```

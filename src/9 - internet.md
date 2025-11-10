@@ -93,13 +93,10 @@ private val jsonSerializer = Json {
 val converterFactory = jsonSerializer.asConverterFactory("application/json".toMediaType())
 ```
 
-## Api Service
-
-with Retrofit
+## Api Service with Retrofit
 
 ```kotlin
 val BASE_URL = "https://movies.com/API/"
-
 val retrofit = Retrofit.Builder()
   .client(okHttpClient)
   .baseUrl(BASE_URL)

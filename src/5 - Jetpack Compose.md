@@ -62,7 +62,7 @@ Spacer(modifier = Modifier.weight(1f, fill = true))
 
 ## Containers
 
-![containers h:300px](../assets/compose_containers.svg)
+![containers h:200px](../assets/compose_containers.svg)
 
 ```kotlin
 Column { /* ColumnScope */
@@ -112,7 +112,7 @@ LazyHorizontalGrid(...) { items(elements) { ... } }
 
 ## Slots API
 
-![slots w:500px](../assets/compose_slots.png)
+![slots w:350px](../assets/compose_slots.png)
 
 ```kotlin
 @Composable
@@ -172,13 +172,25 @@ val name: State<String> = remember { mutableStateOf("name") } // both!
 
 var name: String by remember { mutableStateOf("name") } // avoid `name.value`
 
-TextField(
-    value = name,
-    onValueChange = { name = it },
-)
-```
+// stateful
+@Composable
+fun StatefulTextField() {
+    var name by remember { mutableStateOf("") }
+    StatelessTextField(
+        value = name,
+        onNameChange = { name = it },
+    )
+}
 
-// state hoisting
+// stateless
+@Composable
+fun StatelessTextField(name: String, onNameChange: (String) -> Unit) {
+  TextField(
+      value = name,
+      onValueChange = onNameChange,
+  )
+}
+```
 
 ## remembers
 
@@ -244,7 +256,7 @@ NavHost(navController = navController, startDestination = "profile") {
 navController.navigate("post/123456")
 ```
 
-# Side Effects
+## Side Effects
 
 Une fonction `@Composable` qui n'émet pas d'UI mais exécute des effect quand la composition termine.
 
@@ -352,7 +364,6 @@ MaterialTheme(
 - `MaterialTheme` est fourni par Google et permet de fournir définir des valeurs par défaut aux composants Material (à l'aide de Compositionlocal)
 - On peut définir son propre Theme et ses propres Composants qui l'utilisent
 - Cela permet de définir son propre Design System
-
 
 ## UI state
 

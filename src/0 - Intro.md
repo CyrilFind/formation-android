@@ -22,7 +22,7 @@ Cyril Findeling 👋
 - Un peu de théorie surtout au début, beaucoup de pratique
 - Un projet fil rouge noté à la fin
 
-# OOP: Object Oriented Programming
+## OOP: Object Oriented Programming
 
 ## Vocabulary
 

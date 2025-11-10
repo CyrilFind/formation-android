@@ -150,7 +150,7 @@ binding.imageView.setOnClickListener { ... }
 
 [Documentation](https://developer.android.com/topic/libraries/view-binding#fragments)
 
-# Lifecycle
+## Lifecycle
 
 ![bg right:70% 100%](../assets/jetpack.svg)
 
@@ -186,9 +186,8 @@ override fun onSaveInstanceState(outState: Bundle) {
 override fun onCreate(savedInstanceState: Bundle?) {
    super.onCreate(savedInstanceState)
    setContentView(R.layout.activity_main)
-   savedInstanceState?.getString("key").let { count ->
-       count_text_view.setText(count)
-   }
+   savedInstanceState?.getString("key")
+      .let { count -> count_text_view.setText(count)}
 }
 ```
 
@@ -201,7 +200,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
 ![lifecycle bg right](../assets/lifecycle.png)
 
-# iOS
+## iOS
 
 ![bg right:30% 80%](../assets/xcode.png)
 

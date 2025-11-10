@@ -154,7 +154,7 @@ getContent.launch("image/*")
 
 [Documentation](https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts)
 
-# iOS
+## iOS
 
 ## iOS: Segues
 

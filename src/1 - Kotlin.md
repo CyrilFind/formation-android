@@ -308,13 +308,9 @@ val lazyUser: User by lazy { getCurrentUser() }
 
 ![bg right:30% 80%](../assets/swift.png)
 
-Très similaire:
+Très similaire: Typage statique inféré, Optionals, Closures, Extensions
 
-- Typage statique inféré
-- Optionals
-- Closure
-- Extensions
-- <https://nilhcem.com/swift-is-like-kotlin/>
+<https://nilhcem.com/swift-is-like-kotlin/>
 
 Pas de smart cast:
 

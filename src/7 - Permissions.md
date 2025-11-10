@@ -85,7 +85,7 @@ context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ
 
 (Android ≧ 11.0 + backport jusqu'à 4.4 avec Play Services)
 
-## Permissions
+## iOS: Permissions
 
 ![bg right:30% 90%](../assets/ios_permission.png)
 
@@ -93,7 +93,7 @@ Plus simple: on définit quelques textes dans des fichiers de configuration, ils
 
 ![permissions string](../assets/ios_permission_string.png)
 
-## Photo picker
+## iOS: Photo picker
 
 ![bg right:20% 80%](../assets/ios_photo_access.png)
 
