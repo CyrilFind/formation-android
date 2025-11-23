@@ -341,7 +341,7 @@ adapter.submitList(listOf("Item#1", "Item #2"))
 
 ## ViewBinding
 
-Utiliser le `ViewBinding` ([documentation](https://developer.android.com/topic/li braries/view-binding) / [slides](../../slides/3%20-%20Views.html#9)) dans `TaskListFragment`:
+Utiliser le `ViewBinding` ([documentation](https://developer.android.com/topic/libraries/view-binding) / [slides](../../slides/3%20-%20Views.html#9)) dans `TaskListFragment`:
 
 - changez le `inflate` pour récupérer une instance de type `XxxBinding`
 - remplacez les `findViewByIds` par des calls direct du genre `binding.myViewId`

@@ -110,6 +110,7 @@ Exemples d'API gratuites:
 
 Moins permissives (pas de POST par ex):
 
+- <https://pokeapi.co/docs/v2>
 - <https://lyricsovh.docs.apiary.io>
 - <http://numbersapi.com/#random/trivia>
 - <https://openweathermap.org/api>

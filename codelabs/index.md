@@ -1,6 +1,6 @@
 # Codelabs
 
-⚠️ Selon les classes et le temps disponible nous ne feront pas forcément tout ça:
+[→ Slides](slides/)
 
 {% for file in site.static_files %}
 {% if file.path contains 'codelabs/' and file.name contains '.html' %}
@@ -11,4 +11,6 @@
 {% endif %}
 {% endfor %}
 
-Aussi dispo au format [Markdown](../tp/)
+[→ Markdown](../tp/)
+
+[→ Slides](slides/)
