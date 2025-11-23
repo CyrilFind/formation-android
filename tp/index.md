@@ -1,5 +1,7 @@
 # TP
 
+[→ Slides](slides/)
+
 {% for file in site.static_files %}
 {% if file.path contains 'tp/' and file.name contains '.md' %}
 

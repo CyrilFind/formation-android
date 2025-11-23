@@ -8,7 +8,7 @@ contact: <cyrilfind@gmail.com>
 
 ## Objectif
 
-Acquérir les fondamentaux du développement Android avec Kotlin travers un maximum de pratique (et un peu de théorie quand même)
+Acquérir les fondamentaux du développement Android avec Kotlin à travers un maximum de pratique (6 séances)
 
 ## Notions
 

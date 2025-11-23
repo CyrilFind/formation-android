@@ -4,7 +4,7 @@
 
 Avant le premier cours, vérifiez que votre poste de travail est opérationnel:
 
-- Installez - **sur un disque où vous avez de la place** - la dernière version d'[Android Studio][android_studio_download],ou mettez le à jour si vous l'avez déjà
+- Installez - **sur un disque où vous avez de la place** - la dernière version d'[Android Studio][android_studio_download], ou mettez le à jour si vous l'avez déjà
 - Créez un projet vide (laissez l'api minimale proposée)
 - Si vous avez un appareil Android physique et un cable qui fonctionne, passez le en mode développeur (en tapant 7 fois sur le numéro de build dans les paramètres) et prenez le avec vous en cours, ce sera plus simple.
 - Sinon: Dans `Device Manager > Create virtual device` choisissez un device avec le triangle du PlayStore, puis une version d'OS Android récente.
@@ -106,14 +106,16 @@ Exemples d'API gratuites:
 - <https://www.file.io/developers>
 - <https://developers.google.com/books/docs/v1/reference>
 - <https://spoonacular.com/food-api/docs>
+- <https://openfoodfacts.github.io/openfoodfacts-server/api/ref-v3>
 
-Moins permissives:
+Moins permissives (pas de POST par ex):
 
 - <https://lyricsovh.docs.apiary.io>
 - <http://numbersapi.com/#random/trivia>
 - <https://openweathermap.org/api>
 - <https://api.nasa.gov/>
 - <https://www.thecocktaildb.com>
+- <https://api.watchmode.com/docs>
 - autres: <https://rapidapi.com/collection/list-of-free-apis>
 
 Il faudra adapter légèrement les TP mais je serai très tolérant dans la notation vu que ça vous demande un peu plus d'efforts.
