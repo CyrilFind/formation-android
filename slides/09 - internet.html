@@ -89,10 +89,8 @@ queue.add(stringRequest)
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h2 id="api-service">Api Service</h2>
-<p>with Retrofit</p>
+<h2 id="api-service-with-retrofit">Api Service with Retrofit</h2>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-keyword">val</span> BASE_URL = <span class="hljs-string">&quot;https://movies.com/API/&quot;</span>
-
 <span class="hljs-keyword">val</span> retrofit = Retrofit.Builder()
   .client(okHttpClient)
   .baseUrl(BASE_URL)

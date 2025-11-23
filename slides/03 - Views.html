@@ -142,7 +142,7 @@ binding.imageView.setOnClickListener { ... }
 <p><a href="https://developer.android.com/topic/libraries/view-binding#fragments">Documentation</a></p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:70%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/jetpack.svg&quot;);background-size:100%;"></figure></div></section></foreignObject><foreignObject width="30%" height="720"><section id="11" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:70%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
-<h1 id="lifecycle">Lifecycle</h1>
+<h2 id="lifecycle">Lifecycle</h2>
 </section>
 </foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:50%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/activity_lifecycle.png&quot;);"></figure></div></section></foreignObject><foreignObject width="50%" height="720"><section id="12" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:50%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
 <h2 id="activity-lifecycle">Activity lifecycle</h2>
@@ -174,9 +174,8 @@ binding.imageView.setOnClickListener { ... }
 <span class="hljs-keyword">override</span> <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">onCreate</span><span class="hljs-params">(savedInstanceState: <span class="hljs-type">Bundle</span>?)</span></span> {
    <span class="hljs-keyword">super</span>.onCreate(savedInstanceState)
    setContentView(R.layout.activity_main)
-   savedInstanceState?.getString(<span class="hljs-string">&quot;key&quot;</span>).let { count -&gt;
-       count_text_view.setText(count)
-   }
+   savedInstanceState?.getString(<span class="hljs-string">&quot;key&quot;</span>)
+      .let { count -&gt; count_text_view.setText(count)}
 }
 </code></pre>
 <ul>
@@ -190,7 +189,7 @@ binding.imageView.setOnClickListener { ... }
 <h2 id="viewmodel">ViewModel</h2>
 </section>
 </foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:30%;" data-marpit-advanced-background="background" data-marpit-advanced-background-split="right"><div data-marpit-advanced-background-container="true" data-marpit-advanced-background-direction="horizontal"><figure style="background-image:url(&quot;../assets/xcode.png&quot;);background-size:80%;"></figure></div></section></foreignObject><foreignObject width="70%" height="720"><section id="17" data-heading-divider="2" lang="C" style="--heading-divider:2;--marpit-advanced-background-split:30%;" data-marpit-advanced-background="content" data-marpit-advanced-background-split="right">
-<h1 id="ios">iOS</h1>
+<h2 id="ios">iOS</h2>
 
 <ul>
 <li>UIViewController (Équivalent de Activity)</li>

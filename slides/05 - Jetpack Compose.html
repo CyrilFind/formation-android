@@ -59,7 +59,7 @@ Spacer(modifier = Modifier.weight(<span class="hljs-number">1f</span>, fill = <s
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="containers">Containers</h2>
-<p><img src="../assets/compose_containers.svg" alt="containers" style="height:300px;" /></p>
+<p><img src="../assets/compose_containers.svg" alt="containers" style="height:200px;" /></p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin">Column { <span class="hljs-comment">/* ColumnScope */</span>
   Text(modifier = Modifier.align(Alignment.CenterHorizontally), text = <span class="hljs-string">&quot;hello&quot;</span>)
   Text(<span class="hljs-string">&quot;world&quot;</span>)
@@ -105,7 +105,7 @@ LazyHorizontalGrid(...) { items(elements) { ... } }
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="8" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="slots-api">Slots API</h2>
-<p><img src="../assets/compose_slots.png" alt="slots" style="width:500px;" /></p>
+<p><img src="../assets/compose_slots.png" alt="slots" style="width:350px;" /></p>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-kotlin"><span class="hljs-meta">@Composable</span>
 <span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">TopAppBar</span><span class="hljs-params">(
   title: @<span class="hljs-type">Composable</span> () -&gt; <span class="hljs-type">Unit</span>,
@@ -158,12 +158,25 @@ TextField(
 
 <span class="hljs-keyword">var</span> name: String <span class="hljs-keyword">by</span> remember { mutableStateOf(<span class="hljs-string">&quot;name&quot;</span>) } <span class="hljs-comment">// avoid `name.value`</span>
 
-TextField(
-    value = name,
-    onValueChange = { name = it },
-)
+<span class="hljs-comment">// stateful</span>
+<span class="hljs-meta">@Composable</span>
+<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">StatefulTextField</span><span class="hljs-params">()</span></span> {
+    <span class="hljs-keyword">var</span> name <span class="hljs-keyword">by</span> remember { mutableStateOf(<span class="hljs-string">&quot;&quot;</span>) }
+    StatelessTextField(
+        value = name,
+        onNameChange = { name = it },
+    )
+}
+
+<span class="hljs-comment">// stateless</span>
+<span class="hljs-meta">@Composable</span>
+<span class="hljs-function"><span class="hljs-keyword">fun</span> <span class="hljs-title">StatelessTextField</span><span class="hljs-params">(name: <span class="hljs-type">String</span>, onNameChange: (<span class="hljs-type">String</span>) -&gt; <span class="hljs-type">Unit</span>)</span></span> {
+  TextField(
+      value = name,
+      onValueChange = onNameChange,
+  )
+}
 </code></pre>
-<p>// state hoisting</p>
 </section>
 </foreignObject><foreignObject width="1280" height="720" data-marpit-advanced-background="pseudo"><section data-heading-divider="2" lang="C" style="" data-marpit-advanced-background="pseudo" data-marpit-advanced-background-split="right"></section></foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="13" data-heading-divider="2" lang="C" style="--heading-divider:2;">
 <h2 id="remembers">remembers</h2>
@@ -218,7 +231,7 @@ NavHost(navController = navController, startDestination = <span class="hljs-stri
 </code></pre>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="18" data-heading-divider="2" lang="C" style="--heading-divider:2;">
-<h1 id="side-effects">Side Effects</h1>
+<h2 id="side-effects">Side Effects</h2>
 <p>Une fonction <code>@Composable</code> qui n'émet pas d'UI mais exécute des effect quand la composition termine.</p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="19" data-heading-divider="2" lang="C" style="--heading-divider:2;">
