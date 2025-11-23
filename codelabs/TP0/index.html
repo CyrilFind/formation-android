@@ -31,7 +31,7 @@
       <google-codelab-step label="Mise en place" duration="0">
         <p>Avant le premier cours, vérifiez que votre poste de travail est opérationnel:</p>
 <ul>
-<li>Installez - <strong>sur un disque où vous avez de la place</strong> - la dernière version d&#39;<a href="https://developer.android.com/studio" target="_blank">Android Studio</a>,ou mettez le à jour si vous l&#39;avez déjà</li>
+<li>Installez - <strong>sur un disque où vous avez de la place</strong> - la dernière version d&#39;<a href="https://developer.android.com/studio" target="_blank">Android Studio</a>, ou mettez le à jour si vous l&#39;avez déjà</li>
 <li>Créez un projet vide (laissez l&#39;api minimale proposée)</li>
 <li>Si vous avez un appareil Android physique et un cable qui fonctionne, passez le en mode développeur (en tapant 7 fois sur le numéro de build dans les paramètres) et prenez le avec vous en cours, ce sera plus simple.</li>
 <li>Sinon: Dans <code>Device Manager > Create virtual device</code> choisissez un device avec le triangle du PlayStore, puis une version d&#39;OS Android récente.</li>
@@ -76,9 +76,8 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Kotlin" duration="0">
-        <p>Pour prendre en main les bases du langage: <a href="http://try.kotl.in/koans" target="_blank">try.kotl.in/koans</a></p>
-<p>Commencez par ces exercices:</p>
+      <google-codelab-step label="Kotlin Basics" duration="0">
+        <p>Pour prendre en main les bases du langage:</p>
 <ul>
 <li><a href="https://play.kotlinlang.org/koans/Introduction/Nullable%20types/Task.kt" target="_blank">Nullable types</a></li>
 <li><a href="https://play.kotlinlang.org/koans/Introduction/String%20templates/Task.kt" target="_blank">String templates</a></li>
@@ -91,10 +90,8 @@
 
       </google-codelab-step>
     
-      <google-codelab-step label="Google Codelabs" duration="0">
-        <p>On va commencer en douceur en se basant sur les <a href="https://developer.android.com/courses/android-basics-compose/course" target="_blank">Codelabs Google</a></p>
-<p>Tous ces tutos ne sont pas indispensable pour des presque-ingénieurs tels que vous alors on va en faire seulement quelques uns:</p>
-<ul>
+      <google-codelab-step label="Jetpack Compose Basics" duration="0">
+        <ul>
 <li><a href="https://developer.android.com/codelabs/basic-android-kotlin-compose-text-composables" target="_blank">Compose Texts</a></li>
 <li><a href="https://developer.android.com/codelabs/basic-android-kotlin-compose-add-images" target="_blank">Compose Images</a></li>
 <li><a href="https://developer.android.com/codelabs/basic-android-kotlin-compose-build-a-dice-roller-app" target="_blank">Compose Buttons</a></li>
@@ -102,6 +99,7 @@
 </ul>
 <aside class="warning"><p> ⚠️ Ne perdez pas de temps sur les pages &#34;Introduction&#34;, &#34;Overview&#34;, etc... ni sur les dernières étapes: questions, exercices, etc... </p>
 </aside>
+<p>Pour continuer voir <a href="https://developer.android.com/courses/android-basics-compose/course" target="_blank">les autres codelabs Google</a></p>
 
 
       </google-codelab-step>
@@ -122,21 +120,39 @@
 <li>Affichage d&#39;horaires de trains</li>
 <li>Client alternatif pour Twitch, Twitter, Bluesky, ...</li>
 <li>Traqueur de films, séries, jeux, etc</li>
-<li>Jeux à UI simple: Quiz, Memory, etc</li>
-<li>un chatbot spécialisé</li>
+<li>Jeux à UI simple: Quiz, Memory, Wordle, Food Guessr, etc</li>
 </ul>
 <p>Exemples d&#39;années précédentes:</p>
 <ul>
 <li>Cémantix</li>
 <li>Reigns-like</li>
+<li>Jukebox Spotify</li>
 </ul>
 <p>Exemples d&#39;API gratuites:</p>
 <ul>
 <li><a href="https://trakt.docs.apiary.io" target="_blank">https://trakt.docs.apiary.io</a></li>
 <li><a href="https://imgflip.com/api" target="_blank">https://imgflip.com/api</a></li>
+<li><a href="https://developer.themoviedb.org/v4/reference/" target="_blank">https://developer.themoviedb.org/v4/reference/</a></li>
+<li><a href="https://dev.splitwise.com/" target="_blank">https://dev.splitwise.com/</a></li>
+<li><a href="https://developer.atlassian.com/cloud/trello/rest/" target="_blank">https://developer.atlassian.com/cloud/trello/rest/</a></li>
+<li><a href="https://docs.github.com/en/rest" target="_blank">https://docs.github.com/en/rest</a></li>
+<li><a href="https://www.file.io/developers" target="_blank">https://www.file.io/developers</a></li>
+<li><a href="https://developers.google.com/books/docs/v1/reference" target="_blank">https://developers.google.com/books/docs/v1/reference</a></li>
+<li><a href="https://spoonacular.com/food-api/docs" target="_blank">https://spoonacular.com/food-api/docs</a></li>
+<li><a href="https://openfoodfacts.github.io/openfoodfacts-server/api/ref-v3" target="_blank">https://openfoodfacts.github.io/openfoodfacts-server/api/ref-v3</a></li>
 </ul>
-<p>Si vous le souhaitez, on peut aussi essayer de faire du Kotlin Mutliplatform afin de pouvoir lancer votre app également sur iOS !</p>
-<p>Au moment de setup le projet, demandez moi un coup de main, on utilisera <a href="https://kmp.jetbrains.com/" target="_blank">cet outil</a></p>
+<p>Moins permissives (pas de POST par ex):</p>
+<ul>
+<li><a href="https://lyricsovh.docs.apiary.io" target="_blank">https://lyricsovh.docs.apiary.io</a></li>
+<li><a href="http://numbersapi.com/#random/trivia" target="_blank">http://numbersapi.com/#random/trivia</a></li>
+<li><a href="https://openweathermap.org/api" target="_blank">https://openweathermap.org/api</a></li>
+<li><a href="https://api.nasa.gov/" target="_blank">https://api.nasa.gov/</a></li>
+<li><a href="https://www.thecocktaildb.com" target="_blank">https://www.thecocktaildb.com</a></li>
+<li><a href="https://api.watchmode.com/docs" target="_blank">https://api.watchmode.com/docs</a></li>
+<li>autres: <a href="https://rapidapi.com/collection/list-of-free-apis" target="_blank">https://rapidapi.com/collection/list-of-free-apis</a></li>
+</ul>
+<p>Il faudra adapter légèrement les TP mais je serai très tolérant dans la notation vu que ça vous demande un peu plus d&#39;efforts.</p>
+<p>Pour ceux qui ont un mac et/ou un iPhone, on peut aussi essayer de faire du Kotlin Mutliplatform afin de pouvoir lancer votre app également sur iOS !</p>
 
 
       </google-codelab-step>
