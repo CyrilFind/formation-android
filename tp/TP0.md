@@ -31,7 +31,7 @@ Prenez en main l'IDE: vous pouvez aller dans les paramètres (`File > Settings` 
 
 - Activez tout dans `Editor > Inlay Hints`
 - Activez les imports automatiques: `Editor > General > Auto Import > Kotlin (en bas) > cocher les 2 cases`
-- Personnalisez la coloration syntaxique dans `Settings > Editor > Color Scheme` (vous pouvez utiliser ma config avec `⚙ > Import Scheme` et ce [fichier](./assets/Darculai.icls))
+- Personnalisez la coloration syntaxique dans `Settings > Editor > Color Scheme` (vous pouvez utiliser ma config avec `⚙ > Import Scheme` et ce [fichier](../../assets/Darculai.icls))
 - Personnalisez les raccourcis clavier
 
 ## Android Studio
