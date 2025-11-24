@@ -1,6 +1,6 @@
 # TP
 
-[→ Slides](slides/)
+[→ Slides](../slides/)
 
 {% for file in site.static_files %}
 {% if file.path contains 'tp/' and file.name contains '.md' %}
@@ -10,4 +10,4 @@
 {% endif %}
 {% endfor %}
 
-[→ Slides](slides/)
+[→ Slides](../slides/)
