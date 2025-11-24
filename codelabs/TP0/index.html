@@ -106,14 +106,23 @@
     
       <google-codelab-step label="Projet" duration="0">
         <p>Pendant les prochains TP, vous allez créer un projet en binôme que vous compléterez au fil des TPs.</p>
-<p>Par défaut c&#39;est une simple Todo app, mais vous pouvez choisir un autre sujet qui vous intéresse plus, mais dans tous les cas il faudra que le résultat final respecte certaines specifications:</p>
+<p>Par défaut c&#39;est une simple Todo app, mais vous pouvez choisir un autre sujet qui vous intéresse plus, mais dans tous les cas il faudra que le résultat final utilise les briques de base suivantes:</p>
 <ul>
-<li>Liste scrollable d&#39;éléments (dont une <code>RecyclerView</code>)</li>
+<li>Avoir une UI correcte en Jetpack compose</li>
+<li>Naviguer entre plusieurs écrans: Liste/Détail a minima</li>
 <li>Interaction avec une API distante (avec <code>Retrofit</code>, <code>kotlinx.serialization</code> et <code>kotlinx.coroutines</code>)</li>
-<li>Afficher des images local et distantes (avec <code>Coil</code>)</li>
-<li>Naviguer entre plusieurs écrans en échangeant des infos (<code>Intent</code>, Navigation Component, Activity Result)</li>
+<li>Afficher des images locales et distantes avec <code>Coil</code></li>
 <li>Respecter une architecture minimale (avec <code>ViewModel</code> et <code>Repository</code>)</li>
+<li>écrire un minimum de tests unitaires</li>
+</ul>
+<p>Et selon le sujet choisi, vous pourrez aussi implémenter:</p>
+<ul>
+<li>Une méchanique de login</li>
 <li>Demander une ou plusieurs permissions</li>
+<li>Stocker des données localement (avec <code>DataStore</code> ou <code>Room</code>) si l&#39;API permet seulement de GET par exemple</li>
+<li>Gérer des tâches en arrière plan (avec <code>WorkManager</code>)</li>
+<li>Gérer l&#39;accessibilité (via <code>TalkBack</code>)</li>
+<li>...</li>
 </ul>
 <p>Quelques idées d&#39;applications:</p>
 <ul>
@@ -122,6 +131,7 @@
 <li>Traqueur de films, séries, jeux, etc</li>
 <li>Jeux à UI simple: Quiz, Memory, Wordle, Food Guessr, etc</li>
 </ul>
+<p>Si vous avex un mac et/ou un iPhone (ou juste si ça vous intéresse) on fera du Kotlin Mutliplatform afin de pouvoir lancer votre app également sur iOS !</p>
 <p>Exemples d&#39;années précédentes:</p>
 <ul>
 <li>Cémantix</li>
@@ -152,8 +162,6 @@
 <li><a href="https://api.watchmode.com/docs" target="_blank">https://api.watchmode.com/docs</a></li>
 <li>autres: <a href="https://rapidapi.com/collection/list-of-free-apis" target="_blank">https://rapidapi.com/collection/list-of-free-apis</a></li>
 </ul>
-<p>Il faudra adapter légèrement les TP mais je serai très tolérant dans la notation vu que ça vous demande un peu plus d&#39;efforts.</p>
-<p>Pour ceux qui ont un mac et/ou un iPhone, on peut aussi essayer de faire du Kotlin Mutliplatform afin de pouvoir lancer votre app également sur iOS !</p>
 
 
       </google-codelab-step>
