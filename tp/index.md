@@ -10,4 +10,6 @@
 {% endif %}
 {% endfor %}
 
+[→ Codelabs](../codelabs/)
+
 [→ Slides](../slides/)

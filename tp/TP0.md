@@ -73,14 +73,23 @@ Pour continuer voir [les autres codelabs Google](https://developer.android.com/c
 
 Pendant les prochains TP, vous allez créer un projet en binôme que vous compléterez au fil des TPs.
 
-Par défaut c'est une simple Todo app, mais vous pouvez choisir un autre sujet qui vous intéresse plus, mais dans tous les cas il faudra que le résultat final respecte certaines specifications:
+Par défaut c'est une simple Todo app, mais vous pouvez choisir un autre sujet qui vous intéresse plus, mais dans tous les cas il faudra que le résultat final utilise les briques de base suivantes:
 
-- Liste scrollable d'éléments (dont une `RecyclerView`)
+- Avoir une UI correcte en Jetpack compose
+- Naviguer entre plusieurs écrans: Liste/Détail a minima
 - Interaction avec une API distante (avec `Retrofit`, `kotlinx.serialization` et `kotlinx.coroutines`)
-- Afficher des images local et distantes (avec `Coil`)
-- Naviguer entre plusieurs écrans en échangeant des infos (`Intent`, Navigation Component, Activity Result)
+- Afficher des images locales et distantes avec `Coil`
 - Respecter une architecture minimale (avec `ViewModel` et `Repository`)
+- écrire un minimum de tests unitaires
+
+Et selon le sujet choisi, vous pourrez aussi implémenter:
+
+- Une méchanique de login
 - Demander une ou plusieurs permissions
+- Stocker des données localement (avec `DataStore` ou `Room`) si l'API permet seulement de GET par exemple
+- Gérer des tâches en arrière plan (avec `WorkManager`)
+- Gérer l'accessibilité (via `TalkBack`)
+- ...
 
 Quelques idées d'applications:
 
@@ -88,6 +97,8 @@ Quelques idées d'applications:
 - Client alternatif pour Twitch, Twitter, Bluesky, ...
 - Traqueur de films, séries, jeux, etc
 - Jeux à UI simple: Quiz, Memory, Wordle, Food Guessr, etc
+
+Si vous avex un mac et/ou un iPhone (ou juste si ça vous intéresse) on fera du Kotlin Mutliplatform afin de pouvoir lancer votre app également sur iOS !
 
 Exemples d'années précédentes:
 
@@ -118,10 +129,6 @@ Moins permissives (pas de POST par ex):
 - <https://www.thecocktaildb.com>
 - <https://api.watchmode.com/docs>
 - autres: <https://rapidapi.com/collection/list-of-free-apis>
-
-Il faudra adapter légèrement les TP mais je serai très tolérant dans la notation vu que ça vous demande un peu plus d'efforts.
-
-Pour ceux qui ont un mac et/ou un iPhone, on peut aussi essayer de faire du Kotlin Mutliplatform afin de pouvoir lancer votre app également sur iOS !
 
 [android_studio_pathway]: https://developer.android.com/courses/pathways/android-basics-compose-unit-1-pathway-2
 [android_studio_download]: https://developer.android.com/studio
