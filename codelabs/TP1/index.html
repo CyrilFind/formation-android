@@ -35,6 +35,8 @@
 </aside>
 <aside class="special"><p>Remarque: si vous n&#39;avez pas bien paramétré votre IDE, relisez le début du <a href="./TP0" target="_blank">TP0</a></p>
 </aside>
+<aside class="warning"><p>Si vous remarquez des erreurs, des fautes de frappe ou des oublis de ma part, n&#39;hésitez pas à me le signaler SVP !</p>
+</aside>
 
 
       </google-codelab-step>
@@ -52,6 +54,12 @@
 <p>Vous allez parfois supprimer et remplacer des parties de code: ne commentez pas votre code dans tous les sens, les commits garderons l&#39;historique.</p>
 <p>Comme dans un vrai projet pro finalement !</p>
 </aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Image Asset Studio" duration="0">
+        <p>Créez une icône d&#39;application personnalisée avec l&#39;outil intégré <strong>Image Asset Studio</strong>: ouvrez le <strong>Resource Manager</strong> à gauche, près du volet projet puis cliquez sur le <code>+</code> en haut à gauche et choisissez <code>Image Asset</code>: ici vous pouvez choisie une couleur de fond, une image (icône système ou personnalisée avec un SVG ou un &#34;clipart&#34;) et générer automatiquement les différentes tailles nécessaires pour Android.</p>
 
 
       </google-codelab-step>
@@ -102,20 +110,15 @@
 </code></pre>
 <aside class="warning"><p>⚠️ Si vous exécutez du code <em>avant</em> cette ligne <code>inflate</code>, il va crasher ou ne rien faire car votre vue n&#39;existera pas encore</p>
 </aside>
-<aside class="special"><p><code>R</code> est un raccourci signifiant &#34;Resource&#34;: c&#39;est une classe générée automatiquement à partir des dossiers et fichiers créés dans <code>res</code> qui s&#39;utilise comme ceci: <code>R.string.app_name</code>, <code>R.drawable.app_icon</code>, etc... afin de récupérer des <code>int</code> qui servent d&#39;<code>id</code> à ces ressources et que l&#39;on utilise dans les fonctions du framework Android (<code>getString</code>, <code>getDrawable</code>, etc...)</p>
+<aside class="special"><p><code>R</code> est un raccourci signifiant &#34;Resource&#34;: c&#39;est une classe générée automatiquement à partir des dossiers et fichiers créés dans <code>res</code> qui s&#39;utilise comme ceci: <code>R.string.app_name</code>, <code>R.drawable.app_icon</code>, etc... afin de récupérer des ID que l&#39;on utilise dans les fonctions du framework Android (<code>getString</code>, <code>getDrawable</code>, etc...)</p>
 </aside>
 <ul>
 <li>Pour l&#39;instant, la liste des tâches sera simplement une liste de <code>String</code> locale, ajoutez la en tant que propriété de votre classe <code>TaskListFragment</code>:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">private var taskList = listOf(&#34;Task 1&#34;, &#34;Task 2&#34;, &#34;Task 3&#34;)
+<pre><code language="language-kotlin" class="language-kotlin">private val taskList = listOf(&#34;Task 1&#34;, &#34;Task 2&#34;, &#34;Task 3&#34;)
 </code></pre>
-<pre><code language="language-kotlin" class="language-kotlin">&lt;resources&gt;
-    &lt;string name=&#34;app_name&#34;&gt;Affirmations&lt;/string&gt;
-    &lt;string name=&#34;task1&#34;&gt;#1 Faire les courses&lt;/string&gt;
-    &lt;string name=&#34;task2&#34;&gt;#2 Faire la vaisselle&lt;/string&gt;
-    &lt;string name=&#34;task3&#34;&gt;#3 Faire le ménage&lt;/string&gt;
-&lt;/resources&gt;
-</code></pre>
+<aside class="special"><p>↳ Ici le <strong>Typage Statique Inféré</strong> de Kotlin nous permet de ne pas préciser le type de <code>taskList</code>: le compilateur le devine tout seul (et l&#39;IDE devrait vous l&#39;afficher en grisé)</p>
+</aside>
 
 
       </google-codelab-step>
@@ -187,7 +190,7 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
 <pre><code language="language-kotlin" class="language-kotlin">val recyclerView = view.findViewById&lt;RecyclerView&gt;(R.id.id_de_votre_recycler_view)
 </code></pre>
 <ul>
-<li>Pour fonctionner, <code>recyclerView</code> a une propriété <code>adapter</code> qui doit être connectée à l&#39;adapter que vous avez créé (elle est nulle par défaut)</li>
+<li>Pour fonctionner, <code>recyclerView</code> a une propriété <code>adapter</code> qui doit être connectée à l&#39;adapter que vous avez créé (<code>null</code> par défaut)</li>
 </ul>
 
 
@@ -234,13 +237,27 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
 
       </google-codelab-step>
     
+      <google-codelab-step label="Resources" duration="0">
+        <p>À vous de créer des ressources cette fois: vous pouvez faire <code>alt + entrer</code> avec le curseur sur les <code>String</code> dans <code>listOf</code> puis &#34;extract string resource&#34;, qui remplacera automatiquement les <code>String</code> par des <code>getString(R.string.xxx)</code></p>
+<p>Sinon, faites le à la main et éditez directement <code>res/values/strings.xml</code>, à la fin vous aurez quelque chose comme:</p>
+<pre><code language="language-kotlin" class="language-kotlin">&lt;resources&gt;
+    ...
+    &lt;string name=&#34;task_1&#34;&gt;Task 1&lt;/string&gt;
+    &lt;string name=&#34;task_2&#34;&gt;Task 2&lt;/string&gt;
+    &lt;string name=&#34;task_3&#34;&gt;Task 3&lt;/string&gt;
+&lt;/resources&gt;
+</code></pre>
+
+
+      </google-codelab-step>
+    
       <google-codelab-step label="Data class" duration="0">
         <ul>
 <li>Dans un nouveau fichier, créer une <code>data class Task</code> avec 3 attributs: un id, un titre et une description</li>
 <li>Ajouter une valeur par défaut à la description.</li>
 <li>Dans le <code>TaskListFragment</code>, remplacer la liste <code>taskList</code> par</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">private var taskList = listOf(
+<pre><code language="language-kotlin" class="language-kotlin">private val taskList = listOf(
    Task(id = &#34;id_1&#34;, title = &#34;Task 1&#34;, description = &#34;description 1&#34;),
    Task(id = &#34;id_2&#34;, title = &#34;Task 2&#34;),
    Task(id = &#34;id_3&#34;, title = &#34;Task 3&#34;)
@@ -279,6 +296,9 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
 val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;Task ${taskList.size + 1}&#34;)
 taskList = taskList + newTask
 </code></pre>
+<aside class="warning"><p>↳ vous allez devoir changer <code>taskList</code> en <code>var</code> car actuellement le <code>val</code> signifie que la variable est immuable (ne peut pas être réassignée) donc ça ne compilera pas.</p>
+<p>On pourrait aussi garder <code>val</code> mais utiliser une structure de données mutable: <code>MutableList</code>, dans ce cas la variable ne change pas mais c&#39;est son <strong>contenu</strong> qui change.</p>
+</aside>
 <aside class="warning"><p>⚠️ Votre modification de liste ne va pas s&#39;afficher directement, il faut:</p>
 <ul>
 <li>passer la nouvelle liste à votre adapter</li>
