@@ -18,6 +18,12 @@ Remarque: si vous n'avez pas bien paramétré votre IDE, relisez le début du [T
 
 </aside>
 
+<aside class="negative">
+
+Si vous remarquez des erreurs, des fautes de frappe ou des oublis de ma part, n'hésitez pas à me le signaler SVP !
+
+</aside>
+
 ## Créer un projet
 
 Vous allez créer un unique projet que vous mettrez à jour au fur à mesure des TPs:
@@ -38,7 +44,9 @@ Comme dans un vrai projet pro finalement !
 
 </aside>
 
-<!-- ajouter une icone ? -->
+## Image Asset Studio
+
+Créez une icône d'application personnalisée avec l'outil intégré **Image Asset Studio**: ouvrez le **Resource Manager** à gauche, près du volet projet puis cliquez sur le `+` en haut à gauche et choisissez `Image Asset`: ici vous pouvez choisie une couleur de fond, une image (icône système ou personnalisée avec un SVG ou un "clipart") et générer automatiquement les différentes tailles nécessaires pour Android.
 
 ## Gestion des fichiers
 
@@ -108,27 +116,21 @@ val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 
 <aside class="positive">
 
-`R` est un raccourci signifiant "Resource": c'est une classe générée automatiquement à partir des dossiers et fichiers créés dans `res` qui s'utilise comme ceci: `R.string.app_name`, `R.drawable.app_icon`, etc... afin de récupérer des `int` qui servent d'`id` à ces ressources et que l'on utilise dans les fonctions du framework Android (`getString`, `getDrawable`, etc...)
+`R` est un raccourci signifiant "Resource": c'est une classe générée automatiquement à partir des dossiers et fichiers créés dans `res` qui s'utilise comme ceci: `R.string.app_name`, `R.drawable.app_icon`, etc... afin de récupérer des ID que l'on utilise dans les fonctions du framework Android (`getString`, `getDrawable`, etc...)
 
 </aside>
 
 - Pour l'instant, la liste des tâches sera simplement une liste de `String` locale, ajoutez la en tant que propriété de votre classe `TaskListFragment`:
 
 ```kotlin
-private var taskList = listOf("Task 1", "Task 2", "Task 3")
+private val taskList = listOf("Task 1", "Task 2", "Task 3")
 ```
-<!-- utiliser une liste de res string pour la culture ? -->
 
-```kotlin
-<resources>
-    <string name="app_name">Affirmations</string>
-    <string name="task1">#1 Faire les courses</string>
-    <string name="task2">#2 Faire la vaisselle</string>
-    <string name="task3">#3 Faire le ménage</string>
-</resources>
-```
-<!-- utiliser map {} ? -->
-<!--         recyclerView.setHasFixedSize(true) -->
+<aside class="positive">
+
+↳ Ici le **Typage Statique Inféré** de Kotlin nous permet de ne pas préciser le type de `taskList`: le compilateur le devine tout seul (et l'IDE devrait vous l'afficher en grisé)
+
+</aside>
 
 ## MainActivity
 
@@ -206,7 +208,7 @@ app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 val recyclerView = view.findViewById<RecyclerView>(R.id.id_de_votre_recycler_view)
 ```
 
-- Pour fonctionner, `recyclerView` a une propriété `adapter` qui doit être connectée à l'adapter que vous avez créé (elle est nulle par défaut)
+- Pour fonctionner, `recyclerView` a une propriété `adapter` qui doit être connectée à l'adapter que vous avez créé (`null` par défaut)
 
 ## Item View
 
@@ -251,6 +253,22 @@ val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_task, p
 - Implémentez maintenant `bind()` qui doit récupérer une référence à la `TextView` dans `item_task.xml` et y insérer le texte récupéré en argument (pour être plus propre, déplacez cette référence en tant que propriété de votre `TaskViewHolder`)
 - Lancez l'app: vous devez voir 3 tâches s'afficher 👏
 
+## Resources
+
+À vous de créer des ressources cette fois: vous pouvez faire `alt + entrer` avec le curseur sur les `String` dans `listOf` puis "extract string resource", qui remplacera automatiquement les `String` par des `getString(R.string.xxx)`
+
+Sinon, faites le à la main et éditez directement `res/values/strings.xml`, à la fin vous aurez quelque chose comme:
+
+```kotlin
+<resources>
+    ...
+    <string name="task_1">Task 1</string>
+    <string name="task_2">Task 2</string>
+    <string name="task_3">Task 3</string>
+</resources>
+```
+<!-- recyclerView.setHasFixedSize(true) -->
+
 ## Data class
 
 - Dans un nouveau fichier, créer une `data class Task` avec 3 attributs: un id, un titre et une description
@@ -258,7 +276,7 @@ val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_task, p
 - Dans le `TaskListFragment`, remplacer la liste `taskList` par
 
 ```kotlin
-private var taskList = listOf(
+private val taskList = listOf(
    Task(id = "id_1", title = "Task 1", description = "description 1"),
    Task(id = "id_2", title = "Task 2"),
    Task(id = "id_3", title = "Task 3")
@@ -295,6 +313,14 @@ Utilisez `.setOnClickListener {}` sur le bouton d'ajout pour ajouter une tâche 
 val newTask = Task(id = UUID.randomUUID().toString(), title = "Task ${taskList.size + 1}")
 taskList = taskList + newTask
 ```
+
+<aside class="negative">
+
+↳ vous allez devoir changer `taskList` en `var` car actuellement le `val` signifie que la variable est immuable (ne peut pas être réassignée) donc ça ne compilera pas.
+
+On pourrait aussi garder `val` mais utiliser une structure de données mutable: `MutableList`, dans ce cas la variable ne change pas mais c'est son **contenu** qui change.
+
+</aside>
 
 <aside class="negative">
 

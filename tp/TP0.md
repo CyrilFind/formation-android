@@ -84,7 +84,7 @@ Par défaut c'est une simple Todo app, mais vous pouvez choisir un autre sujet q
 
 Et selon le sujet choisi, vous pourrez aussi implémenter:
 
-- Une méchanique de login
+- Une mécanique de login
 - Demander une ou plusieurs permissions
 - Stocker des données localement (avec `DataStore` ou `Room`) si l'API permet seulement de GET par exemple
 - Gérer des tâches en arrière plan (avec `WorkManager`)

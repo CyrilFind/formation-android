@@ -298,12 +298,6 @@ class DraggableButton(
 val lazyUser: User by lazy { getCurrentUser() }
 ```
 
-## Démo
-
-![bg right:30% 80%](../assets/kotlin.png)
-
-[Kotlin Playground](https://play.kotlinlang.org)
-
 ## Swift
 
 ![bg right:30% 80%](../assets/swift.png)
@@ -322,3 +316,9 @@ if let user = user {
 ```
 
 Nuances: Structs, Automatic Reference Counting, `weak`...
+
+## En pratique
+
+![bg right:30% 80%](../assets/kotlin.png)
+
+[Kotlin Playground](https://play.kotlinlang.org)

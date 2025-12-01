@@ -30,20 +30,11 @@ Cyril Findeling 👋
 - Variable, Function, Property, Method
 - Inherit, Override, Implement, Abstract
 
-## Principles
-
-- Encapsulation
-- Abstraction
-- Inheritance
-- Polymorphism
-
 ## Encapsulation
 
 Hide the internal state
 
-![invert bg right:65% 100%](../assets/encapsulation.png)
-
-## Encapsulation: Example
+![invert bg right:45% 100%](../assets/encapsulation.png)
 
 ```kotlin
 class Cat {
@@ -61,9 +52,7 @@ class Cat {
 
 Expose high level handles
 
-![invert bg right:65% 100%](../assets/abstraction.png)
-
-## Abstraction Example
+![invert bg right:45% 100%](../assets/abstraction.png)
 
 ```kotlin
 class CoffeeMachine {
@@ -86,9 +75,7 @@ class CoffeeMachine {
 
 Extend an other Class
 
-![invert bg right:65% 100%](../assets/inheritance.png)
-
-## Inheritance Example
+![invert bg right:55% 100%](../assets/inheritance.png)
 
 ```kotlin
 class Animal {
@@ -159,9 +146,8 @@ class FacebookFriendsDataSource : FriendsDataSource {
 
 Use the same code for different types
 
-![invert bg right:65% 100%](../assets/polymorphism.png)
+![invert bg right:35% 100%](../assets/polymorphism.png)
 
-## Polymorphism example
 
 ```kotlin
 fun calculateTotalSurface(figures: List<Figure>) : Int {
@@ -181,23 +167,14 @@ fun calculateTotalSurface(figures: List<Figure>) : Int {
 - Interface segregation: Prefer several specific interfaces to a general one
 - Dependency inversion: Depend upon abstractions, not concretions
 
-## Other Principles
-
-- DRY: Don't Repeat Yourself
-- YAGNI: You Are Not Gonna Need It
-- KISS: Keep it simple, stupid
-- SSOT: Single source of truth
-
-## Going Further
+## Pour aller plus loin
 
 - Design Patterns (Singleton, Factory, ...)
 - Dependency Injection
-- Is Inheritance bad ?
-- Often prefer composition: "has-a" VS "is-a"
+- Héritage VS composition
 - Entity Component System
-- OOP is not a silver bullet
 
-## Other Paradigms
+### Autres Paradigmes
 
 - Procedural Programming
 - Functional Programming

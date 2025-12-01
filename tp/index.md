@@ -1,5 +1,7 @@
 # TP
 
+[→ Codelabs](../codelabs/)
+
 [→ Slides](../slides/)
 
 {% for file in site.static_files %}
@@ -9,7 +11,3 @@
 
 {% endif %}
 {% endfor %}
-
-[→ Codelabs](../codelabs/)
-
-[→ Slides](../slides/)

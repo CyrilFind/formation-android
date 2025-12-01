@@ -10,4 +10,3 @@
 {% endif %}
 {% endfor %}
 
-[→ TPs](../codelabs/)

@@ -1,5 +1,7 @@
 # Codelabs
 
+[→ Markdown](../tp/)
+
 [→ Slides](../slides/)
 
 {% for file in site.static_files %}
@@ -11,6 +13,3 @@
 {% endif %}
 {% endfor %}
 
-[→ Markdown](../tp/)
-
-[→ Slides](../slides/)
