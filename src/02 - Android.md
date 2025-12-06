@@ -63,7 +63,7 @@ marp: true
 
 ![bg right:50% 100%](../assets/android_studio.png)
 
-# iOS
+## iOS
 
 ![bg right:40% 80%](../assets/apple.svg)
 
@@ -80,7 +80,7 @@ marp: true
 
 ![bg right:40% 80%](../assets/xcode.png)
 
-# Cross-Platform
+## Composants et Cross-Platform
 
 ![bg right:30% 90%](../assets/react.png)
 ![bg right:30% 70%](../assets/flutter.svg)
@@ -91,7 +91,7 @@ marp: true
 - Xamarin, ReactNative, NativeScript, Ionic, ...
 - Dart: Flutter (iOS, Android, Desktop, Web) par Google
 
-# Composants
+## Composants natifs
 
 ![bg right:30% 90%](../assets/compose.png)
 ![bg right:30% 75%](../assets/swiftui.png)

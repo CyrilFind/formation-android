@@ -200,7 +200,7 @@ app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
 
 </aside>
 
-- ajoutez lui un `id`: soit en mode visuel soit en mode code, en vous aidant de l'auto-complétion `android:id="@+id/....`
+- ajoutez lui un `id`: soit en mode visuel soit en mode code, en vous aidant de l'auto-complétion `android:id="@+id/id_de_votre_recycler_view`
 
 - Dans `TaskListFragment`, overridez `onViewCreated` pour y récupérez une référence à la `RecyclerView` du layout en utilisant `findViewById`:
 
@@ -253,22 +253,6 @@ val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_task, p
 - Implémentez maintenant `bind()` qui doit récupérer une référence à la `TextView` dans `item_task.xml` et y insérer le texte récupéré en argument (pour être plus propre, déplacez cette référence en tant que propriété de votre `TaskViewHolder`)
 - Lancez l'app: vous devez voir 3 tâches s'afficher 👏
 
-## Resources
-
-À vous de créer des ressources cette fois: vous pouvez faire `alt + entrer` avec le curseur sur les `String` dans `listOf` puis "extract string resource", qui remplacera automatiquement les `String` par des `getString(R.string.xxx)`
-
-Sinon, faites le à la main et éditez directement `res/values/strings.xml`, à la fin vous aurez quelque chose comme:
-
-```kotlin
-<resources>
-    ...
-    <string name="task_1">Task 1</string>
-    <string name="task_2">Task 2</string>
-    <string name="task_3">Task 3</string>
-</resources>
-```
-<!-- recyclerView.setHasFixedSize(true) -->
-
 ## Data class
 
 - Dans un nouveau fichier, créer une `data class Task` avec 3 attributs: un id, un titre et une description
@@ -306,7 +290,7 @@ Vous pouvez configurer les contraintes de plusieurs façons:
 
 ## Ajout de tâche rapide
 
-Utilisez `.setOnClickListener {}` sur le bouton d'ajout pour ajouter une tâche à votre liste à chaque fois qu'on clique dessus:
+Retournez dans le code, récupérez une référence à votre nouveau bouton et utilisez `.setOnClickListener {}` pour ajouter une tâche à votre liste à chaque fois qu'on clique dessus:
 
 ```kotlin
 // Instanciation d'un objet task avec des données préremplies:

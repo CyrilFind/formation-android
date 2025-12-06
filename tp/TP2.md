@@ -228,7 +228,7 @@ class TaskListFragment : Fragment {
 
 ## Partager
 
-- En modifiant `AndroidManifest.xml`, ajouter la possibilité de partager du texte **depuis les autres applications** (par ex en surlignant un texte dans un navigateur puis en cliquant sur "partager") et ouvrir le formulaire de création de tâche avec une description pré-remplie ([Documentation][1])
+- En modifiant `AndroidManifest.xml`, ajouter la possibilité de partager du texte **depuis les autres applications** (par ex en surlignant un texte dans un navigateur puis en cliquant sur "partager") et ouvrir le formulaire de création de tâche avec une description pré-remplie ([Documentation](https://developer.android.com/training/sharing/receive))
 
 <aside class="negative">
 
@@ -236,7 +236,7 @@ class TaskListFragment : Fragment {
 
 </aside>
 
-- En utilisant un `Intent` **implicite**, ajouter la possibilité de partager du texte **vers les autres applications** (avec un `OnLongClickListener` sur les tâches par ex ou bien avec un bouton dans la vue formulaire) ([Documentation][2])
+- En utilisant un `Intent` **implicite**, ajouter la possibilité de partager du texte **vers les autres applications** (avec un `OnLongClickListener` sur les tâches par ex ou bien avec un bouton dans la vue formulaire) ([Documentation](https://developer.android.com/training/sharing/send))
 
 ## Changements de configuration
 
@@ -245,6 +245,3 @@ Que se passe-t-il pour votre liste si vous tournez votre téléphone pour passer
 - Une façon de régler ce soucis est d'overrider la méthode `onSaveInstanceState`
 - Il faudra utiliser `putSerializable` (un peu comme précédemment avec `putExtra`) pour sauvegarder la liste
 - Puis pour récupérer cette liste, la méthode `getSerializable` dans `onCreateView` ou `onViewCreated`, sur le paramètre `savedInstanceState`
-
-[1]: https://developer.android.com/training/sharing/receive
-[2]: https://developer.android.com/training/sharing/send

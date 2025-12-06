@@ -148,7 +148,6 @@ Use the same code for different types
 
 ![invert bg right:35% 100%](../assets/polymorphism.png)
 
-
 ```kotlin
 fun calculateTotalSurface(figures: List<Figure>) : Int {
     var totalSurface = 0
