@@ -223,15 +223,15 @@ data class DetailNavScreen(val task: Task)
 
 @Composable
 fun App() {
-    // on créé notre historique de navigation avec l'écran de liste comme écran initial
-    val backStack = remember { mutableStateListOf<Any>(ListNavScreen) }
+    // on créé notre historique de navigation avec la liste comme écran initial
+    val backStack = rememberNavBackStack(ListNavScreen)
 
 
     NavDisplay(
       backStack = backStack,
       entryProvider = entryProvider {
-        entry<ListNavScreen> { ListScreen(...) }
-        entry<DetailNavScreen> { ... }
+        entry<ListNavScreen> { ListScreen(onClickItem = {}) }
+        entry<DetailNavScreen> { key -> DetailScreen(task = key.task) }
       }
     )
 }

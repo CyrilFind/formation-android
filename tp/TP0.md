@@ -4,7 +4,7 @@
 
 Avant le premier cours, vérifiez que votre poste de travail est opérationnel:
 
-- Installez - **sur un disque où vous avez de la place** - la dernière version d'[Android Studio][android_studio_download], ou mettez le à jour si vous l'avez déjà
+- Installez - **sur un disque où vous avez de la place** - la dernière version d'[Android Studio](https://developer.android.com/studio), ou mettez le à jour si vous l'avez déjà
 - Créez un projet vide (laissez l'api minimale proposée)
 - Si vous avez un appareil Android physique et un cable qui fonctionne, passez le en mode développeur (en tapant 7 fois sur le numéro de build dans les paramètres) et prenez le avec vous en cours, ce sera plus simple.
 - Sinon: Dans `Device Manager > Create virtual device` choisissez un device avec le triangle du PlayStore, puis une version d'OS Android récente.
@@ -12,7 +12,7 @@ Avant le premier cours, vérifiez que votre poste de travail est opérationnel:
 
 <aside class="positive">
 
-N'hésitez pas à me contacter en avance si vous avez un soucis (vous pouvez aussi suivre des [tutos Google][android_studio_pathway])
+N'hésitez pas à me contacter en avance si vous avez un soucis
 
 Problème courants:
 
@@ -47,28 +47,69 @@ Prenez en main l'IDE: vous pouvez aller dans les paramètres (`File > Settings` 
 
 ## Kotlin Basics
 
-Pour prendre en main les bases du langage:
+<aside class="positive">
+🧑‍🏫 Rappels de vocabulaire:
+
+```kotlin
+val text: String = "hello"
+
+val user: User? = null
+
+class MutableList<T> : List<T> {
+  // ...
+  val count: String
+  override fun add(element: E): Boolean
+ }
+```
+
+- `text` est une **variable** de **type** `String` qui est un type **Primitive**
+- `user` est une **variable** de **Class** `User?` qui est une classe **nullable** qui contient soit une **instance* de `User` soit `null`
+- `Array<T>` est une **Class** qui prend un **type parameter** (ou **Generic**) et qui hérite de `List<T>`, comme `List<T>` est une **interface** on dit que `Array<T>` **implémente** `List<T>`
+- `count` est une variable définie dans une **classe**: on dit que c'est une **propriété**
+- `add` est une **fonction** qui **surcharge** une **fonction** ayant la même **signature** dans une des ses **classes mère**, comme elle est définie dans une **classe**, on dit que c'est une **méthode**
+
+</aside>
+
+Pour prendre en main les bases du langage, avec qq indices:
 
 - [Nullable types](https://play.kotlinlang.org/koans/Introduction/Nullable%20types/Task.kt)
+
+```kotlin
+  // on peut "chaîner" les appels nullable avec `?.`:
+  val email = client?.personalInfo?.email
+```
+
 - [String templates](https://play.kotlinlang.org/koans/Introduction/String%20templates/Task.kt)
+
+```kotlin
+ // pour "interpoler" une variable dans une string on utilise '$'
+ fun getPattern(): String = """<pattern qui match 2 digits> $month <pattern qui match 4 digits>"""
+```
+
 - [Lambdas](https://play.kotlinlang.org/koans/Introduction/Lambdas/Task.kt)
+
+```kotlin
+val isEven = number % 2 == 0 // check division par 2
+val lambdaWithExplicitParam = { explicitParam -> explicitParam == 42 }
+val lambdaWithImplicitParam = { it == 42 }
+```
+
 - [Data classes](https://play.kotlinlang.org/koans/Classes/Data%20classes/Task.kt)
-- [Smart casts](https://play.kotlinlang.org/koans/Classes/Smart%20casts/Task.kt)
+
+```kotlin
+data class Person(
+  val ...
+  val ...
+)
+```
 
 Pour aller plus loin sur Kotlin : [Kotlin Bootcamp](https://developer.android.com/courses/kotlin-bootcamp/overview)
 
 ## Jetpack Compose Basics
 
-- [Compose Texts][compose_text_codelab]
-- [Compose Images][compose_images_codelab]
-- [Compose Buttons][compose_buttons_codelab]
-- [Constraint Layout][constraint_layout_codelab]
+[Codelab: Jetpack Compose Basics](https://developer.android.com/codelabs/jetpack-compose-basics)
 
-<aside class="negative">
-⚠️ Ne perdez pas de temps sur les pages "Introduction", "Overview", etc... ni sur les dernières étapes: questions, exercices, etc...
-</aside>
-
-Pour continuer voir [les autres codelabs Google](https://developer.android.com/courses/android-basics-compose/course)
+Pour continuer voir [les autres codelabs Google](https://developer.android.com/get-started/codelabs)
 
 ## Projet
 
@@ -131,9 +172,4 @@ Moins permissives (pas de POST par ex):
 - <https://api.watchmode.com/docs>
 - autres: <https://rapidapi.com/collection/list-of-free-apis>
 
-[android_studio_pathway]: https://developer.android.com/courses/pathways/android-basics-compose-unit-1-pathway-2
-[android_studio_download]: https://developer.android.com/studio
-[compose_text_codelab]: https://developer.android.com/codelabs/basic-android-kotlin-compose-text-composables
-[compose_images_codelab]: https://developer.android.com/codelabs/basic-android-kotlin-compose-add-images
-[compose_buttons_codelab]: https://developer.android.com/codelabs/basic-android-kotlin-compose-build-a-dice-roller-app
-[constraint_layout_codelab]: https://developer.android.com/codelabs/constraint-layout
+Ne perdez pas de temps et passez au TP1 !

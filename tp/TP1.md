@@ -2,7 +2,7 @@
 
 ## Objectif
 
-implémenter un écran affichant une liste de tâches et permettre de créer des nouvelles tâches.
+Ici on va utiliser le système de vue "classique" et afficher une liste d'éléments modifiavle
 
 <aside class="negative">
 
@@ -374,7 +374,7 @@ private val taskList = List(100) { index ->
 
 - Vous pouvez tester avec 1000 ou 10.000 éléments aussi: ça doit rester fluide !
 - remettez 100 éléments pour la suite: mainteant si vous ajoutez un élément, vous ne le verrez pas forcément !
-- faites en sorte que le `RecyclerView` scrolle automatiquement en bas à chaque ajout de tâche: `recyclerView.scrollToPosition(...)`
+- faites en sorte que le `RecyclerView` scrolle automatiquement en bas à chaque ajout de tâche: `recyclerView.smoothScrollToPosition(...)`
 
 ## ViewBinding
 
