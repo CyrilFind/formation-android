@@ -1,247 +1,260 @@
-# TP 2 - Compose & Intents
+# TP 2 - Compose
 
-## Objectif
+## Compose Activity
 
-implémenter des actions sur nos tâches, en naviguant entre des `Activity` et partager des infos entre elle ou dans une autre application avec des `Intent`.
-
-<aside class="negative">
-
-⚠️ **Prérequis**: Terminez au moins l'étape "Ajout de tâche rapide" du TP 1
-
-</aside>
-
-## Suppression d'une tache
-
-Dans le layout de vos item, ajouter un `ImageButton` qui servira à supprimer la tâche associée. Vous pouvez utiliser par exemple l'icône `@android:drawable/ic_menu_delete`
-
-<aside class="positive">
-
-**Rappel:** Une [lambda](https://kotlinlang.org/docs/reference/lambdas.html) est un type de variable qui contient un bloc de code pouvant prendre des arguments et retourner un résultat, c'est donc une fonction que l'on utilise comme une variable !
-
-</aside>
-
-Aidez vous des lignes de code plus bas pour réaliser un "Click Listener" à l'aide d'une lambda en suivant ces étapes:
-
-- Dans l'adapter, ajouter une propriété `onClickDelete` de type lambda qui prends en arguments une `Task` et ne renvoie rien: `(Task) -> Unit` et l'initier à `{}` (elle ne fait rien par défaut)
-- Utilisez cette lambda dans le `onClickListener` du bouton supprimer
-- Dans le fragment, accéder à `onClickDelete` depuis l'adapter et implémentez là: donnez lui comme valeur une lambda qui va supprimer la tache passée en argument de la liste
-
-- Déclaration de la variable lambda dans l'adapter, par défaut elle ne fait rien (`{}`):
-
-```kotlin
-var onClickDelete: (Task) -> Unit = {}
-```
-
-- Utilisation de la lambda dans le ViewHolder, quand on clique sur le bouton:
-
-```kotlin
-onClickDelete(task)
-```
-
-- "implémentation" de la lambda dans le fragment, pour que la lambda aie un effet:
-
-```kotlin
-myAdapter.onClickDelete = { task ->
-    // Supprimer la tâche
-}
-```
-
-## Compose: DetailActivity
-
-<aside class="positive">
-
-Cet écran étant assez simple, on va en profiter pour s'initer à Jetpack Compose, qui remplace le système XML utilisé jusqu'ici
-
-</aside>
-
-- Créez un package `detail` dans votre package principal
-- Créez-y avec l'IDE une nouvelle Activity: `DetailActivity`: `Clic droit sur le package > New > Activity > Gallery... > Empty Activity`
+- Créez une nouvelle activity "Empty Activity" (en compose cette fois) appelez la `ComposeActivity`
 - L'IDE devrait automatiquement compléter `app/build.gradle.kts` pour configurer Compose (buildFeatures, dependencies, etc) et l'ajouter au `AndroidManifest.xml`
+- Adaptez votre `AndroidManifest` pour en faire notre activity principale à la place de l'ancienne, et relancez l'app pour vérifier.
+- Renommez `Greeting` en `ListScreen` et `GreetingPreview` en `ListPreview` et supprimez l'argument `name`
 
-<aside class="positive">
-
-Afin de naviguer vers notre nouvelle Activity, nous allons utiliser un [Intent explicite](https://developer.android.com/guide/components/intents-filters#Types)
-
-</aside>
-
-- Faire en sorte de lancer la nouvelle Activity depuis le bouton + de la première activity
+Vous devriez avoir quelque chose comme ça:
 
 ```kotlin
-startActivity(Intent(context, ...))
-```
-
-- Renommez `Greeting` en `Detail` et `GreetingPreview` en `DetailPreview` et supprimez l'argument `name`
-
-<aside class="positive">
-
-Cliquez sur "Split", pour afficher `DetailPreview` sans avoir à relancer l'app à chaque fois
-
-</aside>
-
-- Changez le texte affiché dans le component `Text(...)` par un titre: `"Task Detail"`
-- Ajoutez lui un `textStyle` : `MaterialTheme.typography.headlineLarge`
-- Ajoutez deux autres `Text()` avec comme contenu `"title"` et `"description"`
-- Mettez les 3 `Text` dans une `Column {}`: c'est l'équivalent d'un `LinearLayout` vertical
-- Ajoutez un `modifier` à votre `Column` pour ajouter un padding de `16.dp`
-- Ajoutez un `verticalArrangement` à votre `Column` pour espacer ses enfants de `16.dp` (`Arrangement.spacedBy(...)`)
-- Ajoutez un `Button` de validation dans la `Column`
-- Personalisez un peu l'UI si vous le souhaitez
-- Vérifiez que vous naviguez bien vers l'écran en cliquant sur + et qu'il s'affiche correctement
-
-## Ajout de tâche complet: Launcher
-
-<aside class="positive">
-
-Afin de récupérer un résultat de cette nouvelle Activity, nous allons utiliser un ["launcher"](https://developer.android.com/training/basics/intents/result#register) avec le "contrat" générique[StartActivityForResult](https://developer.android.com/reference/androidx/activity/result/contract/ActivityResultContracts.StartActivityForResult)
-
-**remarque**: Auparavant, il fallait utiliser `startActivityForResult(intent)` et `override fun onActivityResult(...)` avec un request code, etc.
-
-</aside>
-
-- Créez un "launcher" en propriété de la classe `TaskListFragment` qui permettra de lancer votre nouvelle activité et d'utiliser son résultat:
-
-```kotlin
-val createTask = registerForActivityResult(StartActivityForResult()) { result ->
-  // dans cette callback on récupèrera la task et on l'ajoutera à la liste
+class ComposeActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //...
+        setContent {
+            TodoTheme {
+                ListScreen()
+            }
+        }
+    }
 }
 ```
 
-- Remplacez l'action du bouton d'ajout pour qu'il ouvre cette activité avec un `Intent`
+<aside class="positive">
 
-```kotlin
-createTask.launch(intent)
-```
+🧑‍🏫 `setContent` sert ici de "point d'entrée" à Compose: il va chercher une `ComposeView` dans le layout de votre `Activity`, et en créer une sinon
 
-## Ajout de tâche complet: DetailActivity
+Ensuite `TodoTheme` est une fonction `@Composable` qui applique un thème Material Design à tout ce qui est à l'intérieur (couleurs, typographie, etc...)
 
-- Dans votre composant `Detail`, ajoutez un argument `onValidate: (Task) -> Unit` et appelez cette lambda dans le `onClick` de votre bouton de validation, en passant une nouvelle task:
+Puis `ListScreen` : votre premier écran Compose, que vous allez maintenant implémenter
 
-```kotlin
-val newTask = Task(id = UUID.randomUUID().toString(), title = "New Task !")
-```
+</aside>
 
-- Dans `onCreate`, `Detail` va donc maintenant nécessiter une lambda `onValidate`, que nous allons définir et utiliser:
+- Personnalisez un peu votre Theme en fonction de votre projet perso !
 
 <aside class="positive">
 
-Toute Activity a une propriété `intent` déjà définie: ici il aura la valeur que l'on a passée à `createTask`, on va utiliser ce même intent pour retourner un résultat
+En haut à droite de votre éditeur, il devrait y avoir trois icones qui permettent d'alterner entre mode texte, mode visuel, et les 2 ensemble: "Split", je vous conseille ce mode Split pour afficher vos `@Preview` sans avoir à relancer l'app à chaque fois.
+
+![split](../assets/editor_modes.png)
 
 </aside>
 
-<!-- - Changez le contenu de vos 2 `Text` pour qu'ils affichent le `title` et la `description` de votre `Task` (la description sera vide pour l'instant) -->
-
-- Ajouter `newTask` dans `intent`: `intent.putExtra("task", newTask)`: ça ne compilera pas car `Task` ne fait pas partie des types de base autorisés dans un intent !
-- L'un de ces types est `Serializable`: Faites donc hériter `Task` de `java.io.Serializable`, comme c'est une `data class`, il n'y a rien à implémenter !
-- utilisez `setResult(RESULT_OK, intent)` pour signifier que l'action s'est bien passée (idéalement, on aurait aussi géré des cas d'erreur)
-- utilisez `finish()` pour quitter cette activité, et donc retourner à l'écran précédent
-
-## Ajout de tâche complet: Résultat
-
-- Dans la lambda de retour de `createTask` récupérer cette task:
+- affichez une liste d'éléments avec Compose (utilisez `LazyColumn` et `items`), avec des éléments, c'est légerement plus simple qu'une `RecyclerView` 🙃 :
 
 ```kotlin
-val task = result.data?.getSerializableExtra("task") as Task?
-```
-
-- et ajoutez la à la liste, comme vous le faisiez avec le bouton d'ajout précédemment
-
-- Créez une constante pour remplacez les 2 utilisations de `"task"`:
-
-```kotlin
-companion object {
-  const val TASK_KEY = "task"
+LazyColumn{
+    items(100) {
+        Text(text = "Item #$it")
+    }
 }
 ```
 
-<aside class="negative">
+- Lancez l'app et essayez de scroller la liste: attention, on ne voit pas les contours de la liste, mais elle ne prends pas toute la largeur actuellement donc le scroll ne marche que si on scroll précisément sur les textes !
+- Pour régler ça, ajoutez un `Modifier.fillMaxWidth()` à la `LazyColumn`
+- Ajoutez un `Modifier.padding(16.dp)` à la `LazyColumn` pour ajouter un peu d'espace autour
+- Essayez à nouveau de scroller, vous devriez pouvoir le faire aussi en dehors des textes maintenant
+- Espacez un peu les éléments de la liste en lui passant `verticalArrangement = Arrangement.spacedBy(8.dp)` comme argument
+- Personnalisez un peu l'affichage comme vous le souhaitez (couleurs, taille de texte, ...)
 
-La syntaxe `as Task` permet de **"caster"** un objet récupéré en tant que `Task`: c'est à dire qu'on force l'objet à être considéré de type `Task`, qui est (depuis l'étape précédente) un sous-type de `Serializable` (retourné par `getSerializableExtra`)
+## Remember
 
-ici on utilise `as Task?` (on pourrait utiliser `as? Task`) pour récupérer un **nullable** et éviter d'avoir une exception si le cast ne fonctionne pas en retournant `null` à la place
+On va maintenant ajouter un peu d'interactivité sur notre liste.
 
-</aside>
+- Ajoutez une variable `items` en haut de `ListScreen`:
 
-- Faites en sorte que la nouvelle tache s'affiche dans la liste directement
+```kotlin
+var items by remember { mutableStateOf(List(100) { "Item #$it" }) }
+```
 
-<aside class="negative">
-
-Pour l'instant notre Task est créée avec des données "en dur", on va changer ça et récupérer les valeurs entrées par l'utilisateur
-
-</aside>
-
-- Dans `DetailActivity`, changez les `Text` en `OutlinedTextField`, on va mettre à jour dynamiquement la Task affichée:
+- faites les imports suggérés par l'IDE
 
 <aside class="positive">
 
-Une fonction `@Composable` peut être *recomposée* (en gros: ré-exécutée) à tout moment donc on ne peut pas utiliser de variables simples car elles seraient remises à leur valeur de départ, on utilise donc `remember`:
+🧑‍🏫 Il se passe pas mal de chose sur cette seule ligne:
 
-```kotlin
-var task by remember { mutableStateOf(Task(...)) } // faire les imports suggérés par l'IDE
-```
-
-Notez qu'on utilise également un `mutableStateOf` avec `by` qui permet à Compose de réagir automatiquement aux changements de valeurs mais pour cela vous devrez changer l'instance de task à chaque fois, on va utiliser `copy()` défini automatiquement pour les `data class` pour simplifier ça: `task = task.copy(title = "new title")`
+- `remember`: Une fonction `@Composable` peut être _recomposée_ (en gros: ré-exécutée) à tout moment donc on ne peut pas utiliser de variables simples car elles seraient remises à leur valeur de départ en permanence, on utilise donc diverses formes de `remember` qui permettent à nos variables de survivre aux recompositions.
+- `mutableStateOf` crée une variable de type `MutableState<T>` qui est un "wrapper" autour de la valeur initiale et qui permet d'observer les changement de valeur et de déclencher des recompositions automatiquement.
+- le mot clé de _délégation_ `by` qui permet de ne pas avoir à écrire `items.value` ou `items.value = ...` partout dans le code, mais juste `items` ou `items = ...` directement, grâce à l'import des fonctions d'extension `getValue` et `setValue` définies pour `MutableState<T>`, et au fait qu'on a utilisé `var` (sinon seul le `getValue` serait délégué)
 
 </aside>
 
-## Édition d'une tâche
-
-Inspirez vous de ce que vous avez fait pour le bouton "supprimer" et le bouton "ajouter" pour créer un bouton "éditer" permettant de modifier chaque tâche en ouvrant l'activité `DetailActivity` pré-remplie avec les informations de la tâche en question:
-
-- Créez un autre launcher dans le fragment
-- Créez une autre lambda dans l'adapter
-- Utilisez dans celle ci `putExtra` pour transmettre la `Task` à éditer (depuis `TaskListFragment` cette fois)
-- Récupérez la `Task` dans le `onCreate` de `DetailActivity` avec `getSerializableExtra` comme précédemment (avec `intent` à la place de `result.data`)
-- La `Task` récupérée est `nullable`: c'est utile car elle sera `null` quand vous êtes dans le cas "Ajout", et sinon, elle aura une vraie valeur car vous êtes dans le cas "Édition"
-- passez la en argument de `Detail`: `initialTask: Task?` et utilisez la comme valeur initiale de votre variable compose `task` afin de préremplir les `OutlinedTextField` lors de l'édition
-- Utilisez l'opérateur `?:` pour gérer à la fois le cas édition et ajout:
+- Modifiez la liste pour qu'elle utilise cette variable `items` au lieu de la liste statique: attention il faudrait importer une autre fonction `items` qui prend directement une `List<T>` au lieu d'un `Int` (l'IDE devrait vous proposer l'import automatiquement mais parfois il confond les 2)
+- lancez l'app: ça devrait fonctionner pareil
+- Remplacez vos items en `String` par des `data class Task` et ajoutez la description:
 
 ```kotlin
-mutableStateOf(initialTask ?: newTask)
-```
-
-- Au retour dans votre launcher, récupérez la task modifiée, gérez la nullabilité (avec un `if` ou un `?: return` par ex) mettez à jour la liste: `taskList = taskList.map { if (it.id == task.id) task else it }`
-- Vérifier que les infos éditées s'affichent bien à notre retour sur l'activité principale.
-
-## Interface et délégation
-
-Une façon plus classique de gérer les clicks d'un item est de définir une interface que l'on implémentera dans l'Activity/Fragment.
-Mettez à jour votre code pour utiliser cette méthode:
-
-```kotlin
-interface TaskListListener {
-  fun onClickDelete(task: Task)
-  fun onClickEdit(task: Task)
-}
-
-class TaskListAdapter(val listener: TaskListListener) : ... {
-  // use: listener.onClickDelete(task)
-}
-
-class TaskListFragment : Fragment {
-  val adapterListener : TaskListListener = object : TaskListListener {
-    override fun onClickDelete(task: Task) {...}
-    override fun onClickEdit(task: Task) {...}
+items(items) { task ->
+  Column {
+    Text(text = task.title)
+    Text(text = task.description)
   }
-  val adapter = TaskListAdapter(adapterListener)
 }
 ```
 
-## Partager
+- lancez l'app pour vérifier que tout s'affiche correctement
 
-- En modifiant `AndroidManifest.xml`, ajouter la possibilité de partager du texte **depuis les autres applications** (par ex en surlignant un texte dans un navigateur puis en cliquant sur "partager") et ouvrir le formulaire de création de tâche avec une description pré-remplie ([Documentation](https://developer.android.com/training/sharing/receive))
+## Scaffold
 
-<aside class="negative">
+On va utiliser des éléments de "Material Design 3" pour améliorer un peu l'interface facilement.
 
-⚠️ Attention l'Activity concernée devra avoir l'attribut `exported="true"` dans le manifest
+- Modifiez `ListScreen` pour qu'elle utilise un `Scaffold`, avec une `TopAppBar` (acceptez de "Opt-in à ExperimentalMaterial3Api") avec le titre de votre choix
+- et un `FloatingActionButton` avec une icône "Add"
+- passez le innerPadding du `Scaffold` à la `LazyColumn` pour que le contenu ne soit pas caché par la `TopAppBar`
+
+```kotlin
+Scaffold(
+    modifier = Modifier.fillMaxSize(),
+    topBar = { TopAppBar(title = { Text(...) }) },
+    floatingActionButton = {
+        FloatingActionButton(onClick = { /* TODO */ }) {
+          Icon(imageVector = Icons.Default.Add, contentDescription = "Add"
+        }
+    }
+) { innerPadding ->
+    LazyColumn(...) {
+        items(...) { task ->
+          ...
+        }
+    }
+}
+```
+
+<aside class="positive">
+
+🧑‍🏫 Ici on utilise ce qu'on appelle des **Slots**: des fonctions Compose qu'on passe en argument d'autres fonctions compose via des **lambda**
+
+Par exemple `Scaffold` permet de placer un composant en haut (topBar), un en bas (bottomBar), un bouton flottant (floatingActionButton), etc...
+
+Et juste après on va utiliser `actions` pour ajouter un bouton dans la `TopAppBar` (qui est défini avec un `RowScope`, donc on peut y ajouter plusieurs éléments à la suite ils seront placés horizontalement).
+
+![slots](../assets/compose_slots.png)
 
 </aside>
 
-- En utilisant un `Intent` **implicite**, ajouter la possibilité de partager du texte **vers les autres applications** (avec un `OnLongClickListener` sur les tâches par ex ou bien avec un bouton dans la vue formulaire) ([Documentation](https://developer.android.com/training/sharing/send))
+- Lancez l'app pour vérifier que tout s'affiche correctement
 
-## Changements de configuration
+## Ajout d'éléments
 
-Que se passe-t-il pour votre liste si vous tournez votre téléphone pour passer en mode paysage ? 🤔
+On va maintenant implémenter l'ajout d'éléments à la liste.
 
-- Une façon de régler ce soucis est d'overrider la méthode `onSaveInstanceState`
-- Il faudra utiliser `putSerializable` (un peu comme précédemment avec `putExtra`) pour sauvegarder la liste
-- Puis pour récupérer cette liste, la méthode `getSerializable` dans `onCreateView` ou `onViewCreated`, sur le paramètre `savedInstanceState`
+- Implémentez le clic sur le `FloatingActionButton` pour ajouter un nouvel élément à la liste comme précédemment mais en Compose:
+
+```kotlin
+onClick = {
+    val newItem = Task(title = "Item #${items.size}")
+    items = items + newItem
+}
+```
+
+- Lancez l'app et testez l'ajout d'éléments: vous devriez voir la liste se mettre à jour automatiquement mais il faut scroller jusqu'en bas pour voir le nouvel élément
+- Pour améliorer ça, utilisez le `LazyListState` pour scroller automatiquement jusqu'en bas:
+- Ajoutez un `val listState = rememberLazyListState()` en haut de `ListScreen`
+- Passez le `listState` à la `LazyColumn` avec `state = listState`
+- Ajoutez un `val coroutineScope = rememberCoroutineScope()` en haut de `ListScreen`
+- Modifiez le `onClick` du `FloatingActionButton` pour scroller jusqu'en bas après avoir ajouté l'élément:
+
+```kotlin
+onClick = {
+    // ...
+    coroutineScope.launch {
+        listState.animateScrollToItem(items.size - 1)
+    }
+}
+```
+
+- Lancez l'app et testez à nouveau l'ajout d'éléments: cette fois la liste devrait scroller automatiquement jusqu'au nouvel élément ajouté
+
+## Suppression d'éléments
+
+Ajoutez un bouton de suppression dans chaque élément et faites sorte qu'il fonctionne
+Pour avoir un item avec le texte à gauche et le bouton tout à droite vous pouvez utiliser une `Row` avec `horizontalArrangement = Arrangement.SpaceBetween` ou bien un `Spacer(modifier = Modifier.weight(1f))` entre les 2 éléments.
+
+## Navigation
+
+On va d'abord permettre de naviguer vers notre ancienne `MainActivity`:
+
+- Ajoutez une flèche dans les `actions` de la top bar:
+
+```kotlin
+IconButton(onClick = {...}) {
+  Icon(
+      imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+      contentDescription = "go to classic app"
+  )
+}
+```
+
+- Implémentez le clic pour naviguer vers l'ancienne `MainActivity`:
+
+```kotlin
+val intent = Intent(context, MainActivity::class.java)
+context.startActivity(intent)
+```
+
+<aside class="positive">
+
+🧑‍🏫 On crée ici un simple **Intent explicite** et on l'utilise pour naviguer
+
+</aside>
+
+- Lancez l'app et testez la navigation vers l'ancienne activity
+
+Maintenant on va utiliser la bibliothèque `Navigation3` pour gérer la navigation de manière plus propre:
+
+- renseignez vous sur [la doc officielle](https://developer.android.com/guide/navigation/navigation-3)
+- Ajoutez les dépendances nécessaires dans `app/build.gradle.kts`: [doc](https://developer.android.com/guide/navigation/navigation-3/get-started#project-setup)
+- Créez un nouveau fichier DetailScreen.kt avec une fonction `@Composable` `DetailScreen(task: Task)` qui affiche les détails d'une tâche
+- Utilisez l'IDE pour extraire `ListScreen` dans un autre fichier également
+- Dans `ComposeActivity`, au lieu d'afficher directement `ListScreen`, créez et utilisez un composant `App()`:
+
+```kotlin
+data object ListNavScreen
+data class DetailNavScreen(val task: Task)
+
+@Composable
+fun App() {
+    // on créé notre historique de navigation avec l'écran de liste comme écran initial
+    val backStack = remember { mutableStateListOf<Any>(ListNavScreen) }
+
+
+    NavDisplay(
+      backStack = backStack,
+      entryProvider = entryProvider {
+        entry<ListNavScreen> { ListScreen(...) }
+        entry<DetailNavScreen> { ... }
+      }
+    )
+}
+```
+
+- Gardez le Scaffold dans `ListScreen` sans la topBar: déplacez là dans un autre Scaffold que vous ajouterez dans `App()` pour qu'elle soit commune à tous les écrans
+- Modifiez `ListScreen` pour qu'au clic sur un élément, on navigue vers `DetailNavScreen`:
+
+- Extraire un composant `TaskItem` pour la partie qui affiche chaque item et faire en sorte qu'au clic sur un item, on remonte un event onClick qui permettra de naviguer vers l'écran détail:
+
+```kotlin
+@Composable
+private fun TaskItem(
+    item: Task,
+    onClick: (Task) -> Unit,
+    onDelete: () -> Unit,
+) {...}
+```
+
+- Dans `App()`, faires en sorte que ce clic navigue bien:
+
+```kotlin
+// Pour naviguer vers l'écran détail, on l'ajoute à l'historique:
+backStack.add(DetailNavScreen(...))
+```
+
+- Ajoutez un bouton "OK" dans `DetailScreen` qui permet de revenir en arrière:
+
+```kotlin
+// Pour revenir en arrière, on enlève le dernier écran de l'historique:
+backStack.removeLastOrNull()
+```

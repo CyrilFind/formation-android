@@ -76,10 +76,10 @@ Pendant les prochains TP, vous allez créer un projet en binôme que vous compl�
 Par défaut c'est une simple Todo app, mais vous pouvez choisir un autre sujet qui vous intéresse plus, mais dans tous les cas il faudra que le résultat final utilise les briques de base suivantes:
 
 - Avoir une UI correcte en Jetpack compose
-- Naviguer entre plusieurs écrans: Liste/Détail a minima
+- Naviguer entre plusieurs écrans: Liste/Détail a minima avec `Navigation3`
 - Interaction avec une API distante (avec `Retrofit`, `kotlinx.serialization` et `kotlinx.coroutines`)
-- Afficher des images locales et distantes avec `Coil`
-- Respecter une architecture minimale (avec `ViewModel` et `Repository`)
+- Afficher des images locales et/ou distantes avec `Coil`
+- Respecter une architecture minimale (`ViewModel`, `Repository`)
 - écrire un minimum de tests unitaires
 
 Et selon le sujet choisi, vous pourrez aussi implémenter:

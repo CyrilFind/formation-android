@@ -1,4 +1,4 @@
-# TP 1 - RecyclerView
+# TP 1 - Classic Views
 
 ## Objectif
 
@@ -14,7 +14,7 @@ implémenter un écran affichant une liste de tâches et permettre de créer des
 
 <aside class="positive">
 
-Remarque: si vous n'avez pas bien paramétré votre IDE, relisez le début du [TP0](./TP0)
+Remarque: si vous n'avez pas bien paramétré votre IDE, relisez le début du TP0
 
 </aside>
 
@@ -30,23 +30,29 @@ Vous allez créer un unique projet que vous mettrez à jour au fur à mesure des
 
 - Créer un nouveau projet avec une `Empty VIEWS Activity` (⚠️ pas `Empty Activity` SVP ⚠️)
 - Donnez lui un nom personnalisé comme `TodoNicolasAlexandre` (⚠️ pas `TP1` SVP ⚠️)
-- Choisissez un package name unique de ce genre: `com.nicoalex.todo` (ce sera la racine de tous vos packages et sert d'identifiant unique d'application)
+- Choisissez un package name unique de ce genre: `com.something.todo` (ce sera la racine de tous vos packages et sert d'identifiant unique d'application)
 - Minimum API Level: laissez la valeur proposée par défaut
 - Initialisez un projet git et faites un commit initial
 
 <aside class="negative">
 
-⚠️ Le projet va évoluer au cours des TP donc faites des commits régulièrement: par exemple, à chaque étape et au minimum à la fin de chaque TP
+⚠️ Le projet va évoluer au cours des TP donc faites des commits régulièrement: à chaque étape et au minimum à la fin de chaque TP
 
-Vous allez parfois supprimer et remplacer des parties de code: ne commentez pas votre code dans tous les sens, les commits garderons l'historique.
-
-Comme dans un vrai projet pro finalement !
+Comme dans un vrai projet professionnel, vous allez parfois supprimer et remplacer des parties de code: ne commentez pas votre code dans tous les sens car les commits garderons l'historique et je noterai la "propreté" du code à la fin !
 
 </aside>
 
 ## Image Asset Studio
 
-Créez une icône d'application personnalisée avec l'outil intégré **Image Asset Studio**: ouvrez le **Resource Manager** à gauche, près du volet projet puis cliquez sur le `+` en haut à gauche et choisissez `Image Asset`: ici vous pouvez choisie une couleur de fond, une image (icône système ou personnalisée avec un SVG ou un "clipart") et générer automatiquement les différentes tailles nécessaires pour Android.
+Créez une icône d'application personnalisée avec l'outil intégré **Image Asset Studio**: ouvrez le **Resource Manager** à gauche, près du volet projet puis cliquez sur le `+` en haut à gauche et choisissez `Image Asset`: ici vous pouvez choisie une couleur de fond, une image: icône système ou personnalisée avec un SVG ou un "clipart" (bibliotheque d'icones en cliquant sur la petite icon android) et générer automatiquement les différentes tailles nécessaires pour les différentes version d'Android.
+
+<aside class="negative">
+
+N'y passez pas trop de temps, mais profitez en pour réfléchir à votre projet perso et si vous ave une idée, faites une icône en rapport !
+
+</aside>
+
+Vérifiez que l'icône est bien prise en compte dans le `AndroidManifest.xml` (attribut `android:icon` de la balise `application`) et en lançant l'app.
 
 ## Gestion des fichiers
 
@@ -59,7 +65,7 @@ Créez une icône d'application personnalisée avec l'outil intégré **Image As
 
 Dans le volet "Projet" à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est "Android" qui affiche facilement le Manifest, les fichiers source, les fichier resources (`res`), compacte les dossiers vides ensemble (`com.nicoalex.todo`): tout ce qui est utile spécifiquement pour Android...
 
-Mais il peut parfois être pratique de passer en "Project Files" par ex pour voir l'arborescence réelle et certains fichiers cachés autrement.
+Mais il peut parfois être pratique de passer en "Project Files" par ex pour voir l'arborescence réelle et certains fichiers qui sont cachés en vue "Android".
 
 </aside>
 
@@ -86,12 +92,6 @@ Vous y mettrez tous les fichiers source (Kotlin) concernant la liste de tâches
 
 - Créez dans votre nouveau package un fichier kotlin `TaskListFragment.kt` qui contiendra la classe `TaskListFragment`:
 
-```kotlin
-class TaskListFragment : Fragment() {
-   //...
-}
-```
-
 - Créer le layout associé `fragment_task_list.xml` dans `res/layout`
 
 <aside class="positive">
@@ -101,8 +101,21 @@ vous pouvez aussi utiliser Android Studio pour créer les 2 fichiers à la fois:
 </aside>
 
 - Dans `TaskListFragment`, overrider la méthode `onCreateView(...)`: commencez à taper `onCrea...` et utilisez l'auto-completion de l'IDE pour vous aider (vous pouvez supprimer la ligne `super.onCreateView(...)`)
+- On aura besoin ensuite d'overrider `onViewCreated(...)` aussi, faites le maintenant de la même façon, vous devriez avoir quelque chose comme ça:
 
-- Cette méthode vous demande de _retourner_ la `rootView` à afficher: créez la à l'aide de votre nouveau layout comme ceci:
+```kotlin
+class TaskListFragment : Fragment() {
+    override fun onCreateView(...): View {
+       // ici on crée la vue et on la retourne (regardez le type de retour: `View`), on ne fait rien d'autre.
+    }
+
+    override fun onViewCreated(...) {
+       // ici la vue est créée, on peut récupérer des références aux vues et les manipuler
+    }
+}
+```
+
+- Cette méthode vous demande de **retourner** la `rootView` à afficher: créez la à l'aide de votre nouveau layout comme ceci:
 
 ```kotlin
 val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
@@ -110,13 +123,13 @@ val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 
 <aside class="negative">
 
-⚠️ Si vous exécutez du code _avant_ cette ligne `inflate`, il va crasher ou ne rien faire car votre vue n'existera pas encore
+⚠️ Si vous exécutez du code **avant** cette ligne `inflate`, il va crasher ou ne rien faire car votre vue n'existera pas encore
 
 </aside>
 
 <aside class="positive">
 
-`R` est un raccourci signifiant "Resource": c'est une classe générée automatiquement à partir des dossiers et fichiers créés dans `res` qui s'utilise comme ceci: `R.string.app_name`, `R.drawable.app_icon`, etc... afin de récupérer des ID que l'on utilise dans les fonctions du framework Android (`getString`, `getDrawable`, etc...)
+`R` est un raccourci signifiant "Resource": c'est une classe générée automatiquement à partir des dossiers et fichiers créés dans `res` qui s'utilise comme ceci: `R.string.app_name`, `R.drawable.app_icon`, etc... afin de récupérer des ID que l'on utilise dans les fonctions du framework Android (`getString`, `getDrawable`, etc...) grace aux noms des resources (pour les fichiers ce sera toujours le nom du fichier sans l'extension)
 
 </aside>
 
@@ -141,7 +154,7 @@ Dans `activity_main.xml`, remplacez la balise `TextView` par celle ci et adaptez
 ```xml
  <androidx.fragment.app.FragmentContainerView
     android:name="com.nicoalex.todo.list.TaskListFragment"
-    android:id="@+id/fragment_tasklist"
+    android:id="@+id/fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
 ```
@@ -349,6 +362,20 @@ recyclerView.adapter = adapter
 adapter.submitList(listOf("Item#1", "Item #2"))
 ```
 
+## Scroll
+
+- Faites maintenant une liste de 100 éléments pour tester le scroll:
+
+```kotlin
+private val taskList = List(100) { index ->
+    Task(id = "id_$index", title = "Task $index")
+}
+```
+
+- Vous pouvez tester avec 1000 ou 10.000 éléments aussi: ça doit rester fluide !
+- remettez 100 éléments pour la suite: mainteant si vous ajoutez un élément, vous ne le verrez pas forcément !
+- faites en sorte que le `RecyclerView` scrolle automatiquement en bas à chaque ajout de tâche: `recyclerView.scrollToPosition(...)`
+
 ## ViewBinding
 
 Utiliser le `ViewBinding` ([documentation](https://developer.android.com/topic/libraries/view-binding) / [slides](../../slides/3%20-%20Views.html#9)) dans `TaskListFragment`:
@@ -357,3 +384,205 @@ Utiliser le `ViewBinding` ([documentation](https://developer.android.com/topic/l
 - remplacez les `findViewByIds` par des calls direct du genre `binding.myViewId`
 
 Puis faites pareil pour les `ViewHolder`: c'est un peu plus complexe, il faudra changer le constructeur pour qu'il prenne un `val binding: ItemTaskBinding` afin d'y avoir accès dans le corps de la classe et passer `binding.root` au constructeur parent.
+
+## Suppression d'une tache
+
+Dans le layout de vos item, ajouter un `ImageButton` qui servira à supprimer la tâche associée. Vous pouvez utiliser par exemple l'icône `@android:drawable/ic_menu_delete`
+
+<aside class="positive">
+
+🧑‍🏫 Une [lambda](https://kotlinlang.org/docs/reference/lambdas.html) est un type de variable qui contient un bloc de code pouvant prendre des arguments et retourner un résultat
+
+C'est donc une fonction que l'on peut utiliser comme une variable !
+
+</aside>
+
+Aidez vous des lignes de code plus bas pour réaliser un "Click Listener" à l'aide d'une lambda en suivant ces étapes:
+
+- Dans l'adapter, ajouter une propriété `onClickDelete` de type lambda qui prends en arguments une `Task` et ne renvoie rien: `(Task) -> Unit` et l'initier à `{}` (elle ne fait rien par défaut)
+- Utilisez cette lambda dans le `onClickListener` du bouton supprimer
+- Dans le fragment, accéder à `onClickDelete` depuis l'adapter et implémentez là: donnez lui comme valeur une lambda qui va supprimer la tache passée en argument de la liste
+
+- Déclaration de la variable lambda dans l'adapter, par défaut elle ne fait rien (`{}`):
+
+```kotlin
+var onClickDelete: (Task) -> Unit = {}
+```
+
+- Utilisation de la lambda dans le ViewHolder, quand on clique sur le bouton:
+
+```kotlin
+onClickDelete(task)
+```
+
+- "implémentation" de la lambda dans le fragment, pour que la lambda aie un effet on lui écrit un comportement et on l'assigne à la variable:
+
+```kotlin
+myAdapter.onClickDelete = { task ->
+    // Supprimer la tâche
+}
+```
+
+## DetailFragment
+
+- Créez un formulaire simple dans `DetailFragment` en utilisant un `ConstraintLayout` (vous pouvez "convert" dans le menu du clic droit sur la root view) avec deux `EditText` (pour le titre et la description) et un `Button` de validation
+- Dans `DetailFragment`, récupérez les références aux vues et implémentez le clic
+- Personnalisez un peu l'UI si vous le souhaitez
+
+<aside class="positive">
+
+En haut à droite de votre éditeur, il devrait y avoir trois icônes qui permettent d'alterner entre mode texte, mode visuel, et les 2 ensemble: "Split", je sais qu'on aime le code 🤓 mais je vous conseille le mode visuel qui est plus simple pour manipuler les contraintes ou au moins le mode Split pour afficher la Preview sans avoir à relancer l'app à chaque fois.
+
+![split](../assets/editor_modes.png)
+
+</aside>
+
+## Ajout de tâche complet
+
+<aside class="positive">
+
+Afin de récupérer un résultat de cette nouvelle Activity, nous allons utiliser le fragmentManager qui permet de naviguer et communiquer entre fragments.
+
+Il fonctionne à base de "transactions" qui permettent d'effectuer plusieurs actions à la fois et de les "commiter" (valider) en une seule fois
+
+Ici on utilisera une version simplifiée avec `commit { ... }` fournie par fragment-KTX qui permet d'avoir automatiquement le commit à la fin de la lambda de transaction.
+
+</aside>
+
+- vérifiez que vous avez les dépendances nécessaires (les dernières versions au moment où j'écris sont les suivantes):
+
+- Dans `app/build.gradle.kts` > `dependencies {...}`, ajoutez les dépendances qui vous manquent (mettre les versions plus récentes si l'IDE vous le propose, il vous proposera également de facilement les passer dans le fichier centralisé `libs.versions.toml`):
+
+```gradle
+implementation("androidx.fragment:fragment:1.8.9")
+implementation("androidx.fragment:fragment-ktx:1.8.9")
+```
+
+- Faire en sorte de lancer le nouveau fragment depuis le bouton + du 1er
+
+```kotlin
+parentFragmentManager.commit {
+    replace<DetailFragment>(R.id.fragment_container)
+    addToBackStack(null)
+}
+```
+
+- Afin de pouvoir recevoir le résultat de `DetailFragment`, créez un `FragmentResultLauncher` dans `TaskListFragment`:
+
+- Vérifiez que vous naviguez bien vers l'écran en cliquant sur + et qu'il s'affiche correctement
+
+```kotlin
+class DetailFragment : Fragment() {
+    override fun onViewCreated(...) {
+        // ...
+        parentFragmentManager.setFragmentResultListener(REQUEST_KEY) { _, bundle ->
+            val result = bundle.getString(RESULT_KEY)
+            // Utilisez le résultat ici
+        }
+    }
+
+    companion object { // pour définir des membres "statiques", ici des constantes:
+        const val REQUEST_KEY = "request_key"
+        const val RESULT_KEY = "result_key"
+    }
+```
+
+- Sur votre bouton de validation créez une nouvelle task:
+
+```kotlin
+val newTask = Task(id = UUID.randomUUID().toString(), title = "New Task !")
+```
+
+- et passez la en résultat au fragment parent avant de fermer le fragment:
+
+```kotlin
+parentFragmentManager.setFragmentResult(BlankFragment.REQUEST_KEY, Bundle().apply {
+  putString(BlankFragment.RESULT_KEY, newTask)
+})
+parentFragmentManager.popBackStack() // retour au fragment précédent
+```
+
+- ça ne compilera pas car `Task` ne fait pas partie des types de base autorisés dans un bundle !
+- L'un de ces types est `Serializable`: Faites donc hériter `Task` de `java.io.Serializable`, comme c'est une `data class`, il n'y a rien à implémenter !
+
+- Dans le FragmentResultListener de votre 1er fragment, récupérez cette task:
+
+```kotlin
+val task = result.data?.getSerializableExtra("task") as Task?
+```
+
+- et ajoutez la à la liste, comme vous le faisiez avec le bouton d'ajout précédemment
+
+<aside class="negative">
+
+La syntaxe `as Task` permet de **"caster"** un objet récupéré en tant que `Task`: c'est à dire qu'on force l'objet à être considéré de type `Task`, qui est (depuis l'étape précédente) un sous-type de `Serializable` (retourné par `getSerializableExtra`)
+
+ici on utilise `as Task?` (équivalent à `as? Task`) pour récupérer un **nullable** et éviter d'avoir une exception si le cast ne fonctionne pas en retournant `null` à la place
+
+</aside>
+
+- Vérifiez que la nouvelle tache s'affiche dans la liste
+
+- Pour l'instant notre Task est créée avec des données "en dur", modifiez le code de `DetailFragment` pour récupérer les valeurs entrées par l'utilisateur dans les `EditText` et les utiliser pour créer la nouvelle tâche
+
+## Édition d'une tâche
+
+<aside class="positive">
+
+🧑‍🏫 L'avantage des Fragments est qu'on peut les initialiser avec des arguments contrairement aux Activity (car celles ci doivent être instanciées par le système)
+
+</aside>
+
+Ajoutez un argument taskId de type String?, `null` par défaut (pour garder le cas d'ajout de nouvelle tâche) à `DetailFragment` pour identifier la tâche à éditer, vous pourrez ensuite faire:
+
+```kotlin
+parentFragmentManager.commit {
+    replace(R.id.fragmentContainerView, DetailFragment(taskId))
+    addToBackStack(null)
+}
+```
+
+Inspirez vous de ce que vous avez fait pour le bouton "supprimer" et le bouton "ajouter" pour créer un bouton "éditer" permettant de modifier chaque tâche en ouvrant l'activité `DetailFragment` pré-remplie avec les informations de la tâche en question.
+
+## Interface et délégation
+
+Pour l'instant on a utilisé des lambda mais une façon plus classique de gérer les clicks d'un item est de définir une interface que l'on implémentera dans le 1er Fragment, mettez à jour votre code pour utiliser cette méthode:
+
+```kotlin
+interface TaskListListener {
+  fun onClickDelete(task: Task)
+  fun onClickEdit(task: Task)
+}
+
+class TaskListAdapter(val listener: TaskListListener) : ... {
+  // use: listener.onClickDelete(task)
+}
+
+class TaskListFragment : Fragment {
+  val adapterListener : TaskListListener = object : TaskListListener {
+    override fun onClickDelete(task: Task) {...}
+    override fun onClickEdit(task: Task) {...}
+  }
+  val adapter = TaskListAdapter(adapterListener)
+}
+```
+
+## Partager
+
+- En modifiant `AndroidManifest.xml`, ajouter la possibilité de partager du texte **depuis les autres applications** (par ex en surlignant un texte dans un navigateur puis en cliquant sur "partager") et ouvrir le formulaire de création de tâche avec une description pré-remplie ([Documentation](https://developer.android.com/training/sharing/receive))
+
+<aside class="negative">
+
+⚠️ Attention l'Activity concernée devra avoir l'attribut `exported="true"` dans le manifest
+
+</aside>
+
+- En utilisant un `Intent` **implicite**, ajouter la possibilité de partager du texte **vers les autres applications** (avec un `OnLongClickListener` sur les tâches par ex ou bien avec un bouton dans la vue formulaire) ([Documentation](https://developer.android.com/training/sharing/send))
+
+## Changements de configuration
+
+Que se passe-t-il pour votre liste si vous tournez votre téléphone pour passer en mode paysage ? 🤔
+
+- Une façon de régler ce soucis est d'overrider la méthode `onSaveInstanceState`
+- Il faudra utiliser `putSerializable` (un peu comme précédemment avec `putExtra`) pour sauvegarder la liste
+- Puis pour récupérer cette liste, la méthode `getSerializable` dans `onCreateView` ou `onViewCreated`, sur le paramètre `savedInstanceState`

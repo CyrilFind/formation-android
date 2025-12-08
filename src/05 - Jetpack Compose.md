@@ -27,7 +27,7 @@ fun MyComposable() {
 
 ## Syntax
 
-Kotlin mais compilé autrement: exécution en désordre, en parallèle, skips, ...
+Kotlin Compiler Plugin: exécution en désordre, en parallèle, skips, ...
 ➡️ En gros: comme une boucle de rendu, avec des optimisations
 
 ```kotlin

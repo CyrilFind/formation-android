@@ -1,27 +1,13 @@
 # TP 3: L'Internet
 
-## Avant de commencer
+## Mise en place
 
-<aside class="negative">
-
-⚠️ **Prérequis**: Terminez au moins l'étape "Édition d'une tâche" du TP 2
-
-</aside>
-
-Les APIs qui nous allons utiliser exigent qu'une personne soit connectée, pour commencer nous allons simuler cela en passant directement un `token` dans les `headers` de nos requêtes `HTTP`:
+L'API de Todoist nécessite qu'une personne soit connectée, pour commencer nous allons simuler cela en passant directement un `token` dans les `headers` de nos requêtes `HTTP`:
 
 - Rendez vous sur [todoist.com](https://todoist.com/app)
 - Créez un compte, allez dans `Paramètres > Intégrations > Clé API` et copiez la quelque part
 - lisez un peu [la doc de l'API](https://developer.todoist.com), il y en a en fait 2: REST (ex: [tasks](https://developer.todoist.com/rest/v2/#tasks)) et Sync (ex: [user](https://developer.todoist.com/sync/v9/#user))
-- En utilisant la clé copiée et les exemples de la documentation testez de créer un tache avec `curl`, Postman ou autres (je recommance [httpie](https://httpie.io/) en terminal, web ou desktop, par ex)
-
-<aside class="positive">
-
-✨ C'est le moment de bifurquer si vous voulez faire un projet différent !!
-
-Proposez moi votre idée avant de commencer pour que je puisse vous guider si besoin: [voir TP0](./TP0/#5)
-
-</aside>
+- En utilisant la clé copiée et les exemples de la documentation testez de créer un tache avec `curl` (ou Postman, [httpie](https://httpie.io/), ...)
 
 ## Accéder à l'internet
 
@@ -194,8 +180,7 @@ Typiquement dans les Tests Unitaires, on a souvent une "fausse implémentation" 
 
 ## Affichage
 
-- Dans le layout qui contient la liste, ajoutez une `TextView` tout en haut (vous devrez probablement régler un peu les contraintes)
-- Overrider la méthode `onResume` pour y récupérer les infos de l'utilisateur, en ajoutant cette ligne, une erreur va s'afficher car la définition de `fetchUser` contient un mot clé `suspend`:
+- Dans votre Activity, ajoutez un composant `Text` pour voir les résultats de l'API:
 
 ```kotlin
 // Ici on ne va pas gérer les cas d'erreur donc on force le crash avec "!!"
@@ -204,7 +189,9 @@ val user = Api.userWebService.fetchUser().body()!!
 
 <aside class="negative">
 
-le mot clé `suspend` ici sert à signifier que cette fonction ne peut pas s'éxécuter comme une fonction normale car elle peut potentiellement bloquer le thread courant en prenant beaucoup de temps à se terminer
+⚠️ Une erreur va s'afficher car la définition de `fetchUser` contient un mot clé `suspend`:
+
+il sert à signifier que cette fonction ne peut pas s’exécuter comme une fonction normale car elle peut potentiellement bloquer le thread courant en prenant beaucoup de temps à se terminer
 
 Afin de compiler, il faudra donc l'appeler dans le contexte d'un `CouroutineScope` (ou dans une autre fonction `suspend`)
 
@@ -221,15 +208,11 @@ lifecycleScope.launch {
 <aside class="positive">
 
 **Remarque:** En général ce scope sert plutôt à ce qui est visuel (ex: lancer une animation)
-On utilisera ensuite un autre scope: `viewModelScope` qui est fourni par android dans les `ViewModel`, mais pour l'instant on implémente tout dans les fragments comme des 🐷
+On utilisera ensuite un autre scope: `viewModelScope` qui est fourni par android dans les `ViewModel`, mais pour l'instant on implémente tout au même endroit pour simplifier.
 
 </aside>
 
-- Afficher votre nom d'utilisateur dans la `TextView`:
-
-```kotlin
-userTextView.text = user.name
-```
+- Afficher votre nom d'utilisateur dans le `Text`
 
 ➡️ Lancez l'app et vérifiez que vos infos s'affichent !
 
@@ -242,7 +225,7 @@ userTextView.text = user.name
 
 </aside>
 
-## TaskListFragment
+## API REST
 
 Il est temps de récupérer les tâches depuis le serveur !
 
@@ -281,7 +264,7 @@ Extrait d'un json renvoyé par la route `/rest/v2/tasks/`:
 
 <aside class="positive">
 
-`ViewModel` est une classe du framework Android qui permet de gérer les données d'une vue, et dont on peut facilement créer et récupérer une instance, en général chacune associée à une `Activity` ou un `Fragment`
+`ViewModel` est une classe du framework Android qui permet de gérer les données d'une vue, et dont on peut facilement créer et récupérer une instance, en général chacune associée à une `Activity`, un `Fragment`, ou une `NavEntry`
 
 On va donc y déplacer une partie de la logique: dans l'idéal l'`Activity` ou le `Fragment` doit seulement s'occuper de passer les évènements (comme les clics) au VM, et insérer ce que le VM lui dit d'afficher dans les vues
 
@@ -294,6 +277,10 @@ class TaskListViewModel : ViewModel() {
   private val webService = Api.tasksWebService
 
   public val tasksStateFlow = MutableStateFlow<List<Task>>(emptyList())
+
+  init {
+    refresh()
+  }
 
   fun refresh() {
       viewModelScope.launch {
@@ -316,31 +303,34 @@ class TaskListViewModel : ViewModel() {
 
 ## "Collecter" le Flow
 
-Dans `TaskListFragment`, à l'aide du squelette de code plus bas:
-
-- Ajouter en propriété une instance de `TaskListViewModel`
-- Dans `onResume()`, utilisez ce VM pour rafraîchir la liste de tasks
-- Dans `onViewCreated()`, "abonnez" le fragment aux changements du `StateFlow` du VM et mettez à jour la liste et l'`adapter` dans la lambda de retour
-
-<aside class="negative">
-
-⚠️ Attention ici au moment de choisir l'import de `.collect` sélectionnez bien celui qui est présenté avec des accolades: `collect {...}`
-
-</aside>
+- Dans `ListScreen`, ajouter en a une argument une instance de `TaskListViewModel`
+- Dans `NavDisplay`, ajoutez des `entryDecorators` qui vont permettre aux ViewModels de correspondre aux `NavEntry` et créez un ViewModel à passer à `ListScreen` avec `viewModel { }`
 
 ```kotlin
-private val viewModel: TaskListViewModel by viewModels()
 
-// Dans onResume()
-viewModel.refresh() // on demande de rafraîchir les données sans attendre le retour directement
-
-// Dans onViewCreated()
-lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
-    viewModel.tasksStateFlow.collect { newList ->
-      // cette lambda est exécutée à chaque fois que la liste est mise à jour dans le VM
-      // -> ici, on met à jour la liste dans l'adapter
+NavDisplay(
+    //...
+    entryDecorators = listOf(
+        rememberSaveableStateHolderNavEntryDecorator(),
+        rememberViewModelStoreNavEntryDecorator()
+    ),
+    // ...
+    entryProvider = entryProvider {
+        entry<ListNavScreen> {
+            ListScreen(
+              viewModel = viewModel { TaskListViewModel() }
+              // ...
+            )
+        }
+        // ...
     }
-}
+)
+
+fun ListScreen(
+  modifier: Modifier = Modifier,
+  viewModel: TaskListViewModel,
+)
+val tasks = viewModel.tasksStateFlow.collectAsStateWithLifecycle()
 ```
 
 ## Compléter TasksWebService
@@ -381,4 +371,32 @@ fun update(task: Task) {
 }
 ```
 
-- Supprimez la `taskList` locale dans le Fragment et vérifier que vous avez bien tout remplacé par des appels au VM (et donc au serveur), il ne doit rester plus qu'un seul endroit où vous mettez à jour l'adapter: dans le `.collect { }`
+- Supprimez la `taskList` locale dans l'écran de la Liste et vérifier que vous avez bien tout remplacé par des appels au VM (et donc au serveur), il ne doit rester plus qu'un seul endroit où vous mettez à jour l'adapter: dans le `.collect { }`
+- Bonus: vous pouvez même adapter tout ça à votre écran "Classique" dans les `TaskListFragment` en utilisant le même ViewModel, indices pour commencer:
+
+```kotlin
+private val viewModel: TaskListViewModel by viewModels()
+
+// Dans onResume()
+viewModel.refresh() // on demande de rafraîchir les données sans attendre le retour directement
+
+// Dans onViewCreated()
+lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
+    viewModel.tasksStateFlow.collect { newList ->
+      // cette lambda est exécutée à chaque fois que la liste est mise à jour dans le VM
+      // -> ici, on met à jour la liste dans l'adapter
+    }
+}
+```
+
+## À vous de jouer
+
+<aside class="positive">
+
+C'est le moment d'adapter à votre projet perso, inspirez vous de ce qu'on a fait jusqu'ici et demandez moi de vous aider !
+
+</aside>
+
+Comme précédemment, commencez par créer encore une nouvelle Activity Compose et faites d'elle la "main" dans le Manifest.
+
+Refaites également un Scaffold avec un bouton dans une TopAppBar qui retourne à `ComposeActivity`
