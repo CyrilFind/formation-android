@@ -2,9 +2,15 @@
 
 ## Compose Activity
 
+<aside class="negative">
+
+⚠️ Ne créez pas un nouveau projet, le but est que vous ayez un seul rendu à m'envoyer à la fin !
+
+</aside>
+
 - Créez une nouvelle activity "Empty Activity" (en compose cette fois) appelez la `ComposeActivity`
 - L'IDE devrait automatiquement compléter `app/build.gradle.kts` pour configurer Compose (buildFeatures, dependencies, etc) et l'ajouter au `AndroidManifest.xml`
-- Adaptez votre `AndroidManifest` pour en faire notre activity principale à la place de l'ancienne, et relancez l'app pour vérifier.
+- Adaptez votre `AndroidManifest` pour en faire notre activity principale à la place de l'ancienne, et relancez l'app pour vérifier: il faut déplacer `<intent-filter>...</intent-filter>` de l'ancienne activity à la nouvelle
 - Renommez `Greeting` en `ListScreen` et `GreetingPreview` en `ListPreview` et supprimez l'argument `name`
 
 Vous devriez avoir quelque chose comme ça:
@@ -37,9 +43,9 @@ Puis `ListScreen` : votre premier écran Compose, que vous allez maintenant impl
 
 <aside class="positive">
 
-En haut à droite de votre éditeur, il devrait y avoir trois icones qui permettent d'alterner entre mode texte, mode visuel, et les 2 ensemble: "Split", je vous conseille ce mode Split pour afficher vos `@Preview` sans avoir à relancer l'app à chaque fois.
+En haut à droite de votre éditeur, il devrait y avoir trois icônes qui permettent d'alterner entre mode texte, mode visuel, et les 2 ensemble: "Split", je vous conseille ce mode Split pour afficher vos `@Preview` sans avoir à relancer l'app à chaque fois.
 
-![split](../assets/editor_modes.png)
+![split](/assets/editor_modes.png)
 
 </aside>
 
@@ -131,7 +137,7 @@ Par exemple `Scaffold` permet de placer un composant en haut (topBar), un en bas
 
 Et juste après on va utiliser `actions` pour ajouter un bouton dans la `TopAppBar` (qui est défini avec un `RowScope`, donc on peut y ajouter plusieurs éléments à la suite ils seront placés horizontalement).
 
-![slots](../assets/compose_slots.png)
+![slots](/assets/compose_slots.png)
 
 </aside>
 

@@ -399,4 +399,10 @@ C'est le moment d'adapter à votre projet perso, inspirez vous de ce qu'on a fai
 
 Comme précédemment, commencez par créer encore une nouvelle Activity Compose et faites d'elle la "main" dans le Manifest.
 
+<aside class="negative">
+
+⚠️ Ne créez pas un nouveau projet, le but est que vous ayez un seul rendu à m'envoyer à la fin !
+
+</aside>
+
 Refaites également un Scaffold avec un bouton dans une TopAppBar qui retourne à `ComposeActivity`

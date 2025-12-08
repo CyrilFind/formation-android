@@ -20,7 +20,7 @@ jobs:
       - name: Install claat
         run: go install github.com/googlecodelabs/tools/claat@latest
       - name: Copy assets
-        run: mkdir tp/assets && cp -r assets tp/assets
+        run: mkdir tp/assets && cp -r assets/* tp/assets && ls tp/assets
       - name: Pre Process
         run: python3 ./scripts/pre_codelabs.py
       - name: Clean previous

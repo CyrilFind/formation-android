@@ -32,7 +32,7 @@ Prenez en main l'IDE: vous pouvez aller dans les paramètres (`File > Settings` 
 - Activez tout dans `Editor > Inlay Hints`
 - Activez les imports automatiques: `Editor > General > Auto Import > Kotlin (en bas) > cocher les 2 cases`
 - Personnalisez la coloration syntaxique dans `Settings > Editor > Color Scheme` (vous pouvez utiliser ma config avec `⚙ > Import Scheme` et ce [fichier](../../assets/Darculai.icls))
-- Personnalisez les raccourcis clavier
+- Personnalisez les raccourcis clavier: par ex "comment block" et "rename" ne sont pas très pratiques par défaut surtout en clavier azerty
 
 ## Android Studio
 
@@ -40,6 +40,7 @@ Prenez en main l'IDE: vous pouvez aller dans les paramètres (`File > Settings` 
 
 - `CTRL/CMD` + `click` pour voir les usages ou la définition d'un élément
 - `Alt` + `Enter` pour des "💡 QuickFix" (suggestions de l'IDE)
+- Clic droit pour plus d'actions: notamment "Refactor" qui contient pas mal de fonctions pratiques comme par exemple "rename" qui va renommer partout où l'élément est utilisé (il y a parfois des raccourcis existant ou alors vous pouvez en définir)
 - `Shift, Shift + "recherche"` pour tout le reste (variable, fonction, classe, actions, options, ...)
 - `CTRL/CMD + alt + L` pour ré-indenter correctement tout le code (ou la sélection)
 - Cliquez sur `Sync Now` (dans la barre bleue en haut)quand l'IDE vous le propose: ça arrive notamment quand on change des fichiers de configs comme les fichiers gradle par exemple pour ajouter des dépendances. Cela permet à l'IDE de fonctionner correctement.
@@ -73,7 +74,7 @@ Pour continuer voir [les autres codelabs Google](https://developer.android.com/c
 
 Pendant les prochains TP, vous allez créer un projet en binôme que vous compléterez au fil des TPs.
 
-Par défaut c'est une simple Todo app, mais vous pouvez choisir un autre sujet qui vous intéresse plus, mais dans tous les cas il faudra que le résultat final utilise les briques de base suivantes:
+On prends comme base une simple Todo app, mais vous choisirez ensuite un autre sujet que l'on intégrera dans le même projet pour simplifier le rendu. L'objectif est d'utiliser les briques de base suivantes:
 
 - Avoir une UI correcte en Jetpack compose
 - Naviguer entre plusieurs écrans: Liste/Détail a minima avec `Navigation3`

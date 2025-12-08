@@ -180,7 +180,7 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 
 <aside class="negative">
 
-⚠️ C'est normal que l'IDE nous signale un problème ici, on le règlera plus tard
+⚠️ C'est normal que l'IDE nous signale un problème ici, on le réglera plus tard
 
 </aside>
 
@@ -433,7 +433,7 @@ myAdapter.onClickDelete = { task ->
 
 En haut à droite de votre éditeur, il devrait y avoir trois icônes qui permettent d'alterner entre mode texte, mode visuel, et les 2 ensemble: "Split", je sais qu'on aime le code 🤓 mais je vous conseille le mode visuel qui est plus simple pour manipuler les contraintes ou au moins le mode Split pour afficher la Preview sans avoir à relancer l'app à chaque fois.
 
-![split](../assets/editor_modes.png)
+![split](/assets/editor_modes.png)
 
 </aside>
 

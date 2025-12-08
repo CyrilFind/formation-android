@@ -7,4 +7,5 @@ for filename in glob.glob("tp/TP*.md"):
         file.seek(0)
         basename = os.path.basename(filename)
         name = os.path.splitext(basename)[0]
+        content = content.replace("](/assets/", "](/home/runner/work/formation-android/formation-android/tp/assets/")
         file.write(f"id: {name}\n" + content)
