@@ -39,7 +39,7 @@ Puis `ListScreen` : votre premier écran Compose, que vous allez maintenant impl
 
 En haut à droite de votre éditeur, il devrait y avoir trois icones qui permettent d'alterner entre mode texte, mode visuel, et les 2 ensemble: "Split", je vous conseille ce mode Split pour afficher vos `@Preview` sans avoir à relancer l'app à chaque fois.
 
-![split](../assets/editor_modes.png)
+![split](/assets/editor_modes.png)
 
 </aside>
 
@@ -131,7 +131,7 @@ Par exemple `Scaffold` permet de placer un composant en haut (topBar), un en bas
 
 Et juste après on va utiliser `actions` pour ajouter un bouton dans la `TopAppBar` (qui est défini avec un `RowScope`, donc on peut y ajouter plusieurs éléments à la suite ils seront placés horizontalement).
 
-![slots](../assets/compose_slots.png)
+![slots](/assets/compose_slots.png)
 
 </aside>
 
