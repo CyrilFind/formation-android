@@ -218,8 +218,10 @@ Maintenant on va utiliser la bibliothèque `Navigation3` pour gérer la navigati
 - Dans `ComposeActivity`, au lieu d'afficher directement `ListScreen`, créez et utilisez un composant `App()`:
 
 ```kotlin
-data object ListNavScreen
-data class DetailNavScreen(val task: Task)
+@Serializable
+data object ListNavScreen : NavKey
+@Serializable
+data class DetailNavScreen(val task: Task) : NavKey
 
 @Composable
 fun App() {
