@@ -29,10 +29,12 @@
                   feedback-link="">
     
       <google-codelab-step label="Compose Activity" duration="0">
-        <ul>
+        <aside class="warning"><p>⚠️ Ne créez pas un nouveau projet, le but est que vous ayez un seul rendu à m&#39;envoyer à la fin !</p>
+</aside>
+<ul>
 <li>Créez une nouvelle activity &#34;Empty Activity&#34; (en compose cette fois) appelez la <code>ComposeActivity</code></li>
 <li>L&#39;IDE devrait automatiquement compléter <code>app/build.gradle.kts</code> pour configurer Compose (buildFeatures, dependencies, etc) et l&#39;ajouter au <code>AndroidManifest.xml</code></li>
-<li>Adaptez votre <code>AndroidManifest</code> pour en faire notre activity principale à la place de l&#39;ancienne, et relancez l&#39;app pour vérifier.</li>
+<li>Adaptez votre <code>AndroidManifest</code> pour en faire notre activity principale à la place de l&#39;ancienne, et relancez l&#39;app pour vérifier: il faut déplacer <code><intent-filter>...</intent-filter></code> de l&#39;ancienne activity à la nouvelle</li>
 <li>Renommez <code>Greeting</code> en <code>ListScreen</code> et <code>GreetingPreview</code> en <code>ListPreview</code> et supprimez l&#39;argument <code>name</code></li>
 </ul>
 <p>Vous devriez avoir quelque chose comme ça:</p>
@@ -55,7 +57,8 @@
 <ul>
 <li>Personnalisez un peu votre Theme en fonction de votre projet perso !</li>
 </ul>
-<aside class="special"><p>En haut à droite de votre éditeur, il devrait y avoir trois icones qui permettent d&#39;alterner entre mode texte, mode visuel, et les 2 ensemble: &#34;Split&#34;, je vous conseille ce mode Split pour afficher vos <code>@Preview</code> sans avoir à relancer l&#39;app à chaque fois.</p>
+<aside class="special"><p>En haut à droite de votre éditeur, il devrait y avoir trois icônes qui permettent d&#39;alterner entre mode texte, mode visuel, et les 2 ensemble: &#34;Split&#34;, je vous conseille ce mode Split pour afficher vos <code>@Preview</code> sans avoir à relancer l&#39;app à chaque fois.</p>
+<p class="image-container"><img alt="split" src="img/d5f599a5a4f785b5.png"></p>
 </aside>
 <ul>
 <li>affichez une liste d&#39;éléments avec Compose (utilisez <code>LazyColumn</code> et <code>items</code>), avec des éléments, c&#39;est légerement plus simple qu&#39;une <code>RecyclerView</code> 🙃 :</li>
@@ -140,6 +143,7 @@
 <aside class="special"><p>🧑‍🏫 Ici on utilise ce qu&#39;on appelle des <strong>Slots</strong>: des fonctions Compose qu&#39;on passe en argument d&#39;autres fonctions compose via des <strong>lambda</strong></p>
 <p>Par exemple <code>Scaffold</code> permet de placer un composant en haut (topBar), un en bas (bottomBar), un bouton flottant (floatingActionButton), etc...</p>
 <p>Et juste après on va utiliser <code>actions</code> pour ajouter un bouton dans la <code>TopAppBar</code> (qui est défini avec un <code>RowScope</code>, donc on peut y ajouter plusieurs éléments à la suite ils seront placés horizontalement).</p>
+<p class="image-container"><img alt="slots" src="img/ca8c2366f08ebd11.png"></p>
 </aside>
 <ul>
 <li>Lancez l&#39;app pour vérifier que tout s&#39;affiche correctement</li>
@@ -222,15 +226,15 @@ data class DetailNavScreen(val task: Task)
 
 @Composable
 fun App() {
-    // on créé notre historique de navigation avec l&#39;écran de liste comme écran initial
-    val backStack = remember { mutableStateListOf&lt;Any&gt;(ListNavScreen) }
+    // on créé notre historique de navigation avec la liste comme écran initial
+    val backStack = rememberNavBackStack(ListNavScreen)
 
 
     NavDisplay(
       backStack = backStack,
       entryProvider = entryProvider {
-        entry&lt;ListNavScreen&gt; { ListScreen(...) }
-        entry&lt;DetailNavScreen&gt; { ... }
+        entry&lt;ListNavScreen&gt; { ListScreen(onClickItem = {}) }
+        entry&lt;DetailNavScreen&gt; { key -&gt; DetailScreen(task = key.task) }
       }
     )
 }

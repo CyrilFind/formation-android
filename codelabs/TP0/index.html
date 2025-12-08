@@ -37,7 +37,7 @@
 <li>Sinon: Dans <code>Device Manager > Create virtual device</code> choisissez un device avec le triangle du PlayStore, puis une version d&#39;OS Android récente.</li>
 <li>Essayez de le lancer le projet (en cliquant sur le triangle vert)</li>
 </ul>
-<aside class="special"><p>N&#39;hésitez pas à me contacter en avance si vous avez un soucis (vous pouvez aussi suivre des <a href="https://developer.android.com/courses/pathways/android-basics-compose-unit-1-pathway-2" target="_blank">tutos Google</a>)</p>
+<aside class="special"><p>N&#39;hésitez pas à me contacter en avance si vous avez un soucis</p>
 <p>Problème courants:</p>
 <ul>
 <li>manque d&#39;espace pour le SDK, l&#39;émulateur: installez sur un disque secondaire si il y a + de place</li>
@@ -57,7 +57,7 @@
 <li>Activez tout dans <code>Editor > Inlay Hints</code></li>
 <li>Activez les imports automatiques: <code>Editor > General > Auto Import > Kotlin (en bas) > cocher les 2 cases</code></li>
 <li>Personnalisez la coloration syntaxique dans <code>Settings > Editor > Color Scheme</code> (vous pouvez utiliser ma config avec <code>⚙ > Import Scheme</code> et ce <a href="../../assets/Darculai.icls" target="_blank">fichier</a>)</li>
-<li>Personnalisez les raccourcis clavier</li>
+<li>Personnalisez les raccourcis clavier: par ex &#34;comment block&#34; et &#34;rename&#34; ne sont pas très pratiques par défaut surtout en clavier azerty</li>
 </ul>
 
 
@@ -68,6 +68,7 @@
 <ul>
 <li><code>CTRL/CMD</code> + <code>click</code> pour voir les usages ou la définition d&#39;un élément</li>
 <li><code>Alt</code> + <code>Enter</code> pour des &#34;💡 QuickFix&#34; (suggestions de l&#39;IDE)</li>
+<li>Clic droit pour plus d&#39;actions: notamment &#34;Refactor&#34; qui contient pas mal de fonctions pratiques comme par exemple &#34;rename&#34; qui va renommer partout où l&#39;élément est utilisé (il y a parfois des raccourcis existant ou alors vous pouvez en définir)</li>
 <li><code>Shift, Shift + "recherche"</code> pour tout le reste (variable, fonction, classe, actions, options, ...)</li>
 <li><code>CTRL/CMD + alt + L</code> pour ré-indenter correctement tout le code (ou la sélection)</li>
 <li>Cliquez sur <code>Sync Now</code> (dans la barre bleue en haut)quand l&#39;IDE vous le propose: ça arrive notamment quand on change des fichiers de configs comme les fichiers gradle par exemple pour ajouter des dépendances. Cela permet à l&#39;IDE de fonctionner correctement.</li>
@@ -77,36 +78,68 @@
       </google-codelab-step>
     
       <google-codelab-step label="Kotlin Basics" duration="0">
-        <p>Pour prendre en main les bases du langage:</p>
+        <aside class="special"><p> 🧑‍🏫 Rappels de vocabulaire: </p>
+<pre><code language="language-kotlin" class="language-kotlin">val text: String = &#34;hello&#34;
+
+val user: User? = null
+
+class MutableList&lt;T&gt; : List&lt;T&gt; {
+  // ...
+  val count: String
+  override fun add(element: E): Boolean
+ }
+</code></pre>
+<ul>
+<li><code>text</code> est une <strong>variable</strong> de <strong>type </strong><code>String</code> qui est un type <strong>Primitive</strong></li>
+<li><code>user</code> est une <strong>variable</strong> de <strong>Class </strong><code>User?</code> qui est une classe <strong>nullable</strong> qui contient soit une *<em>instance</em> de <code>User</code> soit <code>null</code></li>
+<li><code>Array<T></code> est une <strong>Class</strong> qui prend un <strong>type parameter</strong> (ou <strong>Generic</strong>) et qui hérite de <code>List<T></code>, comme <code>List<T></code> est une <strong>interface</strong> on dit que <code>Array<T></code> <strong>implémente </strong><code>List<T></code></li>
+<li><code>count</code> est une variable définie dans une <strong>classe</strong>: on dit que c&#39;est une <strong>propriété</strong></li>
+<li><code>add</code> est une <strong>fonction</strong> qui <strong>surcharge</strong> une <strong>fonction</strong> ayant la même <strong>signature</strong> dans une des ses <strong>classes mère</strong>, comme elle est définie dans une <strong>classe</strong>, on dit que c&#39;est une <strong>méthode</strong></li>
+</ul>
+</aside>
+<p>Pour prendre en main les bases du langage, avec qq indices:</p>
 <ul>
 <li><a href="https://play.kotlinlang.org/koans/Introduction/Nullable%20types/Task.kt" target="_blank">Nullable types</a></li>
-<li><a href="https://play.kotlinlang.org/koans/Introduction/String%20templates/Task.kt" target="_blank">String templates</a></li>
-<li><a href="https://play.kotlinlang.org/koans/Introduction/Lambdas/Task.kt" target="_blank">Lambdas</a></li>
-<li><a href="https://play.kotlinlang.org/koans/Classes/Data%20classes/Task.kt" target="_blank">Data classes</a></li>
-<li><a href="https://play.kotlinlang.org/koans/Classes/Smart%20casts/Task.kt" target="_blank">Smart casts</a></li>
 </ul>
+<pre><code language="language-kotlin" class="language-kotlin">  // on peut &#34;chaîner&#34; les appels nullable avec `?.`:
+  val email = client?.personalInfo?.email
+</code></pre>
+<ul>
+<li><a href="https://play.kotlinlang.org/koans/Introduction/String%20templates/Task.kt" target="_blank">String templates</a></li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin"> // pour &#34;interpoler&#34; une variable dans une string on utilise &#39;$&#39;
+ fun getPattern(): String = &#34;&#34;&#34;&lt;pattern qui match 2 digits&gt; $month &lt;pattern qui match 4 digits&gt;&#34;&#34;&#34;
+</code></pre>
+<ul>
+<li><a href="https://play.kotlinlang.org/koans/Introduction/Lambdas/Task.kt" target="_blank">Lambdas</a></li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">val isEven = number % 2 == 0 // check division par 2
+val lambdaWithExplicitParam = { explicitParam -&gt; explicitParam == 42 }
+val lambdaWithImplicitParam = { it == 42 }
+</code></pre>
+<ul>
+<li><a href="https://play.kotlinlang.org/koans/Classes/Data%20classes/Task.kt" target="_blank">Data classes</a></li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">data class Person(
+  val ...
+  val ...
+)
+</code></pre>
 <p>Pour aller plus loin sur Kotlin : <a href="https://developer.android.com/courses/kotlin-bootcamp/overview" target="_blank">Kotlin Bootcamp</a></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Jetpack Compose Basics" duration="0">
-        <ul>
-<li><a href="https://developer.android.com/codelabs/basic-android-kotlin-compose-text-composables" target="_blank">Compose Texts</a></li>
-<li><a href="https://developer.android.com/codelabs/basic-android-kotlin-compose-add-images" target="_blank">Compose Images</a></li>
-<li><a href="https://developer.android.com/codelabs/basic-android-kotlin-compose-build-a-dice-roller-app" target="_blank">Compose Buttons</a></li>
-<li><a href="https://developer.android.com/codelabs/constraint-layout" target="_blank">Constraint Layout</a></li>
-</ul>
-<aside class="warning"><p> ⚠️ Ne perdez pas de temps sur les pages &#34;Introduction&#34;, &#34;Overview&#34;, etc... ni sur les dernières étapes: questions, exercices, etc... </p>
-</aside>
-<p>Pour continuer voir <a href="https://developer.android.com/courses/android-basics-compose/course" target="_blank">les autres codelabs Google</a></p>
+        <p><a href="https://developer.android.com/codelabs/jetpack-compose-basics" target="_blank">Codelab: Jetpack Compose Basics</a></p>
+<p>Pour continuer voir <a href="https://developer.android.com/get-started/codelabs" target="_blank">les autres codelabs Google</a></p>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Projet" duration="0">
         <p>Pendant les prochains TP, vous allez créer un projet en binôme que vous compléterez au fil des TPs.</p>
-<p>Par défaut c&#39;est une simple Todo app, mais vous pouvez choisir un autre sujet qui vous intéresse plus, mais dans tous les cas il faudra que le résultat final utilise les briques de base suivantes:</p>
+<p>On prends comme base une simple Todo app, mais vous choisirez ensuite un autre sujet que l&#39;on intégrera dans le même projet pour simplifier le rendu. L&#39;objectif est d&#39;utiliser les briques de base suivantes:</p>
 <ul>
 <li>Avoir une UI correcte en Jetpack compose</li>
 <li>Naviguer entre plusieurs écrans: Liste/Détail a minima avec <code>Navigation3</code></li>
@@ -162,6 +195,7 @@
 <li><a href="https://api.watchmode.com/docs" target="_blank">https://api.watchmode.com/docs</a></li>
 <li>autres: <a href="https://rapidapi.com/collection/list-of-free-apis" target="_blank">https://rapidapi.com/collection/list-of-free-apis</a></li>
 </ul>
+<p>Ne perdez pas de temps et passez au TP1 !</p>
 
 
       </google-codelab-step>
