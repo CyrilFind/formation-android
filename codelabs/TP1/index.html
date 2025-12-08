@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>TP 1 - RecyclerView</title>
+  <title>TP 1 - Classic Views</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
@@ -24,7 +24,7 @@
   <google-codelab codelab-gaid=""
                   codelab-ga4id=""
                   id="TP1"
-                  title="TP 1 - RecyclerView"
+                  title="TP 1 - Classic Views"
                   environment="web"
                   feedback-link="">
     
@@ -33,7 +33,7 @@
 <aside class="warning"><p>⚠️ Lisez toutes les questions: souvent vous bloquez simplement parce que vous n&#39;avez pas encore regardé l&#39;étape suivante ou le sujet dans son ensemble.</p>
 <p><strong>Sinon, demandez moi!!</strong></p>
 </aside>
-<aside class="special"><p>Remarque: si vous n&#39;avez pas bien paramétré votre IDE, relisez le début du <a href="./TP0" target="_blank">TP0</a></p>
+<aside class="special"><p>Remarque: si vous n&#39;avez pas bien paramétré votre IDE, relisez le début du TP0</p>
 </aside>
 <aside class="warning"><p>Si vous remarquez des erreurs, des fautes de frappe ou des oublis de ma part, n&#39;hésitez pas à me le signaler SVP !</p>
 </aside>
@@ -46,20 +46,22 @@
 <ul>
 <li>Créer un nouveau projet avec une <code>Empty VIEWS Activity</code> (⚠️ pas <code>Empty Activity</code> SVP ⚠️)</li>
 <li>Donnez lui un nom personnalisé comme <code>TodoNicolasAlexandre</code> (⚠️ pas <code>TP1</code> SVP ⚠️)</li>
-<li>Choisissez un package name unique de ce genre: <code>com.nicoalex.todo</code> (ce sera la racine de tous vos packages et sert d&#39;identifiant unique d&#39;application)</li>
+<li>Choisissez un package name unique de ce genre: <code>com.something.todo</code> (ce sera la racine de tous vos packages et sert d&#39;identifiant unique d&#39;application)</li>
 <li>Minimum API Level: laissez la valeur proposée par défaut</li>
 <li>Initialisez un projet git et faites un commit initial</li>
 </ul>
-<aside class="warning"><p>⚠️ Le projet va évoluer au cours des TP donc faites des commits régulièrement: par exemple, à chaque étape et au minimum à la fin de chaque TP</p>
-<p>Vous allez parfois supprimer et remplacer des parties de code: ne commentez pas votre code dans tous les sens, les commits garderons l&#39;historique.</p>
-<p>Comme dans un vrai projet pro finalement !</p>
+<aside class="warning"><p>⚠️ Le projet va évoluer au cours des TP donc faites des commits régulièrement: à chaque étape et au minimum à la fin de chaque TP</p>
+<p>Comme dans un vrai projet professionnel, vous allez parfois supprimer et remplacer des parties de code: ne commentez pas votre code dans tous les sens car les commits garderons l&#39;historique et je noterai la &#34;propreté&#34; du code à la fin !</p>
 </aside>
 
 
       </google-codelab-step>
     
       <google-codelab-step label="Image Asset Studio" duration="0">
-        <p>Créez une icône d&#39;application personnalisée avec l&#39;outil intégré <strong>Image Asset Studio</strong>: ouvrez le <strong>Resource Manager</strong> à gauche, près du volet projet puis cliquez sur le <code>+</code> en haut à gauche et choisissez <code>Image Asset</code>: ici vous pouvez choisie une couleur de fond, une image (icône système ou personnalisée avec un SVG ou un &#34;clipart&#34;) et générer automatiquement les différentes tailles nécessaires pour Android.</p>
+        <p>Créez une icône d&#39;application personnalisée avec l&#39;outil intégré <strong>Image Asset Studio</strong>: ouvrez le <strong>Resource Manager</strong> à gauche, près du volet projet puis cliquez sur le <code>+</code> en haut à gauche et choisissez <code>Image Asset</code>: ici vous pouvez choisie une couleur de fond, une image: icône système ou personnalisée avec un SVG ou un &#34;clipart&#34; (bibliotheque d&#39;icones en cliquant sur la petite icon android) et générer automatiquement les différentes tailles nécessaires pour les différentes version d&#39;Android.</p>
+<aside class="warning"><p>N&#39;y passez pas trop de temps, mais profitez en pour réfléchir à votre projet perso et si vous ave une idée, faites une icône en rapport !</p>
+</aside>
+<p>Vérifiez que l&#39;icône est bien prise en compte dans le <code>AndroidManifest.xml</code> (attribut <code>android:icon</code> de la balise <code>application</code>) et en lançant l&#39;app.</p>
 
 
       </google-codelab-step>
@@ -71,7 +73,7 @@
 <li>répliqués en tant que dossiers dans le filesystem: <code>com/nicoalex/todo/nomdupackage</code></li>
 </ul>
 <aside class="special"><p>Dans le volet &#34;Projet&#34; à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est &#34;Android&#34; qui affiche facilement le Manifest, les fichiers source, les fichier resources (<code>res</code>), compacte les dossiers vides ensemble (<code>com.nicoalex.todo</code>): tout ce qui est utile spécifiquement pour Android...</p>
-<p>Mais il peut parfois être pratique de passer en &#34;Project Files&#34; par ex pour voir l&#39;arborescence réelle et certains fichiers cachés autrement.</p>
+<p>Mais il peut parfois être pratique de passer en &#34;Project Files&#34; par ex pour voir l&#39;arborescence réelle et certains fichiers qui sont cachés en vue &#34;Android&#34;.</p>
 </aside>
 <p>Parcourez les différents fichiers de config, notamment les plus importants:</p>
 <ul>
@@ -92,25 +94,32 @@
       <google-codelab-step label="TaskListFragment" duration="0">
         <ul>
 <li>Créez dans votre nouveau package un fichier kotlin <code>TaskListFragment.kt</code> qui contiendra la classe <code>TaskListFragment</code>:</li>
-</ul>
-<pre><code language="language-kotlin" class="language-kotlin">class TaskListFragment : Fragment() {
-   //...
-}
-</code></pre>
-<ul>
 <li>Créer le layout associé <code>fragment_task_list.xml</code> dans <code>res/layout</code></li>
 </ul>
 <aside class="special"><p>vous pouvez aussi utiliser Android Studio pour créer les 2 fichiers à la fois: <code>Clic droit sur le package > New > Fragment > Fragment (Blank)</code>, mais la classe sera remplie de plein de code inutile -&gt; supprimez-le</p>
 </aside>
 <ul>
 <li>Dans <code>TaskListFragment</code>, overrider la méthode <code>onCreateView(...)</code>: commencez à taper <code>onCrea...</code> et utilisez l&#39;auto-completion de l&#39;IDE pour vous aider (vous pouvez supprimer la ligne <code>super.onCreateView(...)</code>)</li>
-<li>Cette méthode vous demande de <em>retourner</em> la <code>rootView</code> à afficher: créez la à l&#39;aide de votre nouveau layout comme ceci:</li>
+<li>On aura besoin ensuite d&#39;overrider <code>onViewCreated(...)</code> aussi, faites le maintenant de la même façon, vous devriez avoir quelque chose comme ça:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">class TaskListFragment : Fragment() {
+    override fun onCreateView(...): View {
+       // ici on crée la vue et on la retourne (regardez le type de retour: `View`), on ne fait rien d&#39;autre.
+    }
+
+    override fun onViewCreated(...) {
+       // ici la vue est créée, on peut récupérer des références aux vues et les manipuler
+    }
+}
+</code></pre>
+<ul>
+<li>Cette méthode vous demande de <strong>retourner</strong> la <code>rootView</code> à afficher: créez la à l&#39;aide de votre nouveau layout comme ceci:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 </code></pre>
-<aside class="warning"><p>⚠️ Si vous exécutez du code <em>avant</em> cette ligne <code>inflate</code>, il va crasher ou ne rien faire car votre vue n&#39;existera pas encore</p>
+<aside class="warning"><p>⚠️ Si vous exécutez du code <strong>avant</strong> cette ligne <code>inflate</code>, il va crasher ou ne rien faire car votre vue n&#39;existera pas encore</p>
 </aside>
-<aside class="special"><p><code>R</code> est un raccourci signifiant &#34;Resource&#34;: c&#39;est une classe générée automatiquement à partir des dossiers et fichiers créés dans <code>res</code> qui s&#39;utilise comme ceci: <code>R.string.app_name</code>, <code>R.drawable.app_icon</code>, etc... afin de récupérer des ID que l&#39;on utilise dans les fonctions du framework Android (<code>getString</code>, <code>getDrawable</code>, etc...)</p>
+<aside class="special"><p><code>R</code> est un raccourci signifiant &#34;Resource&#34;: c&#39;est une classe générée automatiquement à partir des dossiers et fichiers créés dans <code>res</code> qui s&#39;utilise comme ceci: <code>R.string.app_name</code>, <code>R.drawable.app_icon</code>, etc... afin de récupérer des ID que l&#39;on utilise dans les fonctions du framework Android (<code>getString</code>, <code>getDrawable</code>, etc...) grace aux noms des resources (pour les fichiers ce sera toujours le nom du fichier sans l&#39;extension)</p>
 </aside>
 <ul>
 <li>Pour l&#39;instant, la liste des tâches sera simplement une liste de <code>String</code> locale, ajoutez la en tant que propriété de votre classe <code>TaskListFragment</code>:</li>
@@ -128,7 +137,7 @@
 <p>Dans <code>activity_main.xml</code>, remplacez la balise <code>TextView</code> par celle ci et adaptez:</p>
 <pre><code language="language-xml" class="language-xml"> &lt;androidx.fragment.app.FragmentContainerView
     android:name=&#34;com.nicoalex.todo.list.TaskListFragment&#34;
-    android:id=&#34;@+id/fragment_tasklist&#34;
+    android:id=&#34;@+id/fragment_container&#34;
     android:layout_width=&#34;match_parent&#34;
     android:layout_height=&#34;match_parent&#34; /&gt;
 </code></pre>
@@ -184,7 +193,7 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
 <aside class="warning"><p>⚠️ Utilisez l&#39;IDE pour régler le problème qu&#39;il vous signale: seul le préfixe <code>android:</code>, correspondant au framework Android, est reconnu par défaut, et il faut donc ajouter une sorte d&#39;équivalent de <code>import</code> mais dans le XML, pour que le préfixe <code>app:</code>, correspondant à des attributs additionnels défini par ex dans des lib (ici <code>recyclerview</code>) soit reconnu.</p>
 </aside>
 <ul>
-<li>ajoutez lui un <code>id</code>: soit en mode visuel soit en mode code, en vous aidant de l&#39;auto-complétion <code>android:id="@+id/....</code></li>
+<li>ajoutez lui un <code>id</code>: soit en mode visuel soit en mode code, en vous aidant de l&#39;auto-complétion <code>android:id="@+id/id_de_votre_recycler_view</code></li>
 <li>Dans <code>TaskListFragment</code>, overridez <code>onViewCreated</code> pour y récupérez une référence à la <code>RecyclerView</code> du layout en utilisant <code>findViewById</code>:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">val recyclerView = view.findViewById&lt;RecyclerView&gt;(R.id.id_de_votre_recycler_view)
@@ -237,20 +246,6 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
 
       </google-codelab-step>
     
-      <google-codelab-step label="Resources" duration="0">
-        <p>À vous de créer des ressources cette fois: vous pouvez faire <code>alt + entrer</code> avec le curseur sur les <code>String</code> dans <code>listOf</code> puis &#34;extract string resource&#34;, qui remplacera automatiquement les <code>String</code> par des <code>getString(R.string.xxx)</code></p>
-<p>Sinon, faites le à la main et éditez directement <code>res/values/strings.xml</code>, à la fin vous aurez quelque chose comme:</p>
-<pre><code language="language-kotlin" class="language-kotlin">&lt;resources&gt;
-    ...
-    &lt;string name=&#34;task_1&#34;&gt;Task 1&lt;/string&gt;
-    &lt;string name=&#34;task_2&#34;&gt;Task 2&lt;/string&gt;
-    &lt;string name=&#34;task_3&#34;&gt;Task 3&lt;/string&gt;
-&lt;/resources&gt;
-</code></pre>
-
-
-      </google-codelab-step>
-    
       <google-codelab-step label="Data class" duration="0">
         <ul>
 <li>Dans un nouveau fichier, créer une <code>data class Task</code> avec 3 attributs: un id, un titre et une description</li>
@@ -291,7 +286,7 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
       </google-codelab-step>
     
       <google-codelab-step label="Ajout de tâche rapide" duration="0">
-        <p>Utilisez <code>.setOnClickListener {}</code> sur le bouton d&#39;ajout pour ajouter une tâche à votre liste à chaque fois qu&#39;on clique dessus:</p>
+        <p>Retournez dans le code, récupérez une référence à votre nouveau bouton et utilisez <code>.setOnClickListener {}</code> pour ajouter une tâche à votre liste à chaque fois qu&#39;on clique dessus:</p>
 <pre><code language="language-kotlin" class="language-kotlin">// Instanciation d&#39;un objet task avec des données préremplies:
 val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;Task ${taskList.size + 1}&#34;)
 taskList = taskList + newTask
@@ -339,6 +334,23 @@ adapter.submitList(listOf(&#34;Item#1&#34;, &#34;Item #2&#34;))
 
       </google-codelab-step>
     
+      <google-codelab-step label="Scroll" duration="0">
+        <ul>
+<li>Faites maintenant une liste de 100 éléments pour tester le scroll:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">private val taskList = List(100) { index -&gt;
+    Task(id = &#34;id_$index&#34;, title = &#34;Task $index&#34;)
+}
+</code></pre>
+<ul>
+<li>Vous pouvez tester avec 1000 ou 10.000 éléments aussi: ça doit rester fluide !</li>
+<li>remettez 100 éléments pour la suite: mainteant si vous ajoutez un élément, vous ne le verrez pas forcément !</li>
+<li>faites en sorte que le <code>RecyclerView</code> scrolle automatiquement en bas à chaque ajout de tâche: <code>recyclerView.scrollToPosition(...)</code></li>
+</ul>
+
+
+      </google-codelab-step>
+    
       <google-codelab-step label="ViewBinding" duration="0">
         <p>Utiliser le <code>ViewBinding</code> (<a href="https://developer.android.com/topic/libraries/view-binding" target="_blank">documentation</a> / <a href="../../slides/3%20-%20Views.html#9" target="_blank">slides</a>) dans <code>TaskListFragment</code>:</p>
 <ul>
@@ -346,6 +358,181 @@ adapter.submitList(listOf(&#34;Item#1&#34;, &#34;Item #2&#34;))
 <li>remplacez les <code>findViewByIds</code> par des calls direct du genre <code>binding.myViewId</code></li>
 </ul>
 <p>Puis faites pareil pour les <code>ViewHolder</code>: c&#39;est un peu plus complexe, il faudra changer le constructeur pour qu&#39;il prenne un <code>val binding: ItemTaskBinding</code> afin d&#39;y avoir accès dans le corps de la classe et passer <code>binding.root</code> au constructeur parent.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Suppression d&#39;une tache" duration="0">
+        <p>Dans le layout de vos item, ajouter un <code>ImageButton</code> qui servira à supprimer la tâche associée. Vous pouvez utiliser par exemple l&#39;icône <code>@android:drawable/ic_menu_delete</code></p>
+<aside class="special"><p>🧑‍🏫 Une <a href="https://kotlinlang.org/docs/reference/lambdas.html" target="_blank">lambda</a> est un type de variable qui contient un bloc de code pouvant prendre des arguments et retourner un résultat</p>
+<p>C&#39;est donc une fonction que l&#39;on peut utiliser comme une variable !</p>
+</aside>
+<p>Aidez vous des lignes de code plus bas pour réaliser un &#34;Click Listener&#34; à l&#39;aide d&#39;une lambda en suivant ces étapes:</p>
+<ul>
+<li>Dans l&#39;adapter, ajouter une propriété <code>onClickDelete</code> de type lambda qui prends en arguments une <code>Task</code> et ne renvoie rien: <code>(Task) -> Unit</code> et l&#39;initier à <code>{}</code> (elle ne fait rien par défaut)</li>
+<li>Utilisez cette lambda dans le <code>onClickListener</code> du bouton supprimer</li>
+<li>Dans le fragment, accéder à <code>onClickDelete</code> depuis l&#39;adapter et implémentez là: donnez lui comme valeur une lambda qui va supprimer la tache passée en argument de la liste</li>
+<li>Déclaration de la variable lambda dans l&#39;adapter, par défaut elle ne fait rien (<code>{}</code>):</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">var onClickDelete: (Task) -&gt; Unit = {}
+</code></pre>
+<ul>
+<li>Utilisation de la lambda dans le ViewHolder, quand on clique sur le bouton:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">onClickDelete(task)
+</code></pre>
+<ul>
+<li>&#34;implémentation&#34; de la lambda dans le fragment, pour que la lambda aie un effet on lui écrit un comportement et on l&#39;assigne à la variable:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">myAdapter.onClickDelete = { task -&gt;
+    // Supprimer la tâche
+}
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="DetailFragment" duration="0">
+        <ul>
+<li>Créez un formulaire simple dans <code>DetailFragment</code> en utilisant un <code>ConstraintLayout</code> (vous pouvez &#34;convert&#34; dans le menu du clic droit sur la root view) avec deux <code>EditText</code> (pour le titre et la description) et un <code>Button</code> de validation</li>
+<li>Dans <code>DetailFragment</code>, récupérez les références aux vues et implémentez le clic</li>
+<li>Personnalisez un peu l&#39;UI si vous le souhaitez</li>
+</ul>
+<aside class="special"><p>En haut à droite de votre éditeur, il devrait y avoir trois icônes qui permettent d&#39;alterner entre mode texte, mode visuel, et les 2 ensemble: &#34;Split&#34;, je sais qu&#39;on aime le code 🤓 mais je vous conseille le mode visuel qui est plus simple pour manipuler les contraintes ou au moins le mode Split pour afficher la Preview sans avoir à relancer l&#39;app à chaque fois.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Ajout de tâche complet" duration="0">
+        <aside class="special"><p>Afin de récupérer un résultat de cette nouvelle Activity, nous allons utiliser le fragmentManager qui permet de naviguer et communiquer entre fragments.</p>
+<p>Il fonctionne à base de &#34;transactions&#34; qui permettent d&#39;effectuer plusieurs actions à la fois et de les &#34;commiter&#34; (valider) en une seule fois</p>
+<p>Ici on utilisera une version simplifiée avec <code>commit { ... }</code> fournie par fragment-KTX qui permet d&#39;avoir automatiquement le commit à la fin de la lambda de transaction.</p>
+</aside>
+<ul>
+<li>vérifiez que vous avez les dépendances nécessaires (les dernières versions au moment où j&#39;écris sont les suivantes):</li>
+<li>Dans <code>app/build.gradle.kts</code> &gt; <code>dependencies {...}</code>, ajoutez les dépendances qui vous manquent (mettre les versions plus récentes si l&#39;IDE vous le propose, il vous proposera également de facilement les passer dans le fichier centralisé <code>libs.versions.toml</code>):</li>
+</ul>
+<pre><code language="language-gradle" class="language-gradle">implementation(&#34;androidx.fragment:fragment:1.8.9&#34;)
+implementation(&#34;androidx.fragment:fragment-ktx:1.8.9&#34;)
+</code></pre>
+<ul>
+<li>Faire en sorte de lancer le nouveau fragment depuis le bouton + du 1er</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">parentFragmentManager.commit {
+    replace&lt;DetailFragment&gt;(R.id.fragment_container)
+    addToBackStack(null)
+}
+</code></pre>
+<ul>
+<li>Afin de pouvoir recevoir le résultat de <code>DetailFragment</code>, créez un <code>FragmentResultLauncher</code> dans <code>TaskListFragment</code>:</li>
+<li>Vérifiez que vous naviguez bien vers l&#39;écran en cliquant sur + et qu&#39;il s&#39;affiche correctement</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">class DetailFragment : Fragment() {
+    override fun onViewCreated(...) {
+        // ...
+        parentFragmentManager.setFragmentResultListener(REQUEST_KEY) { _, bundle -&gt;
+            val result = bundle.getString(RESULT_KEY)
+            // Utilisez le résultat ici
+        }
+    }
+
+    companion object { // pour définir des membres &#34;statiques&#34;, ici des constantes:
+        const val REQUEST_KEY = &#34;request_key&#34;
+        const val RESULT_KEY = &#34;result_key&#34;
+    }
+</code></pre>
+<ul>
+<li>Sur votre bouton de validation créez une nouvelle task:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">val newTask = Task(id = UUID.randomUUID().toString(), title = &#34;New Task !&#34;)
+</code></pre>
+<ul>
+<li>et passez la en résultat au fragment parent avant de fermer le fragment:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">parentFragmentManager.setFragmentResult(BlankFragment.REQUEST_KEY, Bundle().apply {
+  putString(BlankFragment.RESULT_KEY, newTask)
+})
+parentFragmentManager.popBackStack() // retour au fragment précédent
+</code></pre>
+<ul>
+<li>ça ne compilera pas car <code>Task</code> ne fait pas partie des types de base autorisés dans un bundle !</li>
+<li>L&#39;un de ces types est <code>Serializable</code>: Faites donc hériter <code>Task</code> de <code>java.io.Serializable</code>, comme c&#39;est une <code>data class</code>, il n&#39;y a rien à implémenter !</li>
+<li>Dans le FragmentResultListener de votre 1er fragment, récupérez cette task:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">val task = result.data?.getSerializableExtra(&#34;task&#34;) as Task?
+</code></pre>
+<ul>
+<li>et ajoutez la à la liste, comme vous le faisiez avec le bouton d&#39;ajout précédemment</li>
+</ul>
+<aside class="warning"><p>La syntaxe <code>as Task</code> permet de <strong>&#34;caster&#34;</strong> un objet récupéré en tant que <code>Task</code>: c&#39;est à dire qu&#39;on force l&#39;objet à être considéré de type <code>Task</code>, qui est (depuis l&#39;étape précédente) un sous-type de <code>Serializable</code> (retourné par <code>getSerializableExtra</code>)</p>
+<p>ici on utilise <code>as Task?</code> (équivalent à <code>as? Task</code>) pour récupérer un <strong>nullable</strong> et éviter d&#39;avoir une exception si le cast ne fonctionne pas en retournant <code>null</code> à la place</p>
+</aside>
+<ul>
+<li>Vérifiez que la nouvelle tache s&#39;affiche dans la liste</li>
+<li>Pour l&#39;instant notre Task est créée avec des données &#34;en dur&#34;, modifiez le code de <code>DetailFragment</code> pour récupérer les valeurs entrées par l&#39;utilisateur dans les <code>EditText</code> et les utiliser pour créer la nouvelle tâche</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Édition d&#39;une tâche" duration="0">
+        <aside class="special"><p>🧑‍🏫 L&#39;avantage des Fragments est qu&#39;on peut les initialiser avec des arguments contrairement aux Activity (car celles ci doivent être instanciées par le système)</p>
+</aside>
+<p>Ajoutez un argument taskId de type String?, <code>null</code> par défaut (pour garder le cas d&#39;ajout de nouvelle tâche) à <code>DetailFragment</code> pour identifier la tâche à éditer, vous pourrez ensuite faire:</p>
+<pre><code language="language-kotlin" class="language-kotlin">parentFragmentManager.commit {
+    replace(R.id.fragmentContainerView, DetailFragment(taskId))
+    addToBackStack(null)
+}
+</code></pre>
+<p>Inspirez vous de ce que vous avez fait pour le bouton &#34;supprimer&#34; et le bouton &#34;ajouter&#34; pour créer un bouton &#34;éditer&#34; permettant de modifier chaque tâche en ouvrant l&#39;activité <code>DetailFragment</code> pré-remplie avec les informations de la tâche en question.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Interface et délégation" duration="0">
+        <p>Pour l&#39;instant on a utilisé des lambda mais une façon plus classique de gérer les clicks d&#39;un item est de définir une interface que l&#39;on implémentera dans le 1er Fragment, mettez à jour votre code pour utiliser cette méthode:</p>
+<pre><code language="language-kotlin" class="language-kotlin">interface TaskListListener {
+  fun onClickDelete(task: Task)
+  fun onClickEdit(task: Task)
+}
+
+class TaskListAdapter(val listener: TaskListListener) : ... {
+  // use: listener.onClickDelete(task)
+}
+
+class TaskListFragment : Fragment {
+  val adapterListener : TaskListListener = object : TaskListListener {
+    override fun onClickDelete(task: Task) {...}
+    override fun onClickEdit(task: Task) {...}
+  }
+  val adapter = TaskListAdapter(adapterListener)
+}
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Partager" duration="0">
+        <ul>
+<li>En modifiant <code>AndroidManifest.xml</code>, ajouter la possibilité de partager du texte <strong>depuis les autres applications</strong> (par ex en surlignant un texte dans un navigateur puis en cliquant sur &#34;partager&#34;) et ouvrir le formulaire de création de tâche avec une description pré-remplie (<a href="https://developer.android.com/training/sharing/receive" target="_blank">Documentation</a>)</li>
+</ul>
+<aside class="warning"><p>⚠️ Attention l&#39;Activity concernée devra avoir l&#39;attribut <code>exported="true"</code> dans le manifest</p>
+</aside>
+<ul>
+<li>En utilisant un <code>Intent</code> <strong>implicite</strong>, ajouter la possibilité de partager du texte <strong>vers les autres applications</strong> (avec un <code>OnLongClickListener</code> sur les tâches par ex ou bien avec un bouton dans la vue formulaire) (<a href="https://developer.android.com/training/sharing/send" target="_blank">Documentation</a>)</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Changements de configuration" duration="0">
+        <p>Que se passe-t-il pour votre liste si vous tournez votre téléphone pour passer en mode paysage ? 🤔</p>
+<ul>
+<li>Une façon de régler ce soucis est d&#39;overrider la méthode <code>onSaveInstanceState</code></li>
+<li>Il faudra utiliser <code>putSerializable</code> (un peu comme précédemment avec <code>putExtra</code>) pour sauvegarder la liste</li>
+<li>Puis pour récupérer cette liste, la méthode <code>getSerializable</code> dans <code>onCreateView</code> ou <code>onViewCreated</code>, sur le paramètre <code>savedInstanceState</code></li>
+</ul>
 
 
       </google-codelab-step>

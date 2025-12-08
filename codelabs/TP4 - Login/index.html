@@ -1,0 +1,229 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>TP4</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="TP4 - Login"
+                  title="TP4"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Login / Sign up" duration="0">
+        <ul>
+<li>Créez une page en Compose avec un bouton de login</li>
+<li>Changer <code>token</code> dans <code>Api</code> en variable nullable et l&#39;initialiser à <code>null</code></li>
+<li>Ajouter un <code>checkNotNull(token)</code> dans l&#39;interceptor</li>
+<li>Faites en sorte de naviguer vers cette nouvelle page lorsque le token est <code>null</code></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="OAuth" duration="0">
+        <aside class="special"><p><a href="https://en.wikipedia.org/wiki/OAuth" target="_blank">OAuth</a> est un protocole d&#39;authentification sécurisé utilisé par de nombreux services. Il y a plusieurs étapes, mais en gros:</p>
+<ol type="1">
+<li>on requête un &#34;authorization endpoint&#34; en fournissant des identifiants en tant que client tiers (client id et secret) et des paramètres pour spécifier de quelles resources on a besoin (scopes)</li>
+<li>l&#39;utilisateur se connecte et accepte (il voit les resources demandées)</li>
+<li>on récupère un code et une uri de redirection vers notre &#34;site&#34;</li>
+<li>on revient dans l&#39;app grace à cette uri</li>
+<li>avec le code on interroge un &#34;token endpoint&#34; pour obtenir un &#34;access token&#34; pour notre utilisateur</li>
+<li>on peut utiliser ce token comme avant dans nos requêtes API</li>
+</ol>
+<p>J&#39;ai déjà créé un client tiers donc je vais vous donner les identifiants mais vous pouvez créer le votre si vous voulez <a href="https://developer.todoist.com/appconsole.html" target="_blank">sur Todoist</a>.</p>
+<p>Pour simplifier l&#39;implémentation, on va utiliser la lib: <a href="https://github.com/kalinjul/kotlin-multiplatform-oidc" target="_blank">https://github.com/kalinjul/kotlin-multiplatform-oidc</a>, la configuration n&#39;est pas évidente même en lisant le ReadMe donc je vous guide un peu.</p>
+</aside>
+<ul>
+<li>ajoutez la dépendance dans <code>build.gradle</code>: <code>implementation("io.github.kalinjul.kotlin.multiplatform:oidc-appsupport:0.12.1")</code></li>
+<li>customisez l&#39;intent filter de l&#39;activity définie dans la lib en rajoutant ceci à votre Manifest:</li>
+</ul>
+<pre><code language="language-xml" class="language-xml">&lt;activity
+    android:name=&#34;org.publicvalue.multiplatform.oidc.appsupport.HandleRedirectActivity&#34;
+    android:exported=&#34;true&#34;&gt;
+    &lt;intent-filter tools:node=&#34;removeAll&#34; /&gt;
+    &lt;intent-filter android:autoVerify=&#34;true&#34;&gt;
+        &lt;action android:name=&#34;android.intent.action.VIEW&#34; /&gt;
+
+        &lt;category android:name=&#34;android.intent.category.DEFAULT&#34; /&gt;
+        &lt;category android:name=&#34;android.intent.category.BROWSABLE&#34; /&gt;
+
+        &lt;data
+            android:host=&#34;cyrilfind.kodo&#34;
+            android:scheme=&#34;https&#34;
+            android:path=&#34;/redirect_uri&#34; /&gt;
+    &lt;/intent-filter&gt;
+&lt;/activity&gt;
+</code></pre>
+<ul>
+<li>Dans le controller de l&#39;écran de login, créez une factory permettant de lancer le flow d&#39;authentification et un client OAuth:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">val codeAuthFlowFactory = AndroidCodeAuthFlowFactory()
+val oAuthClient = OpenIdConnectClient {
+    endpoints {
+        authorizationEndpoint = &#34;https://todoist.com/oauth/authorize&#34;
+        tokenEndpoint = &#34;https://todoist.com/oauth/access_token&#34;
+    }
+
+    clientId = &#34;a9400191c656400fb31a043e530c5522&#34;
+    clientSecret = &#34;198815c02ac94f029a00338135a45123&#34;
+    scope = &#34;task:add,data:read_write,data:delete&#34;
+    redirectUri = &#34;https://cyrilfind.kodo/redirect_uri&#34;
+}
+</code></pre>
+<ul>
+<li>Essayez de comprendre un peu les éléments configurés ci dessus en relisant l&#39;explication sur OAuth plus haut</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Login" duration="0">
+        <ul>
+<li>Créez une méthode qui lance le flow d&#39;authentification: (à compléter)</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">fun login() {
+ // ...
+ val tokenResponse = codeAuthFlowFactory.createAuthFlow(oAuthClient).getAccessToken()
+ val token = tokenResponse.access_token
+ // ...
+}
+</code></pre>
+<ul>
+<li>Affectez la valeur du token celle dans<code>Api</code> puis naviguez vers l&#39;écran qui liste les tâches</li>
+<li>Utilisez cette fonction au clic sur le bouton de login</li>
+<li>Lancez l&#39;app, le flow devrait se lancer en vous proposant de vous connecter à Todoist mais ensuite la redirection ne va pas fonctionner:</li>
+</ul>
+<aside class="warning"><p>On a mis la <code>redirect_uri</code> dans l&#39;intent filter, c&#39;est ce qu&#39;on appelle un &#34;deeplink&#34; Mais à ce stade, il est ignoré car il doit normalement être &#34;vérifiée&#34;. Je vous passe les détails mais comme on est sur une app de test, pas déployée sur Google Play, on va l&#39;autoriser manuellement:</p>
+<ul>
+<li>Aller dans les détails système de l&#39;app, par exemple en appuyant longtemps sur son icône</li>
+<li>Allez dans &#34;Ouvrir par défaut&#34; puis &#34;Ajouter lien&#34;</li>
+<li>Cochez &#34;cyrilfind.kodo&#34;</li>
+</ul>
+</aside>
+<ul>
+<li>Relancez le flow, tout devrait fonctionner</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Preference DataStore" duration="0">
+        <p>Pour l&#39;instant le soucis c&#39;est que vous devez vous reconnecter à chaque lancement de l&#39;app, on va y remédier en utilisant un stockage qui dure au delà d&#39;une session d&#39;utilisation de l&#39;app.</p>
+<ul>
+<li>Ajoutez la librairie dans <code>build.gradle</code>: <code>implementation("androidx.datastore:datastore-preferences:1.1.1")</code></li>
+<li>Créez une classe <code>TokenRepository</code> et une instance de <code>DataStore</code> globale et complétez:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">private val Context.userDatastore by preferencesDataStore(&#34;user&#34;)
+
+class TokenRepository(val context: Context) {
+    private val key = stringPreferencesKey(&#34;token&#34;)
+
+    val tokenFlow = context.userDatastore.data.map { ... }
+
+    suspend fun store(token: String) {
+        context.userDatastore.edit { ... }
+    }
+
+    suspend fun clear() {
+        context.userDatastore.edit { ... }
+    }
+}
+</code></pre>
+<ul>
+<li>Dans l&#39;écran liste, créez une instance de <code>TokenRepository</code> et collectez le <code>tokenFlow</code></li>
+<li>Chaque nouvelle valeur doit s&#39;appliquer au token dans <code>Api</code> et déclencher un refresh des tasks, sauf si la valeur est nulle, dans ce cas il faut naviguer vers le login</li>
+<li>Dans l&#39;écran login, créez une instance de <code>TokenRepository</code> et enregistrez le token avec quand il est récupéré</li>
+<li>Dans l&#39;écran &#34;user&#34;, créez une instance de <code>TokenRepository</code>, ajouter un bouton logout et effacer le token quand on clique dessus.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Navigation" duration="0">
+        <ul>
+<li>Dans MainActivity, remplacer le <code>setContentView</code> par un <code>setContent {}</code> et ajouter un <code>NavHost</code> Compose</li>
+<li>Mettez vos écrans Compose directement dedans</li>
+<li>Mettez l&#39;écran principal (liste) avec un Composant <code>AndroidFragment</code></li>
+</ul>
+<aside class="special"><p>Je vous laisse vous débrouiller avec <a href="https://developer.android.com/guide/navigation/design#compose" target="_blank">la doc</a>, vous êtes quasiment des pro maintenant !</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Injection de dépendance" duration="0">
+        <aside class="special"><p>Parmi les grands principes SOLID, il y en a un fondamental qui est la &#34;Dependency Inversion&#34; qui dit en gros que les composants externes doivent dépendre des composants interne et pas l&#39;inverse, ce qui nécessite de passer par des interfaces à implémenter: chaque couche définit une interface (&#34;ce dont on a besoin&#34;) et la couche d&#39;en dessous l&#39;implémente (&#34;comment c&#39;est fait&#34;).</p>
+<p>Afin de gérer cela on utilise souvent une lib d&#39;injection de dépendance, qui permet de dire: si on a besoin de <code>InterfaceA</code> alors on va utiliser <code>ClassA</code> qui implémente <code>InterfaceA</code> et éventuellement créer une instance directement. En procédant ainsi, on crée un arbre de dépendances ou chaque implémentation est remplaçable facilement.</p>
+</aside>
+<ul>
+<li>Ajouter la lib <a href="https://insert-koin.io/docs/setup/koin#android" target="_blank">Koin</a> dans <code>build.gradle</code> et suivez les étapes de configuration</li>
+<li>créez un module koin <code>appModule</code> et y ajoutez la classe <code>TokenRepository</code> en <code>single</code> et vos ViewModels</li>
+<li>récupérez cette instance unique dans vos 2 écrans</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Repository" duration="0">
+        <p>Refactorisez toute l&#39;app pour que vos écrans ne récupèrent qu&#39;un objet &#34;state&#34;, et remontent seulement des évènements vers des ViewModel qui eux même interrogent des Repository partagés.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Interfaces" duration="0">
+        <ul>
+<li>Renommez <code>TaskRepository</code> en <code>TaskRepositoryImpl</code> et créez une nouvelle interface <code>TaskRepository</code></li>
+<li>Adaptez le module Koin et le reste du code pour que seule l&#39;interface soit utilisée</li>
+<li>Faites de même pour les autres Repository</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tests unitaires" duration="0">
+        <ul>
+<li>Créez <code>LoginViewModelTest</code> et ajoutez des tests unitaires avec <a href="https://mockk.io/" target="_blank">Mockk</a> pour remplacer les implémentations concrètes des Repository</li>
+<li>Faites de même pour les autres écrans et Repository</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("arrow-back").href="/formation-android/codelabs/";
+            document.getElementById("done").href="/formation-android/codelabs/";
+        }, false);
+    </script>
+
+    

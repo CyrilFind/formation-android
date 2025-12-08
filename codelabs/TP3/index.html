@@ -28,19 +28,14 @@
                   environment="web"
                   feedback-link="">
     
-      <google-codelab-step label="Avant de commencer" duration="0">
-        <aside class="warning"><p>⚠️ <strong>Prérequis</strong>: Terminez au moins l&#39;étape &#34;Édition d&#39;une tâche&#34; du TP 2</p>
-</aside>
-<p>Les APIs qui nous allons utiliser exigent qu&#39;une personne soit connectée, pour commencer nous allons simuler cela en passant directement un <code>token</code> dans les <code>headers</code> de nos requêtes <code>HTTP</code>:</p>
+      <google-codelab-step label="Mise en place" duration="0">
+        <p>L&#39;API de Todoist nécessite qu&#39;une personne soit connectée, pour commencer nous allons simuler cela en passant directement un <code>token</code> dans les <code>headers</code> de nos requêtes <code>HTTP</code>:</p>
 <ul>
 <li>Rendez vous sur <a href="https://todoist.com/app" target="_blank">todoist.com</a></li>
 <li>Créez un compte, allez dans <code>Paramètres > Intégrations > Clé API</code> et copiez la quelque part</li>
 <li>lisez un peu <a href="https://developer.todoist.com" target="_blank">la doc de l&#39;API</a>, il y en a en fait 2: REST (ex: <a href="https://developer.todoist.com/rest/v2/#tasks" target="_blank">tasks</a>) et Sync (ex: <a href="https://developer.todoist.com/sync/v9/#user" target="_blank">user</a>)</li>
-<li>En utilisant la clé copiée et les exemples de la documentation testez de créer un tache avec <code>curl</code>, Postman ou autres (je recommance <a href="https://httpie.io/" target="_blank">httpie</a> en terminal, web ou desktop, par ex)</li>
+<li>En utilisant la clé copiée et les exemples de la documentation testez de créer un tache avec <code>curl</code> (ou Postman, <a href="https://httpie.io/" target="_blank">httpie</a>, ...)</li>
 </ul>
-<aside class="special"><p>✨ C&#39;est le moment de bifurquer si vous voulez faire un projet différent !!</p>
-<p>Proposez moi votre idée avant de commencer pour que je puisse vous guider si besoin: <a href="./TP0/#5" target="_blank">voir TP0</a></p>
-</aside>
 
 
       </google-codelab-step>
@@ -193,13 +188,13 @@ data class User(
     
       <google-codelab-step label="Affichage" duration="0">
         <ul>
-<li>Dans le layout qui contient la liste, ajoutez une <code>TextView</code> tout en haut (vous devrez probablement régler un peu les contraintes)</li>
-<li>Overrider la méthode <code>onResume</code> pour y récupérer les infos de l&#39;utilisateur, en ajoutant cette ligne, une erreur va s&#39;afficher car la définition de <code>fetchUser</code> contient un mot clé <code>suspend</code>:</li>
+<li>Dans votre Activity, ajoutez un composant <code>Text</code> pour voir les résultats de l&#39;API:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">// Ici on ne va pas gérer les cas d&#39;erreur donc on force le crash avec &#34;!!&#34;
 val user = Api.userWebService.fetchUser().body()!!
 </code></pre>
-<aside class="warning"><p>le mot clé <code>suspend</code> ici sert à signifier que cette fonction ne peut pas s&#39;éxécuter comme une fonction normale car elle peut potentiellement bloquer le thread courant en prenant beaucoup de temps à se terminer</p>
+<aside class="warning"><p>⚠️ Une erreur va s&#39;afficher car la définition de <code>fetchUser</code> contient un mot clé <code>suspend</code>:</p>
+<p>il sert à signifier que cette fonction ne peut pas s&#39;exécuter comme une fonction normale car elle peut potentiellement bloquer le thread courant en prenant beaucoup de temps à se terminer</p>
 <p>Afin de compiler, il faudra donc l&#39;appeler dans le contexte d&#39;un <code>CouroutineScope</code> (ou dans une autre fonction <code>suspend</code>)</p>
 </aside>
 <ul>
@@ -209,13 +204,11 @@ val user = Api.userWebService.fetchUser().body()!!
   mySuspendMethod()
 }
 </code></pre>
-<aside class="special"><p><strong>Remarque:</strong> En général ce scope sert plutôt à ce qui est visuel (ex: lancer une animation) On utilisera ensuite un autre scope: <code>viewModelScope</code> qui est fourni par android dans les <code>ViewModel</code>, mais pour l&#39;instant on implémente tout dans les fragments comme des 🐷</p>
+<aside class="special"><p><strong>Remarque:</strong> En général ce scope sert plutôt à ce qui est visuel (ex: lancer une animation) On utilisera ensuite un autre scope: <code>viewModelScope</code> qui est fourni par android dans les <code>ViewModel</code>, mais pour l&#39;instant on implémente tout au même endroit pour simplifier.</p>
 </aside>
 <ul>
-<li>Afficher votre nom d&#39;utilisateur dans la <code>TextView</code>:</li>
+<li>Afficher votre nom d&#39;utilisateur dans le <code>Text</code></li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">userTextView.text = user.name
-</code></pre>
 <p>➡️ Lancez l&#39;app et vérifiez que vos infos s&#39;affichent !</p>
 <aside class="warning"><p>⚠️ Sur émulateur, à cette étape il y a parfois des crashs étranges:</p>
 <ul>
@@ -227,7 +220,7 @@ val user = Api.userWebService.fetchUser().body()!!
 
       </google-codelab-step>
     
-      <google-codelab-step label="TaskListFragment" duration="0">
+      <google-codelab-step label="API REST" duration="0">
         <p>Il est temps de récupérer les tâches depuis le serveur !</p>
 <p>Créer un nouveau service <code>TaskWebService</code>:</p>
 <pre><code language="language-kotlin" class="language-kotlin">interface TasksWebService {
@@ -257,7 +250,7 @@ val user = Api.userWebService.fetchUser().body()!!
       </google-codelab-step>
     
       <google-codelab-step label="TaskListViewModel" duration="0">
-        <aside class="special"><p><code>ViewModel</code> est une classe du framework Android qui permet de gérer les données d&#39;une vue, et dont on peut facilement créer et récupérer une instance, en général chacune associée à une <code>Activity</code> ou un <code>Fragment</code></p>
+        <aside class="special"><p><code>ViewModel</code> est une classe du framework Android qui permet de gérer les données d&#39;une vue, et dont on peut facilement créer et récupérer une instance, en général chacune associée à une <code>Activity</code>, un <code>Fragment</code>, ou une <code>NavEntry</code></p>
 <p>On va donc y déplacer une partie de la logique: dans l&#39;idéal l&#39;<code>Activity</code> ou le <code>Fragment</code> doit seulement s&#39;occuper de passer les évènements (comme les clics) au VM, et insérer ce que le VM lui dit d&#39;afficher dans les vues</p>
 </aside>
 <p>Créer la classe <code>TaskListViewModel</code>, avec une liste de tâches <em>Observable</em> grâce au <code>MutableStateFlow</code>:</p>
@@ -265,6 +258,10 @@ val user = Api.userWebService.fetchUser().body()!!
   private val webService = Api.tasksWebService
 
   public val tasksStateFlow = MutableStateFlow&lt;List&lt;Task&gt;&gt;(emptyList())
+
+  init {
+    refresh()
+  }
 
   fun refresh() {
       viewModelScope.launch {
@@ -289,26 +286,33 @@ val user = Api.userWebService.fetchUser().body()!!
       </google-codelab-step>
     
       <google-codelab-step label="&#34;Collecter&#34; le Flow" duration="0">
-        <p>Dans <code>TaskListFragment</code>, à l&#39;aide du squelette de code plus bas:</p>
-<ul>
-<li>Ajouter en propriété une instance de <code>TaskListViewModel</code></li>
-<li>Dans <code>onResume()</code>, utilisez ce VM pour rafraîchir la liste de tasks</li>
-<li>Dans <code>onViewCreated()</code>, &#34;abonnez&#34; le fragment aux changements du <code>StateFlow</code> du VM et mettez à jour la liste et l&#39;<code>adapter</code> dans la lambda de retour</li>
+        <ul>
+<li>Dans <code>ListScreen</code>, ajouter en a une argument une instance de <code>TaskListViewModel</code></li>
+<li>Dans <code>NavDisplay</code>, ajoutez des <code>entryDecorators</code> qui vont permettre aux ViewModels de correspondre aux <code>NavEntry</code> et créez un ViewModel à passer à <code>ListScreen</code> avec <code>viewModel { }</code></li>
 </ul>
-<aside class="warning"><p>⚠️ Attention ici au moment de choisir l&#39;import de <code>.collect</code> sélectionnez bien celui qui est présenté avec des accolades: <code>collect {...}</code></p>
-</aside>
-<pre><code language="language-kotlin" class="language-kotlin">private val viewModel: TaskListViewModel by viewModels()
-
-// Dans onResume()
-viewModel.refresh() // on demande de rafraîchir les données sans attendre le retour directement
-
-// Dans onViewCreated()
-lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
-    viewModel.tasksStateFlow.collect { newList -&gt;
-      // cette lambda est exécutée à chaque fois que la liste est mise à jour dans le VM
-      // -&gt; ici, on met à jour la liste dans l&#39;adapter
+<pre><code language="language-kotlin" class="language-kotlin">NavDisplay(
+    //...
+    entryDecorators = listOf(
+        rememberSaveableStateHolderNavEntryDecorator(),
+        rememberViewModelStoreNavEntryDecorator()
+    ),
+    // ...
+    entryProvider = entryProvider {
+        entry&lt;ListNavScreen&gt; {
+            ListScreen(
+              viewModel = viewModel { TaskListViewModel() }
+              // ...
+            )
+        }
+        // ...
     }
-}
+)
+
+fun ListScreen(
+  modifier: Modifier = Modifier,
+  viewModel: TaskListViewModel,
+)
+val tasks = viewModel.tasksStateFlow.collectAsStateWithLifecycle()
 </code></pre>
 
 
@@ -351,8 +355,31 @@ suspend fun delete(@... id: String): Response&lt;Unit&gt;
 }
 </code></pre>
 <ul>
-<li>Supprimez la <code>taskList</code> locale dans le Fragment et vérifier que vous avez bien tout remplacé par des appels au VM (et donc au serveur), il ne doit rester plus qu&#39;un seul endroit où vous mettez à jour l&#39;adapter: dans le <code>.collect { }</code></li>
+<li>Supprimez la <code>taskList</code> locale dans l&#39;écran de la Liste et vérifier que vous avez bien tout remplacé par des appels au VM (et donc au serveur), il ne doit rester plus qu&#39;un seul endroit où vous mettez à jour l&#39;adapter: dans le <code>.collect { }</code></li>
+<li>Bonus: vous pouvez même adapter tout ça à votre écran &#34;Classique&#34; dans les <code>TaskListFragment</code> en utilisant le même ViewModel, indices pour commencer:</li>
 </ul>
+<pre><code language="language-kotlin" class="language-kotlin">private val viewModel: TaskListViewModel by viewModels()
+
+// Dans onResume()
+viewModel.refresh() // on demande de rafraîchir les données sans attendre le retour directement
+
+// Dans onViewCreated()
+lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
+    viewModel.tasksStateFlow.collect { newList -&gt;
+      // cette lambda est exécutée à chaque fois que la liste est mise à jour dans le VM
+      // -&gt; ici, on met à jour la liste dans l&#39;adapter
+    }
+}
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="À vous de jouer" duration="0">
+        <aside class="special"><p>C&#39;est le moment d&#39;adapter à votre projet perso, inspirez vous de ce qu&#39;on a fait jusqu&#39;ici et demandez moi de vous aider !</p>
+</aside>
+<p>Comme précédemment, commencez par créer encore une nouvelle Activity Compose et faites d&#39;elle la &#34;main&#34; dans le Manifest.</p>
+<p>Refaites également un Scaffold avec un bouton dans une TopAppBar qui retourne à <code>ComposeActivity</code></p>
 
 
       </google-codelab-step>
