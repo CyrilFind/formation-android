@@ -49,3 +49,7 @@ C'est une meilleure pratique, un peu commen en web quand vous cliquez sur un pro
 Donc ici pour gérer votre écran détail vous allez faire un autre ViewModel, un autre call réseau, etc...
 
 </aside>
+
+## Images
+
+Faire en sorte d'afficher des images en utilisant [Coil](https://coil-kt.github.io/coil/)
