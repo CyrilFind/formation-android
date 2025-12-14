@@ -52,4 +52,10 @@ Donc ici pour gérer votre écran détail vous allez faire un autre ViewModel, u
 
 ## Images
 
-Faire en sorte d'afficher des images en utilisant [Coil](https://coil-kt.github.io/coil/)
+Faire en sorte d'afficher des images en utilisant [Coil](https://coil-kt.github.io/coil/), dans la liste et/ou dans le détail si possible.
+
+Si ça ne colle pas du tout à votre projet, ajoutez en au moins quelques unes pour habiller votre interface.
+
+## Login
+
+Selon votre projet, ajoutez un parcours de login à votre app pour remplacer le TOKEN en dur dans le code si c'est possible (ou autre méthode d'authentification)

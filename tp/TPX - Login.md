@@ -136,7 +136,6 @@ class TokenRepository(val context: Context) {
 
 - Dans MainActivity, remplacer le `setContentView` par un `setContent {}` et ajouter un `NavHost` Compose
 - Mettez vos écrans Compose directement dedans
-- Mettez l'écran principal (liste) avec un Composant `AndroidFragment`
 
 <aside class="positive">
 
