@@ -19,7 +19,7 @@ Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut
 
 <aside class="positive">
 
-C'est ici une "install-time permission", car elle n'est pas critique, et donc il n'y a pas besoin de la demander explicitement à l'utilisateur, elle est acceptée à l'installation.
+🧑‍🏫 C'est ici une "install-time permission", car elle n'est pas critique, et donc il n'y a pas besoin de la demander explicitement à l'utilisateur, elle est acceptée à l'installation.
 
 </aside>
 
@@ -27,7 +27,7 @@ C'est ici une "install-time permission", car elle n'est pas critique, et donc il
 
 Dans le fichier `app/build.gradle.kts` (celui du module):
 
-- Dans `dependencies {...}`, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l'IDE vous le propose, il vous permet également de facilement les passer dans le `libs.versions.toml`):
+- Dans `dependencies {}`, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l'IDE vous le propose, il vous permet également de facilement les passer dans le `libs.versions.toml`):
 
 ```groovy
 // Retrofit
@@ -35,13 +35,54 @@ implementation("com.squareup.retrofit2:retrofit:2.11.0")
 implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
 // KotlinX Serialization
-implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+implementation("org.jetbrains.kotlin:kotlinx-serialization-json:1.6.2")
 implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
 
 // Coroutines
 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 ```
+
+<aside class="positive">
+
+🧑‍🏫 les `implementation()` listent les dépendances du module lié au fichier gradle en question (ici `app`, notre unique module)
+
+Afin de centraliser la liste des dépendances utilisées dans tout le projet, et éviter d'avoir des versions différentes, on recommande d'utiliser `libs.versions.toml` qui liste ces infos et les rends accessibles ensuite dans tous les modules:
+
+```toml
+[versions]
+# ...
+retrofit = "3.0.0"
+# ...
+
+[libraries]
+# ...
+retrofit = "3.0.0"
+# ...
+square-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+# ...
+
+[plugins]
+# ...
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+# ...
+```
+
+Ensuite ça s'utilise comme ceci:
+
+```gradle
+// `libs.<nom en remplaçant les '-' par des '.'>`
+dependencies {
+  implementation(libs.square.retrofit)
+}
+
+// pour les plugins, c'est avec `alias` et `libs.plugins...`:
+plugins {
+  alias(libs.plugins.kotlin.android)
+}
+```
+
+</aside>
 
 - Tout en haut ajoutez le plugin de sérialisation:
 
@@ -187,31 +228,6 @@ Typiquement dans les Tests Unitaires, on a souvent une "fausse implémentation" 
 val user = Api.userWebService.fetchUser().body()!!
 ```
 
-<aside class="negative">
-
-⚠️ Une erreur va s'afficher car la définition de `fetchUser` contient un mot clé `suspend`:
-
-il sert à signifier que cette fonction ne peut pas s’exécuter comme une fonction normale car elle peut potentiellement bloquer le thread courant en prenant beaucoup de temps à se terminer
-
-Afin de compiler, il faudra donc l'appeler dans le contexte d'un `CouroutineScope` (ou dans une autre fonction `suspend`)
-
-</aside>
-
-- On va utiliser directement `lifeCycleScope` qui est déjà défini par le framework Android dans les `Activity` et `Fragment`:
-
-```kotlin
-lifecycleScope.launch {
-  mySuspendMethod()
-}
-```
-
-<aside class="positive">
-
-**Remarque:** En général ce scope sert plutôt à ce qui est visuel (ex: lancer une animation)
-On utilisera ensuite un autre scope: `viewModelScope` qui est fourni par android dans les `ViewModel`, mais pour l'instant on implémente tout au même endroit pour simplifier.
-
-</aside>
-
 - Afficher votre nom d'utilisateur dans le `Text`
 
 ➡️ Lancez l'app et vérifiez que vos infos s'affichent !
@@ -264,7 +280,7 @@ Extrait d'un json renvoyé par la route `/rest/v2/tasks/`:
 
 <aside class="positive">
 
-`ViewModel` est une classe du framework Android qui permet de gérer les données d'une vue, et dont on peut facilement créer et récupérer une instance, en général chacune associée à une `Activity`, un `Fragment`, ou une `NavEntry`
+🧑‍🏫 `ViewModel` est une classe du framework Android qui permet de gérer les données d'une vue, et dont on peut facilement créer et récupérer une instance, en général chacune associée à une `Activity`, un `Fragment`, ou une `NavEntry`
 
 On va donc y déplacer une partie de la logique: dans l'idéal l'`Activity` ou le `Fragment` doit seulement s'occuper de passer les évènements (comme les clics) au VM, et insérer ce que le VM lui dit d'afficher dans les vues
 
@@ -318,7 +334,7 @@ NavDisplay(
     entryProvider = entryProvider {
         entry<ListNavScreen> {
             ListScreen(
-              viewModel = viewModel { TaskListViewModel() }
+              viewModel = viewModel { TaskListViewModel(it.task) }
               // ...
             )
         }
@@ -329,8 +345,9 @@ NavDisplay(
 fun ListScreen(
   modifier: Modifier = Modifier,
   viewModel: TaskListViewModel,
-)
-val tasks = viewModel.tasksStateFlow.collectAsStateWithLifecycle()
+) {
+  val state by viewModel.tasksStateFlow.collectAsStateWithLifecycle()
+}
 ```
 
 ## Compléter TasksWebService
@@ -372,7 +389,60 @@ fun update(task: Task) {
 ```
 
 - Supprimez la `taskList` locale dans l'écran de la Liste et vérifier que vous avez bien tout remplacé par des appels au VM (et donc au serveur), il ne doit rester plus qu'un seul endroit où vous mettez à jour l'adapter: dans le `.collect { }`
-- Bonus: vous pouvez même adapter tout ça à votre écran "Classique" dans les `TaskListFragment` en utilisant le même ViewModel, indices pour commencer:
+
+## States
+
+On va ajouter un état d'erreur avec une `sealed class`
+Dans `TaskListViewModel`, ajoutez la classe suivante:
+
+```kotlin
+sealed class TaskListState {
+  data object Loading : TaskListState()
+  data class Success(val list: List<Task>) : TaskListState()
+  data class Error(val message: String) : TaskListState()
+}
+```
+
+<aside class="positive">
+
+🧑‍🏫 une **sealed class** est une classe qui peut être **héritée** (ce n'est pas le cas par défaut en kotlin), mais la subtilité est que ses **classes filles** sont connues à la compilation, et il ne peut pas y en avoir d'autres, ce qui permet de simplifier certaines informations: par exemple ici on sait que notre écran sera  dans l'état: SOIT "affiche une liste" SOIT dans l'état "erreur avec un message" SOIT "en train de charger", il n'y a pas d'autres possiblités
+
+C'est un peu comme un enum mais avec une classe complète.
+
+Les `enum class` existent également mais mais les différentes **instances** sont connues à la compilation, par exemple:
+
+```kotlin
+enum class Event(val name) {
+    CREATE("create")
+    DELETE("delete")
+    //...
+}
+```
+
+</aside>
+
+- Changez `tasksStateFlow` pour qu'il contienne un `TaskListState` et pas une liste directement, avec `Loading` comme valeur initiale
+
+```kotlin
+public val tasksStateFlow = MutableStateFlow<TaskListState>(TaskListState.Loading)
+```
+
+- Dans votre composant `ListScreen`, utilisez un `when` pour afficher les différents états:
+
+```kotlin
+when (val currentState = state.value) {
+  is TaskListState.Loading -> CircularProgressIndicator()
+  is TaskListState.Error -> Text(text = currentState.message)
+  is TaskListState.Success -> { /* votre liste précédente  */ }
+```
+
+- Testez et peaufinez un peu l'affichage
+
+## Architecture
+
+Toute la logique étant extraite dans le ViewModel, elle peut être partagée avec l'ancien écran listant les tâches puisque qu'il fait la même chose.
+
+Adaptez donc tout ça dans `TaskListFragment` en utilisant le même ViewModel, indices pour commencer:
 
 ```kotlin
 private val viewModel: TaskListViewModel by viewModels()
@@ -388,21 +458,3 @@ lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
     }
 }
 ```
-
-## À vous de jouer
-
-<aside class="positive">
-
-C'est le moment d'adapter à votre projet perso, inspirez vous de ce qu'on a fait jusqu'ici et demandez moi de vous aider !
-
-</aside>
-
-Comme précédemment, commencez par créer encore une nouvelle Activity Compose et faites d'elle la "main" dans le Manifest.
-
-<aside class="negative">
-
-⚠️ Ne créez pas un nouveau projet, le but est que vous ayez un seul rendu à m'envoyer à la fin !
-
-</aside>
-
-Refaites également un Scaffold avec un bouton dans une TopAppBar qui retourne à `ComposeActivity`

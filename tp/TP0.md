@@ -6,8 +6,9 @@ Avant le premier cours, vérifiez que votre poste de travail est opérationnel:
 
 - Installez - **sur un disque où vous avez de la place** - la dernière version d'[Android Studio](https://developer.android.com/studio), ou mettez le à jour si vous l'avez déjà
 - Créez un projet vide (laissez l'api minimale proposée)
+- L'IDE va prendre un moment à télécharger des dépendances et à se configurer
 - Si vous avez un appareil Android physique et un cable qui fonctionne, passez le en mode développeur (en tapant 7 fois sur le numéro de build dans les paramètres) et prenez le avec vous en cours, ce sera plus simple.
-- Sinon: Dans `Device Manager > Create virtual device` choisissez un device avec le triangle du PlayStore, puis une version d'OS Android récente.
+- Sinon: Dans `Device Manager > Create virtual device` choisissez un device avec le triangle du PlayStore, puis une version d'OS Android récente
 - Essayez de le lancer le projet (en cliquant sur le triangle vert)
 
 <aside class="positive">
@@ -32,7 +33,7 @@ Prenez en main l'IDE: vous pouvez aller dans les paramètres (`File > Settings` 
 - Activez tout dans `Editor > Inlay Hints`
 - Activez les imports automatiques: `Editor > General > Auto Import > Kotlin (en bas) > cocher les 2 cases`
 - Personnalisez la coloration syntaxique dans `Settings > Editor > Color Scheme` (vous pouvez utiliser ma config avec `⚙ > Import Scheme` et ce [fichier](../../assets/Darculai.icls))
-- Personnalisez les raccourcis clavier: par ex "comment block" et "rename" ne sont pas très pratiques par défaut surtout en clavier azerty
+- Personnalisez les raccourcis clavier: par ex "comment block" et "rename" ne sont pas très pratiques par défaut surtout en clavier AZERTY
 
 ## Android Studio
 
@@ -42,13 +43,25 @@ Prenez en main l'IDE: vous pouvez aller dans les paramètres (`File > Settings` 
 - `Alt` + `Enter` pour des "💡 QuickFix" (suggestions de l'IDE)
 - Clic droit pour plus d'actions: notamment "Refactor" qui contient pas mal de fonctions pratiques comme par exemple "rename" qui va renommer partout où l'élément est utilisé (il y a parfois des raccourcis existant ou alors vous pouvez en définir)
 - `Shift, Shift + "recherche"` pour tout le reste (variable, fonction, classe, actions, options, ...)
-- `CTRL/CMD + alt + L` pour ré-indenter correctement tout le code (ou la sélection)
-- Cliquez sur `Sync Now` (dans la barre bleue en haut)quand l'IDE vous le propose: ça arrive notamment quand on change des fichiers de configs comme les fichiers gradle par exemple pour ajouter des dépendances. Cela permet à l'IDE de fonctionner correctement.
-
-## Kotlin Basics
+- `CMD + alt + L` ou `Alt + shift + L` pour reformater correctement tout le code (ou la sélection)
 
 <aside class="positive">
-🧑‍🏫 Rappels de vocabulaire:
+
+Cliquez sur `Sync Now` (dans la barre bleue en haut) quand l'IDE vous le propose: ça arrive par exemple quand on édite des fichiers de config (`<module>.gradle`) pour ajouter des dépendances.
+
+Vous pouvez aussi le faire avec le bouton "éléphant" ressemblant à ceci:
+
+![width=20px](/assets/gradle_sync.png)
+
+🧑‍🏫 C'est le logo de **Gradle**, le système de build de projets Android: il y a un fichier gradle par module (ici vous avez un seul module `app`) et un fichier pour le projet dans son ensemble (il y a d'autres fichiers de configs mais ceux là sont les principaux)
+
+## Vocabulaire
+
+<aside class="positive">
+
+🧑‍🏫 Rappels de vocabulaire: ces termes relatif au développement orienté objet seront utilisés tout au long des TP
+
+</aside>
 
 ```kotlin
 val text: String = "hello"
@@ -62,13 +75,20 @@ class MutableList<T> : List<T> {
  }
 ```
 
-- `text` est une **variable** de **type** `String` qui est un type **Primitive**
-- `user` est une **variable** de **Class** `User?` qui est une classe **nullable** qui contient soit une **instance* de `User` soit `null`
-- `Array<T>` est une **Class** qui prend un **type parameter** (ou **Generic**) et qui hérite de `List<T>`, comme `List<T>` est une **interface** on dit que `Array<T>` **implémente** `List<T>`
-- `count` est une variable définie dans une **classe**: on dit que c'est une **propriété**
-- `add` est une **fonction** qui **surcharge** une **fonction** ayant la même **signature** dans une des ses **classes mère**, comme elle est définie dans une **classe**, on dit que c'est une **méthode**
+Dans cet exemple:
 
-</aside>
+- `text` est une **variable** de **type** `String`
+- `user` est une **instance** de la **Class** `User?`
+- `User?` est une classe **nullable**
+- une **instance** d'une classe **nullable** est soit une **instance** de `User` soit `null`
+- `MutableList<T>` est une **classe** qui prend un **type parameter** (ou **generic**)
+- `MutableList<T>` **hérite** de `List<T>`
+- `List<T>` est une **interface**: on dit que `Array<T>` **implémente** `List<T>`
+- `count` est une **variable** définie dans une **classe**: on dit que c'est une **propriété**
+- `add()` est une **fonction** qui **surcharge** une **fonction** ayant la même **signature** dans une des ses **classes mère**
+- `add()` est une **fonction** définie dans une **classe**: on dit que c'est une **méthode**
+
+## Kotlin Basics
 
 Pour prendre en main les bases du langage, avec qq indices:
 
@@ -102,8 +122,6 @@ data class Person(
   val ...
 )
 ```
-
-Pour aller plus loin sur Kotlin : [Kotlin Bootcamp](https://developer.android.com/courses/kotlin-bootcamp/overview)
 
 ## Jetpack Compose Basics
 
