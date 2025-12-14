@@ -1,0 +1,96 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>TP 4: Project perso</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14" ga4id=""></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  codelab-ga4id=""
+                  id="TP4"
+                  title="TP 4: Project perso"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="À vous de jouer" duration="0">
+        <aside class="special"><p>C&#39;est le moment de commencer votre projet perso, inspirez vous de ce qu&#39;on a fait jusqu&#39;ici et demandez moi de vous aider !</p>
+</aside>
+<ul>
+<li>Comme précédemment, commencez par créer encore une nouvelle Activity Compose et faites d&#39;elle la &#34;main&#34; dans le Manifest.</li>
+</ul>
+<aside class="warning"><p>⚠️ Ne créez pas un nouveau projet, le but est que vous ayez un seul rendu à m&#39;envoyer à la fin !</p>
+</aside>
+<ul>
+<li>Refaites également un Scaffold avec un bouton dans une <code>TopAppBar</code> contenant un bouton qui retourne à <code>ComposeActivity</code>, un composant principal <code>MyApp()</code>, etc</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Liste et Internet" duration="0">
+        <ul>
+<li>Dans un 1er temps, vous allez de voir afficher une liste d&#39;éléments depuis une API</li>
+<li>Commencez par tester votre API (avec <code>curl</code> par exemple)</li>
+<li>Vous pouvez récupérer quasiment toute la logique dans <code>Api</code>: Copiez collez le fichier et renommez selon votre Api (ex: FacebookApi)</li>
+<li>Dans la plupart des cas vous aurez juste à changer la <code>baseUrl()</code> et le <code>TOKEN</code></li>
+<li>Si la méthode d&#39;authentification est différente je pourrai vous aider à adapter</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Détails et Édition" duration="0">
+        <ul>
+<li>Créez une navigation avec <code>NavDisplay</code></li>
+<li>Créez un nouvel écran de détails</li>
+<li>Dans celui ci, affichez des informations plus complètes sur vos éléments</li>
+<li>Faites en sorte de naviguer dans ce nouvel écran en cliquant sur un item dans la liste, en vous inspirant de ceci (en cas de conflit de nommage avec les écrans précédents, renommez les comme vous le souhaitez):</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">@Serializable
+data object ListNavScreen : NavKey
+@Serializable
+data class DetailNavScreen(val id: String) : NavKey
+</code></pre>
+<aside class="special"><p>🧑‍🏫 Dans cet exemple, contrairement à précédemment, on passe un ID au lieu de l&#39;objet entier.</p>
+<p>C&#39;est une meilleure pratique, un peu commen en web quand vous cliquez sur un profil le lien est <code>.../profile/1234</code>, il ne contient pas toutes les infos à afficher.</p>
+<p>Donc ici pour gérer votre écran détail vous allez faire un autre ViewModel, un autre call réseau, etc...</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/claat-public/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/prettify.js"></script>
+  <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("arrow-back").href="/formation-android/codelabs/";
+            document.getElementById("done").href="/formation-android/codelabs/";
+        }, false);
+    </script>
+
+    

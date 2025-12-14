@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>TP 2 - Compose</title>
+  <title>TP 2 - Jetpack Compose</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
@@ -24,7 +24,7 @@
   <google-codelab codelab-gaid=""
                   codelab-ga4id=""
                   id="TP2"
-                  title="TP 2 - Compose"
+                  title="TP 2 - Jetpack Compose"
                   environment="web"
                   feedback-link="">
     
@@ -77,6 +77,11 @@
 <li>Espacez un peu les éléments de la liste en lui passant <code>verticalArrangement = Arrangement.spacedBy(8.dp)</code> comme argument</li>
 <li>Personnalisez un peu l&#39;affichage comme vous le souhaitez (couleurs, taille de texte, ...)</li>
 </ul>
+<aside class="warning"><p>⚠️ Attention quand vous importez la class <code>Color</code> dans du Compose, il y a plusieurs choix, choisissez bien la version avec <code>compose</code> dans le nom de package et qui s&#39;écrivent en &#34;TitleCase&#34; pas en &#34;UPPERCASE&#34;:</p>
+<pre><code language="language-kotlin" class="language-kotlin">val blue = Color.Blue // Compose
+val green = Color.GREEN // Views
+</code></pre>
+</aside>
 
 
       </google-codelab-step>
@@ -126,17 +131,15 @@
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">Scaffold(
     modifier = Modifier.fillMaxSize(),
-    topBar = { TopAppBar(title = { Text(...) }) },
+    topBar = { TopAppBar(title = { Text(/* title */) }) },
     floatingActionButton = {
         FloatingActionButton(onClick = { /* TODO */ }) {
-          Icon(imageVector = Icons.Default.Add, contentDescription = &#34;Add&#34;
+          Icon(imageVector = Icons.Default.Add, contentDescription = &#34;Add&#34;)
         }
     }
-) { innerPadding -&gt;
-    LazyColumn(...) {
-        items(...) { task -&gt;
-          ...
-        }
+) {
+    LazyColumn() {
+        // ...
     }
 }
 </code></pre>
@@ -167,16 +170,23 @@
 <li>Pour améliorer ça, utilisez le <code>LazyListState</code> pour scroller automatiquement jusqu&#39;en bas:</li>
 <li>Ajoutez un <code>val listState = rememberLazyListState()</code> en haut de <code>ListScreen</code></li>
 <li>Passez le <code>listState</code> à la <code>LazyColumn</code> avec <code>state = listState</code></li>
-<li>Ajoutez un <code>val coroutineScope = rememberCoroutineScope()</code> en haut de <code>ListScreen</code></li>
-<li>Modifiez le <code>onClick</code> du <code>FloatingActionButton</code> pour scroller jusqu&#39;en bas après avoir ajouté l&#39;élément:</li>
+<li>Modifiez le <code>onClick</code> du <code>FloatingActionButton</code> pour scroller jusqu&#39;en bas après avoir ajouté l&#39;élément avec <code>listState.animateScrollToItem(items.size - 1)</code></li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">onClick = {
-    // ...
-    coroutineScope.launch {
-        listState.animateScrollToItem(items.size - 1)
-    }
+<aside class="warning"><p>⚠️ Une erreur va s&#39;afficher car la définition de <code>animateScrollToItem</code> contient un mot clé <code>suspend</code>:</p>
+<p>il sert à signifier que cette fonction ne peut pas s&#39;exécuter comme une fonction normale car elle peut potentiellement bloquer le thread courant en prenant beaucoup de temps à se terminer</p>
+<p>Afin de compiler, il faudra donc l&#39;appeler dans le contexte d&#39;un <code>CouroutineScope</code> (ou dans une autre fonction <code>suspend</code>)</p>
+</aside>
+<ul>
+<li>Ajoutez un <code>val coroutineScope = rememberCoroutineScope()</code> en haut de <code>ListScreen</code></li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">coroutineScope.launch {
+  // suspend function
 }
 </code></pre>
+<aside class="special"><p><strong>Remarque:</strong> C&#39;est le scope qu&#39;on va utiliser pour ce qui se passe dans l&#39;UI Compose. Dans une UI en Views classique on a <code>lifeCycleScope</code></p>
+<p>En général ce scope sert plutôt à ce qui est visuel (ici lancer une animation est un bon exemple)</p>
+<p>On utilise souvent un autre scope: <code>viewModelScope</code> qui est fourni par android dans les <code>ViewModel</code>, pour la logique plus &#34;intelligente&#34; de l&#39;app: faire des requêtes HTTP par exemple.</p>
+</aside>
 <ul>
 <li>Lancez l&#39;app et testez à nouveau l&#39;ajout d&#39;éléments: cette fois la liste devrait scroller automatiquement jusqu&#39;au nouvel élément ajouté</li>
 </ul>
@@ -210,6 +220,9 @@ context.startActivity(intent)
 </code></pre>
 <aside class="special"><p>🧑‍🏫 On crée ici un simple <strong>Intent explicite</strong> et on l&#39;utilise pour naviguer</p>
 </aside>
+<p>Pour récupérer un <code>Context</code> on utilise un <code>CompositionLocal</code>:</p>
+<pre><code language="language-kotlin" class="language-kotlin">val context = LocalContext.current
+</code></pre>
 <ul>
 <li>Lancez l&#39;app et testez la navigation vers l&#39;ancienne activity</li>
 </ul>
@@ -220,39 +233,63 @@ context.startActivity(intent)
 <li>Créez un nouveau fichier DetailScreen.kt avec une fonction <code>@Composable</code> <code>DetailScreen(task: Task)</code> qui affiche les détails d&#39;une tâche</li>
 <li>Utilisez l&#39;IDE pour extraire <code>ListScreen</code> dans un autre fichier également</li>
 <li>Dans <code>ComposeActivity</code>, au lieu d&#39;afficher directement <code>ListScreen</code>, créez et utilisez un composant <code>App()</code>:</li>
+<li>Gardez le Scaffold dans <code>ListScreen</code> sans la topBar: déplacez là dans un autre Scaffold que vous ajouterez dans <code>App()</code> pour qu&#39;elle soit commune à tous les écrans</li>
+<li>Modifiez <code>ListScreen</code> pour qu&#39;au clic sur un élément, on navigue vers <code>DetailNavScreen</code></li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">data object ListNavScreen
-data class DetailNavScreen(val task: Task)
+<pre><code language="language-kotlin" class="language-kotlin">@Serializable
+data object ListNavScreen : NavKey
+@Serializable
+data class DetailNavScreen(val task: Task) : NavKey
 
 @Composable
 fun App() {
     // on créé notre historique de navigation avec la liste comme écran initial
     val backStack = rememberNavBackStack(ListNavScreen)
 
-
     NavDisplay(
       backStack = backStack,
       entryProvider = entryProvider {
-        entry&lt;ListNavScreen&gt; { ListScreen(onClickItem = {}) }
+        entry&lt;ListNavScreen&gt; { ListScreen(onClickItem = {...}) }
         entry&lt;DetailNavScreen&gt; { key -&gt; DetailScreen(task = key.task) }
       }
     )
 }
 </code></pre>
 <ul>
-<li>Gardez le Scaffold dans <code>ListScreen</code> sans la topBar: déplacez là dans un autre Scaffold que vous ajouterez dans <code>App()</code> pour qu&#39;elle soit commune à tous les écrans</li>
-<li>Modifiez <code>ListScreen</code> pour qu&#39;au clic sur un élément, on navigue vers <code>DetailNavScreen</code>:</li>
 <li>Extraire un composant <code>TaskItem</code> pour la partie qui affiche chaque item et faire en sorte qu&#39;au clic sur un item, on remonte un event onClick qui permettra de naviguer vers l&#39;écran détail:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">@Composable
 private fun TaskItem(
+    modifier: Modifier = Modifier,
     item: Task,
     onClick: (Task) -&gt; Unit,
     onDelete: () -&gt; Unit,
 ) {...}
 </code></pre>
+<aside class="special"><p>🧑‍🏫 <strong>Modifiers</strong></p>
+<p>Par convention, chaque composant doit avoir un argument <code>modifier</code> de type <code>Modifier</code> avec comme valeur par défaut....<code>Modifier</code> !</p>
+<p><code>Modifier</code> est une interface dont le <code>companion object</code> implémente... <code>Modifier</code></p>
+<p>C&#39;est assez simple en vérité: ça permet d&#39;utilier <code>Modifier</code> comme point de départ et valeur par défaut: c&#39;est un modifier qui ne fait rien.</p>
+<p>Ensuite plein de différentes implémentations de <code>Modifier</code> existent et sont configurés de façon à pouvoir s&#39;enchaîner comme ceci et ajouter des comportements ou des modifications visuelles:</p>
+<pre><code language="language-kotlin" class="language-kotlin">Modifier.fillMaxSize(0.5f)
+    .padding(8.dp)
+    .clickable { }
+</code></pre>
+<p>⚠️ l&#39;argument <code>modifier</code> de chaque Composant doit toujours être utilisé dans le composant &#34;root&#34; qui le constitue, par exemple:</p>
+<pre><code language="language-kotlin" class="language-kotlin">@Composable
+fun Login(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier // on insére le modifier à la racine
+            .padding(8.dp) // et on peut aussi ajouter des modifiers dessus
+    ) {
+        TextField(/* ... */)
+        TextField(/* ... */)
+    }
+}
+</code></pre>
+</aside>
 <ul>
-<li>Dans <code>App()</code>, faires en sorte que ce clic navigue bien:</li>
+<li>Dans <code>App()</code>, faites en sorte que ce clic navigue bien:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">// Pour naviguer vers l&#39;écran détail, on l&#39;ajoute à l&#39;historique:
 backStack.add(DetailNavScreen(...))
