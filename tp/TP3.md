@@ -225,8 +225,26 @@ Typiquement dans les Tests Unitaires, on a souvent une "fausse implémentation" 
 
 ```kotlin
 // Ici on ne va pas gérer les cas d'erreur donc on force le crash avec "!!"
-val user = Api.userWebService.fetchUser().body()!!
+Api.userWebService.fetchUser().body()!!
 ```
+
+<aside class="positive">
+
+🧑‍🏫 Ici vous avez besoin d'un coroutineScope: Si vous essayez de faire comme précédemment avec `rememberCoroutineScope()` et `coroutineScope.launch {}` directement dans le code du composant, vous aurez des bugs car à chaque composition, votre scope sera détruit et annulé.
+
+on va utiliser plutot un "effect" ici:
+
+```kotlin
+val user: User? = null
+LaunchedEffect(Unit) { // ici on est dans un scope "suspend"
+  user = ...
+}
+```
+
+On aurait aussi pu gérer ça dans l'activity avec lifecycleScope mais il aurait fallu passer le user en argument.
+
+Normalement on devrait plutôt gérer tout ça dans le ViewModel
+</aside>
 
 - Afficher votre nom d'utilisateur dans le `Text`
 
