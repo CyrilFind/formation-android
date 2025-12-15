@@ -53,19 +53,21 @@
       <google-codelab-step label="Ajout des dépendances" duration="0">
         <p>Dans le fichier <code>app/build.gradle.kts</code> (celui du module):</p>
 <ul>
-<li>Dans <code>dependencies {}</code>, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l&#39;IDE vous le propose, il vous permet également de facilement les passer dans le <code>libs.versions.toml</code>):</li>
+<li>Dans <code>dependencies {}</code>, ajouter les dépendances qui vous manquent</li>
+<li>mettre les versions plus récentes si l&#39;IDE vous le propose</li>
+<li>Ne mettez pas en double celle que vous avez déjà</li>
 </ul>
 <pre><code language="language-groovy" class="language-groovy">// Retrofit
-implementation(&#34;com.squareup.retrofit2:retrofit:2.11.0&#34;)
-implementation(&#34;com.squareup.okhttp3:logging-interceptor:4.12.0&#34;)
+implementation(&#34;com.squareup.retrofit2:retrofit:3.0.0&#34;)
+implementation(&#34;com.squareup.okhttp3:logging-interceptor:5.3.2&#34;)
 
 // KotlinX Serialization
-implementation(&#34;org.jetbrains.kotlin:kotlinx-serialization-json:1.6.2&#34;)
+implementation(&#34;org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0&#34;)
 implementation(&#34;com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0&#34;)
 
 // Coroutines
-implementation(&#34;org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3&#34;)
-implementation(&#34;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3&#34;)
+implementation(&#34;org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2&#34;)
+implementation(&#34;org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2&#34;)
 </code></pre>
 <aside class="special"><p>🧑‍🏫 les <code>implementation()</code> listent les dépendances du module lié au fichier gradle en question (ici <code>app</code>, notre unique module)</p>
 <p>Afin de centraliser la liste des dépendances utilisées dans tout le projet, et éviter d&#39;avoir des versions différentes, on recommande d&#39;utiliser <code>libs.versions.toml</code> qui liste ces infos et les rends accessibles ensuite dans tous les modules:</p>
@@ -75,8 +77,6 @@ retrofit = &#34;3.0.0&#34;
 # ...
 
 [libraries]
-# ...
-retrofit = &#34;3.0.0&#34;
 # ...
 square-retrofit = { module = &#34;com.squareup.retrofit2:retrofit&#34;, version.ref = &#34;retrofit&#34; }
 # ...
@@ -99,7 +99,7 @@ plugins {
 </code></pre>
 </aside>
 <ul>
-<li>Tout en haut ajoutez le plugin de sérialisation:</li>
+<li>Tout en haut ajoutez le plugin de sérialisation si vous ne l&#39;avez pas encore:</li>
 </ul>
 <pre><code language="language-groovy" class="language-groovy">plugins {
     id(&#34;org.jetbrains.kotlin.plugin.serialization&#34;) version &#34;2.0.0&#34;
@@ -222,8 +222,18 @@ data class User(
 <li>Dans votre Activity, ajoutez un composant <code>Text</code> pour voir les résultats de l&#39;API:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">// Ici on ne va pas gérer les cas d&#39;erreur donc on force le crash avec &#34;!!&#34;
-val user = Api.userWebService.fetchUser().body()!!
+Api.userWebService.fetchUser().body()!!
 </code></pre>
+<aside class="special"><p>🧑‍🏫 Ici vous avez besoin d&#39;un coroutineScope: Si vous essayez de faire comme précédemment avec <code>rememberCoroutineScope()</code> et <code>coroutineScope.launch {}</code> directement dans le code du composant, vous aurez des bugs car à chaque composition, votre scope sera détruit et annulé.</p>
+<p>on va utiliser plutot un &#34;effect&#34; ici:</p>
+<pre><code language="language-kotlin" class="language-kotlin">val user: User? = null
+LaunchedEffect(Unit) { // ici on est dans un scope &#34;suspend&#34;
+  user = ...
+}
+</code></pre>
+<p>On aurait aussi pu gérer ça dans l&#39;activity avec lifecycleScope mais il aurait fallu passer le user en argument.</p>
+<p>Normalement on devrait plutôt gérer tout ça dans le ViewModel</p>
+</aside>
 <ul>
 <li>Afficher votre nom d&#39;utilisateur dans le <code>Text</code></li>
 </ul>
@@ -418,8 +428,14 @@ suspend fun delete(@... id: String): Response&lt;Unit&gt;
 
       </google-codelab-step>
     
+      <google-codelab-step label="Compléter" duration="0">
+        <p>Ajoutez une &#34;checkbox&#34; qui marque votre tâche comme terminée avec toute la logique, le call API, etc</p>
+
+
+      </google-codelab-step>
+    
       <google-codelab-step label="Architecture" duration="0">
-        <p>Toute la logique étant extraite dans le ViewModel, elle peut être partagée avec l&#39;ancien écran listant les tâches puisque qu&#39;il fait la même chose.</p>
+        <p>Toute la logique étant extraite dans le ViewModel, elle peut être partagée avec votre ancien écran listant les tâches puisque qu&#39;il fait la même chose.</p>
 <p>Adaptez donc tout ça dans <code>TaskListFragment</code> en utilisant le même ViewModel, indices pour commencer:</p>
 <pre><code language="language-kotlin" class="language-kotlin">private val viewModel: TaskListViewModel by viewModels()
 
@@ -434,6 +450,7 @@ lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
     }
 }
 </code></pre>
+<p>Vous pouvez également ajouter la fonctionnalité &#34;checkbox&#34;</p>
 
 
       </google-codelab-step>

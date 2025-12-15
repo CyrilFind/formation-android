@@ -83,7 +83,54 @@ data class DetailNavScreen(val id: String) : NavKey
       </google-codelab-step>
     
       <google-codelab-step label="Login" duration="0">
-        <p>Selon votre projet, ajoutez un parcours de login à votre app pour remplacer le TOKEN en dur dans le code si c&#39;est possible (ou autre méthode d&#39;authentification)</p>
+        <p>Si votre projet le permet, ajoutez un parcours de login à votre app pour remplacer le TOKEN en dur dans le code si c&#39;est possible (ou autre méthode d&#39;authentification)</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Architecture" duration="0">
+        <p>Respectez une architecture minimale:</p>
+<ul>
+<li>Écrans Compose: affichage seulement</li>
+<li>ViewModels: map les données en états à afficher et remonte les events</li>
+<li>Repository: requête les webservice et/ou bases de données et map les données</li>
+</ul>
+<p><a href="https://developer.android.com/topic/architecture" target="_blank">Doc</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Injection de Dépendance" duration="0">
+        <p>Implémentez de l&#39;injection de dépendances avec <a href="https://insert-koin.io/" target="_blank">Koin</a></p>
+<p><a href="https://developer.android.com/training/dependency-injection" target="_blank">Doc</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Tests" duration="0">
+        <p>Implémentez des tests unitaires:</p>
+<p><a href="https://developer.android.com/training/testing/local-tests" target="_blank">Doc</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Permissions" duration="0">
+        <p>Selon votre projet, vous pourriez avoir besoin d&#39;accéder à certaines ressources nécessitant des permissions, notamment des &#34;Runtime Permission&#34;</p>
+<p><a href="https://developer.android.com/guide/topics/permissions" target="_blank">Doc</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Stockage" duration="0">
+        <p>Selon votre projet (si l&#39;API permet seulement de GET par exemple), aidez vous de la documentation pour choisir une solution de stockage de données locale (<code>DataStore</code>, <code>Room</code>, etc) adaptée.</p>
+<p><a href="https://developer.android.com/training/data-storage" target="_blank">Doc</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Background" duration="0">
+        <p>Selon votre projet, aidez vous de la documentation pour choisir une solution travail en arrière-plan. Par exemple, envoyer des notifications, des rappels avec une alarme, télécharger des données, etc</p>
+<p><a href="https://developer.android.com/develop/background-work/background-tasks" target="_blank">Documentation</a></p>
 
 
       </google-codelab-step>
