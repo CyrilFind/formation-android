@@ -226,7 +226,7 @@ Api.userWebService.fetchUser().body()!!
 </code></pre>
 <aside class="special"><p>🧑‍🏫 Ici vous avez besoin d&#39;un coroutineScope: Si vous essayez de faire comme précédemment avec <code>rememberCoroutineScope()</code> et <code>coroutineScope.launch {}</code> directement dans le code du composant, vous aurez des bugs car à chaque composition, votre scope sera détruit et annulé.</p>
 <p>on va utiliser plutot un &#34;effect&#34; ici:</p>
-<pre><code language="language-kotlin" class="language-kotlin">val user: User? = null
+<pre><code language="language-kotlin" class="language-kotlin">val user: User? by remember { mutableStateOf(null) }
 LaunchedEffect(Unit) { // ici on est dans un scope &#34;suspend&#34;
   user = ...
 }
