@@ -235,7 +235,7 @@ Api.userWebService.fetchUser().body()!!
 on va utiliser plutot un "effect" ici:
 
 ```kotlin
-val user: User? = null
+val user: User? by remember { mutableStateOf(null) }
 LaunchedEffect(Unit) { // ici on est dans un scope "suspend"
   user = ...
 }
