@@ -27,20 +27,22 @@ Afin de communiquer avec le réseau internet (wifi, ethernet ou mobile), il faut
 
 Dans le fichier `app/build.gradle.kts` (celui du module):
 
-- Dans `dependencies {}`, ajouter les dépendances qui vous manquent (mettre les versions plus récentes si l'IDE vous le propose, il vous permet également de facilement les passer dans le `libs.versions.toml`):
+- Dans `dependencies {}`, ajouter les dépendances qui vous manquent
+- mettre les versions plus récentes si l'IDE vous le propose
+- Ne mettez pas en double celle que vous avez déjà
 
 ```groovy
 // Retrofit
-implementation("com.squareup.retrofit2:retrofit:2.11.0")
-implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+implementation("com.squareup.retrofit2:retrofit:3.0.0")
+implementation("com.squareup.okhttp3:logging-interceptor:5.3.2")
 
 // KotlinX Serialization
-implementation("org.jetbrains.kotlin:kotlinx-serialization-json:1.6.2")
+implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
 
 // Coroutines
-implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 ```
 
 <aside class="positive">
@@ -56,8 +58,6 @@ retrofit = "3.0.0"
 # ...
 
 [libraries]
-# ...
-retrofit = "3.0.0"
 # ...
 square-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 # ...
@@ -84,7 +84,7 @@ plugins {
 
 </aside>
 
-- Tout en haut ajoutez le plugin de sérialisation:
+- Tout en haut ajoutez le plugin de sérialisation si vous ne l'avez pas encore:
 
 ```groovy
 plugins {
@@ -438,9 +438,13 @@ when (val currentState = state.value) {
 
 - Testez et peaufinez un peu l'affichage
 
+## Compléter
+
+Ajoutez une "checkbox" qui marque votre tâche comme terminée avec toute la logique, le call API, etc
+
 ## Architecture
 
-Toute la logique étant extraite dans le ViewModel, elle peut être partagée avec l'ancien écran listant les tâches puisque qu'il fait la même chose.
+Toute la logique étant extraite dans le ViewModel, elle peut être partagée avec votre ancien écran listant les tâches puisque qu'il fait la même chose.
 
 Adaptez donc tout ça dans `TaskListFragment` en utilisant le même ViewModel, indices pour commencer:
 
@@ -458,3 +462,5 @@ lifecycleScope.launch { // on lance une coroutine car `collect` est `suspend`
     }
 }
 ```
+
+Vous pouvez également ajouter la fonctionnalité "checkbox"

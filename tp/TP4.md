@@ -58,4 +58,45 @@ Si ça ne colle pas du tout à votre projet, ajoutez en au moins quelques unes p
 
 ## Login
 
-Selon votre projet, ajoutez un parcours de login à votre app pour remplacer le TOKEN en dur dans le code si c'est possible (ou autre méthode d'authentification)
+Si votre projet le permet, ajoutez un parcours de login à votre app pour remplacer le TOKEN en dur dans le code si c'est possible (ou autre méthode d'authentification)
+
+## Architecture
+
+Respectez une architecture minimale:
+
+- Écrans Compose: affichage seulement
+- ViewModels: map les données en états à afficher et remonte les events
+- Repository: requête les webservice et/ou bases de données et map les données
+
+[Doc](https://developer.android.com/topic/architecture)
+
+## Injection de Dépendance
+
+Implémentez de l'injection de dépendances avec [Koin](https://insert-koin.io/)
+
+[Doc](https://developer.android.com/training/dependency-injection)
+
+## Tests
+
+Implémentez des tests unitaires:
+
+[Doc](https://developer.android.com/training/testing/local-tests)
+
+## Permissions
+
+Selon votre projet, vous pourriez avoir besoin d'accéder à certaines ressources nécessitant des permissions, notamment des "Runtime Permission"
+
+[Doc](https://developer.android.com/guide/topics/permissions)
+
+## Stockage
+
+Selon votre projet (si l'API permet seulement de GET par exemple), aidez vous de la documentation pour choisir une solution de stockage de données locale (`DataStore`, `Room`, etc) adaptée.
+
+[Doc](https://developer.android.com/training/data-storage)
+
+## Background
+
+Selon votre projet, aidez vous de la documentation pour choisir une solution travail en arrière-plan.
+Par exemple, envoyer des notifications, des rappels avec une alarme, télécharger des données, etc
+
+[Documentation](https://developer.android.com/develop/background-work/background-tasks)
