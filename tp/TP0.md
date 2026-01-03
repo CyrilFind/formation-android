@@ -55,6 +55,8 @@ Vous pouvez aussi le faire avec le bouton "éléphant" ressemblant à ceci:
 
 🧑‍🏫 C'est le logo de **Gradle**, le système de build de projets Android: il y a un fichier gradle par module (ici vous avez un seul module `app`) et un fichier pour le projet dans son ensemble (il y a d'autres fichiers de configs mais ceux là sont les principaux)
 
+</aside>
+
 ## Vocabulaire
 
 <aside class="positive">
