@@ -88,6 +88,18 @@ Selon votre projet, vous pourriez avoir besoin d'accéder à certaines ressource
 
 [Doc](https://developer.android.com/guide/topics/permissions)
 
+## Caméra
+
+[Doc](https://developer.android.com/media/camera/get-started-with-camera)
+
+## Location
+
+[Doc](https://developer.android.com/develop/sensors-and-location/location)
+
+## Sensors
+
+[Doc](https://developer.android.com/develop/sensors-and-location/sensors/sensors_overview)
+
 ## Stockage
 
 Selon votre projet (si l'API permet seulement de GET par exemple), aidez vous de la documentation pour choisir une solution de stockage de données locale (`DataStore`, `Room`, etc) adaptée.
@@ -96,7 +108,43 @@ Selon votre projet (si l'API permet seulement de GET par exemple), aidez vous de
 
 ## Background
 
-Selon votre projet, aidez vous de la documentation pour choisir une solution travail en arrière-plan.
-Par exemple, envoyer des notifications, des rappels avec une alarme, télécharger des données, etc
+Selon votre projet, aidez vous de la documentation pour choisir une solution de travail en arrière-plan.
+Par exemple pour envoyer des notifications, des rappels avec une alarme, télécharger des données, etc
 
 [Documentation](https://developer.android.com/develop/background-work/background-tasks)
+
+## Audio/Video
+
+[Documentation](https://developer.android.com/media/audio-and-video)
+
+## A11y
+
+Gérer l'accessibilité (via `TalkBack`)
+
+[Doc](https://developer.android.com/guide/topics/ui/accessibility/apps)
+
+## Graphs
+
+[Lib](https://github.com/patrykandpatrick/vico)
+
+## Autres
+
+Pour toute autre sujets, voyez avec moi !
+
+[Codelabs](https://developer.android.com/get-started/codelabs)
+
+## Rendu et Barême approximatif
+
+- TP1: liste en RecyclerView - ajout, suppression, édition, etc / 3
+- TP2: liste en Jetpack Compose - ajout, suppression, édition, etc / 3
+- TP3: connexion à une API distante, afficher user, ViewModel, etc / 2
+- TP4: projet perso complet / 6
+- Qualité globale du code et architecture / 3
+- UI correcte: un minimum "joli" / 1
+- UX correcte: utilisable, navigation facile / 2
+- bonus si vous allez au bout de chaque TP / ?
+- malus si je dois demander un accès / -1
+- malus si le projet n'est pas bien commité / -1
+- malus si je dois bricoler pour que ça marche / -1
+
+Pas de soutenance mais une capture video de présentation rapide de chacune de vos fonctionnalités en quelques minutes à mettre sur le repo git.
