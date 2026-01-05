@@ -29,13 +29,12 @@
                   feedback-link="">
     
       <google-codelab-step label="Objectif" duration="0">
-        <p>Ici on va utiliser le système de vue &#34;classique&#34; et afficher une liste d&#39;éléments modifiavle</p>
+        <p>Ici on va utiliser le système de vue &#34;classique&#34; et afficher une liste d&#39;éléments modifiable</p>
 <aside class="warning"><p>⚠️ Lisez toutes les questions: souvent vous bloquez simplement parce que vous n&#39;avez pas encore regardé l&#39;étape suivante ou le sujet dans son ensemble.</p>
 <p><strong>Sinon, demandez moi!!</strong></p>
+<p>Si vous remarquez des erreurs, des fautes de frappe ou des oublis de ma part, n&#39;hésitez pas à me le signaler SVP !</p>
 </aside>
 <aside class="special"><p>Remarque: si vous n&#39;avez pas bien paramétré votre IDE, relisez le début du TP0</p>
-</aside>
-<aside class="warning"><p>Si vous remarquez des erreurs, des fautes de frappe ou des oublis de ma part, n&#39;hésitez pas à me le signaler SVP !</p>
 </aside>
 
 
@@ -59,7 +58,7 @@
     
       <google-codelab-step label="Image Asset Studio" duration="0">
         <p>Créez une icône d&#39;application personnalisée avec l&#39;outil intégré <strong>Image Asset Studio</strong>: ouvrez le <strong>Resource Manager</strong> à gauche, près du volet projet puis cliquez sur le <code>+</code> en haut à gauche et choisissez <code>Image Asset</code>: ici vous pouvez choisie une couleur de fond, une image: icône système ou personnalisée avec un SVG ou un &#34;clipart&#34; (bibliotheque d&#39;icones en cliquant sur la petite icon android) et générer automatiquement les différentes tailles nécessaires pour les différentes version d&#39;Android.</p>
-<aside class="warning"><p>N&#39;y passez pas trop de temps, mais profitez en pour réfléchir à votre projet perso et si vous ave une idée, faites une icône en rapport !</p>
+<aside class="warning"><p>N&#39;y passez pas trop de temps, mais profitez en pour réfléchir à votre projet perso et si vous avez déjà une idée, faites une icône en rapport ! (sinon vous pourrez la changer plus tard)</p>
 </aside>
 <p>Vérifiez que l&#39;icône est bien prise en compte dans le <code>AndroidManifest.xml</code> (attribut <code>android:icon</code> de la balise <code>application</code>) et en lançant l&#39;app.</p>
 
@@ -72,8 +71,8 @@
 <li>notés en haut de chaque classe: <code>package com.nicoalex.todo.nomdupackage</code></li>
 <li>répliqués en tant que dossiers dans le filesystem: <code>com/nicoalex/todo/nomdupackage</code></li>
 </ul>
-<aside class="special"><p>Dans le volet &#34;Projet&#34; à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est &#34;Android&#34; qui affiche facilement le Manifest, les fichiers source, les fichier resources (<code>res</code>), compacte les dossiers vides ensemble (<code>com.nicoalex.todo</code>): tout ce qui est utile spécifiquement pour Android...</p>
-<p>Mais il peut parfois être pratique de passer en &#34;Project Files&#34; par ex pour voir l&#39;arborescence réelle et certains fichiers qui sont cachés en vue &#34;Android&#34;.</p>
+<aside class="special"><p>Dans le volet <strong>Projet</strong> à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est <strong>Android</strong> qui affiche facilement le Manifest, les fichiers source, les fichier resources (<code>res</code>), compacte les dossiers vides ensemble (<code>com.nicoalex.todo</code>): tout ce qui est utile spécifiquement pour Android...</p>
+<p>Mais il peut parfois être pratique de passer en <strong>Project Files</strong> par ex pour voir l&#39;arborescence réelle et certains fichiers qui sont cachés en vue <strong>Android</strong>.</p>
 </aside>
 <p>Parcourez les différents fichiers de config, notamment les plus importants:</p>
 <ul>
@@ -119,14 +118,14 @@
 </code></pre>
 <aside class="warning"><p>⚠️ Si vous exécutez du code <strong>avant</strong> cette ligne <code>inflate</code>, il va crasher ou ne rien faire car votre vue n&#39;existera pas encore</p>
 </aside>
-<aside class="special"><p><code>R</code> est un raccourci signifiant &#34;Resource&#34;: c&#39;est une classe générée automatiquement à partir des dossiers et fichiers créés dans <code>res</code> qui s&#39;utilise comme ceci: <code>R.string.app_name</code>, <code>R.drawable.app_icon</code>, etc... afin de récupérer des ID que l&#39;on utilise dans les fonctions du framework Android (<code>getString</code>, <code>getDrawable</code>, etc...) grace aux noms des resources (pour les fichiers ce sera toujours le nom du fichier sans l&#39;extension)</p>
+<aside class="special"><p>🧑‍🏫 <code>R</code> est un raccourci signifiant &#34;Resource&#34;: c&#39;est une classe générée automatiquement à partir des dossiers et fichiers créés dans <code>res</code> qui s&#39;utilise comme ceci: <code>R.string.app_name</code>, <code>R.drawable.app_icon</code>, etc... afin de récupérer des ID que l&#39;on utilise dans les fonctions du framework Android (<code>getString</code>, <code>getDrawable</code>, etc...) grace aux noms des resources: pour les fichiers le nom sera toujours le nom du fichier sans l&#39;extension</p>
 </aside>
 <ul>
 <li>Pour l&#39;instant, la liste des tâches sera simplement une liste de <code>String</code> locale, ajoutez la en tant que propriété de votre classe <code>TaskListFragment</code>:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">private val taskList = listOf(&#34;Task 1&#34;, &#34;Task 2&#34;, &#34;Task 3&#34;)
 </code></pre>
-<aside class="special"><p>↳ Ici le <strong>Typage Statique Inféré</strong> de Kotlin nous permet de ne pas préciser le type de <code>taskList</code>: le compilateur le devine tout seul (et l&#39;IDE devrait vous l&#39;afficher en grisé)</p>
+<aside class="special"><p>🧑‍🏫 Ici le <strong>Typage Statique Inféré</strong> de Kotlin nous permet de ne pas préciser le type de <code>taskList</code>: le compilateur le devine tout seul (et l&#39;IDE devrait vous l&#39;afficher en grisé)</p>
 </aside>
 
 
@@ -149,8 +148,9 @@
         <ul>
 <li>Dans un nouveau fichier <code>TaskListAdapter.kt</code>, créez 2 nouvelles classes: <code>TaskListAdapter</code> et <code>TaskViewHolder</code>:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">// l&#39;IDE va râler ici car on a pas encore implémenté les méthodes nécessaires
-class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&gt;() {
+<aside class="warning"><p>⚠️ l&#39;IDE va vous signaler un problème ici, c&#39;est normal, on le réglera plus tard</p>
+</aside>
+<pre><code language="language-kotlin" class="language-kotlin">class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&gt;() {
 
   var currentList: List&lt;String&gt; = emptyList()
 
@@ -162,7 +162,7 @@ class TaskListAdapter : RecyclerView.Adapter&lt;TaskListAdapter.TaskViewHolder&g
   }
 }
 </code></pre>
-<aside class="warning"><p>⚠️ C&#39;est normal que l&#39;IDE nous signale un problème ici, on le réglera plus tard</p>
+<aside class="special"><p>🧑‍🏫 Une <a href="../../slides/04%20-%20RecyclerView.html" target="_blank">RecyclerView</a> est un composant Android qui permet d&#39;afficher une liste de données de manière performante et fonctionne avec un <strong>Adapter</strong> qui lui &#34;explique&#34; comment &#34;recycler&#34; en <strong>implémentant</strong> plusieurs méthodes</p>
 </aside>
 
 
