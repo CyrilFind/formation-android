@@ -148,3 +148,7 @@ Pour toute autre sujets, voyez avec moi !
 - malus si je dois bricoler pour que ça marche / -1
 
 Pas de soutenance mais une capture video de présentation rapide de chacune de vos fonctionnalités en quelques minutes à mettre sur le repo git.
+
+Vous pouvez utiliser l'outil de capture d'android studio pour ça:
+
+![Capture Video](/assets/video_capture.png)

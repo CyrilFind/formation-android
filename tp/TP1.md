@@ -2,7 +2,7 @@
 
 ## Objectif
 
-Ici on va utiliser le système de vue "classique" et afficher une liste d'éléments modifiavle
+Ici on va utiliser le système de vue "classique" et afficher une liste d'éléments modifiable
 
 <aside class="negative">
 
@@ -10,17 +10,13 @@ Ici on va utiliser le système de vue "classique" et afficher une liste d'élém
 
 **Sinon, demandez moi!!**
 
+Si vous remarquez des erreurs, des fautes de frappe ou des oublis de ma part, n'hésitez pas à me le signaler SVP !
+
 </aside>
 
 <aside class="positive">
 
 Remarque: si vous n'avez pas bien paramétré votre IDE, relisez le début du TP0
-
-</aside>
-
-<aside class="negative">
-
-Si vous remarquez des erreurs, des fautes de frappe ou des oublis de ma part, n'hésitez pas à me le signaler SVP !
 
 </aside>
 
@@ -48,7 +44,7 @@ Créez une icône d'application personnalisée avec l'outil intégré **Image As
 
 <aside class="negative">
 
-N'y passez pas trop de temps, mais profitez en pour réfléchir à votre projet perso et si vous ave une idée, faites une icône en rapport !
+N'y passez pas trop de temps, mais profitez en pour réfléchir à votre projet perso et si vous avez déjà une idée, faites une icône en rapport ! (sinon vous pourrez la changer plus tard)
 
 </aside>
 
@@ -63,9 +59,9 @@ Vérifiez que l'icône est bien prise en compte dans le `AndroidManifest.xml` (a
 
 <aside class="positive">
 
-Dans le volet "Projet" à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est "Android" qui affiche facilement le Manifest, les fichiers source, les fichier resources (`res`), compacte les dossiers vides ensemble (`com.nicoalex.todo`): tout ce qui est utile spécifiquement pour Android...
+Dans le volet **Projet** à gauche, vous pouvez choisir diverses visualisations de vos fichiers: la plus adaptée pour nous est **Android** qui affiche facilement le Manifest, les fichiers source, les fichier resources (`res`), compacte les dossiers vides ensemble (`com.nicoalex.todo`): tout ce qui est utile spécifiquement pour Android...
 
-Mais il peut parfois être pratique de passer en "Project Files" par ex pour voir l'arborescence réelle et certains fichiers qui sont cachés en vue "Android".
+Mais il peut parfois être pratique de passer en **Project Files** par ex pour voir l'arborescence réelle et certains fichiers qui sont cachés en vue **Android**.
 
 </aside>
 
@@ -129,7 +125,7 @@ val rootView = inflater.inflate(R.layout.fragment_task_list, container, false)
 
 <aside class="positive">
 
-`R` est un raccourci signifiant "Resource": c'est une classe générée automatiquement à partir des dossiers et fichiers créés dans `res` qui s'utilise comme ceci: `R.string.app_name`, `R.drawable.app_icon`, etc... afin de récupérer des ID que l'on utilise dans les fonctions du framework Android (`getString`, `getDrawable`, etc...) grace aux noms des resources (pour les fichiers ce sera toujours le nom du fichier sans l'extension)
+🧑‍🏫 `R` est un raccourci signifiant "Resource": c'est une classe générée automatiquement à partir des dossiers et fichiers créés dans `res` qui s'utilise comme ceci: `R.string.app_name`, `R.drawable.app_icon`, etc... afin de récupérer des ID que l'on utilise dans les fonctions du framework Android (`getString`, `getDrawable`, etc...) grace aux noms des resources: pour les fichiers le nom sera toujours le nom du fichier sans l'extension
 
 </aside>
 
@@ -141,7 +137,7 @@ private val taskList = listOf("Task 1", "Task 2", "Task 3")
 
 <aside class="positive">
 
-↳ Ici le **Typage Statique Inféré** de Kotlin nous permet de ne pas préciser le type de `taskList`: le compilateur le devine tout seul (et l'IDE devrait vous l'afficher en grisé)
+🧑‍🏫 Ici le **Typage Statique Inféré** de Kotlin nous permet de ne pas préciser le type de `taskList`: le compilateur le devine tout seul (et l'IDE devrait vous l'afficher en grisé)
 
 </aside>
 
@@ -163,8 +159,13 @@ Dans `activity_main.xml`, remplacez la balise `TextView` par celle ci et adaptez
 
 - Dans un nouveau fichier `TaskListAdapter.kt`, créez 2 nouvelles classes: `TaskListAdapter` et `TaskViewHolder`:
 
+<aside class="negative">
+
+⚠️ l'IDE va vous signaler un problème ici, c'est normal, on le réglera plus tard
+
+</aside>
+
 ```kotlin
-// l'IDE va râler ici car on a pas encore implémenté les méthodes nécessaires
 class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 
   var currentList: List<String> = emptyList()
@@ -178,9 +179,9 @@ class TaskListAdapter : RecyclerView.Adapter<TaskListAdapter.TaskViewHolder>() {
 }
 ```
 
-<aside class="negative">
+<aside class="positive">
 
-⚠️ C'est normal que l'IDE nous signale un problème ici, on le réglera plus tard
+🧑‍🏫 Une [RecyclerView](../../slides/04%20-%20RecyclerView.html) est un composant Android qui permet d'afficher une liste de données de manière performante et fonctionne avec un **Adapter** qui lui "explique" comment "recycler" en **implémentant** plusieurs méthodes
 
 </aside>
 

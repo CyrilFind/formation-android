@@ -36,7 +36,6 @@ val emptyList = emptyList<Double>() // List<Double>
 
 > In Kotlin, everything is an object [...] While certain types have an optimized internal representation as primitive values at runtime [...], they appear and behave like regular classes to you ([source](https://kotlinlang.org/docs/types-overview.html))
 
-
 ## Mutabilité
 
 ```kotlin

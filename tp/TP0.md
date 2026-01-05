@@ -90,6 +90,8 @@ Dans cet exemple:
 - `add()` est une **fonction** qui **surcharge** une **fonction** ayant la même **signature** dans une des ses **classes mère**
 - `add()` est une **fonction** définie dans une **classe**: on dit que c'est une **méthode**
 
+Voir aussi d'autres notions de Programmation Orientée Objet: [cours](../../slides/01%20-%20Intro.html#2)
+
 ## Kotlin Basics
 
 Pour prendre en main les bases du langage, avec qq indices:
